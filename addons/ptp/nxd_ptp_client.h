@@ -251,7 +251,7 @@ typedef struct NX_PTP_TIME_STRUCT
     LONG  second_high;
 
     /* The LSB of the number of seconds */
-    ULONG second_low;
+    UINT32 second_low;
 
     /* The number of nanoseconds */
     LONG  nanosecond;
@@ -270,7 +270,7 @@ typedef struct NX_PTP_DATE_TIME_STRUCT
     UCHAR second;
     UCHAR weekday;
     UCHAR reserved[2];
-    ULONG nanosecond;
+    UINT32 nanosecond;
 } NX_PTP_DATE_TIME;
 
 
@@ -434,7 +434,7 @@ typedef struct NX_PTP_CLIENT_SYNC_STRUCT
 typedef struct NX_PTP_CLIENT_STRUCT
 {
     /* PTP Client ID */
-    ULONG                        nx_ptp_client_id;
+    UINT32                        nx_ptp_client_id;
 
     /* Pointer to the Client IP instance.  */
     NX_IP                       *nx_ptp_client_ip_ptr;
@@ -751,11 +751,11 @@ UINT _nxe_ptp_client_master_enable(NX_PTP_CLIENT *client_ptr, UCHAR role, UCHAR 
 /* Define the function prototypes of the private utility functions */
 
 VOID _nx_ptp_client_utility_time_div_by_2(NX_PTP_TIME *time_ptr);
-VOID _nx_ptp_client_utility_add64(LONG *a_hi, ULONG *a_lo, LONG b_hi, ULONG b_lo);
-VOID _nx_ptp_client_utility_sub64(LONG *a_hi, ULONG *a_lo, LONG b_hi, ULONG b_lo);
-VOID _nx_ptp_client_utility_inc64(LONG *a_hi, ULONG *a_lo);
-VOID _nx_ptp_client_utility_dec64(LONG *a_hi, ULONG *a_lo);
-VOID _nx_ptp_client_utility_neg64(LONG *a_hi, ULONG *a_lo);
+VOID _nx_ptp_client_utility_add64(LONG *a_hi, UINT32 *a_lo, LONG b_hi, UINT32 b_lo);
+VOID _nx_ptp_client_utility_sub64(LONG *a_hi, UINT32 *a_lo, LONG b_hi, UINT32 b_lo);
+VOID _nx_ptp_client_utility_inc64(LONG *a_hi, UINT32 *a_lo);
+VOID _nx_ptp_client_utility_dec64(LONG *a_hi, UINT32 *a_lo);
+VOID _nx_ptp_client_utility_neg64(LONG *a_hi, UINT32 *a_lo);
 
 
 /* Determine if a C++ compiler is being used.  If so, complete the standard

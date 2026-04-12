@@ -67,20 +67,20 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_packet_debug_info_get(NX_PACKET_POOL *pool_ptr, UINT packet_index, NX_PACKET **packet_pptr,
-                                ULONG *packet_status, CHAR **thread_info, CHAR **file_info, ULONG *line)
+                                UINT32 *packet_status, CHAR **thread_info, CHAR **file_info, UINT32 *line)
 {
-ULONG      payload_size;    /* Rounded payload size       */
-ULONG      header_size;     /* Rounded header size        */
+UINT32      payload_size;    /* Rounded payload size       */
+UINT32      header_size;     /* Rounded header size        */
 NX_PACKET *packet_ptr;
 
     /* Get the first packet. */
     packet_ptr = (NX_PACKET *)(pool_ptr -> nx_packet_pool_start);
 
     /* Calculate header size. */
-    header_size = (ULONG)((ALIGN_TYPE)(packet_ptr -> nx_packet_data_start) - (ALIGN_TYPE)packet_ptr);
+    header_size = (UINT32)((ALIGN_TYPE)(packet_ptr -> nx_packet_data_start) - (ALIGN_TYPE)packet_ptr);
 
     /* Round the packet size up to something that helps guarantee proper alignment for header and payload.  */
-    payload_size = (ULONG)(((pool_ptr -> nx_packet_pool_payload_size + header_size + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT - header_size);
+    payload_size = (UINT32)(((pool_ptr -> nx_packet_pool_payload_size + header_size + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT - header_size);
 
     /* Calculate packet pointer. */
     packet_ptr = (NX_PACKET *)(pool_ptr -> nx_packet_pool_start + packet_index * (header_size + payload_size));
@@ -94,7 +94,7 @@ NX_PACKET *packet_ptr;
     /* Get packet status. */
     if (packet_status)
     {
-        *packet_status = (ULONG)(ALIGN_TYPE)packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
+        *packet_status = (UINT32)(ALIGN_TYPE)packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
     }
 
     /* Get thread info. */

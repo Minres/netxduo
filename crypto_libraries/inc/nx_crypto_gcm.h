@@ -64,7 +64,7 @@ typedef struct NX_CRYPTO_GCM_STRUCT
 {
 
     /* Total length of input. */
-    ULONG nx_crypto_gcm_input_total_length;
+    UINT32 nx_crypto_gcm_input_total_length;
 
     /* Internal context of GCM mode. */
     UCHAR nx_crypto_gcm_hkey[NX_CRYPTO_GCM_BLOCK_SIZE];

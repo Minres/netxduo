@@ -63,7 +63,7 @@
 /*                                            processing                  */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_tcp_packet_send_probe(NX_TCP_SOCKET *socket_ptr, ULONG tx_sequence, UCHAR data)
+VOID  _nx_tcp_packet_send_probe(NX_TCP_SOCKET *socket_ptr, UINT32 tx_sequence, UCHAR data)
 {
 
     _nx_tcp_packet_send_control(socket_ptr, NX_TCP_ACK_BIT, tx_sequence,

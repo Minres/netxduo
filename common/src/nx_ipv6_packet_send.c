@@ -88,14 +88,14 @@
 /*                                                                        */
 /**************************************************************************/
 VOID _nx_ipv6_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
-                          ULONG protocol, ULONG payload_size, ULONG hop_limit,
-                          ULONG *src_address, ULONG *dest_address)
+                          UINT32 protocol, UINT32 payload_size, UINT32 hop_limit,
+                          UINT32 *src_address, UINT32 *dest_address)
 {
 
 UINT                       status = NX_SUCCESS;
-ULONG                      address_type;
+UINT32                      address_type;
 UINT                       next_hop_mtu;
-ULONG                      fragment = NX_TRUE;
+UINT32                      fragment = NX_TRUE;
 #ifdef NX_ENABLE_IPV6_PATH_MTU_DISCOVERY
 NX_IPV6_DESTINATION_ENTRY *next_hop_dest_entry_ptr;
 #endif /* NX_ENABLE_IPV6_PATH_MTU_DISCOVERY */
@@ -215,7 +215,7 @@ NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
             ip_ptr -> nx_ip_total_packets_sent++;
 
             /* Increment the IP bytes sent count. */
-            ip_ptr -> nx_ip_total_bytes_sent += packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER);
+            ip_ptr -> nx_ip_total_bytes_sent += packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER);
 #endif
 
             /* Send the packet to this IP's receive processing like it came in from the driver. */
@@ -247,7 +247,7 @@ NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
     {
 
         /* Is this packet a multicast ? */
-        if ((dest_address[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000)
+        if ((dest_address[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000)
         {
 
 
@@ -279,7 +279,7 @@ NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
 
         /* Obtain MAC address */
         ND_CACHE_ENTRY *NDCacheEntry = NX_NULL;
-        ULONG           next_hop_address[4];
+        UINT32           next_hop_address[4];
 
             SET_UNSPECIFIED_ADDRESS(next_hop_address);
 
@@ -357,9 +357,9 @@ NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
                 mac_addr = NDCacheEntry -> nx_nd_cache_mac_addr;
 
                 /* Assume we find the mac */
-                driver_request.nx_ip_driver_physical_address_msw = ((ULONG)mac_addr[0] << 8) | mac_addr[1];
+                driver_request.nx_ip_driver_physical_address_msw = ((UINT32)mac_addr[0] << 8) | mac_addr[1];
                 driver_request.nx_ip_driver_physical_address_lsw =
-                    ((ULONG)mac_addr[2] << 24) | ((ULONG)mac_addr[3] << 16) | ((ULONG)mac_addr[4] << 8) | mac_addr[5];
+                    ((UINT32)mac_addr[2] << 24) | ((UINT32)mac_addr[3] << 16) | ((UINT32)mac_addr[4] << 8) | mac_addr[5];
                 driver_request.nx_ip_driver_interface            = if_ptr;
 
                 /* Check if path MTU Discovery is enabled first. */
@@ -558,7 +558,7 @@ NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
     ip_ptr -> nx_ip_total_packets_sent++;
 
     /* Increment the IP bytes sent count.  */
-    ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER);
+    ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER);
 #endif
 
     /* Add debug information. */

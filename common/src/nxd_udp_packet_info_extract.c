@@ -76,14 +76,14 @@ UINT  _nxd_udp_packet_info_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_addres
                                    UINT *protocol, UINT *port, UINT *interface_index)
 {
 
-ULONG          *temp_ptr;
+UINT32          *temp_ptr;
 UINT            source_port;
 NX_INTERFACE   *nx_interface;
 #ifndef NX_DISABLE_IPV4
 NX_IPV4_HEADER *ipv4_header;
 #endif /* !NX_DISABLE_IPV4  */
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG           address = 0;
+UINT32           address = 0;
 #endif  /* TX_ENABLE_EVENT_TRACE */
 #ifdef FEATURE_NX_IPV6
 NX_IPV6_HEADER *ipv6_header;
@@ -139,7 +139,7 @@ NX_IPV6_HEADER *ipv6_header;
 
     /* Build an address to the current top of the packet.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    temp_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    temp_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Pickup the source port.  */
     source_port =  (UINT)(*(temp_ptr - 2) >> NX_SHIFT_BY_16);

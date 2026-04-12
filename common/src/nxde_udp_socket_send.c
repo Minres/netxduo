@@ -100,8 +100,8 @@ UINT       ip_header_size = 0;
     }
 
     /* Check for invalid packet pointers and packets not marked for allocation. */
-    /* Cast the ULONG into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /* Cast the UINT32 into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((packet_ptr == NX_NULL) ||
         (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)))
     {
@@ -148,7 +148,7 @@ UINT       ip_header_size = 0;
 #endif /* FEATURE_NX_IPV6 */
 
     /* Check for an invalid port.  */
-    if (((ULONG)port) > (ULONG)NX_MAX_PORT)
+    if (((UINT32)port) > (UINT32)NX_MAX_PORT)
     {
         return(NX_INVALID_PORT);
     }

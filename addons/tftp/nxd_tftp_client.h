@@ -166,7 +166,7 @@ extern   "C" {
 
 typedef struct NX_TFTP_CLIENT_STRUCT 
 {
-    ULONG           nx_tftp_client_id;                              /* TFTP Client ID                       */
+    UINT32           nx_tftp_client_id;                              /* TFTP Client ID                       */
     CHAR           *nx_tftp_client_name;                            /* Name of this TFTP client             */
     UINT            nx_tftp_client_interface_index;                 /* Index specifying network interface   */
     NX_IP          *nx_tftp_client_ip_ptr;                          /* Pointer to associated IP structure   */ 
@@ -254,24 +254,24 @@ typedef struct NX_TFTP_CLIENT_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
 
-UINT        nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, ULONG server_ip_address, UINT open_type, ULONG wait_option);
+UINT        nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, UINT32 server_ip_address, UINT open_type, UINT32 wait_option);
 
 UINT        nxd_tftp_client_create(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *tftp_client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT ip_type);
 UINT        nxd_tftp_client_delete(NX_TFTP_CLIENT *tftp_client_ptr);
 UINT        nxd_tftp_client_error_info_get(NX_TFTP_CLIENT *tftp_client_ptr, UINT *error_code, CHAR **error_string);
 UINT        nxd_tftp_client_file_close(NX_TFTP_CLIENT *tftp_client_ptr, UINT ip_type);
-UINT        nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT ip_type);
-UINT        nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
+UINT        nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT ip_type);
+UINT        nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
 UINT        nxd_tftp_client_set_interface(NX_TFTP_CLIENT *tftpv6_client_ptr, UINT if_index);
 
 #else
 
 /* TFTP source code is being compiled, do not perform any API mapping.  */
              
-UINT        _nxe_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, ULONG server_ip_address, UINT open_type, ULONG wait_option);
-UINT        _nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, ULONG server_ip_address, UINT open_type, ULONG wait_option);  
+UINT        _nxe_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, UINT32 server_ip_address, UINT open_type, UINT32 wait_option);
+UINT        _nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, UINT32 server_ip_address, UINT open_type, UINT32 wait_option);  
 
 UINT        _nxde_tftp_client_create(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *tftp_client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT ip_type);
 UINT        _nxd_tftp_client_create(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *tftp_client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT ip_type);
@@ -281,14 +281,14 @@ UINT        _nxde_tftp_client_error_info_get(NX_TFTP_CLIENT *tftp_client_ptr, UI
 UINT        _nxd_tftp_client_error_info_get(NX_TFTP_CLIENT *tftp_client_ptr, UINT *error_code, CHAR **error_string);
 UINT        _nxde_tftp_client_file_close(NX_TFTP_CLIENT *tftp_client_ptr, UINT ip_type);
 UINT        _nxd_tftp_client_file_close(NX_TFTP_CLIENT *tftp_client_ptr, UINT ip_type);   
-UINT        _nxde_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT ip_type);
-UINT        _nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT ip_type);
-UINT        _nxde_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        _nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        _nxde_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        _nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        _nxde_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
-UINT        _nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type);
+UINT        _nxde_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT ip_type);
+UINT        _nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT ip_type);
+UINT        _nxde_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        _nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        _nxde_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        _nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        _nxde_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
+UINT        _nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type);
 UINT        _nxde_tftp_client_set_interface(NX_TFTP_CLIENT *tftp_client_ptr, UINT if_index);
 UINT        _nxd_tftp_client_set_interface(NX_TFTP_CLIENT *tftp_client_ptr, UINT if_index);
 
@@ -297,7 +297,7 @@ UINT        _nxd_tftp_client_set_interface(NX_TFTP_CLIENT *tftp_client_ptr, UINT
 #endif    /* NX_TFTP_SOURCE_CODE */
                             
 /* Internal functions. */  
-UINT  _nx_tftp_client_file_open_internal(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT  ip_type);
+UINT  _nx_tftp_client_file_open_internal(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT  ip_type);
 
 
 /* Determine if a C++ compiler is being used.  If so, complete the standard

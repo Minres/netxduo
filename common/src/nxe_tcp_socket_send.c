@@ -73,7 +73,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_socket_send(NX_TCP_SOCKET *socket_ptr, NX_PACKET **packet_ptr_ptr, ULONG wait_option)
+UINT  _nxe_tcp_socket_send(NX_TCP_SOCKET *socket_ptr, NX_PACKET **packet_ptr_ptr, UINT32 wait_option)
 {
 
 NX_PACKET *packet_ptr;
@@ -90,7 +90,7 @@ UINT       ip_header_size;
     }
 
     /* Check for an invalid packet pointer.  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((packet_ptr == NX_NULL) || (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)))
     {
         return(NX_INVALID_PACKET);

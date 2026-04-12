@@ -450,7 +450,7 @@ UINT _nx_secure_tls_session_create_ext(NX_SECURE_TLS_SESSION *tls_session,
                                    const NX_CRYPTO_METHOD **crypto_array, UINT crypto_array_size,
                                    const NX_CRYPTO_CIPHERSUITE **cipher_map, UINT cipher_map_size,
                                    VOID *metadata_buffer,
-                                   ULONG metadata_size)
+                                   UINT32 metadata_size)
 {
 NX_SECURE_TLS_SESSION          *tail_ptr;
 UINT                            i;
@@ -464,8 +464,8 @@ UINT                            max_hash_mac_metadata_size       = 0;
 UINT                            max_tls_prf_metadata_size        = 0;
 UINT                            max_handshake_hash_metadata_size = 0;
 UINT                            max_handshake_hash_scratch_size  = 0;
-ULONG                           max_total_metadata_size;
-ULONG                           offset;
+UINT32                           max_total_metadata_size;
+UINT32                           offset;
 CHAR                           *metadata_area;
 
 NX_SECURE_TLS_CRYPTO *          crypto_table;
@@ -487,28 +487,28 @@ UINT                            supported_groups_bytes;
 #if (NX_SECURE_TLS_TLS_1_0_ENABLED || NX_SECURE_TLS_TLS_1_1_ENABLED)
 const NX_CRYPTO_METHOD *crypto_method_md5;
 const NX_CRYPTO_METHOD *crypto_method_sha1;
-ULONG metadata_size_md5 = 0;
-ULONG metadata_size_sha1 = 0;
+UINT32 metadata_size_md5 = 0;
+UINT32 metadata_size_sha1 = 0;
 #endif
 
 #if (NX_SECURE_TLS_TLS_1_2_ENABLED)
 const NX_CRYPTO_METHOD *crypto_method_sha256;
-ULONG metadata_size_sha256 = 0;
+UINT32 metadata_size_sha256 = 0;
 #endif
 
     /* Get a working pointer to the metadata buffer. */
     metadata_area = (CHAR*)metadata_buffer;
 
     /* Check and adjust metadata for four byte alignment. */
-    if (((ULONG)metadata_area) & 0x3)
+    if (((UINT32)metadata_area) & 0x3)
     {
-        if (metadata_size < 4 - (((ULONG)metadata_area) & 0x3))
+        if (metadata_size < 4 - (((UINT32)metadata_area) & 0x3))
         {
             return(NX_SECURE_TLS_INSUFFICIENT_METADATA_SPACE);
         }
 
-        metadata_size -= 4 - (((ULONG)metadata_area) & 0x3);
-        metadata_area += 4 - (((ULONG)metadata_area) & 0x3);
+        metadata_size -= 4 - (((UINT32)metadata_area) & 0x3);
+        metadata_area += 4 - (((UINT32)metadata_area) & 0x3);
     }
 
     if((crypto_array == NX_NULL) || (cipher_map == NX_NULL))

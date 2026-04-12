@@ -71,15 +71,15 @@ UINT  _nxd_udp_source_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address, UI
 {
 
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG  ip_address_word3 = 0;
-ULONG  ip_version;
+UINT32  ip_address_word3 = 0;
+UINT32  ip_version;
 #endif
-ULONG *temp_ptr;
+UINT32 *temp_ptr;
 
 
     /* Build an address to the current top of the packet.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    temp_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    temp_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Pickup the source port from the UDP header.  */
     *port =  (UINT)(*(temp_ptr - 2) >> NX_SHIFT_BY_16);

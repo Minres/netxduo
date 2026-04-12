@@ -77,7 +77,7 @@ static VOID _nx_secure_tls_packet_trim(NX_PACKET *packet_ptr);
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_process_record(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *packet_ptr,
-                                   ULONG *bytes_processed, ULONG wait_option)
+                                   UINT32 *bytes_processed, UINT32 wait_option)
 {
 UINT       status;
 UINT       error_status;
@@ -85,10 +85,10 @@ USHORT     header_length;
 UCHAR      header_data[NX_SECURE_TLS_RECORD_HEADER_SIZE] = {0}; /* DTLS record header is larger than TLS. Allocate enough space for both. */
 USHORT     message_type;
 UINT       message_length;
-ULONG      bytes_copied;
+UINT32      bytes_copied;
 UCHAR     *packet_data = NX_NULL;
-ULONG      record_offset = 0;
-ULONG      record_offset_next = 0;
+UINT32      record_offset = 0;
+UINT32      record_offset_next = 0;
 NX_PACKET *decrypted_packet;
 
     /* Basic state machine:
@@ -198,7 +198,7 @@ NX_PACKET *decrypted_packet;
         {
 
             /* Update the number of bytes we processed. */
-            *bytes_processed += (ULONG)header_length;
+            *bytes_processed += (UINT32)header_length;
             return(NX_SUCCESS);
         }
 
@@ -213,9 +213,9 @@ NX_PACKET *decrypted_packet;
         }
 
         /* Update the number of bytes we processed. */
-        *bytes_processed += (ULONG)header_length + message_length;
+        *bytes_processed += (UINT32)header_length + message_length;
         tls_session -> nx_secure_tls_bytes_processed = *bytes_processed;
-        record_offset += (ULONG)header_length;
+        record_offset += (UINT32)header_length;
         record_offset_next = record_offset + message_length;
 
         /* Check for active encryption of incoming records. If encrypted, decrypt before further processing. */
@@ -604,8 +604,8 @@ NX_PACKET *decrypted_packet;
 /**************************************************************************/
 static VOID _nx_secure_tls_packet_trim(NX_PACKET *packet_ptr)
 {
-ULONG payload_length;
-ULONG message_length = packet_ptr -> nx_packet_length;
+UINT32 payload_length;
+UINT32 message_length = packet_ptr -> nx_packet_length;
 NX_PACKET *current_ptr;
 
     if (message_length == 0)
@@ -627,7 +627,7 @@ NX_PACKET *current_ptr;
 
     for (current_ptr = packet_ptr; current_ptr; current_ptr = current_ptr -> nx_packet_next)
     {
-        payload_length = (ULONG)(current_ptr -> nx_packet_append_ptr - current_ptr -> nx_packet_prepend_ptr);
+        payload_length = (UINT32)(current_ptr -> nx_packet_append_ptr - current_ptr -> nx_packet_prepend_ptr);
         if (message_length < payload_length)
         {
 
@@ -643,6 +643,6 @@ NX_PACKET *current_ptr;
             }
             break;
         }
-        message_length -= (ULONG)(current_ptr -> nx_packet_append_ptr - current_ptr -> nx_packet_prepend_ptr);
+        message_length -= (UINT32)(current_ptr -> nx_packet_append_ptr - current_ptr -> nx_packet_prepend_ptr);
     }
 }

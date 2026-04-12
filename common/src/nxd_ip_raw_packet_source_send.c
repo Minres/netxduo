@@ -79,13 +79,13 @@ UINT  _nxd_ip_raw_packet_source_send(NX_IP *ip_ptr,
                                      NX_PACKET *packet_ptr,
                                      NXD_ADDRESS *destination_ip,
                                      UINT address_index,
-                                     ULONG protocol,
+                                     UINT32 protocol,
                                      UINT ttl,
-                                     ULONG tos)
+                                     UINT32 tos)
 {
 
 #ifndef NX_DISABLE_IPV4
-ULONG next_hop_address = NX_NULL;
+UINT32 next_hop_address = NX_NULL;
 #endif /* NX_DISABLE_IPV4  */
 UINT  status = NX_SUCCESS;
 

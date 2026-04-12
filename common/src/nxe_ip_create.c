@@ -78,15 +78,15 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_create(NX_IP *ip_ptr, CHAR *name, ULONG ip_address, ULONG network_mask,
+UINT  _nxe_ip_create(NX_IP *ip_ptr, CHAR *name, UINT32 ip_address, UINT32 network_mask,
                      NX_PACKET_POOL *default_pool, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *),
-                     VOID *memory_ptr, ULONG memory_size, UINT priority, UINT ip_control_block_size)
+                     VOID *memory_ptr, UINT32 memory_size, UINT priority, UINT ip_control_block_size)
 {
 
 UINT       status;
 UINT       old_threshold = 0;
 NX_IP     *created_ip;
-ULONG      created_count;
+UINT32      created_count;
 UCHAR     *end_stack;
 TX_THREAD *current_thread;
 

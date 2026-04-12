@@ -61,7 +61,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_session_server_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
+                                                UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
                                                                   NX_SECURE_TLS_HELLO_EXTENSION *extensions,
                                                                   UINT num_extensions))
 {

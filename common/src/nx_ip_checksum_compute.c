@@ -69,17 +69,17 @@
 /*    NetX Duo internal routines                                          */
 /*                                                                        */
 /**************************************************************************/
-USHORT  _nx_ip_checksum_compute(NX_PACKET *packet_ptr, ULONG protocol,
-                                UINT data_length, ULONG *src_ip_addr,
-                                ULONG *dest_ip_addr)
+USHORT  _nx_ip_checksum_compute(NX_PACKET *packet_ptr, UINT32 protocol,
+                                UINT data_length, UINT32 *src_ip_addr,
+                                UINT32 *dest_ip_addr)
 {
 
-ULONG      checksum = 0;
+UINT32      checksum = 0;
 USHORT     tmp;
 USHORT    *short_ptr;
-ULONG     *long_ptr;
+UINT32     *long_ptr;
 #ifndef NX_DISABLE_PACKET_CHAIN
-ULONG      packet_size;
+UINT32      packet_size;
 #endif /* NX_DISABLE_PACKET_CHAIN */
 NX_PACKET *current_packet;
 ALIGN_TYPE end_ptr;
@@ -150,7 +150,7 @@ UINT       i;
 
     /* Setup the pointer to the start of the packet.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    long_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    long_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Initialize the current packet to the input packet pointer.  */
     current_packet =  packet_ptr;
@@ -162,7 +162,7 @@ UINT       i;
 
         /* Calculate current packet size. */
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        packet_size = (ULONG)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
+        packet_size = (UINT32)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
 
         /* Calculate the end address in this packet. */
         if (data_length > (UINT)packet_size)
@@ -182,14 +182,14 @@ UINT       i;
 
         /* Set the start address in this packet. */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        long_ptr = (ULONG *)current_packet -> nx_packet_prepend_ptr;
+        long_ptr = (UINT32 *)current_packet -> nx_packet_prepend_ptr;
 
         /*lint -e{946} suppress pointer subtraction, since it is necessary. */
         if ((ALIGN_TYPE)long_ptr < end_ptr)
         {
 
             /* Calculate the data_length. */
-            /*lint -e{923} suppress cast of pointer to ULONG.  */
+            /*lint -e{923} suppress cast of pointer to UINT32.  */
             data_length -= (UINT)(((end_ptr + 3) & (ALIGN_TYPE)(~3llu)) - (ALIGN_TYPE)long_ptr);
 
             /* Loop to calculate the packet's checksum.  */
@@ -208,7 +208,7 @@ UINT       i;
         {
 
             /* Is append_ptr two bytes aligned but not four bytes aligned? */
-            /*lint -e{923} suppress cast of pointer to ULONG.  */
+            /*lint -e{923} suppress cast of pointer to UINT32.  */
             if ((((ALIGN_TYPE)current_packet -> nx_packet_append_ptr) & 3) == 2)
             {
 

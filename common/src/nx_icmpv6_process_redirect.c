@@ -86,21 +86,21 @@ VOID _nx_icmpv6_process_redirect(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 NX_ICMPV6_REDIRECT_MESSAGE   *redirect_ptr;
 NX_IPV6_HEADER               *ip_header;
 UINT                          status;
-ULONG                         source_address_type;
-ULONG                         router_address[4];
-ULONG                         error = 0;
+UINT32                         source_address_type;
+UINT32                         router_address[4];
+UINT32                         error = 0;
 ND_CACHE_ENTRY               *nd_entry = NX_NULL;
 ND_CACHE_ENTRY               *NDCacheEntry = NX_NULL;
 UINT                          i;
 NX_ICMPV6_OPTION             *option_ptr;
-ULONG                         packet_length, option_length;
+UINT32                         packet_length, option_length;
 NX_IPV6_DEFAULT_ROUTER_ENTRY *rt_entry;
 NX_INTERFACE                 *interface_ptr;
 #ifdef NX_ENABLE_IPV6_PATH_MTU_DISCOVERY
 NX_ICMPV6_OPTION_MTU         *mtu_ptr;
 #endif
-ULONG                         mtu;
-ULONG                         mtu_timeout;
+UINT32                         mtu;
+UINT32                         mtu_timeout;
 NX_IPV6_DESTINATION_ENTRY    *dest_entry_ptr;
 
     /* Add debug information. */
@@ -226,9 +226,9 @@ NX_IPV6_DESTINATION_ENTRY    *dest_entry_ptr;
     if (packet_ptr -> nx_packet_length - sizeof(NX_ICMPV6_REDIRECT_MESSAGE))
     {
 
-        /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
         option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(redirect_ptr, sizeof(NX_ICMPV6_REDIRECT_MESSAGE));
-        packet_length = packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_ICMPV6_REDIRECT_MESSAGE);
+        packet_length = packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_ICMPV6_REDIRECT_MESSAGE);
 
         /* Validate option fields. */
         if (_nx_icmpv6_validate_options(option_ptr, (INT)packet_length, 0) == NX_NOT_SUCCESSFUL)
@@ -289,17 +289,17 @@ NX_IPV6_DESTINATION_ENTRY    *dest_entry_ptr;
 
                 /* This entry already exists.  If the mac address is the same, do not update the entry. Otherwise,
                    update the entry and set the state to STALE (RFC2461 7.2.3) */
-                ULONG mac_msw, mac_lsw, new_msw, new_lsw;
+                UINT32 mac_msw, mac_lsw, new_msw, new_lsw;
 
                 /*lint -e{928} suppress cast of pointer to pointer, since it is necessary  */
                 UCHAR *new_mac = (UCHAR *)&option_ptr -> nx_icmpv6_option_data;
 
 
-                    mac_msw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
-                    new_msw = ((ULONG)(new_mac[0]) << 8) | (new_mac[1]);
-                    mac_lsw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
-                        ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
-                    new_lsw = ((ULONG)(new_mac[2]) << 24) | ((ULONG)(new_mac[3]) << 16) | ((ULONG)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
+                    mac_msw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
+                    new_msw = ((UINT32)(new_mac[0]) << 8) | (new_mac[1]);
+                    mac_lsw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
+                        ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
+                    new_lsw = ((UINT32)(new_mac[2]) << 24) | ((UINT32)(new_mac[3]) << 16) | ((UINT32)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
 
                     if ((mac_msw != new_msw) || (mac_lsw != new_lsw)) /* If the new MAC is different. */
                     {
@@ -335,7 +335,7 @@ NX_IPV6_DESTINATION_ENTRY    *dest_entry_ptr;
 
                 /* Apply the router's next hop (on link) path MTU. */
                 mtu = mtu_ptr -> nx_icmpv6_option_mtu_path_mtu;
-                NX_CHANGE_ULONG_ENDIAN(mtu);
+                NX_CHANGE_UINT32_ENDIAN(mtu);
 
                 if (mtu < NX_MINIMUM_IPV6_PATH_MTU)
                 {
@@ -349,7 +349,7 @@ NX_IPV6_DESTINATION_ENTRY    *dest_entry_ptr;
             option_length = (UINT)(option_ptr -> nx_icmpv6_option_length << 3);
             packet_length -= option_length;
 
-            /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+            /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
             option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, option_length);
         }
     }

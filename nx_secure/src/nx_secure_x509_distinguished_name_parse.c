@@ -24,7 +24,7 @@
 
 #include "nx_secure_x509.h"
 
-static UINT _nx_secure_x509_extract_name_oid_data(const UCHAR *buffer, UINT oid, ULONG length,
+static UINT _nx_secure_x509_extract_name_oid_data(const UCHAR *buffer, UINT oid, UINT32 length,
                                                   UINT *bytes_processed,
                                                   NX_SECURE_X509_DISTINGUISHED_NAME *name);
 
@@ -73,14 +73,14 @@ UINT _nx_secure_x509_distinguished_name_parse(const UCHAR *buffer, UINT length, 
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 UINT         current_index;
 const UCHAR *sequence_ptr;
-ULONG        sequence_length;
+UINT32        sequence_length;
 UINT         oid;
 
     /* Parse distinguished name information including Common Name, country/region, organization, etc... */
@@ -101,7 +101,7 @@ UINT         oid;
     while (length > 0)
     {
         /*  First, parse the set. */
-        status = _nx_secure_x509_asn1_tlv_block_parse(&buffer[current_index], (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+        status = _nx_secure_x509_asn1_tlv_block_parse(&buffer[current_index], (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
         /*  Make sure we parsed the block alright. */
         if (status != 0)
@@ -209,15 +209,15 @@ UINT         oid;
 /*                                          Parse Distinguished Name      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_extract_name_oid_data(const UCHAR *buffer, UINT oid, ULONG length,
+static UINT _nx_secure_x509_extract_name_oid_data(const UCHAR *buffer, UINT oid, UINT32 length,
                                                   UINT *bytes_processed,
                                                   NX_SECURE_X509_DISTINGUISHED_NAME *name)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     status = _nx_secure_x509_asn1_tlv_block_parse(buffer, &length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);

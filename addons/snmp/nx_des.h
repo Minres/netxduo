@@ -53,8 +53,8 @@
 typedef struct NX_DES_STRUCT
 {
 
-    ULONG       nx_des_encryption_keys[32];             /* Contains the encryption keys     */ 
-    ULONG       nx_des_decryption_keys[32];             /* Contains the decryption keys     */ 
+    UINT32       nx_des_encryption_keys[32];             /* Contains the encryption keys     */ 
+    UINT32       nx_des_decryption_keys[32];             /* Contains the decryption keys     */ 
 } NX_DES;
 
 
@@ -63,7 +63,7 @@ typedef struct NX_DES_STRUCT
 UINT        _nx_des_key_set(NX_DES *context, UCHAR key[8]);
 UINT        _nx_des_encrypt(NX_DES *context, UCHAR source[8], UCHAR destination[8]);
 UINT        _nx_des_decrypt(NX_DES *context, UCHAR source[8], UCHAR destination[8]);
-VOID        _nx_des_process_block(UCHAR source[8], UCHAR destination[8], ULONG keys[32]);
+VOID        _nx_des_process_block(UCHAR source[8], UCHAR destination[8], UINT32 keys[32]);
 
 #endif
 

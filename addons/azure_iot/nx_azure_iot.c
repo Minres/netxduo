@@ -28,11 +28,11 @@ NX_AZURE_IOT *_nx_azure_iot_created_ptr;
 /* Define the callback for logging.  */
 static VOID(*_nx_azure_iot_log_callback)(az_log_classification classification, UCHAR *msg, UINT msg_len);
 
-extern UINT _nxd_mqtt_client_packet_allocate(NXD_MQTT_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
+extern UINT _nxd_mqtt_client_packet_allocate(NXD_MQTT_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
 extern UINT _nxd_mqtt_client_publish_packet_send(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr,
-                                                 USHORT packet_id, UINT QoS, ULONG wait_option);
+                                                 USHORT packet_id, UINT QoS, UINT32 wait_option);
 
-static VOID nx_azure_iot_event_process(VOID *nx_azure_iot, ULONG common_events, ULONG module_own_events)
+static VOID nx_azure_iot_event_process(VOID *nx_azure_iot, UINT32 common_events, UINT32 module_own_events)
 {
 
 NX_AZURE_IOT *nx_azure_iot_ptr = (NX_AZURE_IOT *)nx_azure_iot;
@@ -229,7 +229,7 @@ NX_AZURE_IOT_RESOURCE   *resource_previous;
 UINT nx_azure_iot_create(NX_AZURE_IOT *nx_azure_iot_ptr, const UCHAR *name_ptr,
                          NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, NX_DNS *dns_ptr,
                          VOID *stack_memory_ptr, UINT stack_memory_size,
-                         UINT priority, UINT (*unix_time_callback)(ULONG *unix_time))
+                         UINT priority, UINT (*unix_time_callback)(UINT32 *unix_time))
 {
 UINT status;
 
@@ -491,7 +491,7 @@ NX_PACKET *current_packet_ptr;
     }
 }
 
-static ULONG nx_azure_iot_certificate_verify(NX_SECURE_TLS_SESSION *session, NX_SECURE_X509_CERT* certificate)
+static UINT32 nx_azure_iot_certificate_verify(NX_SECURE_TLS_SESSION *session, NX_SECURE_X509_CERT* certificate)
 {
 NX_AZURE_IOT_RESOURCE *resource_ptr;
 UINT old_threshold;
@@ -556,9 +556,9 @@ UINT status = NX_AZURE_IOT_SUCCESS;
 }
 
 #ifndef NX_AZURE_IOT_DISABLE_CERTIFICATE_DATE
-static ULONG nx_azure_iot_tls_time_function(VOID)
+static UINT32 nx_azure_iot_tls_time_function(VOID)
 {
-ULONG unix_time = 0;
+UINT32 unix_time = 0;
 UINT old_threshold;
 
     /* Disable preemption.  */
@@ -670,7 +670,7 @@ NX_AZURE_IOT_RESOURCE *resource_ptr;
     return(NX_AZURE_IOT_SUCCESS);
 }
 
-UINT nx_azure_iot_unix_time_get(NX_AZURE_IOT *nx_azure_iot_ptr, ULONG *unix_time)
+UINT nx_azure_iot_unix_time_get(NX_AZURE_IOT *nx_azure_iot_ptr, UINT32 *unix_time)
 {
 
     if ((nx_azure_iot_ptr == NX_NULL) ||

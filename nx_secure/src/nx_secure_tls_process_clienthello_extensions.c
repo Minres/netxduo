@@ -312,7 +312,7 @@ static UINT _nx_secure_tls_proc_clienthello_sec_reneg_extension(NX_SECURE_TLS_SE
                                                                 UCHAR *packet_buffer,
                                                                 UINT extension_length)
 {
-ULONG  offset = 0;
+UINT32  offset = 0;
 UCHAR  renegotiated_connection_length;
 INT    compare_value;
 
@@ -792,7 +792,7 @@ NX_SECURE_TLS_ECC *ecc_info;
         }
 
         /* Check the key group. */
-        key_group = (USHORT)((ULONG)key_group | NX_CRYPTO_EC_MASK);
+        key_group = (USHORT)((UINT32)key_group | NX_CRYPTO_EC_MASK);
 
         /* Loop through all supported ECC curves in this session - see if we support the current group. */
         for (i = 0; i < ecc_info -> nx_secure_tls_ecc_supported_groups_count; i++)
@@ -961,7 +961,7 @@ static UINT _nx_secure_tls_proc_clienthello_supported_versions_extension(NX_SECU
                                                                          USHORT extension_length)
 {
 UINT i;
-ULONG  offset;
+UINT32  offset;
 
     NX_PARAMETER_NOT_USED(tls_session);
 
@@ -1265,7 +1265,7 @@ UCHAR   binder_len;
 UINT psk_index;
 UINT binder_index;
 UINT psk_store_index = 0;
-ULONG  offset;
+UINT32  offset;
 UINT   id_len;
 const UCHAR  *id;
 const UCHAR  *binder;

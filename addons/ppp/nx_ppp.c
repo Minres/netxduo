@@ -51,7 +51,7 @@
 /* Define the PPP created list head pointer and count.  */
 
 NX_PPP  *_nx_ppp_created_ptr =       NX_NULL;
-ULONG    _nx_ppp_created_count =     0;
+UINT32    _nx_ppp_created_count =     0;
 
 
 /* Define the CRC lookup table.  This is used to improve the
@@ -153,7 +153,7 @@ NX_PPP      *ppp_ptr;
 ULONG       ppp_events;
 NX_PACKET   *packet_ptr;
 NX_PACKET   *next_packet_ptr;
-ULONG       count;
+UINT32       count;
 
 
     /* Setup the PPP pointer.  */
@@ -171,7 +171,7 @@ ULONG       count;
 
         /* Wait for PPP event(s). The timeout on the wait will drive PPP timeout processing
            as well.  */
-        tx_event_flags_get(&(ppp_ptr -> nx_ppp_event), (ULONG) 0xFFFFFFFF, TX_OR_CLEAR, &ppp_events, NX_WAIT_FOREVER);
+        tx_event_flags_get(&(ppp_ptr -> nx_ppp_event), (UINT32) 0xFFFFFFFF, TX_OR_CLEAR, &ppp_events, NX_WAIT_FOREVER);
 
         /* Check for PPP stop event.  */
         if (ppp_events & NX_PPP_EVENT_STOP)
@@ -808,8 +808,8 @@ NX_PACKET   *next_packet_ptr;
 #endif
 UCHAR       byte;
 UCHAR       *buffer_ptr;      
-ULONG       buffer_size;
-ULONG       timeouts;
+UINT32       buffer_size;
+UINT32       timeouts;
 NX_PACKET   *packet_ptr;
 UINT        status;
 
@@ -1121,7 +1121,7 @@ UINT        status;
                 /* Check for the condition where there is essentially no data in the last packet. */
                 if (packet_ptr -> nx_packet_append_ptr <= packet_ptr -> nx_packet_prepend_ptr)
                 {
-                    ULONG diff = (ULONG)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_append_ptr);
+                    UINT32 diff = (UINT32)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_append_ptr);
 
                     packet_ptr -> nx_packet_append_ptr =  packet_ptr -> nx_packet_prepend_ptr;
 
@@ -1912,7 +1912,7 @@ NX_PPP  *ppp_ptr;
 void _nx_ppp_netx_packet_transfer(NX_PPP *ppp_ptr, NX_PACKET *packet_ptr)
 {
 
-ULONG   offset;
+UINT32   offset;
 
 #ifndef NX_PPP_DISABLE_INFO
     /* Increment the number of IP frames received.  */
@@ -1947,7 +1947,7 @@ ULONG   offset;
     }
 
     /* Calculate the offset for four byte alignment.  */
-    offset = (((ULONG)packet_ptr -> nx_packet_prepend_ptr) & 3);
+    offset = (((UINT32)packet_ptr -> nx_packet_prepend_ptr) & 3);
 
     /* Move the data to keep four byte alignment for first packet.  */
     if (offset)
@@ -2006,7 +2006,7 @@ void _nx_ppp_process_deferred_raw_string_send(NX_PPP *ppp_ptr)
 TX_INTERRUPT_SAVE_AREA
   
 NX_PACKET       *packet_ptr;
-ULONG           i;
+UINT32           i;
 #ifdef NX_PPP_PPPOE_ENABLE
 UINT            release_packet;
 #endif /* NX_PPP_PPPOE_ENABLE  */
@@ -3175,7 +3175,7 @@ NX_PACKET   *packet_ptr;
         }
 
         /* Setup the packet length and append pointer.  */
-        packet_ptr -> nx_packet_length =  (ULONG)(rejected_list[0] + 6);
+        packet_ptr -> nx_packet_length =  (UINT32)(rejected_list[0] + 6);
         packet_ptr -> nx_packet_append_ptr =  packet_ptr -> nx_packet_prepend_ptr + packet_ptr -> nx_packet_length;
     }
     else 
@@ -3204,7 +3204,7 @@ NX_PACKET   *packet_ptr;
         }
 
         /* Setup the packet length and append pointer.  */
-        packet_ptr -> nx_packet_length =  (ULONG)(naked_list[0] + 6);
+        packet_ptr -> nx_packet_length =  (UINT32)(naked_list[0] + 6);
         packet_ptr -> nx_packet_append_ptr =  packet_ptr -> nx_packet_prepend_ptr + packet_ptr -> nx_packet_length;
     }
 
@@ -3331,7 +3331,7 @@ UINT        length_index = 0;
     packet_ptr -> nx_packet_prepend_ptr[length_index + 1] = (UCHAR)((index - 2) & 0xff);
 
     /* Setup the append pointer and the packet length (LCP length + PPP header).  */
-    packet_ptr -> nx_packet_length =  (ULONG)(index);
+    packet_ptr -> nx_packet_length =  (UINT32)(index);
     packet_ptr -> nx_packet_append_ptr =  packet_ptr -> nx_packet_prepend_ptr + packet_ptr -> nx_packet_length;
 
 #ifndef NX_PPP_DISABLE_INFO
@@ -3393,7 +3393,7 @@ UINT    option_index, nak_list_index, rejected_list_index;
 UINT    len;
 UINT    type;
 UINT    counter;
-ULONG   authentication_protocol;
+UINT32   authentication_protocol;
 UCHAR   *option_data;
 
 
@@ -3437,7 +3437,7 @@ UCHAR   *option_data;
         case 1: 
 
             /* Maximum Receive Unit (MRU) option.  */
-            ppp_ptr -> nx_ppp_mru =  (ULONG)((((USHORT) option_data[0]) << 8) | ((USHORT) option_data[1]));
+            ppp_ptr -> nx_ppp_mru =  (UINT32)((((USHORT) option_data[0]) << 8) | ((USHORT) option_data[1]));
     
             /* Determine if the MRU is too small.  */
             if (ppp_ptr -> nx_ppp_mru < NX_PPP_MINIMUM_MRU)
@@ -4369,7 +4369,7 @@ UINT    status;
     length =  packet_ptr -> nx_packet_prepend_ptr[6];
 
     /* Check for valid packet length.  */
-    if ((ULONG)(length + 7) > packet_ptr -> nx_packet_length)
+    if ((UINT32)(length + 7) > packet_ptr -> nx_packet_length)
     {
         return(NX_FALSE);
     }
@@ -4401,7 +4401,7 @@ UINT    status;
     password_length =  packet_ptr -> nx_packet_prepend_ptr[i+7];
 
     /* Check for valid packet length.  */
-    if ((ULONG)(password_length + i + 8) > packet_ptr -> nx_packet_length)
+    if ((UINT32)(password_length + i + 8) > packet_ptr -> nx_packet_length)
     {
         return(NX_FALSE);
     }
@@ -5591,7 +5591,7 @@ UINT        name_length;
     length =  (UINT) packet_ptr -> nx_packet_prepend_ptr[6];
 
     /* Check for valid packet length.  */
-    if ((length == 0) || ((ULONG)(length + 7) > packet_ptr -> nx_packet_length))
+    if ((length == 0) || ((UINT32)(length + 7) > packet_ptr -> nx_packet_length))
     {
         return;
     }
@@ -5795,7 +5795,7 @@ UINT        name_length;
     length =  (UINT) packet_ptr -> nx_packet_prepend_ptr[6];
 
     /* Check for valid packet length.  */
-    if ((length == 0) || ((ULONG)(length + 7) > packet_ptr -> nx_packet_length))
+    if ((length == 0) || ((UINT32)(length + 7) > packet_ptr -> nx_packet_length))
     {
         return(NX_FALSE);
     }
@@ -6864,7 +6864,7 @@ UCHAR   option;
                  {
 
                      /* Copy good IP address.  */
-                     ppp_ptr -> nx_ppp_primary_dns_address = ((ULONG)good_data[good_index] << 24) & 0xFF000000;
+                     ppp_ptr -> nx_ppp_primary_dns_address = ((UINT32)good_data[good_index] << 24) & 0xFF000000;
                      ppp_ptr -> nx_ppp_primary_dns_address |= (good_data[good_index + 1] << 16) & 0x00FF0000;
                      ppp_ptr -> nx_ppp_primary_dns_address |= (good_data[good_index + 2] << 8) & 0x0000FF00;
                      ppp_ptr -> nx_ppp_primary_dns_address |= good_data[good_index + 3] & 0x000000FF;
@@ -6936,7 +6936,7 @@ UCHAR   option;
                  {
 
                      /* Copy good IP address.  */
-                     ppp_ptr -> nx_ppp_secondary_dns_address = ((ULONG)good_data[good_index] << 24) & 0xFF000000;
+                     ppp_ptr -> nx_ppp_secondary_dns_address = ((UINT32)good_data[good_index] << 24) & 0xFF000000;
                      ppp_ptr -> nx_ppp_secondary_dns_address |= (good_data[good_index + 1] << 16) & 0x00FF0000;
                      ppp_ptr -> nx_ppp_secondary_dns_address |= (good_data[good_index + 2] << 8) & 0x0000FF00;
                      ppp_ptr -> nx_ppp_secondary_dns_address |= good_data[good_index + 3] & 0x000000FF;
@@ -7174,14 +7174,14 @@ void  _nx_ppp_ipcp_response_extract(NX_PPP *ppp_ptr, NX_PACKET *packet_ptr)
 {
 
 UINT    i, j;    
-ULONG   length;
+UINT32   length;
     
     
    
     /* Search for IP address and DNS address in response.  */
     
     /* Setup the packet length.  */
-    length =  (((ULONG) packet_ptr -> nx_packet_prepend_ptr[4]) << 8) | ((ULONG) packet_ptr -> nx_packet_prepend_ptr[5]);
+    length =  (((UINT32) packet_ptr -> nx_packet_prepend_ptr[4]) << 8) | ((UINT32) packet_ptr -> nx_packet_prepend_ptr[5]);
     
     /* Subtract the request type, id, and length.  */
     if (length >= 4)
@@ -7195,8 +7195,8 @@ ULONG   length;
     {
     
         /* Subtract the length.  */
-        if (length >= ((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+1]))
-            length =  length - ((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+1]);
+        if (length >= ((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+1]))
+            length =  length - ((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+1]);
         else
             length =  0;
 
@@ -7221,10 +7221,10 @@ ULONG   length;
             /* Yes, we have a primary DNS address.  */
             
             /* Let's copy it into the PPP structure in case we need it later.  */
-            ppp_ptr -> nx_ppp_primary_dns_address =  ((((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+2]) << 24) |
-                                                     (((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+3]) << 16) |
-                                                     (((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+4]) << 8)  |
-                                                      ((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+5]));
+            ppp_ptr -> nx_ppp_primary_dns_address =  ((((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+2]) << 24) |
+                                                     (((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+3]) << 16) |
+                                                     (((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+4]) << 8)  |
+                                                      ((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+5]));
 
         }
 
@@ -7235,10 +7235,10 @@ ULONG   length;
             /* Yes, we have a secondary DNS address.  */
 
             /* Let's copy it into the PPP structure in case we need it later.  */
-            ppp_ptr -> nx_ppp_secondary_dns_address =  ((((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+2]) << 24) |
-                                                     (((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+3]) << 16) |
-                                                     (((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+4]) << 8)  |
-                                                      ((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+5]));
+            ppp_ptr -> nx_ppp_secondary_dns_address =  ((((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+2]) << 24) |
+                                                     (((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+3]) << 16) |
+                                                     (((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+4]) << 8)  |
+                                                      ((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+5]));
 
 
             /* Break out of the loop.  */
@@ -7246,7 +7246,7 @@ ULONG   length;
         }
         
         /* Otherwise move to the next option. */
-        if (length >= ((ULONG) packet_ptr -> nx_packet_prepend_ptr[i+1]))
+        if (length >= ((UINT32) packet_ptr -> nx_packet_prepend_ptr[i+1]))
         {
         
             /* Yes, there is another option.  */
@@ -8117,7 +8117,7 @@ void  _nx_ppp_debug_log_capture(NX_PPP *ppp_ptr, UCHAR packet_type, NX_PACKET *p
 {
 
 UINT                i;
-ULONG               time;
+UINT32               time;
 NX_PPP_DEBUG_ENTRY *entry_ptr;
 
     /* Check for a NULL pointer.  */
@@ -8597,7 +8597,7 @@ TX_INTERRUPT_SAVE_AREA
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_ppp_create(NX_PPP *ppp_ptr, CHAR *name, NX_IP *ip_ptr, 
-               VOID *stack_memory_ptr, ULONG stack_size, UINT thread_priority, 
+               VOID *stack_memory_ptr, UINT32 stack_size, UINT thread_priority, 
                NX_PACKET_POOL *pool_ptr,
                void (*ppp_non_ppp_packet_handler)(NX_PACKET *packet_ptr),
                void (*ppp_byte_send)(UCHAR byte))
@@ -8669,7 +8669,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_ppp_create(NX_PPP *ppp_ptr, CHAR *name, NX_IP *ip_ptr, 
-               VOID *stack_memory_ptr, ULONG stack_size, UINT thread_priority, 
+               VOID *stack_memory_ptr, UINT32 stack_size, UINT thread_priority, 
                NX_PACKET_POOL *pool_ptr,
                void (*ppp_non_ppp_packet_handler)(NX_PACKET *packet_ptr),
                void (*ppp_byte_send)(UCHAR byte))
@@ -8719,11 +8719,11 @@ NX_PPP      *tail_ptr;
 
     /* Create the PPP processing thread. Note that this thread does not run until the PPP driver is
        initialized during the IP create.  */
-    tx_thread_create(&(ppp_ptr -> nx_ppp_thread), "PPP THREAD", _nx_ppp_thread_entry, (ULONG) ppp_ptr,  
+    tx_thread_create(&(ppp_ptr -> nx_ppp_thread), "PPP THREAD", _nx_ppp_thread_entry, (UINT32) ppp_ptr,  
             stack_memory_ptr, stack_size, thread_priority, thread_priority, NX_PPP_THREAD_TIME_SLICE, TX_DONT_START);
 
     /* Create the PPP timeout timer.  */
-    tx_timer_create(&(ppp_ptr -> nx_ppp_timer), "PPP TIMER", _nx_ppp_timer_entry, (ULONG) ppp_ptr, NX_PPP_BASE_TIMEOUT, NX_PPP_BASE_TIMEOUT, TX_NO_ACTIVATE);
+    tx_timer_create(&(ppp_ptr -> nx_ppp_timer), "PPP TIMER", _nx_ppp_timer_entry, (UINT32) ppp_ptr, NX_PPP_BASE_TIMEOUT, NX_PPP_BASE_TIMEOUT, TX_NO_ACTIVATE);
 
     /* Otherwise, the PPP initialization was successful.  Place the
        PPP control block on the list of created PPP instances.  */
@@ -9618,7 +9618,7 @@ UINT  _nx_ppp_chap_enable(NX_PPP *ppp_ptr,
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr)
+UINT  _nxe_ppp_dns_address_get(NX_PPP *ppp_ptr, UINT32 *dns_address_ptr)
 {
 
 UINT    status;
@@ -9671,7 +9671,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr)
+UINT  _nx_ppp_dns_address_get(NX_PPP *ppp_ptr, UINT32 *dns_address_ptr)
 {
 
     /* Determine if the PPP instance is in an established state.  */
@@ -9735,7 +9735,7 @@ UINT  _nx_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address)
+UINT  _nxe_ppp_dns_address_set(NX_PPP *ppp_ptr, UINT32 dns_address)
 {
 
 UINT    status;
@@ -9793,7 +9793,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address)
+UINT  _nx_ppp_dns_address_set(NX_PPP *ppp_ptr, UINT32 dns_address)
 {
 
     /* Set the primary DNS address.  */
@@ -9838,7 +9838,7 @@ UINT  _nx_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_address_ptr)
+UINT  _nxe_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, UINT32 *secondary_dns_address_ptr)
 {
 
 UINT    status;
@@ -9892,7 +9892,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_address_ptr)
+UINT  _nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, UINT32 *secondary_dns_address_ptr)
 {
 
     /* Determine if the PPP instance is in an established state.  */
@@ -9956,7 +9956,7 @@ UINT  _nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_ad
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, ULONG secondary_dns_address)
+UINT  _nxe_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, UINT32 secondary_dns_address)
 {
 
 UINT    status;
@@ -10014,7 +10014,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, ULONG secondary_dns_address)
+UINT  _nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, UINT32 secondary_dns_address)
 {
 
     /* Set the secondary DNS address.  */
@@ -10169,7 +10169,7 @@ UINT  _nx_ppp_interface_index_get(NX_PPP *ppp_ptr, UINT *index_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_ip_address_assign(NX_PPP *ppp_ptr, ULONG local_ip_address, ULONG peer_ip_address)
+UINT  _nxe_ppp_ip_address_assign(NX_PPP *ppp_ptr, UINT32 local_ip_address, UINT32 peer_ip_address)
 {
 
 UINT    status;
@@ -10224,7 +10224,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, ULONG local_ip_address, ULONG peer_ip_address)
+UINT  _nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, UINT32 local_ip_address, UINT32 peer_ip_address)
 {
 
 UINT    i;
@@ -11233,7 +11233,7 @@ void   _nx_ppp_lcp_ping_process_echo_reply(NX_PPP *ppp_ptr, NX_PACKET *packet_pt
 /*    Application code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, ULONG data_size, ULONG wait_option)
+UINT  _nxe_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, UINT32 data_size, UINT32 wait_option)
 {
 
 UINT status;
@@ -11293,7 +11293,7 @@ UINT status;
 /*    Application code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, ULONG data_size, ULONG wait_option)
+UINT  _nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, UINT32 data_size, UINT32 wait_option)
 {
 
 UINT        status;

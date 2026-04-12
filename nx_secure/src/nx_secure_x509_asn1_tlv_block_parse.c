@@ -115,14 +115,14 @@
 /*                                          Find subject alt names        */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_secure_x509_asn1_tlv_block_parse(const UCHAR *buffer, ULONG *buffer_length, USHORT *tlv_type,
-                                          USHORT *tlv_tag_class, ULONG *tlv_length,
-                                          const UCHAR **tlv_data, ULONG *header_length)
+UINT _nx_secure_x509_asn1_tlv_block_parse(const UCHAR *buffer, UINT32 *buffer_length, USHORT *tlv_type,
+                                          USHORT *tlv_tag_class, UINT32 *tlv_length,
+                                          const UCHAR **tlv_data, UINT32 *header_length)
 {
 UINT   current_index;
 USHORT current_tag;
-ULONG  length;
-ULONG  length_bytes;
+UINT32  length;
+UINT32  length_bytes;
 
     current_index = 0;
     current_tag = buffer[current_index];

@@ -71,7 +71,7 @@
 /**************************************************************************/
 UINT _nx_secure_generate_premaster_secret(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, USHORT protocol_version, NX_SECURE_TLS_KEY_MATERIAL *tls_key_material,
                                           NX_SECURE_TLS_CREDENTIALS *tls_credentials, UINT session_type, USHORT *received_remote_credentials,
-                                          VOID *public_cipher_metadata, ULONG public_cipher_metadata_size, VOID *tls_ecc_curves)
+                                          VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size, VOID *tls_ecc_curves)
 {
 UINT                      *buffer_ptr;
 UINT                       i;
@@ -357,13 +357,13 @@ UINT					   pre_master_secret_size;
     /* Generate 48 bytes of random data, fill in the version afterwards. */
     for (i = 0; i < 12; i++)
     {
-        /* Fill with 12 ULONG randoms, then fix first two bytes to protocol version after. */
+        /* Fill with 12 UINT32 randoms, then fix first two bytes to protocol version after. */
         *(buffer_ptr + i) = (UINT)NX_RAND();
     }
 
     /* First two bytes are newest version supported by client . */
-    buffer_ptr[0] = ((ULONG)protocol_version << 16) | (buffer_ptr[0] & 0x0000FFFF);
-    NX_CHANGE_ULONG_ENDIAN(buffer_ptr[0]);
+    buffer_ptr[0] = ((UINT32)protocol_version << 16) | (buffer_ptr[0] & 0x0000FFFF);
+    NX_CHANGE_UINT32_ENDIAN(buffer_ptr[0]);
 
     tls_key_material -> nx_secure_tls_pre_master_secret_size = 48;
 

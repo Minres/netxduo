@@ -78,7 +78,7 @@ static VOID _nx_cloud_periodic_timer_entry(ULONG cloud_ptr_value);
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_cloud_create(NX_CLOUD *cloud_ptr, const CHAR *cloud_name, VOID *memory_ptr, ULONG memory_size, UINT priority)
+UINT _nxe_cloud_create(NX_CLOUD *cloud_ptr, const CHAR *cloud_name, VOID *memory_ptr, UINT32 memory_size, UINT priority)
 {
 
 UINT status;
@@ -151,7 +151,7 @@ UINT status;
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_cloud_create(NX_CLOUD *cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, ULONG memory_size, UINT priority)
+UINT _nx_cloud_create(NX_CLOUD *cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, UINT32 memory_size, UINT priority)
 {
 
 UINT status;
@@ -194,7 +194,7 @@ UINT old_threshold = 0;
 
     /* Create cloud helper thread. */
     status = tx_thread_create(&(cloud_ptr -> nx_cloud_thread), (CHAR*)cloud_name,
-                              _nx_cloud_thread_entry, (ULONG)cloud_ptr,
+                              _nx_cloud_thread_entry, (UINT32)cloud_ptr,
                               memory_ptr, memory_size, priority, priority, 1, TX_AUTO_START);
         
     /* Check status.  */
@@ -214,7 +214,7 @@ UINT old_threshold = 0;
     
     /* Create the periodic timer for cloud modules.  */
     status = tx_timer_create(&(cloud_ptr -> nx_cloud_periodic_timer), (CHAR*)cloud_name,
-                             _nx_cloud_periodic_timer_entry, (ULONG)cloud_ptr,
+                             _nx_cloud_periodic_timer_entry, (UINT32)cloud_ptr,
                              NX_IP_PERIODIC_RATE, NX_IP_PERIODIC_RATE, TX_AUTO_ACTIVATE);
 
     /* Check status.  */
@@ -436,8 +436,8 @@ UINT old_threshold = 0;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE *module_ptr, const CHAR *module_name, ULONG module_registered_event,
-                               VOID (*module_process)(VOID* module_context, ULONG common_events, ULONG module_own_events), VOID *module_context)
+UINT _nxe_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE *module_ptr, const CHAR *module_name, UINT32 module_registered_event,
+                               VOID (*module_process)(VOID* module_context, UINT32 common_events, UINT32 module_own_events), VOID *module_context)
 {
 
  UINT status;
@@ -509,8 +509,8 @@ UINT _nxe_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE *module_ptr
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE *module_ptr, const CHAR *module_name, ULONG module_registered_event,
-                               VOID(*module_process)(VOID *module_context, ULONG common_events, ULONG module_own_events), VOID *module_context)
+UINT _nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE *module_ptr, const CHAR *module_name, UINT32 module_registered_event,
+                               VOID(*module_process)(VOID *module_context, UINT32 common_events, UINT32 module_own_events), VOID *module_context)
 {
     
 NX_CLOUD_MODULE *current_module;
@@ -738,7 +738,7 @@ UINT            found = NX_FALSE;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event)
+UINT _nxe_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event)
 {
   
 UINT status;
@@ -800,13 +800,13 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event)
+UINT _nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event)
 {
 
 TX_INTERRUPT_SAVE_AREA
 
 NX_CLOUD        *cloud_ptr = cloud_module -> nx_cloud_ptr;
-ULONG           registered_event;
+UINT32           registered_event;
 
 
     /* Disable interrupts.  */
@@ -862,7 +862,7 @@ ULONG           registered_event;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event)
+UINT _nxe_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event)
 {
   
 UINT status;
@@ -924,13 +924,13 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event)
+UINT _nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event)
 {
 
 TX_INTERRUPT_SAVE_AREA
 
 NX_CLOUD        *cloud_ptr = cloud_module -> nx_cloud_ptr;
-ULONG           registered_event;
+UINT32           registered_event;
 
 
     /* Disable interrupts.  */
@@ -1004,7 +1004,7 @@ TX_INTERRUPT_SAVE_AREA
 NX_CLOUD        *cloud_ptr;
 NX_CLOUD_MODULE *cloud_module;
 ULONG           cloud_events;
-ULONG           module_own_events;
+UINT32           module_own_events;
 
 
     /* Setup the Cloud pointer.  */
@@ -1074,7 +1074,7 @@ ULONG           module_own_events;
 /*                                                                        */
 /*  INPUT                                                                 */
 /*                                                                        */
-/*    cloud_ptr_value                       Cloud address in a ULONG      */
+/*    cloud_ptr_value                       Cloud address in a UINT32      */
 /*                                                                        */
 /*  OUTPUT                                                                */
 /*                                                                        */

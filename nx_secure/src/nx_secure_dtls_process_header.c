@@ -66,14 +66,14 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_process_header(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
-                                    ULONG record_offset, USHORT *message_type, UINT *length,
+                                    UINT32 record_offset, USHORT *message_type, UINT *length,
                                     UCHAR *header_data, USHORT *header_length)
 {
-ULONG                  bytes_copied;
+UINT32                  bytes_copied;
 UINT                   status;
 USHORT                 protocol_version;
-ULONG                  remaining_bytes = NX_SECURE_DTLS_RECORD_HEADER_SIZE;
-ULONG                  remote_sequence_number[2];
+UINT32                  remaining_bytes = NX_SECURE_DTLS_RECORD_HEADER_SIZE;
+UINT32                  remote_sequence_number[2];
 USHORT                 remote_epoch;
 NX_SECURE_TLS_SESSION *tls_session;
 
@@ -129,7 +129,7 @@ NX_SECURE_TLS_SESSION *tls_session;
      * --------------------------------
      * The epoch is at the beginning of the sequence number (first 2 bytes) for
      * network byte ordering. This means that the epoch is in the bottom 2 bytes
-     * of the first ULONG of the sequence number. In DTLS, the sequence number
+     * of the first UINT32 of the sequence number. In DTLS, the sequence number
      * is tied to the epoch - epoch and sequence start at 0, but when the epoch
      * is advanced (when the ChangeCipherSpec message is sent), the sequence is
      * reset to 0.
@@ -154,10 +154,10 @@ NX_SECURE_TLS_SESSION *tls_session;
     NX_SECURE_MEMCPY((UCHAR *)&remote_sequence_number[1], &header_data[7], 4); /* Use case of memcpy is verified. */
 
     /* Swap endianness for comparisons. */
-    NX_CHANGE_ULONG_ENDIAN(remote_sequence_number[0]);
-    NX_CHANGE_ULONG_ENDIAN(remote_sequence_number[1]);
-    NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-    NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+    NX_CHANGE_UINT32_ENDIAN(remote_sequence_number[0]);
+    NX_CHANGE_UINT32_ENDIAN(remote_sequence_number[1]);
+    NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+    NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
 
     /* The remote epoch is the top 2 bytes of the incoming 8-byte sequence number. */
     remote_epoch = (USHORT)(remote_sequence_number[0] >> 16);
@@ -168,8 +168,8 @@ NX_SECURE_TLS_SESSION *tls_session;
     /* If the epochs do not match, then ignore. */
     if (remote_epoch != dtls_session -> nx_secure_dtls_remote_epoch)
     {
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
         return(NX_SECURE_TLS_INVALID_EPOCH);
     }
 
@@ -208,8 +208,8 @@ NX_SECURE_TLS_SESSION *tls_session;
             remote_sequence_number[1] <= tls_session -> nx_secure_tls_remote_sequence_number[1])
         {
 
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
 
             return(NX_SECURE_TLS_REPEAT_MESSAGE_RECEIVED);
         }
@@ -221,8 +221,8 @@ NX_SECURE_TLS_SESSION *tls_session;
         /* The sequence number is larger than our current. This is a valid handshake record or
            out-of-order newer application data record. Update the current sequence number after the MAC check. */
         /* Swap back now that comparisons are done. */
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
 
     }
     else if (remote_epoch > 0 && (remote_sequence_number[0] > 0 || remote_sequence_number[1] > 0))
@@ -237,8 +237,8 @@ NX_SECURE_TLS_SESSION *tls_session;
 
             if(status == NX_FALSE)
             {
-                NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-                NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+                NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+                NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
                 return(NX_SECURE_TLS_REPEAT_MESSAGE_RECEIVED);
             }
         }
@@ -246,8 +246,8 @@ NX_SECURE_TLS_SESSION *tls_session;
         /* Update the sliding window with the new sequence number. This updates the sequence number as well. */
         status = _nx_secure_dtls_session_sliding_window_update(dtls_session, remote_sequence_number);
 
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-        NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+        NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
 
         if(status != NX_SUCCESS)
         {
@@ -264,8 +264,8 @@ NX_SECURE_TLS_SESSION *tls_session;
         {
 
             /* Invalid sequence number. */
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
             return(NX_SECURE_TLS_OUT_OF_ORDER_MESSAGE);
         }
 #endif /* NX_SECURE_TLS_CLIENT_DISABLED */
@@ -276,8 +276,8 @@ NX_SECURE_TLS_SESSION *tls_session;
         {
 
             /* Invalid sequence number. */
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
-            NX_CHANGE_ULONG_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[0]);
+            NX_CHANGE_UINT32_ENDIAN(tls_session -> nx_secure_tls_remote_sequence_number[1]);
             return(NX_SECURE_TLS_OUT_OF_ORDER_MESSAGE);
         }
 #endif /* NX_SECURE_TLS_SERVER_DISABLED */

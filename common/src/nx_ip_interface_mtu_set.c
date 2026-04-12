@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_interface_mtu_set(NX_IP *ip_ptr, UINT interface_index, ULONG mtu_size)
+UINT  _nx_ip_interface_mtu_set(NX_IP *ip_ptr, UINT interface_index, UINT32 mtu_size)
 {
 
     /* Get mutex protection.  */

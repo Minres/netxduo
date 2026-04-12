@@ -61,7 +61,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_length_get(NX_PACKET *packet_ptr, ULONG *length)
+UINT  _nx_packet_length_get(NX_PACKET *packet_ptr, UINT32 *length)
 {
 
     /* Return the length of the packet.  */

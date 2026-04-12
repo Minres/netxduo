@@ -98,7 +98,7 @@ HN_UBASE             *scratch;
 NX_CRYPTO_EC         *curve = NX_CRYPTO_NULL;
 UCHAR                *msg;
 UINT                  msg_length;
-ULONG                 sig_length;
+UINT32                 sig_length;
 NX_CRYPTO_EXTENDED_OUTPUT extended_output;
 
 

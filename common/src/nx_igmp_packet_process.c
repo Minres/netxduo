@@ -75,10 +75,10 @@ VOID  _nx_igmp_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 {
 
 UINT            i;
-ULONG           update_time;
+UINT32           update_time;
 NX_IGMP_HEADER *header_ptr;
 USHORT          max_update_time;
-ULONG           checksum;
+UINT32           checksum;
 
 
     /* Add debug information. */
@@ -122,11 +122,11 @@ ULONG           checksum;
     }
 
     /* Swap the IGMP headers to host byte order. */
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_igmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_igmp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_igmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_igmp_header_word_1);
 
     /* If trace is enabled, insert this event into the trace buffer.  */
-    NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_IGMP_RECEIVE, ip_ptr, *(((ULONG *)packet_ptr -> nx_packet_prepend_ptr) - 2), packet_ptr, header_ptr -> nx_igmp_header_word_0, NX_TRACE_INTERNAL_EVENTS, 0, 0);
+    NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_IGMP_RECEIVE, ip_ptr, *(((UINT32 *)packet_ptr -> nx_packet_prepend_ptr) - 2), packet_ptr, header_ptr -> nx_igmp_header_word_0, NX_TRACE_INTERNAL_EVENTS, 0, 0);
 
     /* Determine the type of IGMP message received.  Note that an IGMPv1 host will respond
        to an IGMPv2 general query but not process the maximum response time field. */

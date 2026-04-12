@@ -49,7 +49,7 @@ static UCHAR secret_1[] = {
 };
 
 /* Output. */
-static ULONG output[4];
+static UINT32 output[4];
 
 /**************************************************************************/
 /*                                                                        */

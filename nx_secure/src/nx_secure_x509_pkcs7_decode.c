@@ -74,13 +74,13 @@ UINT _nx_secure_x509_pkcs7_decode(const UCHAR *signature_pointer, UINT signature
 UINT         i;
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data = NX_CRYPTO_NULL;
-ULONG        header_length;
-ULONG        seq_length;
+UINT32        header_length;
+UINT32        seq_length;
 UINT         status;
 const UCHAR *signature_data = NX_CRYPTO_NULL;
-ULONG        remaining_length;
+UINT32        remaining_length;
 
     /* Certificate signatures encrypted with RSA use PKCS#7 encoding (RFC 5652) which
      * has the following format:

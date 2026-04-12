@@ -76,8 +76,8 @@
 /**************************************************************************/
 UINT  _nxd_nd_cache_ip_address_find(NX_IP *ip_ptr,
                                     NXD_ADDRESS *ip_address,
-                                    ULONG physical_msw,
-                                    ULONG physical_lsw,
+                                    UINT32 physical_msw,
+                                    UINT32 physical_lsw,
                                     UINT *interface_index)
 {
 #ifdef FEATURE_NX_IPV6

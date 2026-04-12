@@ -78,9 +78,9 @@ static UCHAR _nx_secure_client_padded_pre_master[600];
 /**************************************************************************/
 UINT _nx_secure_generate_client_key_exchange(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite,
                                              NX_SECURE_TLS_KEY_MATERIAL *tls_key_material, NX_SECURE_TLS_CREDENTIALS *tls_credentials,
-                                             UCHAR *data_buffer, ULONG buffer_length, ULONG *output_size,
-                                             VOID *public_cipher_metadata, ULONG public_cipher_metadata_size,
-                                             VOID *public_auth_metadata, ULONG public_auth_metadata_size)
+                                             UCHAR *data_buffer, UINT32 buffer_length, UINT32 *output_size,
+                                             VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size,
+                                             VOID *public_auth_metadata, UINT32 public_auth_metadata_size)
 {
 #if defined(NX_SECURE_ENABLE_ECJPAKE_CIPHERSUITE) || !defined(NX_SECURE_DISABLE_X509)
 UINT                                  status;

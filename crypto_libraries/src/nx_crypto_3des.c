@@ -223,7 +223,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_3des_init(struct  NX_CRYPTO_METHOD_STRUCT
                                                  UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                  VOID  **handle,
                                                  VOID  *crypto_metadata,
-                                                 ULONG crypto_metadata_size)
+                                                 UINT32 crypto_metadata_size)
 {
 NX_CRYPTO_3DES *triple_des_context_ptr;
 
@@ -238,7 +238,7 @@ NX_CRYPTO_3DES *triple_des_context_ptr;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -365,12 +365,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_3des_operation(UINT op,       /* Encrypt,
                                                       UCHAR *key,
                                                       NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                       UCHAR *input,
-                                                      ULONG input_length_in_byte,
+                                                      UINT32 input_length_in_byte,
                                                       UCHAR *iv_ptr,
                                                       UCHAR *output,
-                                                      ULONG output_length_in_byte,
+                                                      UINT32 output_length_in_byte,
                                                       VOID *crypto_metadata,
-                                                      ULONG crypto_metadata_size,
+                                                      UINT32 crypto_metadata_size,
                                                       VOID *packet_ptr,
                                                       VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -398,7 +398,7 @@ NX_CRYPTO_3DES *context;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

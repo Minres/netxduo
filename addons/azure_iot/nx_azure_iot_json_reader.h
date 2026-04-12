@@ -52,7 +52,7 @@ typedef struct NX_AZURE_IOT_READER_STRUCT
       NX_PACKET *packet_ptr;
       az_json_reader json_reader;
       az_span span_list[NX_AZURE_IOT_READER_MAX_LIST];
-      ULONG json_length;
+      UINT32 json_length;
 } NX_AZURE_IOT_JSON_READER;
 
 /**

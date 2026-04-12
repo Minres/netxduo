@@ -110,7 +110,7 @@ typedef struct NX_AZURE_IOT_HUB_CLIENT_RECEIVE_MESSAGE_STRUCT
     VOID        (*message_callback)(struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr, VOID *args);
     VOID         *message_callback_args;
     UINT        (*message_process)(struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr,
-                                   NX_PACKET *packet_ptr, ULONG topic_offset, USHORT topic_length);
+                                   NX_PACKET *packet_ptr, UINT32 topic_offset, USHORT topic_length);
     UINT        (*message_enable)(struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr);
 } NX_AZURE_IOT_HUB_CLIENT_RECEIVE_MESSAGE;
 
@@ -130,7 +130,7 @@ typedef struct NX_AZURE_IOT_HUB_CLIENT_STRUCT
     NX_AZURE_IOT_HUB_CLIENT_RECEIVE_MESSAGE nx_azure_iot_hub_client_writable_properties_message;
     VOID                                  (*nx_azure_iot_hub_client_report_properties_response_callback)(
                                            struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr,
-                                           UINT request_id, UINT response_status, ULONG version, VOID *args);
+                                           UINT request_id, UINT response_status, UINT32 version, VOID *args);
     VOID                                   *nx_azure_iot_hub_client_report_properties_response_callback_args;
 
     VOID                                  (*nx_azure_iot_hub_client_connection_status_callback)(
@@ -141,7 +141,7 @@ typedef struct NX_AZURE_IOT_HUB_CLIENT_STRUCT
                                            USHORT packet_id);
     UINT                                  (*nx_azure_iot_hub_client_token_refresh)(
                                            struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr,
-                                           ULONG expiry_time_secs, const UCHAR *key, UINT key_len,
+                                           UINT32 expiry_time_secs, const UCHAR *key, UINT key_len,
                                            UCHAR *sas_buffer, UINT sas_buffer_len, UINT *sas_length);
 
     UINT                                    nx_azure_iot_hub_client_request_id;
@@ -154,12 +154,12 @@ typedef struct NX_AZURE_IOT_HUB_CLIENT_STRUCT
 
     az_iot_hub_client                       iot_hub_client_core;
     UINT                                    nx_azure_iot_hub_client_throttle_count;
-    ULONG                                   nx_azure_iot_hub_client_throttle_end_time;
-    ULONG                                   nx_azure_iot_hub_client_sas_token_expiry_time;
+    UINT32                                   nx_azure_iot_hub_client_throttle_end_time;
+    UINT32                                   nx_azure_iot_hub_client_sas_token_expiry_time;
     az_span                                 nx_azure_iot_hub_client_component_list[NX_AZURE_IOT_HUB_CLIENT_MAX_COMPONENT_LIST];
     UINT                                  (*nx_azure_iot_hub_client_component_callback[NX_AZURE_IOT_HUB_CLIENT_MAX_COMPONENT_LIST])
                                                                                       (VOID *json_reader_ptr,
-                                                                                       ULONG version,
+                                                                                       UINT32 version,
                                                                                        VOID *args);
     VOID                                   *nx_azure_iot_hub_client_component_callback_args[NX_AZURE_IOT_HUB_CLIENT_MAX_COMPONENT_LIST];
     VOID                                  (*nx_azure_iot_hub_client_component_properties_process)(struct NX_AZURE_IOT_HUB_CLIENT_STRUCT *hub_client_ptr,
@@ -785,7 +785,7 @@ UINT nx_azure_iot_hub_client_reported_properties_response_callback_set(NX_AZURE_
                                                                              NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                                              UINT request_id,
                                                                              UINT response_status,
-                                                                             ULONG version,
+                                                                             UINT32 version,
                                                                              VOID *args),
                                                                        VOID *callback_args);
 
@@ -816,7 +816,7 @@ UINT nx_azure_iot_hub_client_reported_properties_response_callback_set(NX_AZURE_
 UINT nx_azure_iot_hub_client_device_twin_reported_properties_send(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                                   const UCHAR *message_buffer, UINT message_length,
                                                                   UINT *request_id_ptr, UINT *response_status_ptr,
-                                                                  ULONG *version_ptr, UINT wait_option);
+                                                                  UINT32 *version_ptr, UINT wait_option);
 
 /**
  * @brief Request complete device twin properties
@@ -942,7 +942,7 @@ UINT nx_azure_iot_hub_client_reported_properties_create(NX_AZURE_IOT_HUB_CLIENT 
 UINT nx_azure_iot_hub_client_reported_properties_send(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                       NX_PACKET *packet_ptr,
                                                       UINT *request_id_ptr, UINT *response_status_ptr,
-                                                      ULONG *version_ptr, UINT wait_option);
+                                                      UINT32 *version_ptr, UINT wait_option);
 
 /**
  * @brief Request complete properties

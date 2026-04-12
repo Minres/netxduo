@@ -76,12 +76,12 @@
 VOID  _nx_tcp_socket_retransmit(NX_IP *ip_ptr, NX_TCP_SOCKET *socket_ptr, UINT need_fast_retransmit)
 {
 NX_PACKET *packet_ptr;
-ULONG      window;
-ULONG      original_acknowledgment_number;
-ULONG      original_header_word_3;
-ULONG      original_header_word_4;
-ULONG      available;
-ULONG      window_size;
+UINT32      window;
+UINT32      original_acknowledgment_number;
+UINT32      original_header_word_3;
+UINT32      original_header_word_4;
+UINT32      available;
+UINT32      window_size;
 
     /* If the receiver winodw is zero, we enter the zero window probe phase
        RFC 793 Sec 3.7, p42: keep send new data.
@@ -103,8 +103,8 @@ ULONG      window_size;
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
         NX_TCP_HEADER *header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_sequence_number);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_sequence_number);
 
             /* Get sequence number and first byte. */
             socket_ptr -> nx_tcp_socket_zero_window_probe_data = *(packet_ptr -> nx_packet_prepend_ptr + ((header_ptr -> nx_tcp_header_word_3 >> 28) << 2));
@@ -114,8 +114,8 @@ ULONG      window_size;
             socket_ptr -> nx_tcp_socket_zero_window_probe_sequence = header_ptr -> nx_tcp_sequence_number;
             socket_ptr -> nx_tcp_socket_zero_window_probe_failure = 0;
 
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_sequence_number);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_sequence_number);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
         }
         else if (socket_ptr -> nx_tcp_socket_zero_window_probe_has_data == NX_FALSE)
         {
@@ -196,14 +196,14 @@ ULONG      window_size;
 
     /* Determine if the packet has been released by the
        application I/O driver.  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     while (packet_ptr && (packet_ptr -> nx_packet_queue_next == (NX_PACKET *)NX_DRIVER_TX_DONE))
     {
 
     /* Update the ACK number in case it has changed since the data was originally transmitted. */
-    ULONG          checksum;
+    UINT32          checksum;
     NX_TCP_HEADER *header_ptr;
-    ULONG         *source_ip = NX_NULL, *dest_ip = NX_NULL;
+    UINT32         *source_ip = NX_NULL, *dest_ip = NX_NULL;
     NX_PACKET     *next_ptr;
 #if defined(NX_DISABLE_TCP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
     UINT           compute_checksum = 1;
@@ -221,7 +221,7 @@ ULONG      window_size;
         }
 
         /* Decrease the available size. */
-        available -= (packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER));
+        available -= (packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER));
 
         /* Pickup next packet. */
         next_ptr = packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
@@ -265,7 +265,7 @@ ULONG      window_size;
         header_ptr -> nx_tcp_acknowledgment_number = socket_ptr -> nx_tcp_socket_rx_sequence;
 
         /* Convert to network byte order for checksum */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_acknowledgment_number);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_acknowledgment_number);
 
         /* Set window size. */
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
@@ -283,10 +283,10 @@ ULONG      window_size;
         header_ptr -> nx_tcp_header_word_3 =        NX_TCP_HEADER_SIZE | NX_TCP_ACK_BIT | NX_TCP_PSH_BIT | window_size;
 
         /* Swap the content to network byte order. */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
 
         /* Convert back to host byte order to so we can zero out the checksum. */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
 
         /* Remember the last ACKed sequence and the last reported window size.  */
         socket_ptr -> nx_tcp_socket_rx_sequence_acked =    socket_ptr -> nx_tcp_socket_rx_sequence;
@@ -296,7 +296,7 @@ ULONG      window_size;
         header_ptr -> nx_tcp_header_word_4 = header_ptr -> nx_tcp_header_word_4 & 0x0000FFFF;
 
         /* Convert back to network byte order to so we can do the checksum. */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
 
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
@@ -325,13 +325,13 @@ ULONG      window_size;
             checksum = ~checksum & NX_LOWER_16_MASK;
 
             /* Convert back to host byte order */
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
 
             /* Move the checksum into header.  */
             header_ptr -> nx_tcp_header_word_4 =  header_ptr -> nx_tcp_header_word_4 | (checksum << NX_SHIFT_BY_16);
 
             /* Convert back to network byte order for transmit. */
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
         }
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
         else

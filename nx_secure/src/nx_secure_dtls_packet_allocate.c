@@ -67,11 +67,11 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_packet_allocate(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET_POOL *pool_ptr,
-                                     NX_PACKET **packet_ptr, ULONG wait_option)
+                                     NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT                   status;
-ULONG                  packet_type;
+UINT32                  packet_type;
 USHORT                 iv_size;
 NX_SECURE_TLS_SESSION *tls_session;
 
@@ -93,7 +93,7 @@ NX_SECURE_TLS_SESSION *tls_session;
         return(NX_SECURE_TLS_ALLOCATE_PACKET_FAILED);
     }
 
-    if (((ULONG)((*packet_ptr) -> nx_packet_data_end) - (ULONG)((*packet_ptr) -> nx_packet_prepend_ptr)) <
+    if (((UINT32)((*packet_ptr) -> nx_packet_data_end) - (UINT32)((*packet_ptr) -> nx_packet_prepend_ptr)) <
         (NX_SECURE_DTLS_RECORD_HEADER_SIZE + 2u)) /* At least 2 bytes for Alert message. */
     {
 
@@ -120,7 +120,7 @@ NX_SECURE_TLS_SESSION *tls_session;
             return(status);
         }
 
-        if ((iv_size + 2u) > ((ULONG)((*packet_ptr) -> nx_packet_data_end) - (ULONG)((*packet_ptr) -> nx_packet_prepend_ptr)))
+        if ((iv_size + 2u) > ((UINT32)((*packet_ptr) -> nx_packet_data_end) - (UINT32)((*packet_ptr) -> nx_packet_prepend_ptr)))
         {
 
             /* Packet buffer is too small to hold IV. */

@@ -846,7 +846,7 @@ UINT  _nx_snmp_agent_v3_context_boots_set(NX_SNMP_AGENT *agent_ptr, UINT boots)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nxe_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*snmp_agent_username_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *username),
                 UINT (*snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_getnext_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
@@ -925,7 +925,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*snmp_agent_username_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *username),
                 UINT (*snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_getnext_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
@@ -961,7 +961,7 @@ UINT        i;
 
     /* Now create the SNMP Server thread.  */
     status =  tx_thread_create(&(agent_ptr -> nx_snmp_agent_thread), "SNMP Agent Thread", _nx_snmp_agent_thread_entry, 
-            (ULONG) agent_ptr, stack_ptr, stack_size, NX_SNMP_AGENT_PRIORITY, NX_SNMP_AGENT_PRIORITY, 
+            (UINT32) agent_ptr, stack_ptr, stack_size, NX_SNMP_AGENT_PRIORITY, NX_SNMP_AGENT_PRIORITY, 
             TX_NO_TIME_SLICE, TX_DONT_START);
 
     /* Determine if an error occurred creating the thread.  */
@@ -1768,8 +1768,8 @@ UINT  _nx_snmp_agent_md5_key_create_extended(NX_SNMP_AGENT *agent_ptr, UCHAR *pa
 
 NX_MD5      MD;
 UCHAR      *cp, password_buf[64];
-ULONG       password_index = 0;
-ULONG       count = 0, i;
+UINT32       password_index = 0;
+UINT32       count = 0, i;
 UINT        temp_password_length;
 
 
@@ -2302,8 +2302,8 @@ UINT  _nx_snmp_agent_sha_key_create_extended(NX_SNMP_AGENT *agent_ptr, UCHAR *pa
 
 NX_SHA1     SH;
 UCHAR      *cp, password_buf[72];
-ULONG       password_index = 0;
-ULONG       count = 0, i;
+UINT32       password_index = 0;
+UINT32       count = 0, i;
 UINT        temp_password_length;
 
 
@@ -3379,8 +3379,8 @@ NX_PACKET               *new_packet_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *enterprise, 
-                                UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxe_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *enterprise, 
+                                UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -3465,8 +3465,8 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 
-UINT  _nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *enterprise, 
-                               UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *enterprise, 
+                               UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -3540,7 +3540,7 @@ NXD_ADDRESS  ip_netxduo_address;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, 
-                                UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+                                UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT    status;
@@ -3617,7 +3617,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, 
-                               UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+                               UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT                 status;
@@ -4154,7 +4154,7 @@ UINT                 packet_type;
     _nx_snmp_utility_request_type_set_multibyte(trap_type_ptr, NX_SNMP_ANS1_TRAP_REQUEST, trap_type_length, trap_packet_ptr -> nx_packet_data_end);
 
     /* Now the trap packet's pointers must be setup so it can be sent.  */
-    trap_packet_ptr -> nx_packet_length =  (ULONG)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
+    trap_packet_ptr -> nx_packet_length =  (UINT32)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
     trap_packet_ptr -> nx_packet_append_ptr =  trap_buffer_ptr;
 
     /* Update various statistics.  */
@@ -4223,7 +4223,7 @@ UINT                 packet_type;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxe_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -4299,7 +4299,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, 
+UINT  _nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, 
                                  NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
@@ -4367,7 +4367,7 @@ NXD_ADDRESS ip_nxduo_address;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxde_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, 
+UINT  _nxde_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, 
                                    NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
@@ -4444,7 +4444,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type,  
-                                  ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+                                  UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT                 status;
@@ -5096,7 +5096,7 @@ UINT                 packet_type;
     _nx_snmp_utility_sequence_set(trap_variable_list_ptr, trap_variable_list_length, trap_packet_ptr -> nx_packet_data_end);
 
     /* Update the trap packet's pointers.  */
-    trap_packet_ptr -> nx_packet_length =  (ULONG)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
+    trap_packet_ptr -> nx_packet_length =  (UINT32)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
     trap_packet_ptr -> nx_packet_append_ptr =  trap_buffer_ptr;
 
     /* Update various statistics.  */
@@ -5164,7 +5164,7 @@ UINT                 packet_type;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxe_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -5238,7 +5238,7 @@ UINT    status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -5305,7 +5305,7 @@ NXD_ADDRESS ipduo_address;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxde_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT    status;
@@ -5384,7 +5384,7 @@ UINT    status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT                 status;
@@ -5988,7 +5988,7 @@ UINT                 packet_type = NX_UDP_PACKET;
     _nx_snmp_utility_request_type_set_multibyte(trap_type_ptr, NX_SNMP_ANS1_TRAP2_REQUEST, trap_type_length, trap_packet_ptr -> nx_packet_data_end);
 
     /* Now the trap packet's pointers must be setup so it can be sent.  */
-    trap_packet_ptr -> nx_packet_length =  (ULONG)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
+    trap_packet_ptr -> nx_packet_length =  (UINT32)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
     trap_packet_ptr -> nx_packet_append_ptr =  trap_buffer_ptr;
 
     /* Update various statistics.  */
@@ -6061,8 +6061,8 @@ UINT                 packet_type = NX_UDP_PACKET;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UINT trap_type, 
-                                  ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxe_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UINT trap_type, 
+                                  UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -6138,8 +6138,8 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UINT trap_type, 
-                                 ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UINT trap_type, 
+                                 UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -6208,7 +6208,7 @@ NXD_ADDRESS ip_nxduo_address;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, 
-                                  ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+                                  UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT    status;
@@ -6291,7 +6291,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, 
+UINT  _nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, 
                                   NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
            
@@ -7649,7 +7649,7 @@ UINT                username_length;
     }
 
     /* Now the trap packet's pointers must be setup so it can be sent.  */
-    trap_packet_ptr -> nx_packet_length =  (ULONG)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
+    trap_packet_ptr -> nx_packet_length =  (UINT32)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
     trap_packet_ptr -> nx_packet_append_ptr =  trap_buffer_ptr;
 
     /* Determine if authentication is required.  */ 
@@ -7845,7 +7845,7 @@ UINT                username_length;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxe_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -7919,7 +7919,7 @@ UINT    status;
 /*                                                                        */
 /**************************************************************************/
 
-UINT  _nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -7986,7 +7986,7 @@ NXD_ADDRESS ipduo_address;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxde_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT    status;
@@ -8071,7 +8071,7 @@ UINT    status;
 /*                                                                        */
 /**************************************************************************/
 
-UINT  _nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
+UINT  _nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr)
 {
 
 UINT                 status;
@@ -9334,7 +9334,7 @@ UINT                username_length;
     }
 
     /* Now the trap packet's pointers must be setup so it can be sent.  */
-    trap_packet_ptr -> nx_packet_length =  (ULONG)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
+    trap_packet_ptr -> nx_packet_length =  (UINT32)(trap_buffer_ptr - trap_packet_ptr -> nx_packet_prepend_ptr);
     trap_packet_ptr -> nx_packet_append_ptr =  trap_buffer_ptr;
 
 #ifndef NX_SNMP_NO_SECURITY
@@ -10112,14 +10112,14 @@ UINT    status;
 UINT  _nx_snmp_object_counter_get(VOID *source_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Setup the object data structure.  */
     object_data -> nx_snmp_object_data_type =   NX_SNMP_COUNTER;
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) source_ptr;
+    value_ptr =  (UINT32 *) source_ptr;
 
     /* Copy the value into the object data structure.  */
     object_data -> nx_snmp_object_data_msw =  (LONG)(*value_ptr);
@@ -10217,7 +10217,7 @@ UINT    status;
 UINT  _nx_snmp_object_counter_set(VOID *destination_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Determine if the correct type is specified.  */
@@ -10229,10 +10229,10 @@ ULONG   *value_ptr;
     }
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) destination_ptr;
+    value_ptr =  (UINT32 *) destination_ptr;
 
     /* Copy the value into the object data structure.  */
-    *value_ptr =  (ULONG)(object_data -> nx_snmp_object_data_msw);
+    *value_ptr =  (UINT32)(object_data -> nx_snmp_object_data_msw);
 
     /* Return success.  */
     return(NX_SUCCESS);
@@ -10327,14 +10327,14 @@ UINT    status;
 UINT  _nx_snmp_object_counter64_get(VOID *source_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Setup the object data structure.  */
     object_data -> nx_snmp_object_data_type =   NX_SNMP_COUNTER64;
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) source_ptr;
+    value_ptr =  (UINT32 *) source_ptr;
 
     /* Copy the value into the object data structure.  */
     object_data -> nx_snmp_object_data_msw =  (LONG)value_ptr[0];
@@ -10433,7 +10433,7 @@ UINT    status;
 UINT  _nx_snmp_object_counter64_set(VOID *destination_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG       *value_ptr;
+UINT32       *value_ptr;
 LONG         temp = 0;
 
     /* Determine if the correct type is specified.  */
@@ -10445,7 +10445,7 @@ LONG         temp = 0;
     }
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) destination_ptr;
+    value_ptr =  (UINT32 *) destination_ptr;
 
     if (object_data -> nx_snmp_object_data_lsw  == 0)
     {
@@ -10456,26 +10456,26 @@ LONG         temp = 0;
     if ((object_data -> nx_snmp_object_data_lsw & (LONG)0xFFFFFF00) == 0)
     {
         temp = object_data -> nx_snmp_object_data_msw << 8;
-        value_ptr[0] = (ULONG)(((ULONG)object_data -> nx_snmp_object_data_msw >> 24) & (0x000000FF));
+        value_ptr[0] = (UINT32)(((UINT32)object_data -> nx_snmp_object_data_msw >> 24) & (0x000000FF));
     }
     else if ((object_data -> nx_snmp_object_data_lsw & (LONG)0xFFFF0000) == 0)
     {
 
         temp = object_data -> nx_snmp_object_data_msw << 16;
-        value_ptr[0] = (ULONG)(((ULONG)object_data -> nx_snmp_object_data_msw >> 16) & (0x0000FFFF));
+        value_ptr[0] = (UINT32)(((UINT32)object_data -> nx_snmp_object_data_msw >> 16) & (0x0000FFFF));
     }
     else if ((object_data -> nx_snmp_object_data_lsw & (LONG)0xFF000000) == 0)
     {
 
         temp = object_data -> nx_snmp_object_data_msw << 24;
-        value_ptr[0] = (ULONG)(((ULONG)object_data -> nx_snmp_object_data_msw >> 8) & (0x00FFFFFF));
+        value_ptr[0] = (UINT32)(((UINT32)object_data -> nx_snmp_object_data_msw >> 8) & (0x00FFFFFF));
     }
     else
     {
-        value_ptr[0] = (ULONG)(object_data -> nx_snmp_object_data_msw);
+        value_ptr[0] = (UINT32)(object_data -> nx_snmp_object_data_msw);
     }
 
-    value_ptr[1] = (ULONG)(object_data -> nx_snmp_object_data_lsw + temp);
+    value_ptr[1] = (UINT32)(object_data -> nx_snmp_object_data_lsw + temp);
 
     /* Value_ptr udpates the MIB data but we also need to display the data correctly in object. */
 
@@ -10675,14 +10675,14 @@ UINT    status;
 UINT  _nx_snmp_object_gauge_get(VOID *source_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Setup the object data structure.  */
     object_data -> nx_snmp_object_data_type =   NX_SNMP_GAUGE;
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) source_ptr;
+    value_ptr =  (UINT32 *) source_ptr;
 
     /* Copy the value into the object data structure.  */
     object_data -> nx_snmp_object_data_msw =  (LONG)(*value_ptr);
@@ -10780,7 +10780,7 @@ UINT    status;
 UINT  _nx_snmp_object_gauge_set(VOID *destination_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Determine if the correct type is specified.  */
@@ -10792,10 +10792,10 @@ ULONG   *value_ptr;
     }
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) destination_ptr;
+    value_ptr =  (UINT32 *) destination_ptr;
 
     /* Copy the value into the object data structure.  */
-    *value_ptr =  (ULONG)(object_data -> nx_snmp_object_data_msw);
+    *value_ptr =  (UINT32)(object_data -> nx_snmp_object_data_msw);
 
     /* Return success.  */
     return(NX_SUCCESS);
@@ -11576,13 +11576,13 @@ UINT  _nx_snmp_object_ip_address_get(VOID *source_ptr, NX_SNMP_OBJECT_DATA *obje
 {
 
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
     /* Setup the object data structure.  */
     object_data -> nx_snmp_object_data_type =   NX_SNMP_ANS1_IP_ADDRESS;
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) source_ptr;
+    value_ptr =  (UINT32 *) source_ptr;
 
     /* Copy the value into the object data structure.  */
     object_data -> nx_snmp_object_data_msw =  (LONG)(*value_ptr);
@@ -11683,7 +11683,7 @@ UINT  _nx_snmp_object_ip_address_set(VOID *destination_ptr, NX_SNMP_OBJECT_DATA 
 {
 
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
     /* Determine if the correct type is specified.  */
     if (object_data -> nx_snmp_object_data_type != NX_SNMP_ANS1_IP_ADDRESS)
@@ -11694,10 +11694,10 @@ ULONG   *value_ptr;
     }
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) destination_ptr;
+    value_ptr =  (UINT32 *) destination_ptr;
 
     /* Copy the value into the object data structure.  */
-    *value_ptr =  (ULONG)(object_data -> nx_snmp_object_data_msw);
+    *value_ptr =  (UINT32)(object_data -> nx_snmp_object_data_msw);
 
     /* Return success.  */
     return(NX_SUCCESS);
@@ -12496,14 +12496,14 @@ UINT    status;
 UINT  _nx_snmp_object_timetics_get(VOID *source_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Setup the object data structure.  */
     object_data -> nx_snmp_object_data_type =   NX_SNMP_TIME_TICS;
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) source_ptr;
+    value_ptr =  (UINT32 *) source_ptr;
 
     /* Copy the value into the object data structure.  */
     object_data -> nx_snmp_object_data_msw =  (LONG)(*value_ptr);
@@ -12603,7 +12603,7 @@ UINT    status;
 UINT  _nx_snmp_object_timetics_set(VOID *destination_ptr, NX_SNMP_OBJECT_DATA *object_data)
 {
 
-ULONG   *value_ptr;
+UINT32   *value_ptr;
 
 
     /* Determine if the correct type is specified.  */
@@ -12615,10 +12615,10 @@ ULONG   *value_ptr;
     }
 
     /* Setup pointer to the value.  */
-    value_ptr =  (ULONG *) destination_ptr;
+    value_ptr =  (UINT32 *) destination_ptr;
 
     /* Copy the value into the object data structure.  */
-    *value_ptr =  (ULONG)(object_data -> nx_snmp_object_data_msw);
+    *value_ptr =  (UINT32)(object_data -> nx_snmp_object_data_msw);
 
     /* Return success.  */
     return(NX_SUCCESS);
@@ -13088,9 +13088,9 @@ UINT  _nx_snmp_utility_object_id_get(UCHAR *buffer_ptr, UCHAR *object_string, IN
 
 UINT    i;
 UINT    length;
-ULONG   value;
-ULONG   temp;
-ULONG   multiply;
+UINT32   value;
+UINT32   temp;
+UINT32   multiply;
 UINT    total;
 UINT    size;
 UCHAR   byte;
@@ -13316,7 +13316,7 @@ UINT    string_length;
             {
 
                 /* Pickup the number of bytes required to represent this value.  */
-                temp =  (ULONG) (byte & ~NX_SNMP_ANS1_MULTI_BYTES);
+                temp =  (UINT32) (byte & ~NX_SNMP_ANS1_MULTI_BYTES);
 
                 /* Calculate the temporary value.  */
                 temp =  temp * multiply;
@@ -13348,7 +13348,7 @@ UINT    string_length;
             } while (byte & NX_SNMP_ANS1_MULTI_BYTES);
 
             /* Add in the remainder.  */
-            temp =  (ULONG) (byte & ~NX_SNMP_ANS1_MULTI_BYTES);
+            temp =  (UINT32) (byte & ~NX_SNMP_ANS1_MULTI_BYTES);
             value =  value + temp;
         }
 
@@ -13456,7 +13456,7 @@ UINT  _nx_snmp_utility_object_id_set(UCHAR *buffer_ptr, UCHAR *object_string, UC
 
 UINT    length;
 UINT    i;
-ULONG   value;
+UINT32   value;
 UCHAR   *length_ptr;
 UCHAR   encoding_started;
 UINT    object_string_length;
@@ -13504,7 +13504,7 @@ UINT    object_string_length;
     {
 
         /* Compute the value.  */
-        value =  (value * 10) + ((ULONG) (object_string[i] - 0x30));
+        value =  (value * 10) + ((UINT32) (object_string[i] - 0x30));
 
         /* Move to the next character.  */
         i++;
@@ -13555,7 +13555,7 @@ UINT    object_string_length;
 
         UCHAR    *value_ptr;
         UCHAR    byte0;
-        ULONG    mod_value;
+        UINT32    mod_value;
 
         /* Initialize the encoding started flag.  */ 
         encoding_started =  NX_FALSE;
@@ -13566,7 +13566,7 @@ UINT    object_string_length;
         {
 
             /* Compute the value.  */
-            value =  (value * 10) + ((ULONG) (object_string[i] - 0x30));
+            value =  (value * 10) + ((UINT32) (object_string[i] - 0x30));
 
             /* Move to the next character.  */
             i++;
@@ -13601,8 +13601,8 @@ UINT    object_string_length;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
                
                 mod_value = value/268435456;  /* (0x10000000) */
                 
@@ -13633,8 +13633,8 @@ UINT    object_string_length;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
 
                 mod_value = value/2097152;  /* (0x10000000) */
 
@@ -13665,8 +13665,8 @@ UINT    object_string_length;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
                
                 mod_value = value/16384;  /* (0x10000000) */
                 
@@ -13698,8 +13698,8 @@ UINT    object_string_length;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
 
                 mod_value = value/128;  /* (0x100) */
 
@@ -13788,7 +13788,7 @@ UINT  _nx_snmp_utility_object_id_set_1byte(UCHAR *buffer_ptr, UCHAR *object_stri
 
 UINT    length;
 UINT    i;
-ULONG   value;
+UINT32   value;
 UCHAR   *length_ptr;
 UCHAR   encoding_started;
 
@@ -13831,7 +13831,7 @@ UCHAR   encoding_started;
     {
 
         /* Compute the value.  */
-        value =  (value * 10) + ((ULONG) (object_string[i] - 0x30));
+        value =  (value * 10) + ((UINT32) (object_string[i] - 0x30));
 
         /* Move to the next character.  */
         i++;
@@ -13878,7 +13878,7 @@ UCHAR   encoding_started;
 
         UCHAR    *value_ptr;
         UCHAR    byte0;
-        ULONG    mod_value;
+        UINT32    mod_value;
 
         /* Initialize the encoding started flag.  */ 
         encoding_started =  NX_FALSE;
@@ -13889,7 +13889,7 @@ UCHAR   encoding_started;
         {
 
             /* Compute the value.  */
-            value =  (value * 10) + ((ULONG) (object_string[i] - 0x30));
+            value =  (value * 10) + ((UINT32) (object_string[i] - 0x30));
 
             /* Move to the next character.  */
             i++;
@@ -13924,8 +13924,8 @@ UCHAR   encoding_started;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
                
                 mod_value = value/268435456;  /* (0x10000000) */
                 
@@ -13957,8 +13957,8 @@ UCHAR   encoding_started;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
                
                 mod_value = value/2097152;  /* (0x10000000) */
                 
@@ -13989,8 +13989,8 @@ UCHAR   encoding_started;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
                
                 mod_value = value/16384;  /* (0x10000000) */
                 
@@ -14022,8 +14022,8 @@ UCHAR   encoding_started;
                 if (buffer_ptr >= buffer_end)
                     return(0);
 
-                /* To avoid compiler warnings of casting an ULONG to a UCHAR (loss of information possible),
-                use an intermediate ULONG pointer. */
+                /* To avoid compiler warnings of casting an UINT32 to a UCHAR (loss of information possible),
+                use an intermediate UINT32 pointer. */
 
                 mod_value = value/128;  /* (0x100) */
 
@@ -14174,7 +14174,7 @@ UINT    status;
 
         /* Extract the length of the length field and tag class. This sill update the pointer past the type
          * and length fields to the actual data.   */
-        status = _nx_snmp_utility_tlv_block_parse(work_ptr, buffer_length, &tlv_type, &tlv_tag_class,  (ULONG *)(&total), &tlv_data, (ULONG *)(&length));
+        status = _nx_snmp_utility_tlv_block_parse(work_ptr, buffer_length, &tlv_type, &tlv_tag_class,  (UINT32 *)(&total), &tlv_data, (UINT32 *)(&length));
 
         if (status)
         {
@@ -15207,12 +15207,12 @@ UINT  _nx_snmp_utility_sequence_set_1byte(UCHAR *buffer_ptr, UINT sequence_value
 /*    _nx_snmp_version_3_process            Process SNMP v3 request       */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_snmp_utility_request_id_get(UCHAR *buffer_ptr, ULONG *request_id, INT buffer_length)
+UINT  _nx_snmp_utility_request_id_get(UCHAR *buffer_ptr, UINT32 *request_id, INT buffer_length)
 {
 
 UINT    i;
 UINT    length;
-ULONG   value;
+UINT32   value;
 UINT    total;
 UCHAR   byte;
 
@@ -15261,7 +15261,7 @@ UCHAR   byte;
         byte =  *buffer_ptr++;
 
         /* Compute the request id based on the next value.  */
-        value =  (value << 8) | ((ULONG) byte);
+        value =  (value << 8) | ((UINT32) byte);
 
         /* Increment the length.  */
         length++;
@@ -15314,7 +15314,7 @@ UCHAR   byte;
 /*    _nx_snmp_version_3_process            Process SNMP v3 request       */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_snmp_utility_request_id_set(UCHAR *buffer_ptr, ULONG request_id, UCHAR *buffer_end)
+UINT  _nx_snmp_utility_request_id_set(UCHAR *buffer_ptr, UINT32 request_id, UCHAR *buffer_end)
 {
 
 UINT    length;
@@ -15846,7 +15846,7 @@ VOID  _nx_snmp_version_error_response(NX_SNMP_AGENT *agent_ptr, NX_PACKET *packe
 
 UINT    status = NX_SUCCESS;
 #ifndef NX_SNMP_DISABLE_V3
-ULONG   temp;
+UINT32   temp;
 #endif
 
     /* Increment the error counter.  */
@@ -15894,7 +15894,7 @@ ULONG   temp;
     {
 
         /* Is the security set to encryption? */
-        temp = (ULONG)agent_ptr -> nx_snmp_agent_v3_message_security_options;
+        temp = (UINT32)agent_ptr -> nx_snmp_agent_v3_message_security_options;
         if (temp & NX_SNMP_SECURITY_PRIVACY)
         {
 
@@ -16019,7 +16019,7 @@ UINT        non_repeaters, max_repetitions, next_object;
 UINT        current_repetitions;
 #endif /* NX_SNMP_DISABLE_V2 */
 UINT        variable_list_length, variable_length;
-ULONG       request_id;
+UINT32       request_id;
 UINT        status, length, objects;
 UCHAR       *buffer_ptr;
 UCHAR       *error_ptr, *request_type_ptr;
@@ -17014,7 +17014,7 @@ INT         buffer_length;
     _nx_snmp_utility_request_type_set_multibyte(response_type_ptr, NX_SNMP_ANS1_GET_RESPONSE, response_type_length, response_packet_ptr -> nx_packet_data_end);
 
     /* Now the response packet's pointers must be setup so it can be sent.  */
-    response_packet_ptr -> nx_packet_length =  (ULONG)(response_buffer_ptr - response_packet_ptr -> nx_packet_prepend_ptr);
+    response_packet_ptr -> nx_packet_length =  (UINT32)(response_buffer_ptr - response_packet_ptr -> nx_packet_prepend_ptr);
     response_packet_ptr -> nx_packet_append_ptr =  response_buffer_ptr;
 
     /* Release the original request packet.  */
@@ -17125,7 +17125,7 @@ UINT        i, sequence_length, version, request_type, request_length;
 UINT        header_sequence_length, security_sequence_length, pdu_sequence_length;
 UINT        non_repeaters, max_repetitions, current_repetitions, next_object;
 UINT        variable_list_length, variable_length;
-ULONG       request_id;
+UINT32       request_id;
 UINT        status, length, objects;
 UCHAR       *buffer_ptr;
 UCHAR       *error_ptr, *request_type_ptr, *temp_ptr;
@@ -19806,7 +19806,7 @@ INT         buffer_length;
     }
 
     /* Now the response packet's pointers must be setup so it can be sent.  */
-    response_packet_ptr -> nx_packet_length =  (ULONG)(response_buffer_ptr - response_packet_ptr -> nx_packet_prepend_ptr);
+    response_packet_ptr -> nx_packet_length =  (UINT32)(response_buffer_ptr - response_packet_ptr -> nx_packet_prepend_ptr);
     response_packet_ptr -> nx_packet_append_ptr =  response_buffer_ptr;
 
     if (authenticate_message == NX_TRUE)
@@ -19938,7 +19938,7 @@ UCHAR               *report_variable_list_ptr = NX_NULL;
 UINT                report_variable_length = 0;
 UINT                report_variable_list_length = 0;
 UCHAR               *report_variable_ptr = NX_NULL;
-ULONG               request_id;
+UINT32               request_id;
 UINT                temp, i;
 UINT                length;
 UINT                request_type;
@@ -21078,7 +21078,7 @@ UCHAR               report_security_level;
     _nx_snmp_utility_request_type_set_multibyte(report_type_ptr, NX_SNMP_ANS1_REPORT_REQUEST, report_type_length, report_packet_ptr -> nx_packet_data_end);
 
     /* Now the report packet's pointers must be setup so it can be sent.  */
-    report_packet_ptr -> nx_packet_length =  (ULONG)(report_buffer_ptr - report_packet_ptr -> nx_packet_prepend_ptr);
+    report_packet_ptr -> nx_packet_length =  (UINT32)(report_buffer_ptr - report_packet_ptr -> nx_packet_prepend_ptr);
     report_packet_ptr -> nx_packet_append_ptr =  report_buffer_ptr;
 
     /********************************************************/
@@ -21906,13 +21906,13 @@ VOID _nx_snmp_agent_security_response_status(NX_SNMP_AGENT *agent_ptr, UINT *aut
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_snmp_utility_tlv_block_parse(UCHAR *buffer, INT buffer_length, USHORT *tlv_type,
-                                      USHORT *tlv_tag_class, ULONG *tlv_length,
-                                      UCHAR **tlv_data, ULONG *header_length)
+                                      USHORT *tlv_tag_class, UINT32 *tlv_length,
+                                      UCHAR **tlv_data, UINT32 *header_length)
 {
 UINT   current_index = 0;
 USHORT current_tag;
-ULONG  length;
-ULONG  length_bytes;
+UINT32  length;
+UINT32  length_bytes;
 
 
     /* Check the buffer length.  */

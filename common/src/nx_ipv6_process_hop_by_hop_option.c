@@ -98,7 +98,7 @@ NX_IPV6_HOP_BY_HOP_OPTION *option;
 
     /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
     /*lint -e{737} suppress loss of sign, since nx_packet_append_ptr is assumed to be larger than nx_packet_ip_header. */
-    offset_base = (UINT)((ULONG)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_ip_header) - (ULONG)sizeof(NX_IPV6_HEADER));
+    offset_base = (UINT)((UINT32)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_ip_header) - (UINT32)sizeof(NX_IPV6_HEADER));
     header_length = header_length - (INT)offset;
 
     /* Sanity check; does the header length data go past the end of the end of the packet buffer? */

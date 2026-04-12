@@ -72,7 +72,7 @@ NX_CALLER_CHECKING_EXTERNS
 /**************************************************************************/
 UINT  _nxde_tcp_socket_peer_info_get(NX_TCP_SOCKET *socket_ptr,
                                      NXD_ADDRESS *peer_ip_address,
-                                     ULONG *peer_port)
+                                     UINT32 *peer_port)
 {
 
 UINT status;

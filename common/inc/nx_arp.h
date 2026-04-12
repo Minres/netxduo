@@ -64,12 +64,12 @@
         24          4           Target IP Address
  */
 
-#define NX_ARP_HARDWARE_TYPE   ((ULONG)0x0001)
-#define NX_ARP_PROTOCOL_TYPE   ((ULONG)0x0800)
-#define NX_ARP_HARDWARE_SIZE   ((ULONG)0x06)
-#define NX_ARP_PROTOCOL_SIZE   ((ULONG)0x04)
-#define NX_ARP_OPTION_REQUEST  ((ULONG)0x0001)
-#define NX_ARP_OPTION_RESPONSE ((ULONG)0x0002)
+#define NX_ARP_HARDWARE_TYPE   ((UINT32)0x0001)
+#define NX_ARP_PROTOCOL_TYPE   ((UINT32)0x0800)
+#define NX_ARP_HARDWARE_SIZE   ((UINT32)0x06)
+#define NX_ARP_PROTOCOL_SIZE   ((UINT32)0x04)
+#define NX_ARP_OPTION_REQUEST  ((UINT32)0x0001)
+#define NX_ARP_OPTION_RESPONSE ((UINT32)0x0002)
 #define NX_ARP_MESSAGE_SIZE    28
 
 
@@ -88,7 +88,7 @@ VOID _nx_arp_queue_process(NX_IP *ip_ptr);
 VOID _nx_arp_queue_send(NX_IP *ip_ptr, NX_ARP *arp_ptr);
 UINT _nx_arp_entry_allocate(NX_IP *ip_ptr, NX_ARP **arp_ptr, UINT is_static);
 /*lint -sem(_nx_arp_packet_send, 3p) nx_interface must not be NULL.  */
-VOID _nx_arp_packet_send(NX_IP *ip_ptr, ULONG destination_ip, NX_INTERFACE *nx_interface);
+VOID _nx_arp_packet_send(NX_IP *ip_ptr, UINT32 destination_ip, NX_INTERFACE *nx_interface);
 VOID _nx_arp_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_arp_packet_deferred_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_arp_periodic_update(NX_IP *ip_ptr);
@@ -99,38 +99,38 @@ UINT _nx_arp_interface_entries_delete(NX_IP *ip_ptr, UINT index);
 /* Define ARP function prototypes.  */
 
 UINT _nx_arp_dynamic_entries_invalidate(NX_IP *ip_ptr);
-UINT _nx_arp_dynamic_entry_set(NX_IP *ip_ptr, ULONG ip_address, ULONG physical_msw, ULONG physical_lsw);
-UINT _nx_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, ULONG arp_cache_size);
-UINT _nx_arp_entry_delete(NX_IP *ip_ptr, ULONG ip_address);
+UINT _nx_arp_dynamic_entry_set(NX_IP *ip_ptr, UINT32 ip_address, UINT32 physical_msw, UINT32 physical_lsw);
+UINT _nx_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, UINT32 arp_cache_size);
+UINT _nx_arp_entry_delete(NX_IP *ip_ptr, UINT32 ip_address);
 UINT _nx_arp_gratuitous_send(NX_IP *ip_ptr, VOID (*response_handler)(NX_IP *ip_ptr, NX_PACKET *packet_ptr));
-UINT _nx_arp_hardware_address_find(NX_IP *ip_ptr, ULONG ip_address,  ULONG *physical_msw, ULONG *physical_lsw);
-UINT _nx_arp_info_get(NX_IP *ip_ptr, ULONG *arp_requests_sent, ULONG *arp_requests_received,
-                      ULONG *arp_responses_sent, ULONG *arp_responses_received,
-                      ULONG *arp_dynamic_entries, ULONG *arp_static_entries,
-                      ULONG *arp_aged_entries, ULONG *arp_invalid_messages);
-UINT _nx_arp_ip_address_find(NX_IP *ip_ptr, ULONG *ip_address, ULONG physical_msw, ULONG physical_lsw);
+UINT _nx_arp_hardware_address_find(NX_IP *ip_ptr, UINT32 ip_address,  UINT32 *physical_msw, UINT32 *physical_lsw);
+UINT _nx_arp_info_get(NX_IP *ip_ptr, UINT32 *arp_requests_sent, UINT32 *arp_requests_received,
+                      UINT32 *arp_responses_sent, UINT32 *arp_responses_received,
+                      UINT32 *arp_dynamic_entries, UINT32 *arp_static_entries,
+                      UINT32 *arp_aged_entries, UINT32 *arp_invalid_messages);
+UINT _nx_arp_ip_address_find(NX_IP *ip_ptr, UINT32 *ip_address, UINT32 physical_msw, UINT32 physical_lsw);
 UINT _nx_arp_static_entries_delete(NX_IP *ip_ptr);
-UINT _nx_arp_static_entry_create(NX_IP *ip_ptr, ULONG ip_address,  ULONG physical_msw, ULONG physical_lsw);
-UINT _nx_arp_static_entry_delete(NX_IP *ip_ptr, ULONG ip_address,  ULONG physical_msw, ULONG physical_lsw);
-UINT _nx_arp_probe_send(NX_IP *ip_ptr, UINT interface_index, ULONG probe_address);
+UINT _nx_arp_static_entry_create(NX_IP *ip_ptr, UINT32 ip_address,  UINT32 physical_msw, UINT32 physical_lsw);
+UINT _nx_arp_static_entry_delete(NX_IP *ip_ptr, UINT32 ip_address,  UINT32 physical_msw, UINT32 physical_lsw);
+UINT _nx_arp_probe_send(NX_IP *ip_ptr, UINT interface_index, UINT32 probe_address);
 UINT _nx_arp_announce_send(NX_IP *ip_ptr, UINT interface_index);
 
 /* Define error checking shells for ARP services.  These are only referenced by the
    application.  */
 
 UINT _nxe_arp_dynamic_entries_invalidate(NX_IP *ip_ptr);
-UINT _nxe_arp_dynamic_entry_set(NX_IP *ip_ptr, ULONG ip_address, ULONG physical_msw, ULONG physical_lsw);
-UINT _nxe_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, ULONG arp_cache_size);
-UINT _nxe_arp_entry_delete(NX_IP *ip_ptr, ULONG ip_address);
+UINT _nxe_arp_dynamic_entry_set(NX_IP *ip_ptr, UINT32 ip_address, UINT32 physical_msw, UINT32 physical_lsw);
+UINT _nxe_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, UINT32 arp_cache_size);
+UINT _nxe_arp_entry_delete(NX_IP *ip_ptr, UINT32 ip_address);
 UINT _nxe_arp_gratuitous_send(NX_IP *ip_ptr, VOID (*response_handler)(NX_IP *ip_ptr, NX_PACKET *packet_ptr));
-UINT _nxe_arp_hardware_address_find(NX_IP *ip_ptr, ULONG ip_address, ULONG *physical_msw, ULONG *physical_lsw);
-UINT _nxe_arp_info_get(NX_IP *ip_ptr, ULONG *arp_requests_sent, ULONG *arp_requests_received,
-                       ULONG *arp_responses_sent, ULONG *arp_responses_received,
-                       ULONG *arp_dynamic_entries, ULONG *arp_static_entries,
-                       ULONG *arp_aged_entries, ULONG *arp_invalid_messages);
-UINT _nxe_arp_ip_address_find(NX_IP *ip_ptr, ULONG *ip_address, ULONG physical_msw, ULONG physical_lsw);
+UINT _nxe_arp_hardware_address_find(NX_IP *ip_ptr, UINT32 ip_address, UINT32 *physical_msw, UINT32 *physical_lsw);
+UINT _nxe_arp_info_get(NX_IP *ip_ptr, UINT32 *arp_requests_sent, UINT32 *arp_requests_received,
+                       UINT32 *arp_responses_sent, UINT32 *arp_responses_received,
+                       UINT32 *arp_dynamic_entries, UINT32 *arp_static_entries,
+                       UINT32 *arp_aged_entries, UINT32 *arp_invalid_messages);
+UINT _nxe_arp_ip_address_find(NX_IP *ip_ptr, UINT32 *ip_address, UINT32 physical_msw, UINT32 physical_lsw);
 UINT _nxe_arp_static_entries_delete(NX_IP *ip_ptr);
-UINT _nxe_arp_static_entry_create(NX_IP *ip_ptr, ULONG ip_address,  ULONG physical_msw, ULONG physical_lsw);
-UINT _nxe_arp_static_entry_delete(NX_IP *ip_ptr, ULONG ip_address, ULONG physical_msw, ULONG physical_lsw);
+UINT _nxe_arp_static_entry_create(NX_IP *ip_ptr, UINT32 ip_address,  UINT32 physical_msw, UINT32 physical_lsw);
+UINT _nxe_arp_static_entry_delete(NX_IP *ip_ptr, UINT32 ip_address, UINT32 physical_msw, UINT32 physical_lsw);
 #endif
 

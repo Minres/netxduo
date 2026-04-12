@@ -74,7 +74,7 @@
 /*    blocking calls it will slow down response time.                     */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_ipv6_router_lookup(NX_IP *ip_ptr, NX_INTERFACE *if_ptr, ULONG *router_address, void **nd_cache_entry)
+UINT  _nxd_ipv6_router_lookup(NX_IP *ip_ptr, NX_INTERFACE *if_ptr, UINT32 *router_address, void **nd_cache_entry)
 {
 
 UINT                          i;

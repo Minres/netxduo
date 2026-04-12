@@ -73,7 +73,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_process_record(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
-                                    ULONG record_offset, ULONG *bytes_processed, ULONG wait_option)
+                                    UINT32 record_offset, UINT32 *bytes_processed, UINT32 wait_option)
 {
 UINT                   status;
 UINT                   error_status;
@@ -84,8 +84,8 @@ UINT                   message_length;
 UCHAR                 *packet_data;
 NX_SECURE_TLS_SESSION *tls_session;
 UCHAR                  epoch_seq_num[8];
-ULONG                  seq_num_rewind[2];
-ULONG                  window_rewind;
+UINT32                  seq_num_rewind[2];
+UINT32                  window_rewind;
 NX_PACKET             *decrypted_packet;
 
     /* Basic state machine:
@@ -111,7 +111,7 @@ NX_PACKET             *decrypted_packet;
     if (status == NX_SECURE_TLS_OUT_OF_ORDER_MESSAGE || status == NX_SECURE_TLS_INVALID_EPOCH || status == NX_SECURE_TLS_REPEAT_MESSAGE_RECEIVED)
     {
         /* Received an out-of-order message. Ignore it. */
-        *bytes_processed = (ULONG)header_length + message_length;
+        *bytes_processed = (UINT32)header_length + message_length;
 
         /* Pretend this record never happened. */
         return(NX_CONTINUE);
@@ -126,12 +126,12 @@ NX_PACKET             *decrypted_packet;
     if (message_length == 0)
     {
         /* Update the number of bytes we processed. */
-        *bytes_processed = (ULONG)header_length + message_length;
+        *bytes_processed = (UINT32)header_length + message_length;
         return(NX_CONTINUE);
     }
 
-    if (((ULONG)(packet_ptr -> nx_packet_append_ptr) - (ULONG)(packet_ptr -> nx_packet_prepend_ptr)) <
-        ((ULONG)header_length + message_length))
+    if (((UINT32)(packet_ptr -> nx_packet_append_ptr) - (UINT32)(packet_ptr -> nx_packet_prepend_ptr)) <
+        ((UINT32)header_length + message_length))
     {
 
         /* Chained packet is not supported. */
@@ -144,7 +144,7 @@ NX_PACKET             *decrypted_packet;
     /*status = nx_packet_data_extract_offset(packet_ptr, header_length + record_offset, packet_data, message_length, &bytes_copied);*/
 
     /* Update the number of bytes we processed. */
-    *bytes_processed = (ULONG)header_length + message_length;
+    *bytes_processed = (UINT32)header_length + message_length;
 
     /* Check for active encryption of incoming records. If encrypted, decrypt before further processing. */
     if (tls_session -> nx_secure_tls_remote_session_active)
@@ -160,7 +160,7 @@ NX_PACKET             *decrypted_packet;
 
         /* Decrypt the record data. */
         status = _nx_secure_tls_record_payload_decrypt(tls_session, packet_ptr, header_length, message_length,
-                                                       &decrypted_packet, (ULONG *)epoch_seq_num, (UCHAR)message_type,
+                                                       &decrypted_packet, (UINT32 *)epoch_seq_num, (UCHAR)message_type,
                                                        wait_option);
 
         /* Check the MAC hash. */
@@ -201,7 +201,7 @@ NX_PACKET             *decrypted_packet;
             /* Copy data to original packet to keep IP header available. */
             /* Note: At the point of this memcpy the plaintext should never be larger than the cipher.
                Assertion check is to protect against future changes inadvertently causing an overflow. */
-            NX_ASSERT((ULONG)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr) >= message_length);
+            NX_ASSERT((UINT32)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr) >= message_length);
             NX_SECURE_MEMCPY(packet_ptr -> nx_packet_prepend_ptr, packet_data, message_length); /* Use case of memcpy is verified. */
             packet_data = packet_ptr -> nx_packet_prepend_ptr;
             packet_ptr -> nx_packet_append_ptr = packet_ptr -> nx_packet_prepend_ptr + message_length;

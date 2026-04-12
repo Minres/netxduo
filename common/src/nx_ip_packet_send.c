@@ -78,18 +78,18 @@
 /*                                                                        */
 /**************************************************************************/
 VOID  _nx_ip_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
-                         ULONG destination_ip, ULONG type_of_service, ULONG time_to_live,
-                         ULONG protocol, ULONG fragment, ULONG next_hop_address)
+                         UINT32 destination_ip, UINT32 type_of_service, UINT32 time_to_live,
+                         UINT32 protocol, UINT32 fragment, UINT32 next_hop_address)
 {
 
 #ifdef NX_IPSEC_ENABLE
 UINT            status = 0;
-ULONG           payload_size;
+UINT32           payload_size;
 USHORT          value;
 UCHAR           is_hw_processed = NX_FALSE;
 NX_IPV4_HEADER *ip_header_ptr;
-ULONG           checksum;
-ULONG           val;
+UINT32           checksum;
+UINT32           val;
 #endif /* NX_IPSEC_ENABLE */
 
 
@@ -116,7 +116,7 @@ ULONG           val;
         packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_IPV4_HEADER);
 
         /* Increase the packet length.  */
-        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_IPV4_HEADER);
+        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_IPV4_HEADER);
 
         /* Release the packet.  */
         _nx_packet_transmit_release(packet_ptr);
@@ -185,7 +185,7 @@ ULONG           val;
         }
 
         /* Now set the IPSec protocol. */
-        protocol = (ULONG)((((NX_IPSEC_SA *)packet_ptr -> nx_packet_ipsec_sa_ptr) -> nx_ipsec_sa_protocol) << 16);
+        protocol = (UINT32)((((NX_IPSEC_SA *)packet_ptr -> nx_packet_ipsec_sa_ptr) -> nx_ipsec_sa_protocol) << 16);
 
         /* Set the DF bit.
            Transport mode SAs have been defined to not carry fragments (IPv4 or IPv6),RFC 4301 page 66&88..*/
@@ -258,7 +258,7 @@ ULONG           val;
         ip_header_ptr -> nx_ip_header_word_0 &= 0xFFFF;
 
         /* Fill payload_size field.  */
-        ip_header_ptr -> nx_ip_header_word_0 |= (ULONG)(value << NX_SHIFT_BY_16) & 0xFFFF0000;
+        ip_header_ptr -> nx_ip_header_word_0 |= (UINT32)(value << NX_SHIFT_BY_16) & 0xFFFF0000;
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
         if (!(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_capability_flag & NX_INTERFACE_CAPABILITY_IPV4_TX_CHECKSUM))
@@ -274,11 +274,11 @@ ULONG           val;
                                                /* IPv4 header checksum does not use src/dest addresses */
                                                NULL, NULL);
 
-            val = (ULONG)(~checksum);
+            val = (UINT32)(~checksum);
             val = val & NX_LOWER_16_MASK;
 
             /* Convert to network byte order. */
-            NX_CHANGE_ULONG_ENDIAN(val);
+            NX_CHANGE_UINT32_ENDIAN(val);
 
             /* Now store the checksum in the IP header.  */
             ip_header_ptr -> nx_ip_header_word_2 =  ip_header_ptr -> nx_ip_header_word_2 | val;

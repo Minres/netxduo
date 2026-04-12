@@ -76,7 +76,7 @@ static UCHAR _nx_secure_tls_gen_keys_random[NX_SECURE_TLS_RANDOM_SIZE << 1];
 UINT _nx_secure_generate_master_secret(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, USHORT protocol_version,
                                        const NX_CRYPTO_METHOD *session_prf_method, NX_SECURE_TLS_KEY_MATERIAL *tls_key_material,
                                        UCHAR *pre_master_sec, UINT pre_master_sec_size, UCHAR *master_sec,
-                                       VOID *prf_metadata, ULONG prf_metadata_size)
+                                       VOID *prf_metadata, UINT32 prf_metadata_size)
 {
 ;
 UINT  status;

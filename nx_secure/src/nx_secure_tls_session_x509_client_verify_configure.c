@@ -91,7 +91,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_secure_tls_session_x509_client_verify_configure(NX_SECURE_TLS_SESSION *tls_session, UINT certs_number, VOID *certificate_buffer, ULONG buffer_size)
+UINT  _nx_secure_tls_session_x509_client_verify_configure(NX_SECURE_TLS_SESSION *tls_session, UINT certs_number, VOID *certificate_buffer, UINT32 buffer_size)
 {
 #ifndef NX_SECURE_DISABLE_X509
 UINT status = NX_SUCCESS;

@@ -80,7 +80,7 @@ INT                           packet_length;
 INT                           prefix_length;
 UINT                          i;
 UINT                          status;
-ULONG                         time_val;
+UINT32                         time_val;
 ND_CACHE_ENTRY               *nd_entry;
 NX_ICMPV6_HEADER             *header_ptr;
 NX_ICMPV6_RA                 *ra_ptr;
@@ -189,7 +189,7 @@ UINT                          interface_index;
         time_val = ra_ptr -> nx_icmpv6_ra_retrans_time;
 
         /* Byte swapping. */
-        NX_CHANGE_ULONG_ENDIAN(time_val);
+        NX_CHANGE_UINT32_ENDIAN(time_val);
 
         /* Yes; Reset our re-trans timer. */
         /* Conver timer ticks (in ms) into IP fast timeout value. */
@@ -211,7 +211,7 @@ UINT                          interface_index;
         time_val = ra_ptr -> nx_icmpv6_ra_reachable_time;
 
         /* Byte swapping. */
-        NX_CHANGE_ULONG_ENDIAN(time_val);
+        NX_CHANGE_UINT32_ENDIAN(time_val);
 
         /* Convert reachable timer to seconds. */
         ip_ptr -> nx_ipv6_reachable_timer = time_val / 1000;
@@ -238,7 +238,7 @@ UINT                          interface_index;
     /* (2) Process option field */
     packet_length = (INT)packet_ptr -> nx_packet_length - (INT)sizeof(NX_ICMPV6_RA);
 
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(ra_ptr, sizeof(NX_ICMPV6_RA));
 
     /* Going through the rest of the packet options. */
@@ -272,7 +272,7 @@ UINT                          interface_index;
             NX_IPV6_ADDRESS_CHANGE_ENDIAN(prefix_ptr -> nx_icmpv6_option_prefix);
 
             /* Is this a link local address (prefix)?  */
-            if ((prefix_ptr -> nx_icmpv6_option_prefix[0] & (ULONG)0xFFC00000) == (ULONG)0xFE800000)
+            if ((prefix_ptr -> nx_icmpv6_option_prefix[0] & (UINT32)0xFFC00000) == (UINT32)0xFE800000)
             {
 
                 /* Yes.  Ignore (skip) this option, as per  RFC 4861 6.3.4
@@ -280,7 +280,7 @@ UINT                          interface_index;
                 packet_length -= (option_ptr -> nx_icmpv6_option_length << 3);
 
                 /* Get the next option. */
-                /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+                /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
                 option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, ((option_ptr -> nx_icmpv6_option_length) << 3));
 
                 continue;
@@ -288,8 +288,8 @@ UINT                          interface_index;
 
             /* So far the prefix information is valid.
                So take care of the endian-ness. */
-            NX_CHANGE_ULONG_ENDIAN(prefix_ptr -> nx_icmpv6_option_prefix_valid_lifetime);
-            NX_CHANGE_ULONG_ENDIAN(prefix_ptr -> nx_icmpv6_option_prefix_preferred_lifetime);
+            NX_CHANGE_UINT32_ENDIAN(prefix_ptr -> nx_icmpv6_option_prefix_valid_lifetime);
+            NX_CHANGE_UINT32_ENDIAN(prefix_ptr -> nx_icmpv6_option_prefix_preferred_lifetime);
 
             /* Does the prefix have a valid lifetime? */
             if (prefix_ptr -> nx_icmpv6_option_prefix_preferred_lifetime > prefix_ptr -> nx_icmpv6_option_prefix_valid_lifetime)
@@ -299,7 +299,7 @@ UINT                          interface_index;
                 packet_length -= (option_ptr -> nx_icmpv6_option_length << 3);
 
                 /* Get a pointer to the next option. Abort processing the current option any further. */
-                /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+                /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
                 option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, ((option_ptr -> nx_icmpv6_option_length) << 3));
 
                 continue;
@@ -328,7 +328,7 @@ UINT                          interface_index;
                     /* This prefix is onlink, and valid_lifetime is non-zero.
                        So add the prefix to our list. RFC 4861 6.3.4 p55.*/
                     status = _nx_ipv6_prefix_list_add_entry(ip_ptr, prefix_ptr -> nx_icmpv6_option_prefix,
-                                                            (ULONG)prefix_length, prefix_ptr -> nx_icmpv6_option_prefix_valid_lifetime);
+                                                            (UINT32)prefix_length, prefix_ptr -> nx_icmpv6_option_prefix_valid_lifetime);
 
                     /* Check for "A" bit. */
                     if ((prefix_ptr -> nx_icmpv6_option_prefix_flag & 0x40) &&
@@ -339,8 +339,8 @@ UINT                          interface_index;
 
                     /* Set first_unused to be an invalid entry. */
                     UINT              first_unused = NX_MAX_IPV6_ADDRESSES;
-                    ULONG             word2, word3;
-                    ULONG             address[4];
+                    UINT32             word2, word3;
+                    UINT32             address[4];
                     NXD_IPV6_ADDRESS *ipv6_address;
 
                         /* Find an entry that shares the same prefix. */
@@ -451,18 +451,18 @@ UINT                          interface_index;
             {
             /* This entry already exists.  If the mac address is the same, do not update the entry.
                Otherwise, update the entry and set the state to STALE (RFC2461 7.2.3) */
-            ULONG mac_msw, mac_lsw, new_msw, new_lsw;
+            UINT32 mac_msw, mac_lsw, new_msw, new_lsw;
 
             /*lint -e{928} suppress cast from pointer to pointer, since it is necessary  */
             UCHAR *new_mac = (UCHAR *)&option_ptr -> nx_icmpv6_option_data;
 
                 /* build two MAC addresses for comparison. */
                 /*lint --e{613} -e{644} suppress possible use of null pointer, since "nd_entry" was set to none NULL by _nx_nd_cache_find_entry. */
-                mac_msw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
-                mac_lsw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
-                    ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
-                new_msw = ((ULONG)(new_mac[0]) << 8) | (new_mac[1]);
-                new_lsw = ((ULONG)(new_mac[2]) << 24) | ((ULONG)(new_mac[3]) << 16) | ((ULONG)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
+                mac_msw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
+                mac_lsw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
+                    ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
+                new_msw = ((UINT32)(new_mac[0]) << 8) | (new_mac[1]);
+                new_lsw = ((UINT32)(new_mac[2]) << 24) | ((UINT32)(new_mac[3]) << 16) | ((UINT32)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
                 if ((mac_msw != new_msw) || (mac_lsw != new_lsw))
                 {
 
@@ -507,7 +507,7 @@ UINT                          interface_index;
 
             mtu_size = mtu_ptr -> nx_icmpv6_option_mtu_path_mtu;
 
-            NX_CHANGE_ULONG_ENDIAN(mtu_size);
+            NX_CHANGE_UINT32_ENDIAN(mtu_size);
 
 
             /* Make sure the MTU size does not exceed the link MTU size. */
@@ -528,7 +528,7 @@ UINT                          interface_index;
         packet_length -= (option_ptr -> nx_icmpv6_option_length << 3);
 
         /* Get a pointer to the next option. */
-        /*lint -e{923} suppress cast between pointer and ULONG , since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32 , since it is necessary  */
         option_ptr  = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, ((option_ptr -> nx_icmpv6_option_length) << 3));
     }
 

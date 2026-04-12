@@ -65,7 +65,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_session_time_function_set(NX_SECURE_TLS_SESSION *tls_session,
-                                              ULONG (*time_func_ptr)(void))
+                                              UINT32 (*time_func_ptr)(void))
 {
     /* Set the function pointer in the TLS session. */
     tls_session -> nx_secure_tls_session_time_function = time_func_ptr;

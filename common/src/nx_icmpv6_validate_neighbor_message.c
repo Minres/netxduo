@@ -75,8 +75,8 @@ NX_IPV6_HEADER   *ipv6_header;
 NX_ICMPV6_OPTION *option_ptr;
 UINT              option_length;
 UINT              option_check;
-ULONG             source_address_type;
-ULONG             dest_address_type;
+UINT32             source_address_type;
+UINT32             dest_address_type;
 
 
     /* Points to the IPv6 header. */
@@ -113,7 +113,7 @@ ULONG             dest_address_type;
     }
 
     /* Target Address must not be a multicast address. */
-    if ((nd_header_ptr -> nx_icmpv6_nd_targetAddress[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000)
+    if ((nd_header_ptr -> nx_icmpv6_nd_targetAddress[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000)
     {
         return(NX_NOT_SUCCESSFUL);
     }
@@ -149,7 +149,7 @@ ULONG             dest_address_type;
 
         /* If the IP Destination Address is a multicast address, the
            Solicted flag must be zero. */
-        if (((ipv6_header -> nx_ip_header_destination_ip[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000) &&
+        if (((ipv6_header -> nx_ip_header_destination_ip[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000) &&
             nd_header_ptr -> nx_icmpv6_nd_flag & 0x40000000)
         {
 
@@ -158,7 +158,7 @@ ULONG             dest_address_type;
     }
 
     /* Locate the option field. */
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     option_ptr    = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(nd_header_ptr, sizeof(NX_ICMPV6_ND));
     option_length = (UINT)(packet_ptr -> nx_packet_length - sizeof(NX_ICMPV6_ND));
 

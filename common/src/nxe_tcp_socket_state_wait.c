@@ -69,7 +69,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_socket_state_wait(NX_TCP_SOCKET *socket_ptr, UINT desired_state, ULONG wait_option)
+UINT  _nxe_tcp_socket_state_wait(NX_TCP_SOCKET *socket_ptr, UINT desired_state, UINT32 wait_option)
 {
 
 UINT status;

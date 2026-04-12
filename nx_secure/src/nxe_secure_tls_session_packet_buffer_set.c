@@ -68,7 +68,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_secure_tls_session_packet_buffer_set(NX_SECURE_TLS_SESSION *session_ptr,
-                                                UCHAR *buffer_ptr, ULONG buffer_size)
+                                                UCHAR *buffer_ptr, UINT32 buffer_size)
 {
 UINT status;
 

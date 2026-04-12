@@ -24,7 +24,7 @@
 
 #include "nx_secure_x509.h"
 
-static VOID _nx_secure_asn1_parse_unsigned_integer(const UCHAR *data, ULONG length,
+static VOID _nx_secure_asn1_parse_unsigned_integer(const UCHAR *data, UINT32 length,
                                                    const UCHAR **target, USHORT *target_length);
 
 /**************************************************************************/
@@ -71,10 +71,10 @@ UINT _nx_secure_x509_pkcs1_rsa_private_key_parse(const UCHAR *buffer, UINT lengt
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
-ULONG        seq_length;
+UINT32        header_length;
+UINT32        seq_length;
 UINT         status;
 USHORT       version;
 
@@ -109,7 +109,7 @@ USHORT       version;
     /* }                                                                       */
 
     /*  Parse a TLV block and get information to continue parsing. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -330,7 +330,7 @@ USHORT       version;
 /*                                          Parse RSA private key field   */
 /*                                                                        */
 /**************************************************************************/
-static VOID _nx_secure_asn1_parse_unsigned_integer(const UCHAR *data, ULONG length,
+static VOID _nx_secure_asn1_parse_unsigned_integer(const UCHAR *data, UINT32 length,
                                                    const UCHAR **target, USHORT *target_length)
 {
 UINT offset;

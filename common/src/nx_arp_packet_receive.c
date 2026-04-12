@@ -72,13 +72,13 @@
 VOID  _nx_arp_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 {
 
-ULONG        *message_ptr;
-ULONG         sender_physical_msw;
-ULONG         sender_physical_lsw;
-ULONG         sender_ip_address;
-ULONG         target_ip_address;
-ULONG         message_type;
-ULONG         index;
+UINT32        *message_ptr;
+UINT32         sender_physical_msw;
+UINT32         sender_physical_lsw;
+UINT32         sender_ip_address;
+UINT32         target_ip_address;
+UINT32         message_type;
+UINT32         index;
 UCHAR         consumed = NX_FALSE;
 NX_ARP       *arp_ptr;
 NX_IP_DRIVER  driver_request;
@@ -107,19 +107,19 @@ NX_INTERFACE *interface_ptr;
 
     /* Setup a pointer to the ARP message.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    message_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    message_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the ARP message.  */
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 1));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 2));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 3));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 4));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 5));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 6));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 1));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 2));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 3));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 4));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 5));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 6));
 
     /* Pickup the ARP message type.  */
-    message_type =  (ULONG)(*(message_ptr + 1) & 0xFFFF);
+    message_type =  (UINT32)(*(message_ptr + 1) & 0xFFFF);
 
     /* Determine if the ARP message type is valid.  */
     if ((message_type != NX_ARP_OPTION_REQUEST) && (message_type != NX_ARP_OPTION_RESPONSE))
@@ -240,22 +240,22 @@ NX_INTERFACE *interface_ptr;
             *(message_ptr + 1) =  (*(message_ptr + 1) & 0xFFFF0000) | NX_ARP_OPTION_RESPONSE;
 
             /* Now fill in the new source and destination information for the ARP response.  */
-            *(message_ptr + 2) =  (ULONG)(packet_ptr -> nx_packet_ip_interface -> nx_interface_physical_address_msw << 16) |
+            *(message_ptr + 2) =  (UINT32)(packet_ptr -> nx_packet_ip_interface -> nx_interface_physical_address_msw << 16) |
                 (packet_ptr -> nx_packet_ip_interface -> nx_interface_physical_address_lsw >> 16);
-            *(message_ptr + 3) =  (ULONG)(packet_ptr -> nx_packet_ip_interface -> nx_interface_physical_address_lsw << 16) |
+            *(message_ptr + 3) =  (UINT32)(packet_ptr -> nx_packet_ip_interface -> nx_interface_physical_address_lsw << 16) |
                 (packet_ptr -> nx_packet_ip_interface -> nx_interface_ip_address >> 16);
-            *(message_ptr + 4) =  (ULONG)(packet_ptr -> nx_packet_ip_interface -> nx_interface_ip_address << 16);
-            *(message_ptr + 5) =  (ULONG)0;
-            *(message_ptr + 6) =  (ULONG)0;
+            *(message_ptr + 4) =  (UINT32)(packet_ptr -> nx_packet_ip_interface -> nx_interface_ip_address << 16);
+            *(message_ptr + 5) =  (UINT32)0;
+            *(message_ptr + 6) =  (UINT32)0;
 
             /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
                swap the endian of the ARP message.  */
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 1));
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 2));
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 3));
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 4));
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 5));
-            NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 6));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 1));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 2));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 3));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 4));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 5));
+            NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 6));
 
             /* Make sure the packet length is set properly.  */
             packet_ptr -> nx_packet_length =  NX_ARP_MESSAGE_SIZE;
@@ -314,22 +314,22 @@ NX_INTERFACE *interface_ptr;
 
 
         /* Now fill in the new source and destination information for the ARP response.  */
-        *(message_ptr + 2) =  (ULONG)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_physical_address_msw << 16) |
+        *(message_ptr + 2) =  (UINT32)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_physical_address_msw << 16) |
             (packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_physical_address_lsw >> 16);
-        *(message_ptr + 3) =  (ULONG)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_physical_address_lsw << 16) |
+        *(message_ptr + 3) =  (UINT32)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_physical_address_lsw << 16) |
             (packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_address >> 16);
-        *(message_ptr + 4) =  (ULONG)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_address << 16) | sender_physical_msw;
-        *(message_ptr + 5) =  (ULONG)sender_physical_lsw;
-        *(message_ptr + 6) =  (ULONG)sender_ip_address;
+        *(message_ptr + 4) =  (UINT32)(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_address << 16) | sender_physical_msw;
+        *(message_ptr + 5) =  (UINT32)sender_physical_lsw;
+        *(message_ptr + 6) =  (UINT32)sender_ip_address;
 
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
            swap the endian of the ARP message.  */
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 1));
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 2));
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 3));
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 4));
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 5));
-        NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 6));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 1));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 2));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 3));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 4));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 5));
+        NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 6));
 
         /* Make sure the packet length is set properly.  */
         packet_ptr -> nx_packet_length =  NX_ARP_MESSAGE_SIZE;

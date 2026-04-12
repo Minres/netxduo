@@ -92,19 +92,19 @@ UINT nx_azure_iot_log(UCHAR *type_ptr, UINT type_len, UCHAR *msg_ptr, UINT msg_l
 /* Define AZ IoT SDK event flags. These events are processed by the Cloud thread.  */
 
 /* Provisioning Client Connect event */
-#define NX_AZURE_IOT_PROVISIONING_CLIENT_CONNECT_EVENT    ((ULONG)0x00000001)
+#define NX_AZURE_IOT_PROVISIONING_CLIENT_CONNECT_EVENT    ((UINT32)0x00000001)
 
 /* Provisioning Client Subscribe event */
-#define NX_AZURE_IOT_PROVISIONING_CLIENT_SUBSCRIBE_EVENT  ((ULONG)0x00000002)
+#define NX_AZURE_IOT_PROVISIONING_CLIENT_SUBSCRIBE_EVENT  ((UINT32)0x00000002)
 
 /* Provisioning Client Request event */
-#define NX_AZURE_IOT_PROVISIONING_CLIENT_REQUEST_EVENT    ((ULONG)0x00000004)
+#define NX_AZURE_IOT_PROVISIONING_CLIENT_REQUEST_EVENT    ((UINT32)0x00000004)
 
 /* Provisioning Client Response event */
-#define NX_AZURE_IOT_PROVISIONING_CLIENT_RESPONSE_EVENT   ((ULONG)0x00000008)
+#define NX_AZURE_IOT_PROVISIONING_CLIENT_RESPONSE_EVENT   ((UINT32)0x00000008)
 
 /* Provisioning Client Disconnect event */
-#define NX_AZURE_IOT_PROVISIONING_CLIENT_DISCONNECT_EVENT ((ULONG)0x00000010)
+#define NX_AZURE_IOT_PROVISIONING_CLIENT_DISCONNECT_EVENT ((UINT32)0x00000010)
 
 /* API return values.  */
 /**< The operation was successful. */
@@ -210,9 +210,9 @@ typedef struct NX_AZURE_IOT_STRUCT
     TX_MUTEX                              *nx_azure_iot_mutex_ptr;
     VOID                                 (*nx_azure_iot_provisioning_client_event_process)(
                                           struct NX_AZURE_IOT_STRUCT *nx_azure_iot_ptr,
-                                          ULONG common_events, ULONG module_own_events);
+                                          UINT32 common_events, UINT32 module_own_events);
     struct NX_AZURE_IOT_RESOURCE_STRUCT   *nx_azure_iot_resource_list_header;
-    UINT                                 (*nx_azure_iot_unix_time_get)(ULONG *unix_time);
+    UINT                                 (*nx_azure_iot_unix_time_get)(UINT32 *unix_time);
 } NX_AZURE_IOT;
 
 typedef struct NX_AZURE_IOT_THREAD_STRUCT
@@ -251,7 +251,7 @@ typedef struct NX_AZURE_IOT_THREAD_STRUCT
 UINT nx_azure_iot_create(NX_AZURE_IOT *nx_azure_iot_ptr, const UCHAR *name_ptr,
                          NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, NX_DNS *dns_ptr,
                          VOID *stack_memory_ptr, UINT stack_memory_size,
-                         UINT priority, UINT (*unix_time_callback)(ULONG *unix_time));
+                         UINT priority, UINT (*unix_time_callback)(UINT32 *unix_time));
 
 /**
  * @brief Shutdown and cleanup the Azure IoT subsystem.
@@ -270,12 +270,12 @@ UINT nx_azure_iot_delete(NX_AZURE_IOT *nx_azure_iot_ptr);
  * @brief Get unixtime
  *
  * @param[in] nx_azure_iot_ptr A pointer to a #NX_AZURE_IOT.
- * @param[out] unix_time Pointer to `ULONG` where unixtime is returned.
+ * @param[out] unix_time Pointer to `UINT32` where unixtime is returned.
  * @return A `UINT` with the result of the API.
  *   @retval #NX_AZURE_IOT_SUCCESS Successfully return unix time.
  *   @retval #NX_AZURE_IOT_INVALID_PARAMETER Fail to get unix time due to invalid parameter.
  */
-UINT nx_azure_iot_unix_time_get(NX_AZURE_IOT *nx_azure_iot_ptr, ULONG *unix_time);
+UINT nx_azure_iot_unix_time_get(NX_AZURE_IOT *nx_azure_iot_ptr, UINT32 *unix_time);
 
 /**
  * @brief Initialize logging

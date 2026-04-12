@@ -68,7 +68,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, ULONG arp_cache_size)
+UINT  _nxe_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, UINT32 arp_cache_size)
 {
 
 #ifndef NX_DISABLE_IPV4

@@ -68,8 +68,8 @@
 /*    _nx_arp_static_entries_delete         Delete all static entries     */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_static_entry_delete(NX_IP *ip_ptr, ULONG ip_address,
-                                  ULONG physical_msw, ULONG physical_lsw)
+UINT  _nx_arp_static_entry_delete(NX_IP *ip_ptr, UINT32 ip_address,
+                                  UINT32 physical_msw, UINT32 physical_lsw)
 {
 
 #ifndef NX_DISABLE_IPV4

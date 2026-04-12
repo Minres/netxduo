@@ -65,22 +65,22 @@
 /* Define the MD5 complex FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.  */
 
 #define FF(a, b, c, d, x, s, ac)        { \
-                                            (a) += F ((b), (c), (d)) + (x) + (ULONG)(ac); \
+                                            (a) += F ((b), (c), (d)) + (x) + (UINT32)(ac); \
                                             (a) = LEFT_SHIFT_CIRCULAR ((a), (s)); \
                                             (a) += (b); \
                                         }
 #define GG(a, b, c, d, x, s, ac)        { \
-                                            (a) += G ((b), (c), (d)) + (x) + (ULONG)(ac); \
+                                            (a) += G ((b), (c), (d)) + (x) + (UINT32)(ac); \
                                             (a) = LEFT_SHIFT_CIRCULAR ((a), (s)); \
                                             (a) += (b); \
                                         }
 #define HH(a, b, c, d, x, s, ac)        { \
-                                            (a) += H ((b), (c), (d)) + (x) + (ULONG)(ac); \
+                                            (a) += H ((b), (c), (d)) + (x) + (UINT32)(ac); \
                                             (a) = LEFT_SHIFT_CIRCULAR ((a), (s)); \
                                             (a) += (b); \
                                         }
 #define II(a, b, c, d, x, s, ac)        { \
-                                            (a) += I ((b), (c), (d)) + (x) + (ULONG)(ac); \
+                                            (a) += I ((b), (c), (d)) + (x) + (UINT32)(ac); \
                                             (a) = LEFT_SHIFT_CIRCULAR ((a), (s)); \
                                             (a) += (b); \
                                         }
@@ -184,8 +184,8 @@ UINT  _nx_md5_initialize(NX_MD5 *context)
 UINT  _nx_md5_update(NX_MD5 *context, UCHAR *input_ptr, UINT input_length)
 {
 
-ULONG   current_bytes;
-ULONG   needed_fill_bytes;
+UINT32   current_bytes;
+UINT32   needed_fill_bytes;
 
 
     /* Determine if the context is non-null.  */
@@ -303,8 +303,8 @@ UINT  _nx_md5_digest_calculate(NX_MD5 *context, UCHAR digest[16])
 {
 
 UCHAR   bit_count_string[8];
-ULONG   current_byte_count;
-ULONG   padding_bytes;
+UINT32   current_byte_count;
+UINT32   padding_bytes;
 
 
     /* Move the lower portion of the bit count into the array.  */
@@ -390,8 +390,8 @@ VOID  _nx_md5_process_buffer(NX_MD5 *context, UCHAR buffer[64])
 {
 
 UINT    i, j;
-ULONG   a, b, c, d;
-ULONG   x[16];
+UINT32   a, b, c, d;
+UINT32   x[16];
 
 
     /* Initialize the state variables.  */
@@ -400,13 +400,13 @@ ULONG   x[16];
     c =  context -> nx_md5_states[2];
     d =  context -> nx_md5_states[3];
 
-    /* Now, setup the x array of ULONGs for fast processing.  */
+    /* Now, setup the x array of UINT32s for fast processing.  */
     j =  0;
     for (i = 0; i < 16; i++)
     {
 
         /* Convert 4 bytes into one 32-bit word.  */
-        x[i] =  ((ULONG) buffer[j]) | (((ULONG) buffer[j+1]) << 8) | (((ULONG) buffer[j+2]) << 16) | (((ULONG) buffer[j+3]) << 24);
+        x[i] =  ((UINT32) buffer[j]) | (((UINT32) buffer[j+1]) << 8) | (((UINT32) buffer[j+2]) << 16) | (((UINT32) buffer[j+3]) << 24);
 
         /* Move to next position in source array.  */
         j =  j + 4;

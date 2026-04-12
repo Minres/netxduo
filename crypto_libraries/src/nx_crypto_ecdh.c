@@ -68,9 +68,9 @@
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_key_pair_import(NX_CRYPTO_ECDH  *ecdh_ptr,
                                                     NX_CRYPTO_EC *curve,
                                                     UCHAR  *local_private_key_ptr,
-                                                    ULONG   local_private_key_len,
+                                                    UINT32   local_private_key_len,
                                                     UCHAR  *local_public_key_ptr,
-                                                    ULONG   local_public_key_len)
+                                                    UINT32   local_public_key_len)
 {
 UINT public_key_len;
 NX_CRYPTO_HUGE_NUMBER private_key;
@@ -140,8 +140,8 @@ NX_CRYPTO_HUGE_NUMBER private_key;
 /**************************************************************************/
 UINT _nx_crypto_ecdh_private_key_export(NX_CRYPTO_ECDH  *ecdh_ptr,
                                         UCHAR  *local_private_key_ptr,
-                                        ULONG   local_private_key_len,
-                                        ULONG  *actual_local_private_key_len)
+                                        UINT32   local_private_key_len,
+                                        UINT32  *actual_local_private_key_len)
 {
 UINT                  status;
 UINT                  key_size;
@@ -229,8 +229,8 @@ NX_CRYPTO_HUGE_NUMBER private_key;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_setup(NX_CRYPTO_ECDH  *ecdh_ptr,
                                           UCHAR  *local_public_key_ptr,
-                                          ULONG   local_public_key_len,
-                                          ULONG  *actual_local_public_key_len,
+                                          UINT32   local_public_key_len,
+                                          UINT32  *actual_local_public_key_len,
                                           NX_CRYPTO_EC *curve,
                                           HN_UBASE *scratch_buf_ptr)
 {
@@ -329,10 +329,10 @@ NX_CRYPTO_EC_POINT    public_key;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_compute_secret(NX_CRYPTO_ECDH  *ecdh_ptr,
                                                    UCHAR  *share_secret_key_ptr,
-                                                   ULONG   share_secret_key_len_ptr,
-                                                   ULONG  *actual_share_secret_key_len,
+                                                   UINT32   share_secret_key_len_ptr,
+                                                   UINT32  *actual_share_secret_key_len,
                                                    UCHAR  *remote_public_key,
-                                                   ULONG   remote_public_key_len,
+                                                   UINT32   remote_public_key_len,
                                                    HN_UBASE *scratch_buf_ptr)
 {
 UINT                  status;
@@ -450,7 +450,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_ecdh_init(struct  NX_CRYPTO_METHOD_STRUCT
                                                  UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                  VOID  **handle,
                                                  VOID  *crypto_metadata,
-                                                 ULONG crypto_metadata_size)
+                                                 UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_STATE_CHECK
@@ -465,7 +465,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_ecdh_init(struct  NX_CRYPTO_METHOD_STRUCT
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -578,10 +578,10 @@ NX_CRYPTO_KEEP UINT _nx_crypto_method_ecdh_operation(UINT op,
                                                      VOID *handle,
                                                      struct NX_CRYPTO_METHOD_STRUCT *method,
                                                      UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
-                                                     UCHAR *input, ULONG input_length_in_byte,
+                                                     UCHAR *input, UINT32 input_length_in_byte,
                                                      UCHAR *iv_ptr,
-                                                     UCHAR *output, ULONG output_length_in_byte,
-                                                     VOID *crypto_metadata, ULONG crypto_metadata_size,
+                                                     UCHAR *output, UINT32 output_length_in_byte,
+                                                     VOID *crypto_metadata, UINT32 crypto_metadata_size,
                                                      VOID *packet_ptr,
                                                      VOID (*nx_crypto_hw_process_callback)(VOID *, UINT))
 {
@@ -599,7 +599,7 @@ NX_CRYPTO_EXTENDED_OUTPUT
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -798,9 +798,9 @@ NX_CRYPTO_EXTENDED_OUTPUT
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_key_pair_import_x25519_448(NX_CRYPTO_ECDH *ecdh_ptr,
                                                                NX_CRYPTO_EC *curve,
                                                                UCHAR *local_private_key_ptr,
-                                                               ULONG  local_private_key_len,
+                                                               UINT32  local_private_key_len,
                                                                UCHAR *local_public_key_ptr,
-                                                               ULONG  local_public_key_len)
+                                                               UINT32  local_public_key_len)
 {
 UINT key_len;
 
@@ -865,8 +865,8 @@ UINT key_len;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_private_key_export_x25519_448(NX_CRYPTO_ECDH *ecdh_ptr,
                                                                   UCHAR *local_private_key_ptr,
-                                                                  ULONG  local_private_key_len,
-                                                                  ULONG *actual_local_private_key_len)
+                                                                  UINT32  local_private_key_len,
+                                                                  UINT32 *actual_local_private_key_len)
 {
 UINT          clen;
 NX_CRYPTO_EC *curve;
@@ -941,8 +941,8 @@ NX_CRYPTO_EC *curve;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_setup_x25519_448(NX_CRYPTO_ECDH *ecdh_ptr,
                                                      UCHAR *local_public_key_ptr,
-                                                     ULONG  local_public_key_len,
-                                                     ULONG *actual_local_public_key_len,
+                                                     UINT32  local_public_key_len,
+                                                     UINT32 *actual_local_public_key_len,
                                                      NX_CRYPTO_EC *curve,
                                                      HN_UBASE *scratch_buf_ptr)
 {
@@ -1039,10 +1039,10 @@ NX_CRYPTO_EC_POINT    public_key;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecdh_compute_secret_x25519_448(NX_CRYPTO_ECDH *ecdh_ptr,
                                                               UCHAR *share_secret_key_ptr,
-                                                              ULONG  share_secret_key_len_ptr,
-                                                              ULONG *actual_share_secret_key_len,
+                                                              UINT32  share_secret_key_len_ptr,
+                                                              UINT32 *actual_share_secret_key_len,
                                                               UCHAR *remote_public_key,
-                                                              ULONG  remote_public_key_len,
+                                                              UINT32  remote_public_key_len,
                                                               HN_UBASE *scratch_buf_ptr)
 {
 UINT                  status;

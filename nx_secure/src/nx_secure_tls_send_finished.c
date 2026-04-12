@@ -79,8 +79,8 @@ UINT             is_server;
         /* Generate the TLS 1.3-specific finished data. */
         status = _nx_secure_tls_1_3_finished_hash_generate(tls_session, is_server, &hash_size,
                                                            send_packet -> nx_packet_append_ptr,
-                                                           ((ULONG)(send_packet -> nx_packet_data_end) -
-                                                            (ULONG)(send_packet -> nx_packet_append_ptr)));
+                                                           ((UINT32)(send_packet -> nx_packet_data_end) -
+                                                            (UINT32)(send_packet -> nx_packet_append_ptr)));
     }
     else
 #endif /* (NX_SECURE_TLS_TLS_1_3_ENABLED) */
@@ -95,7 +95,7 @@ UINT             is_server;
             finished_label = (UCHAR *)"client finished";
         }
 
-        if (NX_SECURE_TLS_FINISHED_HASH_SIZE > ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)))
+        if (NX_SECURE_TLS_FINISHED_HASH_SIZE > ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)))
         {
             
             /* Packet buffer too small. */

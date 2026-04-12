@@ -79,8 +79,8 @@
 typedef struct NX_MD5_STRUCT
 {
 
-    ULONG       nx_md5_states[4];                       /* Contains each state (A,B,C,D)    */
-    ULONG       nx_md5_bit_count[2];                    /* Contains the 64-bit total bit    */ 
+    UINT32       nx_md5_states[4];                       /* Contains each state (A,B,C,D)    */
+    UINT32       nx_md5_bit_count[2];                    /* Contains the 64-bit total bit    */ 
                                                         /*   count, where index 0 holds the */ 
                                                         /*   least significant bit count and*/ 
                                                         /*   index 1 contains the most      */ 

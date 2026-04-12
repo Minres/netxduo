@@ -105,7 +105,7 @@ typedef  struct NX_IPV4_HEADER_STRUCT
                                                   0x02 -> Minimize Monetary Cost
             bits 15-0   IP Datagram length in bytes
      */
-    ULONG nx_ip_header_word_0;
+    UINT32 nx_ip_header_word_0;
 
     /* Define the second word of the IP header.  This word contains
        the following information:
@@ -117,7 +117,7 @@ typedef  struct NX_IPV4_HEADER_STRUCT
                             bit  13         More Fragments
                             bits 12-0       (Fragment offset)/8
      */
-    ULONG nx_ip_header_word_1;
+    UINT32 nx_ip_header_word_1;
 
     /* Define the third word of the IP header.  This word contains
        the following information:
@@ -132,23 +132,23 @@ typedef  struct NX_IPV4_HEADER_STRUCT
                                             0x11 -> UDP  Messages
             bits 15-0   IP Checksum
      */
-    ULONG nx_ip_header_word_2;
+    UINT32 nx_ip_header_word_2;
 
     /* Define the source IP address.  */
-    ULONG nx_ip_header_source_ip;
+    UINT32 nx_ip_header_source_ip;
 
     /* Define the destination IP address.  */
-    ULONG nx_ip_header_destination_ip;
+    UINT32 nx_ip_header_destination_ip;
 } NX_IPV4_HEADER;
 
 /* Define IPv4 internal function prototypes.  */
 VOID  _nx_ip_forward_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
-VOID  _nx_ip_fragment_forward_packet(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG destination_ip, ULONG fragment, ULONG next_hop_address);
-void  _nx_ip_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG destination_ip, ULONG type_of_service, ULONG time_to_live, ULONG protocol, ULONG fragment, ULONG next_hop_address);
-UINT  _nx_ip_header_add(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG source_ip, ULONG destination_ip,
-                        ULONG type_of_service, ULONG time_to_live, ULONG protocol, ULONG fragment);
-VOID  _nx_ip_driver_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG destination_ip, ULONG fragment, ULONG next_hop_address);
-ULONG _nx_ip_route_find(NX_IP *ip_ptr, ULONG destination_address, NX_INTERFACE **nx_ip_interface, ULONG *next_hop_address);
+VOID  _nx_ip_fragment_forward_packet(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 destination_ip, UINT32 fragment, UINT32 next_hop_address);
+void  _nx_ip_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 destination_ip, UINT32 type_of_service, UINT32 time_to_live, UINT32 protocol, UINT32 fragment, UINT32 next_hop_address);
+UINT  _nx_ip_header_add(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 source_ip, UINT32 destination_ip,
+                        UINT32 type_of_service, UINT32 time_to_live, UINT32 protocol, UINT32 fragment);
+VOID  _nx_ip_driver_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 destination_ip, UINT32 fragment, UINT32 next_hop_address);
+UINT32 _nx_ip_route_find(NX_IP *ip_ptr, UINT32 destination_address, NX_INTERFACE **nx_ip_interface, UINT32 *next_hop_address);
 VOID  _nx_ipv4_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 UINT  _nx_ipv4_option_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 #endif /* NX_DISABLE_IPV4 */
@@ -156,43 +156,43 @@ UINT  _nx_ipv4_option_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 /* Define IPv4 function prototypes.  */
 
 UINT _nx_ip_address_change_notify(NX_IP *ip_ptr, VOID (*ip_address_change_notify)(NX_IP *, VOID *), VOID *additional_info);
-UINT _nx_ip_address_get(NX_IP *ip_ptr, ULONG *ip_address, ULONG *network_mask);
-UINT _nx_ip_address_set(NX_IP *ip_ptr, ULONG ip_address, ULONG network_mask);
-UINT _nx_ip_gateway_address_set(NX_IP *ip_ptr, ULONG ip_address);
-UINT _nx_ip_gateway_address_get(NX_IP *ip_ptr, ULONG *ip_address);
+UINT _nx_ip_address_get(NX_IP *ip_ptr, UINT32 *ip_address, UINT32 *network_mask);
+UINT _nx_ip_address_set(NX_IP *ip_ptr, UINT32 ip_address, UINT32 network_mask);
+UINT _nx_ip_gateway_address_set(NX_IP *ip_ptr, UINT32 ip_address);
+UINT _nx_ip_gateway_address_get(NX_IP *ip_ptr, UINT32 *ip_address);
 UINT _nx_ip_gateway_address_clear(NX_IP *ip_ptr);
-UINT _nx_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, ULONG *ip_address, ULONG *network_mask);
-UINT _nx_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, ULONG ip_address, ULONG network_mask);
+UINT _nx_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, UINT32 *ip_address, UINT32 *network_mask);
+UINT _nx_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, UINT32 ip_address, UINT32 network_mask);
 UINT _nx_ip_raw_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
-                            ULONG destination_ip, ULONG type_of_service);
-UINT _nx_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG destination_ip, UINT address_index, ULONG type_of_service);
-UINT _nx_ip_static_route_add(NX_IP *ip_ptr, ULONG network_address,
-                             ULONG net_mask, ULONG next_hop);
-UINT _nx_ip_static_route_delete(NX_IP *ip_ptr, ULONG network_address, ULONG net_mask);
-UINT _nx_ipv4_multicast_interface_join(NX_IP *ip_ptr, ULONG group_address, UINT interface_index);
-UINT _nx_ipv4_multicast_interface_leave(NX_IP *ip_ptr, ULONG group_address, UINT interface_index);
+                            UINT32 destination_ip, UINT32 type_of_service);
+UINT _nx_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 destination_ip, UINT address_index, UINT32 type_of_service);
+UINT _nx_ip_static_route_add(NX_IP *ip_ptr, UINT32 network_address,
+                             UINT32 net_mask, UINT32 next_hop);
+UINT _nx_ip_static_route_delete(NX_IP *ip_ptr, UINT32 network_address, UINT32 net_mask);
+UINT _nx_ipv4_multicast_interface_join(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index);
+UINT _nx_ipv4_multicast_interface_leave(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index);
 
 
 /* Define error checking shells for API services.  These are only referenced by the
    application.  */
 
 UINT _nxe_ip_address_change_notify(NX_IP *ip_ptr, VOID (*ip_address_change_notify)(NX_IP *, VOID *), VOID *additional_info);
-UINT _nxe_ip_address_get(NX_IP *ip_ptr, ULONG *ip_address, ULONG *network_mask);
-UINT _nxe_ip_address_set(NX_IP *ip_ptr, ULONG ip_address, ULONG network_mask);
-UINT _nxe_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, ULONG *ip_address, ULONG *network_mask);
-UINT _nxe_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, ULONG ip_address, ULONG network_mask);
-UINT _nxe_ip_gateway_address_set(NX_IP *ip_ptr, ULONG ip_address);
-UINT _nxe_ip_gateway_address_get(NX_IP *ip_ptr, ULONG *ip_address);
+UINT _nxe_ip_address_get(NX_IP *ip_ptr, UINT32 *ip_address, UINT32 *network_mask);
+UINT _nxe_ip_address_set(NX_IP *ip_ptr, UINT32 ip_address, UINT32 network_mask);
+UINT _nxe_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, UINT32 *ip_address, UINT32 *network_mask);
+UINT _nxe_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, UINT32 ip_address, UINT32 network_mask);
+UINT _nxe_ip_gateway_address_set(NX_IP *ip_ptr, UINT32 ip_address);
+UINT _nxe_ip_gateway_address_get(NX_IP *ip_ptr, UINT32 *ip_address);
 UINT _nxe_ip_gateway_address_clear(NX_IP *ip_ptr);
 UINT _nxe_ip_raw_packet_send(NX_IP *ip_ptr, NX_PACKET **packet_ptr_ptr,
-                             ULONG destination_ip, ULONG type_of_service);
+                             UINT32 destination_ip, UINT32 type_of_service);
 UINT _nxe_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET **packet_ptr_ptr,
-                                    ULONG destination_ip, UINT address_index, ULONG type_of_service);
-UINT _nxe_ip_static_route_add(NX_IP *ip_ptr, ULONG network_address,
-                              ULONG net_mask, ULONG next_hop);
-UINT _nxe_ip_static_route_delete(NX_IP *ip_ptr, ULONG network_address, ULONG net_mask);
-UINT _nxe_ipv4_multicast_interface_join(NX_IP *ip_ptr, ULONG group_address, UINT interface_index);
-UINT _nxe_ipv4_multicast_interface_leave(NX_IP *ip_ptr, ULONG group_address, UINT interface_index);
+                                    UINT32 destination_ip, UINT address_index, UINT32 type_of_service);
+UINT _nxe_ip_static_route_add(NX_IP *ip_ptr, UINT32 network_address,
+                              UINT32 net_mask, UINT32 next_hop);
+UINT _nxe_ip_static_route_delete(NX_IP *ip_ptr, UINT32 network_address, UINT32 net_mask);
+UINT _nxe_ipv4_multicast_interface_join(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index);
+UINT _nxe_ipv4_multicast_interface_leave(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index);
 
 #ifndef FEATURE_NX_IPV6
 #ifdef NX_IPSEC_ENABLE

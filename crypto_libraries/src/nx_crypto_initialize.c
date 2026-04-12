@@ -231,14 +231,14 @@ NX_CRYPTO_KEEP void* _nx_crypto_self_test_memmove(void *dest, const void *src, s
     from = (char*)src;
     to = (char*)dest;
 
-    if((ULONG)dest < (ULONG)src)
+    if((UINT32)dest < (UINT32)src)
     {
         for(i = 0; i < size; i++)
         {
             to[i] = from[i];
         }
     }
-    else if((ULONG)dest > (ULONG)src)
+    else if((UINT32)dest > (UINT32)src)
     {
 
         for(i = size; i != 0; i--)

@@ -77,7 +77,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_send_record(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet,
-                                UCHAR record_type, ULONG wait_option)
+                                UCHAR record_type, UINT32 wait_option)
 {
 UINT       status;
 UINT       message_length;
@@ -86,8 +86,8 @@ UCHAR     *record_header;
 UCHAR      record_hash[NX_SECURE_TLS_MAX_HASH_SIZE];
 UINT       hash_length;
 UCHAR     *hash_data;
-ULONG      hash_data_length;
-ULONG      length;
+UINT32      hash_data_length;
+UINT32      length;
 USHORT     iv_size = 0;
 NX_PACKET *current_packet;
 
@@ -136,7 +136,7 @@ NX_PACKET *current_packet;
         }
 
         /* Ensure there is enough room for the IV data.  */
-        if ((ULONG)(send_packet -> nx_packet_prepend_ptr - send_packet -> nx_packet_data_start) < iv_size)
+        if ((UINT32)(send_packet -> nx_packet_prepend_ptr - send_packet -> nx_packet_data_start) < iv_size)
         {
 
             /* Return an invalid packet error.  */
@@ -151,7 +151,7 @@ NX_PACKET *current_packet;
     }
 
     /* Ensure there is enough room for the record header.  */
-    if ((ULONG)(send_packet -> nx_packet_prepend_ptr - send_packet -> nx_packet_data_start) < NX_SECURE_TLS_RECORD_HEADER_SIZE)
+    if ((UINT32)(send_packet -> nx_packet_prepend_ptr - send_packet -> nx_packet_data_start) < NX_SECURE_TLS_RECORD_HEADER_SIZE)
     {
 
         /* Return an invalid packet error.  */
@@ -244,7 +244,7 @@ NX_PACKET *current_packet;
 
             /* Start the hash data after the header and IV. */
             hash_data = current_packet -> nx_packet_prepend_ptr + iv_size;
-            hash_data_length = (ULONG)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr) - iv_size;
+            hash_data_length = (UINT32)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr) - iv_size;
 
             /* Walk packet chain. */
             do
@@ -258,7 +258,7 @@ NX_PACKET *current_packet;
                 if (current_packet != NX_NULL)
                 {
                     hash_data = current_packet -> nx_packet_prepend_ptr;
-                    hash_data_length = (ULONG)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
+                    hash_data_length = (UINT32)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
                 }
             } while (current_packet != NX_NULL);
 
@@ -338,8 +338,8 @@ NX_PACKET *current_packet;
         while (current_packet)
         {
             NX_SECURE_MEMSET(current_packet -> nx_packet_prepend_ptr, 0,
-                   (ULONG)current_packet -> nx_packet_append_ptr -
-                   (ULONG)current_packet -> nx_packet_prepend_ptr);
+                   (UINT32)current_packet -> nx_packet_append_ptr -
+                   (UINT32)current_packet -> nx_packet_prepend_ptr);
             current_packet = current_packet -> nx_packet_next;
         }
     }

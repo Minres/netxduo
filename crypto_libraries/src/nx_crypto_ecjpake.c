@@ -65,7 +65,7 @@ NX_CRYPTO_KEEP VOID _nx_crypto_ecjpake_init(NX_CRYPTO_ECJPAKE *ecjpake,
                                             NX_CRYPTO_EC *curve,
                                             NX_CRYPTO_METHOD *hash_method,
                                             VOID *hash_metadata,
-                                            ULONG hash_metadata_size,
+                                            UINT32 hash_metadata_size,
                                             HN_UBASE **scratch_pptr)
 {
 HN_UBASE *scratch_ptr = *scratch_pptr;
@@ -148,8 +148,8 @@ UINT      buffer_size = curve -> nx_crypto_ec_n.nx_crypto_huge_buffer_size;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_ecjpake_hello_generate(NX_CRYPTO_ECJPAKE *ecjpake,
                                                       CHAR *id, UINT id_len,
-                                                      UCHAR *output, ULONG output_length,
-                                                      ULONG *actual_size,
+                                                      UCHAR *output, UINT32 output_length,
+                                                      UINT32 *actual_size,
                                                       HN_UBASE *scratch)
 {
 NX_CRYPTO_EC         *curve = ecjpake -> nx_crypto_ecjpake_curve;
@@ -460,8 +460,8 @@ NX_CRYPTO_KEEP UINT _nx_crypto_ecjpake_key_exchange_generate(NX_CRYPTO_ECJPAKE *
                                                              UCHAR *shared_secret,
                                                              UINT shared_secret_len,
                                                              CHAR *id, UINT id_len,
-                                                             UCHAR *output, ULONG output_length,
-                                                             ULONG *actual_size,
+                                                             UCHAR *output, UINT32 output_length,
+                                                             UINT32 *actual_size,
                                                              HN_UBASE *scratch)
 {
 NX_CRYPTO_EC         *curve = ecjpake -> nx_crypto_ecjpake_curve;
@@ -477,7 +477,7 @@ UINT                  status;
     NX_CRYPTO_HUGE_NUMBER_INITIALIZE(&private_key, scratch, buffer_size);
     NX_CRYPTO_HUGE_NUMBER_INITIALIZE(&r, scratch, buffer_size);
     NX_CRYPTO_HUGE_NUMBER_INITIALIZE(&s, scratch,
-                                     (shared_secret_len + 3) & (ULONG) ~3);
+                                     (shared_secret_len + 3) & (UINT32) ~3);
     NX_CRYPTO_EC_POINT_INITIALIZE(&ga, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
     NX_CRYPTO_EC_POINT_INITIALIZE(&public_key, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
     NX_CRYPTO_EC_POINT_INITIALIZE(&v, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
@@ -606,7 +606,7 @@ UINT                  total_length = 0;
 
     NX_CRYPTO_HUGE_NUMBER_INITIALIZE(&r, scratch, buffer_size);
     NX_CRYPTO_HUGE_NUMBER_INITIALIZE(&s, scratch,
-                                     (shared_secret_len + 3) & (ULONG) ~3);
+                                     (shared_secret_len + 3) & (UINT32) ~3);
     NX_CRYPTO_EC_POINT_INITIALIZE(&ga, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
     NX_CRYPTO_EC_POINT_INITIALIZE(&public_key, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
     NX_CRYPTO_EC_POINT_INITIALIZE(&v, NX_CRYPTO_EC_POINT_AFFINE, scratch, buffer_size);
@@ -779,14 +779,14 @@ VOID *handler;
     size = g -> nx_crypto_ec_point_x.nx_crypto_huge_buffer_size +
            g -> nx_crypto_ec_point_y.nx_crypto_huge_buffer_size + 1;
     _nx_crypto_ec_point_extract_uncompressed(curve, g, (UCHAR *)scratch, size, &size);
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
                                        NX_CRYPTO_NULL,
                                        0,
                                        (UCHAR *)&size,
-                                       sizeof(ULONG),
+                                       sizeof(UINT32),
                                        NX_CRYPTO_NULL,
                                        NX_CRYPTO_NULL,
                                        0,
@@ -800,7 +800,7 @@ VOID *handler;
         return(status);
     }                                                     
 
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
@@ -825,14 +825,14 @@ VOID *handler;
     size = v -> nx_crypto_ec_point_x.nx_crypto_huge_buffer_size +
            v -> nx_crypto_ec_point_y.nx_crypto_huge_buffer_size + 1;
     _nx_crypto_ec_point_extract_uncompressed(curve, v, (UCHAR *)scratch, size, &size);
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
                                        NX_CRYPTO_NULL,
                                        0,
                                        (UCHAR *)&size,
-                                       sizeof(ULONG),
+                                       sizeof(UINT32),
                                        NX_CRYPTO_NULL,
                                        NX_CRYPTO_NULL,
                                        0,
@@ -846,7 +846,7 @@ VOID *handler;
         return(status);
     }                                                     
     
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
@@ -871,14 +871,14 @@ VOID *handler;
     size = x -> nx_crypto_ec_point_x.nx_crypto_huge_buffer_size +
            x -> nx_crypto_ec_point_y.nx_crypto_huge_buffer_size + 1;
     _nx_crypto_ec_point_extract_uncompressed(curve, x, (UCHAR *)scratch, size, &size);
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
                                        NX_CRYPTO_NULL,
                                        0,
                                        (UCHAR *)&size,
-                                       sizeof(ULONG),
+                                       sizeof(UINT32),
                                        NX_CRYPTO_NULL,
                                        NX_CRYPTO_NULL,
                                        0,
@@ -892,7 +892,7 @@ VOID *handler;
         return(status);
     }                                                     
     
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(size);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(size);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
@@ -913,14 +913,14 @@ VOID *handler;
         return(status);
     }                                                     
     
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(id_len);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(id_len);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
                                        NX_CRYPTO_NULL,
                                        0,
                                        (UCHAR *)&id_len,
-                                       sizeof(ULONG),
+                                       sizeof(UINT32),
                                        NX_CRYPTO_NULL,
                                        NX_CRYPTO_NULL,
                                        0,
@@ -934,7 +934,7 @@ VOID *handler;
         return(status);
     }                                                     
     
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(id_len);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(id_len);
     status = hash_method -> nx_crypto_operation(NX_CRYPTO_HASH_UPDATE,
                                        NX_CRYPTO_NULL,
                                        hash_method,
@@ -1536,7 +1536,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_ecjpake_init(struct NX_CRYPTO_METHOD_STRU
                                                     UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                     VOID **handle,
                                                     VOID *crypto_metadata,
-                                                    ULONG crypto_metadata_size)
+                                                    UINT32 crypto_metadata_size)
 {
 NX_CRYPTO_ECJPAKE *ecjpake;
 UINT               i;
@@ -1557,7 +1557,7 @@ UINT               i;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -1691,10 +1691,10 @@ NX_CRYPTO_KEEP UINT _nx_crypto_method_ecjpake_operation(UINT op,
                                                         VOID *handle,
                                                         struct NX_CRYPTO_METHOD_STRUCT *method,
                                                         UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
-                                                        UCHAR *input, ULONG input_length_in_byte,
+                                                        UCHAR *input, UINT32 input_length_in_byte,
                                                         UCHAR *iv_ptr,
-                                                        UCHAR *output, ULONG output_length_in_byte,
-                                                        VOID *crypto_metadata, ULONG crypto_metadata_size,
+                                                        UCHAR *output, UINT32 output_length_in_byte,
+                                                        VOID *crypto_metadata, UINT32 crypto_metadata_size,
                                                         VOID *packet_ptr,
                                                         VOID (*nx_crypto_hw_process_callback)(VOID *, UINT))
 {
@@ -1713,7 +1713,7 @@ UINT                        status = NX_CRYPTO_SUCCESS;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

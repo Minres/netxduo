@@ -149,7 +149,7 @@ UINT  _nx_tcp_server_socket_unlisten(NX_IP *ip_ptr, UINT port)
 NX_TCP_SOCKET               *socket_ptr;
 NX_PACKET                   *packet_ptr;
 NX_PACKET                   *next_packet_ptr;
-ULONG                        queue_count;
+UINT32                        queue_count;
 struct NX_TCP_LISTEN_STRUCT *listen_ptr;
 
 

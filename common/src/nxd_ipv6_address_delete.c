@@ -71,9 +71,9 @@ UINT  _nxd_ipv6_address_delete(NX_IP *ip_ptr, UINT address_index)
 UINT              result;
 NXD_IPV6_ADDRESS *ipv6_address, *address_list;
 #ifdef NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY
-VOID              (*address_change_notify)(NX_IP *, UINT, UINT, UINT, ULONG *);
+VOID              (*address_change_notify)(NX_IP *, UINT, UINT, UINT, UINT32 *);
 UINT              if_index;
-ULONG             obsoleted_address[4];
+UINT32             obsoleted_address[4];
 
     address_change_notify = NX_NULL;
 #endif /* NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY */
@@ -123,7 +123,7 @@ ULONG             obsoleted_address[4];
 
         if (result == NX_SUCCESS)
         {
-        ULONG multicast_address[4];
+        UINT32 multicast_address[4];
 
             SET_SOLICITED_NODE_MULTICAST_ADDRESS(multicast_address, ipv6_address -> nxd_ipv6_address);
             /* First remove the corresponding solicited node multicast address. */

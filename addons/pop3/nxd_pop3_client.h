@@ -170,7 +170,7 @@ typedef struct NX_POP3_CLIENT_STRUCT
     UINT                            nx_pop3_client_mail_status;                     /* Indication if the mail item was retrieved successfully */
     UINT                            nx_pop3_client_maildrop_items;                 /* Number of mail messages waiting in client (user) maildrop. */
     UINT                            nx_pop3_client_maildrop_index;                 /* Index of current mail item. */
-    ULONG                           nx_pop3_client_total_message_size;             /* Size of message data in bytes sitting in client (user) maildrop. */
+    UINT32                           nx_pop3_client_total_message_size;             /* Size of message data in bytes sitting in client (user) maildrop. */
     UINT                            nx_pop3_client_ready_to_download;              /* Indicate POP3 Client can download mail data (e.g. RETR accepted by server). */
     CHAR                            nx_pop3_server_process_id[NX_POP3_SERVER_PROCESS_ID_SIZE + 1];
     NX_MD5                          nx_pop3_client_md5data;       
@@ -213,12 +213,12 @@ typedef struct NX_POP3_CLIENT_STRUCT
 
 
 
-UINT    nx_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, ULONG server_ip_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    nxd_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, ULONG *maildrop_total_size);
-UINT    nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *size);
-UINT    nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, ULONG *bytes_retrieved, UINT *final_packet); 
-UINT    nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *item_size);
+UINT    nx_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, UINT32 server_ip_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    nxd_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, UINT32 *maildrop_total_size);
+UINT    nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *size);
+UINT    nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, UINT32 *bytes_retrieved, UINT *final_packet); 
+UINT    nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *item_size);
 UINT    nx_pop3_client_mail_item_delete(NX_POP3_CLIENT *client_ptr, UINT mail_index);
 UINT    nx_pop3_client_quit(NX_POP3_CLIENT *client_ptr);
 UINT    nx_pop3_client_delete(NX_POP3_CLIENT *client_ptr);
@@ -229,18 +229,18 @@ UINT    nx_pop3_client_delete(NX_POP3_CLIENT *client_ptr);
 
 /* Client and session specific functions.  */
 
-UINT    _nx_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, ULONG server_ip_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    _nxe_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, ULONG server_ip_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    _nxd_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    _nxde_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, ULONG server_port, CHAR *client_name, CHAR *client_password);
-UINT    _nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, ULONG *maildrop_total_size);
-UINT    _nxe_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, ULONG *maildrop_total_size);
-UINT    _nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *size);
-UINT    _nxe_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *size);
-UINT    _nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, ULONG *bytes_retrieved, UINT *final_packet); 
-UINT    _nxe_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, ULONG *bytes_retrieved, UINT *final_packet); 
-UINT    _nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *item_size);
-UINT    _nxe_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *item_size);
+UINT    _nx_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, UINT32 server_ip_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    _nxe_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, UINT32 server_ip_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    _nxd_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    _nxde_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_duo_address, UINT32 server_port, CHAR *client_name, CHAR *client_password);
+UINT    _nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, UINT32 *maildrop_total_size);
+UINT    _nxe_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, UINT32 *maildrop_total_size);
+UINT    _nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *size);
+UINT    _nxe_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *size);
+UINT    _nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, UINT32 *bytes_retrieved, UINT *final_packet); 
+UINT    _nxe_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, UINT32 *bytes_retrieved, UINT *final_packet); 
+UINT    _nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *item_size);
+UINT    _nxe_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *item_size);
 UINT    _nx_pop3_client_mail_item_delete(NX_POP3_CLIENT *client_ptr, UINT mail_index);
 UINT    _nxe_pop3_client_mail_item_delete(NX_POP3_CLIENT *client_ptr, UINT mail_index);
 UINT    _nx_pop3_client_delete(NX_POP3_CLIENT *client_ptr);
@@ -255,7 +255,7 @@ UINT    _nxe_pop3_client_quit(NX_POP3_CLIENT *client_ptr);
 UINT    _nx_pop3_digest_authenticate(NX_POP3_CLIENT *client_ptr, CHAR *process_ID_ptr, UINT process_ID_length, CHAR *result);
 VOID    _nx_pop3_parse_process_id(NX_POP3_CLIENT *client_ptr, CHAR *buffer, UINT buffer_length);
 VOID    _nx_pop3_hex_ascii_convert(CHAR *source, UINT source_length, CHAR *destination);
-UINT    _nxd_pop3_client_connect(NX_POP3_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, ULONG server_port);
+UINT    _nxd_pop3_client_connect(NX_POP3_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, UINT32 server_port);
 UINT    _nx_pop3_server_number_convert(UINT number, CHAR *string_to_convert);
 VOID    _nx_pop3_parse_response(CHAR *buffer, UINT argument_index, UINT buffer_length, CHAR *argument, UINT argument_length, UINT convert_to_uppercase, UINT include_crlf);
 UINT    _nx_pop3_client_user_pass(NX_POP3_CLIENT *client_ptr);

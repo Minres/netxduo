@@ -69,7 +69,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, ULONG *ip_address, ULONG *network_mask)
+UINT  _nxe_ip_interface_address_get(NX_IP *ip_ptr, UINT interface_index, UINT32 *ip_address, UINT32 *network_mask)
 {
 
 #ifndef NX_DISABLE_IPV4

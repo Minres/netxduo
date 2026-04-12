@@ -81,7 +81,7 @@ UINT   sign_alg;
      * |  Cert types count  | Cert types (1 byte each) | Sig Hash algorithms length | Algorithms (2 bytes each) |
      */
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < 11u)
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < 11u)
     {
 
         /* Packet buffer is too small. */
@@ -181,7 +181,7 @@ UINT   sign_alg;
                         continue;
                     }
 
-                    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < (length + 2u))
+                    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < (length + 2u))
                     {
 
                         /* Packet buffer is too small. */

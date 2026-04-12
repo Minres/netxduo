@@ -49,7 +49,7 @@
 /*                                                                        */
 /*  INPUT                                                                 */
 /*                                                                        */
-/*    ip_address                            IP address in a ULONG         */
+/*    ip_address                            IP address in a UINT32         */
 /*                                                                        */
 /*  OUTPUT                                                                */
 /*                                                                        */

@@ -66,22 +66,22 @@
 /* Define the MD5 complex FF, GG, HH, and II transformations for rounds 1, 2, 3, and 4.  */
 
 #define FF(a, b, c, d, x, s, ac)  {                  \
-        (a) += F((b), (c), (d)) + (x) + (ULONG)(ac); \
+        (a) += F((b), (c), (d)) + (x) + (UINT32)(ac); \
         (a) = LEFT_SHIFT_CIRCULAR((a), (s));         \
         (a) += (b);                                  \
 }
 #define GG(a, b, c, d, x, s, ac)  {                  \
-        (a) += G((b), (c), (d)) + (x) + (ULONG)(ac); \
+        (a) += G((b), (c), (d)) + (x) + (UINT32)(ac); \
         (a) = LEFT_SHIFT_CIRCULAR((a), (s));         \
         (a) += (b);                                  \
 }
 #define HH(a, b, c, d, x, s, ac)  {                  \
-        (a) += H((b), (c), (d)) + (x) + (ULONG)(ac); \
+        (a) += H((b), (c), (d)) + (x) + (UINT32)(ac); \
         (a) = LEFT_SHIFT_CIRCULAR((a), (s));         \
         (a) += (b);                                  \
 }
 #define II(a, b, c, d, x, s, ac)  {                  \
-        (a) += I((b), (c), (d)) + (x) + (ULONG)(ac); \
+        (a) += I((b), (c), (d)) + (x) + (UINT32)(ac); \
         (a) = LEFT_SHIFT_CIRCULAR((a), (s));         \
         (a) += (b);                                  \
 }
@@ -191,8 +191,8 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_md5_initialize(NX_CRYPTO_MD5 *context, UINT algo
 NX_CRYPTO_KEEP UINT  _nx_crypto_md5_update(NX_CRYPTO_MD5 *context, UCHAR *input_ptr, UINT input_length)
 {
 
-ULONG current_bytes;
-ULONG needed_fill_bytes;
+UINT32 current_bytes;
+UINT32 needed_fill_bytes;
 
 
     /* Determine if the context is non-null.  */
@@ -313,8 +313,8 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_md5_digest_calculate(NX_CRYPTO_MD5 *context, UCH
 {
 
 UCHAR bit_count_string[8];
-ULONG current_byte_count;
-ULONG padding_bytes;
+UINT32 current_byte_count;
+UINT32 padding_bytes;
 
     NX_CRYPTO_PARAMETER_NOT_USED(algorithm);
 
@@ -405,8 +405,8 @@ NX_CRYPTO_KEEP VOID  _nx_crypto_md5_process_buffer(NX_CRYPTO_MD5 *context, UCHAR
 {
 
 UINT  i, j;
-ULONG a, b, c, d;
-ULONG x[16];
+UINT32 a, b, c, d;
+UINT32 x[16];
 
 
     /* Initialize the state variables.  */
@@ -415,13 +415,13 @@ ULONG x[16];
     c =  context -> nx_md5_states[2];
     d =  context -> nx_md5_states[3];
 
-    /* Now, setup the x array of ULONGs for fast processing.  */
+    /* Now, setup the x array of UINT32s for fast processing.  */
     j =  0;
     for (i = 0; i < 16; i++)
     {
 
         /* Convert 4 bytes into one 32-bit word.  */
-        x[i] =  ((ULONG)buffer[j]) | (((ULONG)buffer[j + 1]) << 8) | (((ULONG)buffer[j + 2]) << 16) | (((ULONG)buffer[j + 3]) << 24);
+        x[i] =  ((UINT32)buffer[j]) | (((UINT32)buffer[j + 1]) << 8) | (((UINT32)buffer[j + 2]) << 16) | (((UINT32)buffer[j + 3]) << 24);
 
         /* Move to next position in source array.  */
         j =  j + 4;
@@ -553,7 +553,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_md5_init(struct  NX_CRYPTO_METHOD_STRUCT 
                                                 UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                 VOID  **handle,
                                                 VOID  *crypto_metadata,
-                                                ULONG crypto_metadata_size)
+                                                UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_PARAMETER_NOT_USED(key);
@@ -575,7 +575,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_md5_init(struct  NX_CRYPTO_METHOD_STRUCT 
         return(NX_CRYPTO_PTR_ERROR);
 #endif
     }
-    else if (((((ULONG)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_MD5)))
+    else if (((((UINT32)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_MD5)))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -689,12 +689,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_md5_operation(UINT op,      /* Encrypt, D
                                                      UCHAR *key,
                                                      NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                      UCHAR *input,
-                                                     ULONG input_length_in_byte,
+                                                     UINT32 input_length_in_byte,
                                                      UCHAR *iv_ptr,
                                                      UCHAR *output,
-                                                     ULONG output_length_in_byte,
+                                                     UINT32 output_length_in_byte,
                                                      VOID *crypto_metadata,
-                                                     ULONG crypto_metadata_size,
+                                                     UINT32 crypto_metadata_size,
                                                      VOID *packet_ptr,
                                                      VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -727,7 +727,7 @@ NX_CRYPTO_MD5 metadata;
         return(NX_CRYPTO_PTR_ERROR);
 #endif
     }
-    else if (((((ULONG)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_MD5)))
+    else if (((((UINT32)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_MD5)))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

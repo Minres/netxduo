@@ -27,9 +27,9 @@
 
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 UINT _nx_secure_tls_send_clienthello_psk_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                   UCHAR *packet_buffer, ULONG *packet_offset,
-                                                   ULONG extension_length_offset, ULONG total_extensions_length,
-                                                   ULONG *extension_length, ULONG available_size);
+                                                   UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                   UINT32 extension_length_offset, UINT32 total_extensions_length,
+                                                   UINT32 *extension_length, UINT32 available_size);
 #endif
 
 #ifndef NX_SECURE_TLS_CLIENT_DISABLED
@@ -76,8 +76,8 @@ UINT _nx_secure_tls_send_clienthello_psk_extension(NX_SECURE_TLS_SESSION *tls_se
 /**************************************************************************/
 UINT _nx_secure_tls_send_clienthello(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet)
 {
-ULONG                       length;
-ULONG                       extension_offset;
+UINT32                       length;
+UINT32                       extension_offset;
 UINT                        gmt_time;
 UINT                        random_value;
 UINT                        i;
@@ -90,7 +90,7 @@ USHORT                      newest_version;
 UINT                        status;
 UINT                        fallback_enabled = NX_FALSE;
 const NX_SECURE_TLS_CRYPTO *crypto_table;
-ULONG                      extension_length, total_extensions_length;
+UINT32                      extension_length, total_extensions_length;
 
 
     /* ClientHello structure:
@@ -146,7 +146,7 @@ ULONG                      extension_length, total_extensions_length;
         ciphersuites_length = (USHORT)(ciphersuites_length + 2);
     }
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) <
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) <
         (9u + sizeof(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random) +
          tls_session -> nx_secure_tls_session_id_length + ciphersuites_length))
     {
@@ -166,7 +166,7 @@ ULONG                      extension_length, total_extensions_length;
     {
         gmt_time = tls_session -> nx_secure_tls_session_time_function();
     }
-    NX_CHANGE_ULONG_ENDIAN(gmt_time);
+    NX_CHANGE_UINT32_ENDIAN(gmt_time);
     NX_SECURE_MEMCPY(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random, (UCHAR *)&gmt_time, sizeof(gmt_time)); /* Use case of memcpy is verified. lgtm[cpp/banned-api-usage-required-any] */
 
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
@@ -277,8 +277,8 @@ ULONG                      extension_length, total_extensions_length;
     length += 2;
 
     status = _nx_secure_tls_send_clienthello_extensions(tls_session, packet_buffer, &length, &extension_length,
-                                                        ((ULONG)send_packet -> nx_packet_data_end -
-                                                         (ULONG)packet_buffer));
+                                                        ((UINT32)send_packet -> nx_packet_data_end -
+                                                         (UINT32)packet_buffer));
 
     if (status)
     {
@@ -294,7 +294,7 @@ ULONG                      extension_length, total_extensions_length;
         status = _nx_secure_tls_send_clienthello_psk_extension(tls_session, packet_buffer, &length, 
                                                                extension_offset, total_extensions_length,
                                                                &extension_length,
-                                                               ((ULONG)send_packet -> nx_packet_data_end - (ULONG)packet_buffer));
+                                                               ((UINT32)send_packet -> nx_packet_data_end - (UINT32)packet_buffer));
         if(status != NX_SUCCESS)
         {
             return(status);

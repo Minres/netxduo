@@ -75,22 +75,22 @@
 /*    _nx_tcp_socket_state_syn_sent         Socket SYN sent processing    */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_tcp_packet_send_syn(NX_TCP_SOCKET *socket_ptr, ULONG tx_sequence)
+VOID  _nx_tcp_packet_send_syn(NX_TCP_SOCKET *socket_ptr, UINT32 tx_sequence)
 {
 
 #ifdef NX_IPSEC_ENABLE
-ULONG        data_offset = 0;
+UINT32        data_offset = 0;
 NXD_ADDRESS  src_addr;
 UINT         ret;
 NX_IPSEC_SA *cur_sa_ptr = NX_NULL;
 #endif /* NX_IPSEC_ENABLE */
-ULONG        option_word_1;
-ULONG        option_word_2;
+UINT32        option_word_1;
+UINT32        option_word_2;
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
 UINT         include_window_scaling = NX_FALSE;
 UINT         scale_factor;
 #endif /* NX_ENABLE_TCP_WINDOW_SCALING */
-ULONG        mss = 0;
+UINT32        mss = 0;
 
 #ifdef NX_IPSEC_ENABLE
 #ifndef NX_DISABLE_IPV4
@@ -153,7 +153,7 @@ ULONG        mss = 0;
     /* Update the mss value based on IP version type. */
     if (socket_ptr -> nx_tcp_socket_connect_ip.nxd_ip_version == NX_IP_VERSION_V4)
     {
-        mss = (ULONG)((socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
+        mss = (UINT32)((socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
 
 #ifdef NX_IPSEC_ENABLE
         if (cur_sa_ptr != NX_NULL)
@@ -193,7 +193,7 @@ ULONG        mss = 0;
 #ifdef FEATURE_NX_IPV6
     if (socket_ptr -> nx_tcp_socket_connect_ip.nxd_ip_version == NX_IP_VERSION_V6)
     {
-        mss = (ULONG)((socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
+        mss = (UINT32)((socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
 
 #ifdef NX_IPSEC_ENABLE
         if (cur_sa_ptr != NX_NULL)

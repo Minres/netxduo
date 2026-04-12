@@ -82,19 +82,19 @@ VOID _nx_icmpv6_process_echo_request(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 {
 
 UINT              status;
-ULONG             tmp;
+UINT32             tmp;
 USHORT            checksum;
 #if defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
 UINT              compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
 NX_ICMPV6_HEADER *header_ptr;
 NX_IPV6_HEADER   *ipv6_header;
-ULONG             hop_limit = 255;
+UINT32             hop_limit = 255;
 NXD_ADDRESS       dest_addr;
 NX_INTERFACE     *interface_ptr;
 
 #ifdef NX_IPSEC_ENABLE
-ULONG             data_offset;
+UINT32             data_offset;
 VOID             *sa = NX_NULL;
 NXD_ADDRESS       src_addr;
 UINT              ret;
@@ -213,7 +213,7 @@ UINT              ret;
         {
 
             /* Make sure the outgoing packet has enough space for IPsec header info. */
-            if ((ULONG)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) <
+            if ((UINT32)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) <
                 (NX_IPv6_PACKET + data_offset))
             {
 
@@ -278,13 +278,13 @@ UINT              ret;
 
         /* The original ICMP type is ECHO_REQUEST. */
         tmp -= (NX_ICMPV6_ECHO_REQUEST_TYPE << 8);
-        if (tmp > (ULONG)0x80000000)
+        if (tmp > (UINT32)0x80000000)
         {
             tmp = (tmp & 0xFFFF) - 1;
         }
 
 
-        tmp += (ULONG)(header_ptr -> nx_icmpv6_header_type << 8);
+        tmp += (UINT32)(header_ptr -> nx_icmpv6_header_type << 8);
 
         /* Compute the checksum differently depending if the echo request sends to
            a multicast or unicast address.   */

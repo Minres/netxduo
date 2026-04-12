@@ -107,7 +107,7 @@ UINT              nx_packet_option_offset;
 
 #ifdef NX_IPSEC_ENABLE
 UINT              ret;
-ULONG             next_protocol = 0;
+UINT32             next_protocol = 0;
 NXD_ADDRESS       src_addr, dest_addr;
 #ifndef NX_DISABLE_IPV4
 NX_IPV4_HEADER   *ipv4_header;
@@ -621,7 +621,7 @@ NX_ICMPV6_HEADER *icmp_header_ptr;
 
 #ifdef FEATURE_NX_IPV6
         NX_IPV6_HEADER_OPTION *option;
-        ULONG                  option_hdr_len;
+        UINT32                  option_hdr_len;
 #endif /* FEATURE_NX_IPV6 */
 
 #ifdef NX_IPSEC_ENABLE
@@ -656,7 +656,7 @@ NX_ICMPV6_HEADER *icmp_header_ptr;
 
                     /* Compute the current option length. */
                     /* For other IPv6 optional headers, hdr_ext_len is expressed in 64-bit words. */
-                    option_hdr_len = (ULONG)((option -> nx_ipv6_header_option_ext_length + 1) << 3);
+                    option_hdr_len = (UINT32)((option -> nx_ipv6_header_option_ext_length + 1) << 3);
                 }
 
                 /* Obtain the next option header type. */

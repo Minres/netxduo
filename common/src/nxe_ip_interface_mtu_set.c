@@ -64,7 +64,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_interface_mtu_set(NX_IP *ip_ptr, UINT interface_index, ULONG mtu_size)
+UINT  _nxe_ip_interface_mtu_set(NX_IP *ip_ptr, UINT interface_index, UINT32 mtu_size)
 {
 
 UINT status;

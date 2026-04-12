@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_interface_capability_get(NX_IP *ip_ptr, UINT interface_index, ULONG *interface_capability_flag)
+UINT  _nx_ip_interface_capability_get(NX_IP *ip_ptr, UINT interface_index, UINT32 *interface_capability_flag)
 {
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
 

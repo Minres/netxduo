@@ -118,7 +118,7 @@ NX_IPV6_HEADER_FRAGMENT_OPTION *fragment_option;
     {
 
     NX_IPV6_HEADER *ip_header;
-    ULONG           payload_length;
+    UINT32           payload_length;
 
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
         ip_header = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_header;
@@ -163,7 +163,7 @@ NX_IPV6_HEADER_FRAGMENT_OPTION *fragment_option;
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
         /*lint -e{835} -e{845} suppress operating on zero. */
         NX_ICMPV6_SEND_PARAMETER_PROBLEM(ip_ptr, packet_ptr, 0,
-                                         (ULONG)((packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_ip_header) + 2));
+                                         (UINT32)((packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_ip_header) + 2));
 #endif /* NX_DISABLE_ICMPV6_ERROR_MESSAGE */
 
         /* Return an Option header error status. */

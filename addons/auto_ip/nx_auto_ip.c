@@ -87,7 +87,7 @@ static NX_AUTO_IP    *_nx_auto_ip_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, UINT priority)
+UINT  _nxe_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, UINT priority)
 {
 
 UINT    status;
@@ -148,7 +148,7 @@ UINT    status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, UINT priority)
+UINT  _nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, UINT priority)
 {
 
 UINT  status;
@@ -169,7 +169,7 @@ UINT  status;
     }
 
     /* Create the AutoIP processing thread.  */
-    status =  tx_thread_create(&(auto_ip_ptr -> nx_auto_ip_thread), "NetX AutoIP", _nx_auto_ip_thread_entry, (ULONG) auto_ip_ptr,
+    status =  tx_thread_create(&(auto_ip_ptr -> nx_auto_ip_thread), "NetX AutoIP", _nx_auto_ip_thread_entry, (UINT32) auto_ip_ptr,
                         stack_ptr, stack_size, priority, priority, 1, TX_DONT_START);
 
     /* Determine if the thread creation was successful.  */
@@ -342,7 +342,7 @@ UINT  _nx_auto_ip_set_interface(NX_AUTO_IP *auto_ip_ptr, UINT interface_index)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, ULONG *local_ip_address)
+UINT  _nxe_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, UINT32 *local_ip_address)
 {
 
 UINT    status;
@@ -393,10 +393,10 @@ UINT    status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, ULONG *local_ip_address)
+UINT  _nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, UINT32 *local_ip_address)
 {
 
-ULONG   host_ip_address;
+UINT32   host_ip_address;
 NX_IP   *ip_ptr;
 
 
@@ -458,7 +458,7 @@ NX_IP   *ip_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, ULONG starting_local_address)
+UINT  _nxe_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, UINT32 starting_local_address)
 {
 
 UINT    status;
@@ -517,7 +517,7 @@ UINT    status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, ULONG starting_local_address)
+UINT  _nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, UINT32 starting_local_address)
 {
 
 
@@ -805,12 +805,12 @@ VOID  _nx_auto_ip_thread_entry(ULONG auto_ip_ptr_info)
 NX_AUTO_IP      *auto_ip_ptr;
 NX_IP           *ip_ptr;
 UINT            i, status;
-ULONG           addresses;
-ULONG           conflict;
+UINT32           addresses;
+UINT32           conflict;
 ULONG           temp;
-ULONG           delay;
-ULONG           hw_address_lsw;
-ULONG           host_ip_address;
+UINT32           delay;
+UINT32           hw_address_lsw;
+UINT32           host_ip_address;
 
 
     /* Pickup the AutoIP pointer.  */
@@ -821,7 +821,7 @@ ULONG           host_ip_address;
 
     /* Wait for the IP instance to be initialized before proceeding. This will ensure the
        MAC address is valid before a random local IP address is generated.  */
-    nx_ip_interface_status_check(ip_ptr, auto_ip_ptr -> nx_ip_interface_index, NX_IP_LINK_ENABLED, &temp, NX_WAIT_FOREVER);
+    nx_ip_interface_status_check(ip_ptr, auto_ip_ptr -> nx_ip_interface_index, NX_IP_LINK_ENABLED, (UINT32 *)(&temp), NX_WAIT_FOREVER);
 
     /* Set LSW of hardware address */
     hw_address_lsw = ip_ptr -> nx_ip_interface[auto_ip_ptr -> nx_ip_interface_index].nx_interface_physical_address_lsw;
@@ -896,7 +896,7 @@ ULONG           host_ip_address;
             /* Yes, the starting local IP address must be derived.  */
 
             /* Get pseudo random value with LSW of MAC address.  */
-            temp =  ((ULONG) NX_RAND()) + hw_address_lsw;
+            temp =  ((UINT32) NX_RAND()) + hw_address_lsw;
 
             /* Determine the address range of local IP addresses.  */
             addresses =  NX_AUTO_IP_END_ADDRESS - NX_AUTO_IP_START_ADDRESS;
@@ -923,7 +923,7 @@ ULONG           host_ip_address;
         tx_mutex_put(&(ip_ptr -> nx_ip_protection));
 
         /* Calculate the delay time.  */
-        delay = (ULONG)NX_RAND() % (NX_IP_PERIODIC_RATE * NX_AUTO_IP_PROBE_WAIT);
+        delay = (UINT32)NX_RAND() % (NX_IP_PERIODIC_RATE * NX_AUTO_IP_PROBE_WAIT);
 
         /* Sleep for a small period of time.  */
         tx_thread_sleep(delay);
@@ -939,7 +939,7 @@ ULONG           host_ip_address;
             _nx_arp_probe_send(ip_ptr, auto_ip_ptr -> nx_ip_interface_index, auto_ip_ptr -> nx_auto_ip_current_local_address);
 
             /* Calculate the delay time.  */
-            delay =  ((ULONG) NX_RAND()) % (NX_IP_PERIODIC_RATE * NX_AUTO_IP_PROBE_MAX);
+            delay =  ((UINT32) NX_RAND()) % (NX_IP_PERIODIC_RATE * NX_AUTO_IP_PROBE_MAX);
 
             /* Determine if this is less than the minimum.  */
             if (delay < (NX_IP_PERIODIC_RATE * NX_AUTO_IP_PROBE_MIN))
@@ -1127,7 +1127,7 @@ ULONG           host_ip_address;
 /*    NetX                                                                */ 
 /*                                                                        */ 
 /**************************************************************************/
-VOID  _nx_auto_ip_conflict(NX_IP *ip_ptr, UINT interface_index, ULONG ip_address, ULONG physical_msw, ULONG physical_lsw)
+VOID  _nx_auto_ip_conflict(NX_IP *ip_ptr, UINT interface_index, UINT32 ip_address, UINT32 physical_msw, UINT32 physical_lsw)
 {
 
     NX_PARAMETER_NOT_USED(ip_ptr);

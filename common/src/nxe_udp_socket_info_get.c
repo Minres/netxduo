@@ -81,9 +81,9 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                               ULONG *udp_packets_received, ULONG *udp_bytes_received, ULONG *udp_packets_queued,
-                               ULONG *udp_receive_packets_dropped, ULONG *udp_checksum_errors)
+UINT  _nxe_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                               UINT32 *udp_packets_received, UINT32 *udp_bytes_received, UINT32 *udp_packets_queued,
+                               UINT32 *udp_receive_packets_dropped, UINT32 *udp_checksum_errors)
 {
 
 UINT status;

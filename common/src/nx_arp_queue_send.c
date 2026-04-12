@@ -155,7 +155,7 @@ NX_IP_DRIVER driver_request;
             ip_ptr -> nx_ip_total_packets_sent++;
 
             /* Increment the IP bytes sent count.  */
-            ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+            ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 #endif
 
             /* If trace is enabled, insert this event into the trace buffer.  */

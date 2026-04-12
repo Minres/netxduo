@@ -49,7 +49,7 @@
 /*                                                                        */
 /*  INPUT                                                                 */
 /*                                                                        */
-/*    ip_address                            IP address in a ULONG         */
+/*    ip_address                            IP address in a UINT32         */
 /*                                                                        */
 /*  OUTPUT                                                                */
 /*                                                                        */
@@ -116,7 +116,7 @@ NX_IP *ip_ptr;
 VOID _nx_ip_fast_periodic_timer_create(NX_IP *ip_ptr)
 {
 
-ULONG _nx_ip_fast_timer_rate;
+UINT32 _nx_ip_fast_timer_rate;
 
     if (ip_ptr -> nx_ip_fast_periodic_timer_created)
     {
@@ -126,9 +126,9 @@ ULONG _nx_ip_fast_timer_rate;
     _nx_ip_fast_timer_rate =  (NX_IP_PERIODIC_RATE + (NX_IP_FAST_TIMER_RATE - 1)) / NX_IP_FAST_TIMER_RATE;
 
     /* Create the fast TCP timer.  */
-    /*lint -e{923} suppress cast of pointer to ULONG.  */
+    /*lint -e{923} suppress cast of pointer to UINT32.  */
     tx_timer_create(&(ip_ptr -> nx_ip_fast_periodic_timer), ip_ptr -> nx_ip_name,
-                    _nx_ip_fast_periodic_timer_entry, (ULONG)(ALIGN_TYPE)ip_ptr,
+                    _nx_ip_fast_periodic_timer_entry, (UINT32)(ALIGN_TYPE)ip_ptr,
                     _nx_ip_fast_timer_rate, _nx_ip_fast_timer_rate, TX_AUTO_ACTIVATE);
 
     NX_TIMER_EXTENSION_PTR_SET(&(ip_ptr -> nx_ip_fast_periodic_timer), ip_ptr)

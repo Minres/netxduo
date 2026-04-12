@@ -75,8 +75,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxde_icmp_source_ping(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, UINT address_index,
-                             CHAR *data_ptr, ULONG data_size,
-                             NX_PACKET **response_ptr, ULONG wait_option)
+                             CHAR *data_ptr, UINT32 data_size,
+                             NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 UINT status;
@@ -112,8 +112,8 @@ UINT status;
         }
 
 
-        /* Cast the function pointer into a ULONG. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-        /*lint -e{923} suppress cast of pointer to ULONG.  */
+        /* Cast the function pointer into a UINT32. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+        /*lint -e{923} suppress cast of pointer to UINT32.  */
         if ((ALIGN_TYPE)ip_ptr -> nx_ip_icmpv4_packet_process == NX_NULL)
         {
 
@@ -132,8 +132,8 @@ UINT status;
             return(NX_INVALID_INTERFACE);
         }
 
-        /* Cast the function pointer into a ULONG. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-        /*lint -e{923} suppress cast of pointer to ULONG.  */
+        /* Cast the function pointer into a UINT32. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+        /*lint -e{923} suppress cast of pointer to UINT32.  */
         if (((ALIGN_TYPE)ip_ptr -> nx_ip_icmpv6_packet_process == NX_NULL) ||
             ((ALIGN_TYPE)ip_ptr -> nx_ipv6_packet_receive == NX_NULL))
         {

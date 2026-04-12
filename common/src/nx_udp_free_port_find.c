@@ -76,7 +76,7 @@ NX_UDP_SOCKET *end_ptr;
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 

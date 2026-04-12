@@ -73,15 +73,15 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /**************************************************************************/
 UINT _nxe_secure_dtls_session_create(NX_SECURE_DTLS_SESSION *session_ptr,
                                     const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                    VOID *metadata_buffer, ULONG metadata_size,
+                                    VOID *metadata_buffer, UINT32 metadata_size,
                                     UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                     UINT certs_number,
-                                    UCHAR *remote_certificate_buffer, ULONG remote_certificate_buffer_size)
+                                    UCHAR *remote_certificate_buffer, UINT32 remote_certificate_buffer_size)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT status;
 NX_SECURE_DTLS_SESSION *created_dtls_session;
-ULONG created_count;
+UINT32 created_count;
 
     /* Check pointers. NOTE: Remote certificates number can be zero, so buffer can be NULL! */
     if ((session_ptr == NX_NULL) || (crypto_table == NX_NULL) ||

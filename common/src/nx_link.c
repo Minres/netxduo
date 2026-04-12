@@ -255,7 +255,7 @@ UINT nx_link_vlan_clear(NX_IP *ip_ptr, UINT interface_index)
 /*                                                                        */
 /**************************************************************************/
 UINT nx_link_multicast_join(NX_IP *ip_ptr, UINT interface_index,
-                            ULONG physical_address_msw, ULONG physical_address_lsw)
+                            UINT32 physical_address_msw, UINT32 physical_address_lsw)
 {
 NX_IP_DRIVER driver_request;
 
@@ -327,7 +327,7 @@ NX_IP_DRIVER driver_request;
 /*                                                                        */
 /**************************************************************************/
 UINT nx_link_multicast_leave(NX_IP *ip_ptr, UINT interface_index,
-                             ULONG physical_address_msw, ULONG physical_address_lsw)
+                             UINT32 physical_address_msw, UINT32 physical_address_lsw)
 {
 NX_IP_DRIVER driver_request;
 
@@ -404,7 +404,7 @@ NX_IP_DRIVER driver_request;
 /*                                                                        */
 /**************************************************************************/
 UINT nx_link_ethernet_packet_send(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr,
-                                  ULONG physical_address_msw, ULONG physical_address_lsw, UINT packet_type)
+                                  UINT32 physical_address_msw, UINT32 physical_address_lsw, UINT packet_type)
 {
 UINT          status;
 
@@ -724,8 +724,8 @@ NX_INTERFACE *interface_ptr;
 /*    nx_link_ethernet_packet_received      Process received packet       */
 /*                                                                        */
 /**************************************************************************/
-UINT nx_link_ethernet_header_parse(NX_PACKET *packet_ptr, ULONG *destination_msb, ULONG *destination_lsb,
-                                   ULONG *source_msb, ULONG *source_lsb, USHORT *ether_type, USHORT *vlan_tag,
+UINT nx_link_ethernet_header_parse(NX_PACKET *packet_ptr, UINT32 *destination_msb, UINT32 *destination_lsb,
+                                   UINT32 *source_msb, UINT32 *source_lsb, USHORT *ether_type, USHORT *vlan_tag,
                                    UCHAR *vlan_tag_valid, UINT *header_size)
 {
 UCHAR *data_ptr = packet_ptr -> nx_packet_prepend_ptr;
@@ -733,15 +733,15 @@ UCHAR *data_ptr = packet_ptr -> nx_packet_prepend_ptr;
     /* Get destination address.  */
     if (destination_msb && destination_lsb)
     {
-        *destination_msb = (ULONG)((data_ptr[0] << 8) | data_ptr[1]);
-        *destination_lsb = (ULONG)((data_ptr[2] << 24) | (data_ptr[3] << 16) | (data_ptr[4] << 8) | data_ptr[5]);
+        *destination_msb = (UINT32)((data_ptr[0] << 8) | data_ptr[1]);
+        *destination_lsb = (UINT32)((data_ptr[2] << 24) | (data_ptr[3] << 16) | (data_ptr[4] << 8) | data_ptr[5]);
     }
 
     /* Get source address.  */
     if (source_msb && source_lsb)
     {
-        *source_msb = (ULONG)((data_ptr[6] << 8) | data_ptr[7]);
-        *source_lsb = (ULONG)((data_ptr[8] << 24) | (data_ptr[9] << 16) | (data_ptr[10] << 8) | data_ptr[11]);
+        *source_msb = (UINT32)((data_ptr[6] << 8) | data_ptr[7]);
+        *source_lsb = (UINT32)((data_ptr[8] << 24) | (data_ptr[9] << 16) | (data_ptr[10] << 8) | data_ptr[11]);
     }
 
     /* Check VLAN tag.  */
@@ -839,10 +839,10 @@ UCHAR *data_ptr = packet_ptr -> nx_packet_prepend_ptr;
 /*                                                                        */
 /**************************************************************************/
 UINT nx_link_ethernet_header_add(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr,
-                                 ULONG physical_address_msw, ULONG physical_address_lsw, UINT packet_type)
+                                 UINT32 physical_address_msw, UINT32 physical_address_lsw, UINT packet_type)
 {
-ULONG         header_length;
-ULONG        *ethernet_frame_ptr;
+UINT32         header_length;
+UINT32        *ethernet_frame_ptr;
 NX_INTERFACE *interface_ptr;
 USHORT        vlan_tag;
 
@@ -859,7 +859,7 @@ USHORT        vlan_tag;
     }
 
     /* Check available space in packet.  */
-    if ((ULONG)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) < header_length)
+    if ((UINT32)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) < header_length)
     {
 
         /* Not enough space in packet.  */
@@ -872,22 +872,22 @@ USHORT        vlan_tag;
 
     /* Setup the ethernet frame pointer to build the ethernet frame.  Backup another 2
         bytes to get 32-bit word alignment.  */
-    ethernet_frame_ptr =  (ULONG *)(packet_ptr -> nx_packet_prepend_ptr - 2);
+    ethernet_frame_ptr =  (UINT32 *)(packet_ptr -> nx_packet_prepend_ptr - 2);
 
     /* Build the ethernet frame.  */
     *ethernet_frame_ptr       = physical_address_msw;
-    NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
+    NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
     *(++ethernet_frame_ptr) = physical_address_lsw;
-    NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
+    NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
     *(++ethernet_frame_ptr) = (interface_ptr -> nx_interface_physical_address_msw << 16) |
         (interface_ptr -> nx_interface_physical_address_lsw >> 16);
-    NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
+    NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
     *(++ethernet_frame_ptr) = (interface_ptr -> nx_interface_physical_address_lsw << 16);
     if (interface_ptr -> nx_interface_vlan_valid)
     {
         /* Build VLAN tag.  */
         *(ethernet_frame_ptr) |= NX_LINK_ETHERNET_TPID;
-        NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
+        NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
 
         if (packet_ptr -> nx_packet_vlan_priority != NX_VLAN_PRIORITY_INVALID)
         {
@@ -899,10 +899,10 @@ USHORT        vlan_tag;
             vlan_tag = interface_ptr -> nx_interface_vlan_tag;
         }
 
-        *(++ethernet_frame_ptr) = (ULONG)(vlan_tag << 16);
+        *(++ethernet_frame_ptr) = (UINT32)(vlan_tag << 16);
     }
     *(ethernet_frame_ptr) |= (USHORT)(packet_type & 0xFFFF);
-    NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
+    NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
 
     return(NX_SUCCESS);
 }
@@ -948,7 +948,7 @@ USHORT        vlan_tag;
 /**************************************************************************/
 VOID nx_link_packet_transmitted(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr, NX_LINK_TIME *time_ptr)
 {
-ULONG header_length;
+UINT32 header_length;
 
     NX_PARAMETER_NOT_USED(time_ptr);
 
@@ -1036,8 +1036,8 @@ USHORT                 packet_type;
 UINT                   header_size;
 USHORT                 vlan_tag;
 UCHAR                  vlan_tag_valid;
-ULONG                  physical_address_msw;
-ULONG                  physical_address_lsw;
+UINT32                  physical_address_msw;
+UINT32                  physical_address_lsw;
 UINT                   i;
 NX_INTERFACE          *interface_ptr;
 NX_LINK_RECEIVE_QUEUE *queue_ptr;
@@ -1154,9 +1154,9 @@ NX_LINK_RECEIVE_QUEUE *queue_ptr;
            in case of PTP over UDP. */
         if (time_ptr)
         {
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[0] = time_ptr -> nano_second;
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[1] = time_ptr -> second_low;
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[2] = time_ptr -> second_high;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[0] = time_ptr -> nano_second;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[1] = time_ptr -> second_low;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[2] = time_ptr -> second_high;
         }
 
         /* Note:  The length reported by some Ethernet hardware includes bytes after the packet
@@ -1206,9 +1206,9 @@ NX_LINK_RECEIVE_QUEUE *queue_ptr;
            in case of PTP over ETH. */
         if ((packet_type == NX_LINK_ETHERNET_PTP) && (time_ptr != NX_NULL))
         {
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[0] = time_ptr -> nano_second;
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[1] = time_ptr -> second_low;
-            ((ULONG *)packet_ptr -> nx_packet_data_start)[2] = time_ptr -> second_high;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[0] = time_ptr -> nano_second;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[1] = time_ptr -> second_low;
+            ((UINT32 *)packet_ptr -> nx_packet_data_start)[2] = time_ptr -> second_high;
         }
 
         queue_ptr = interface_ptr -> nx_interface_link_receive_queue_head;
@@ -1293,7 +1293,7 @@ NX_LINK_RECEIVE_QUEUE *queue_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT nx_link_vlan_interface_create(NX_IP *ip_ptr, CHAR *interface_name, ULONG ip_address, ULONG network_mask,
+UINT nx_link_vlan_interface_create(NX_IP *ip_ptr, CHAR *interface_name, UINT32 ip_address, UINT32 network_mask,
                                    UINT vlan_tag, UINT parent_interface_index, UINT *interface_index_ptr)
 {
 UINT          i;

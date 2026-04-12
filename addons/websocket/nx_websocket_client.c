@@ -878,7 +878,7 @@ UINT status;
 /*                                          Process connect response      */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_websocket_client_name_compare(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length)
+UINT  _nx_websocket_client_name_compare(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length)
 {
 UCHAR   ch;
 
@@ -1367,7 +1367,7 @@ UINT status;
 UCHAR *data_ptr;
 NX_PACKET *data_packet;
 USHORT message;
-ULONG tmp;
+UINT32 tmp;
 UCHAR masking_key[4];
 UINT mask_id = 0;
 UINT header_size = NX_WEBSOCKET_HEADER_NORMAL_SIZE;
@@ -1448,7 +1448,7 @@ UINT header_size = NX_WEBSOCKET_HEADER_NORMAL_SIZE;
     }
 
     /* Fill the masking key, the masking key is a 32-bit value chosen at random, must mask websocket data from client*/
-    tmp = (ULONG)NX_RAND();
+    tmp = (UINT32)NX_RAND();
     masking_key[0] = (UCHAR)(tmp >> 24);
     masking_key[1] = (UCHAR)(tmp >> 16);
     masking_key[2] = (UCHAR)(tmp >> 8);
@@ -1721,10 +1721,10 @@ UINT  status;
 UCHAR fin_bit = NX_FALSE;
 UCHAR opcode = 0;
 UCHAR bytes[4];
-ULONG payload_length;
-ULONG offset = 0;
-ULONG bytes_copied;
-ULONG packet_length;
+UINT32 payload_length;
+UINT32 offset = 0;
+UINT32 bytes_copied;
+UINT32 packet_length;
 NX_PACKET *data_packet;
 UCHAR *data_ptr;
 
@@ -1813,7 +1813,7 @@ UCHAR *data_ptr;
             }
 
             /* Record 16-bit data payload length. */
-            payload_length = ((((ULONG)bytes[0]) << 8) + (ULONG)bytes[1]);
+            payload_length = ((((UINT32)bytes[0]) << 8) + (UINT32)bytes[1]);
 
             /* Add the byte count by the payload size */
             offset += NX_WEBSOCKET_EXTENDED_PAYLOAD_16BITS_SIZE;
@@ -1996,14 +1996,14 @@ UCHAR *data_ptr;
 
             /* For a data frame (i.e. text/binary frame), search and find the end of the complete frame */
             data_packet = *packet_ptr;
-            packet_length = (ULONG)(data_packet -> nx_packet_append_ptr - data_packet -> nx_packet_prepend_ptr);
+            packet_length = (UINT32)(data_packet -> nx_packet_append_ptr - data_packet -> nx_packet_prepend_ptr);
             while (packet_length < offset)
             {
                 offset -= packet_length;
 
                 /* Move the current data packet pointer to next and compute the length of next packet */
                 data_packet = data_packet -> nx_packet_next;
-                packet_length = (ULONG)(data_packet -> nx_packet_append_ptr - data_packet -> nx_packet_prepend_ptr);
+                packet_length = (UINT32)(data_packet -> nx_packet_append_ptr - data_packet -> nx_packet_prepend_ptr);
             }
 
             /* After subtracting by the offset, packet_length represents the size of remaining data in the single packet to be linked into the waiting list */
@@ -2183,10 +2183,10 @@ UCHAR *data_ptr;
 /*    _nx_websocket_client_data_process     Process data frame            */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_websocket_client_packet_trim(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG trim_size)
+UINT  _nx_websocket_client_packet_trim(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 trim_size)
 {
 
-ULONG       packet_length;
+UINT32       packet_length;
 NX_PACKET   *head_packet_ptr = *packet_ptr;
 NX_PACKET   *previous_packet_ptr = NX_NULL;
 
@@ -2200,9 +2200,9 @@ NX_PACKET   *previous_packet_ptr = NX_NULL;
     packet_length = (*packet_ptr) -> nx_packet_length - trim_size;
 
     /* Search and find the trim point */
-    while ((ULONG)((*packet_ptr) -> nx_packet_append_ptr - (*packet_ptr) -> nx_packet_prepend_ptr) <= trim_size)
+    while ((UINT32)((*packet_ptr) -> nx_packet_append_ptr - (*packet_ptr) -> nx_packet_prepend_ptr) <= trim_size)
     {
-        trim_size -= (ULONG)((*packet_ptr) -> nx_packet_append_ptr - (*packet_ptr) -> nx_packet_prepend_ptr);
+        trim_size -= (UINT32)((*packet_ptr) -> nx_packet_append_ptr - (*packet_ptr) -> nx_packet_prepend_ptr);
 
         previous_packet_ptr = *packet_ptr;
         *packet_ptr = (*packet_ptr) -> nx_packet_next;
@@ -2274,7 +2274,7 @@ NX_PACKET   *previous_packet_ptr = NX_NULL;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nxe_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT        status;
@@ -2328,7 +2328,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT        status;
@@ -2369,7 +2369,7 @@ UINT        status;
     {
 
         /* Check the buffer size for the basic data header of websocket.  */
-        if (((ULONG)(((*packet_ptr) -> nx_packet_data_end) - ((*packet_ptr) -> nx_packet_prepend_ptr))) < NX_WEBSOCKET_HEADER_SIZE)
+        if (((UINT32)(((*packet_ptr) -> nx_packet_data_end) - ((*packet_ptr) -> nx_packet_prepend_ptr))) < NX_WEBSOCKET_HEADER_SIZE)
         {
 
             /* Packet buffer is too small. */
@@ -2421,7 +2421,7 @@ UINT        status;
 /*    _nx_websocket_client_send             Send websocket data frame     */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_websocket_client_packet_send(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_websocket_client_packet_send(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT status;
@@ -2477,7 +2477,7 @@ UINT status;
 /*    _nx_websocket_client_receive          Receive websocket data frame  */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_websocket_client_packet_receive(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_websocket_client_packet_receive(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT status;
@@ -2573,7 +2573,7 @@ NX_PACKET *tmp_ptr;
             /* Copy the contents of the current packet into the head packet.  */
             status = nx_packet_data_append(client_ptr -> nx_websocket_client_processing_packet,
                                            (VOID *) tmp_ptr -> nx_packet_prepend_ptr,
-                                           (ULONG)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
+                                           (UINT32)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
                                            client_ptr -> nx_websocket_client_packet_pool_ptr, wait_option);
 
             /* Obtain the mutex. */

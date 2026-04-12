@@ -70,7 +70,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_client_socket_connect(NX_TCP_SOCKET *socket_ptr, ULONG server_ip, UINT server_port, ULONG wait_option)
+UINT  _nxe_tcp_client_socket_connect(NX_TCP_SOCKET *socket_ptr, UINT32 server_ip, UINT server_port, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -105,7 +105,7 @@ UINT status;
     }
 
     /* Check for an invalid port.  */
-    if (((ULONG)server_port) > (ULONG)NX_MAX_PORT)
+    if (((UINT32)server_port) > (UINT32)NX_MAX_PORT)
     {
         return(NX_INVALID_PORT);
     }

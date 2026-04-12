@@ -63,7 +63,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_secure_tls_session_time_function_set(NX_SECURE_TLS_SESSION *tls_session,
-                                               ULONG (*time_func_ptr)(void))
+                                               UINT32 (*time_func_ptr)(void))
 {
 UINT status;
 

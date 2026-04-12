@@ -32,52 +32,52 @@ static VOID _nx_secure_tls_get_signature_algorithm(NX_SECURE_TLS_SESSION *tls_se
                                                    USHORT *signature_algorithm);
 
 static UINT _nx_secure_tls_send_clienthello_sig_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
                                                           USHORT *extension_length,
-                                                          ULONG available_size);
+                                                          UINT32 available_size);
 #endif
 #ifndef NX_SECURE_TLS_SNI_EXTENSION_DISABLED
 static UINT _nx_secure_tls_send_clienthello_sni_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
                                                           USHORT *extension_length,
-                                                          ULONG available_size);
+                                                          UINT32 available_size);
 #endif
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
 static UINT _nx_secure_tls_send_clienthello_sec_spf_extensions(NX_SECURE_TLS_SESSION *tls_session,
-                                                               UCHAR *packet_buffer, ULONG *packet_offset,
+                                                               UCHAR *packet_buffer, UINT32 *packet_offset,
                                                                USHORT *extension_length,
-                                                               ULONG available_size);
+                                                               UINT32 available_size);
 #endif
 
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 static UINT _nx_secure_tls_send_clienthello_supported_versions_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
                                                           USHORT *extension_length,
-                                                          ULONG available_size);
+                                                          UINT32 available_size);
 
 static UINT _nx_secure_tls_send_clienthello_key_share_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                                UCHAR *packet_buffer, ULONG *packet_offset,
+                                                                UCHAR *packet_buffer, UINT32 *packet_offset,
                                                                 USHORT *extension_length,
-                                                                ULONG available_size);
+                                                                UINT32 available_size);
 
 static UINT _nx_secure_tls_send_clienthello_psk_kem_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                              UCHAR *packet_buffer, ULONG *packet_length,
+                                                              UCHAR *packet_buffer, UINT32 *packet_length,
                                                               USHORT *extension_length);
 
 /* Note: PSK extension generation is called directly, so not static. */
 UINT _nx_secure_tls_send_clienthello_psk_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_length,
-                                                          ULONG extension_length_offset, ULONG total_extensions_length,
-                                                          ULONG *extension_length,
-                                                          ULONG available_size);
+                                                          UCHAR *packet_buffer, UINT32 *packet_length,
+                                                          UINT32 extension_length_offset, UINT32 total_extensions_length,
+                                                          UINT32 *extension_length,
+                                                          UINT32 available_size);
 #endif
 
 #ifndef NX_SECURE_TLS_DISABLE_SECURE_RENEGOTIATION
 static UINT _nx_secure_tls_send_clienthello_sec_reneg_extension(NX_SECURE_TLS_SESSION *tls_session,
                                                                 UCHAR *packet_buffer,
-                                                                ULONG *packet_offset,
+                                                                UINT32 *packet_offset,
                                                                 USHORT *extension_length,
-                                                                ULONG available_size);
+                                                                UINT32 available_size);
 #endif
 
 
@@ -128,10 +128,10 @@ static UINT _nx_secure_tls_send_clienthello_sec_reneg_extension(NX_SECURE_TLS_SE
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_send_clienthello_extensions(NX_SECURE_TLS_SESSION *tls_session,
-                                                UCHAR *packet_buffer, ULONG *packet_offset,
-                                                ULONG *extensions_length, ULONG available_size)
+                                                UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                UINT32 *extensions_length, UINT32 available_size)
 {
-ULONG  length = *packet_offset;
+UINT32  length = *packet_offset;
 USHORT extension_length = 0, total_extensions_length;
 UINT   status;
 
@@ -304,11 +304,11 @@ UINT   status;
 /**************************************************************************/
 #ifndef NX_SECURE_DISABLE_X509
 static UINT _nx_secure_tls_send_clienthello_sig_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
                                                           USHORT *extension_length,
-                                                          ULONG available_size)
+                                                          UINT32 available_size)
 {
-ULONG  offset, ext_pos;
+UINT32  offset, ext_pos;
 USHORT ext_len, sig_len, sighash_len, ext;
 UINT i;
 USHORT signature_algorithm;
@@ -323,7 +323,7 @@ NX_SECURE_X509_CRYPTO *cipher_table;
      */
 
     if (available_size < (*packet_offset + 6u +
-                          (ULONG)(tls_session -> nx_secure_tls_crypto_table -> nx_secure_tls_x509_cipher_table_size << 1)))
+                          (UINT32)(tls_session -> nx_secure_tls_crypto_table -> nx_secure_tls_x509_cipher_table_size << 1)))
     {
 
         /* Packet buffer too small. */
@@ -519,10 +519,10 @@ UCHAR sig_algo = 0;
 /* We need to access the supported versions table located in nx_secure_tls_check_protocol_version.c. */
 extern const NX_SECURE_VERSIONS_LIST nx_secure_supported_versions_list[];
 static UINT _nx_secure_tls_send_clienthello_supported_versions_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
-                                                          USHORT *extension_length, ULONG available_size)
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                          USHORT *extension_length, UINT32 available_size)
 {
-ULONG  offset;
+UINT32  offset;
 USHORT ext;
 UINT   data_length;
 UINT   id = NX_SECURE_TLS;
@@ -646,11 +646,11 @@ INT    i;
 /**************************************************************************/
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 static UINT _nx_secure_tls_send_clienthello_key_share_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                                UCHAR *packet_buffer, ULONG *packet_offset,
-                                                                USHORT *extension_length, ULONG available_size)
+                                                                UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                                USHORT *extension_length, UINT32 available_size)
 {
-ULONG  offset;
-ULONG  length_offset;
+UINT32  offset;
+UINT32  length_offset;
 USHORT ext;
 UINT   entry_index;
 UINT   entry_length;
@@ -841,12 +841,12 @@ USHORT named_curve;
 
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 UINT _nx_secure_tls_send_clienthello_psk_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                   UCHAR *packet_buffer, ULONG *packet_length,
-                                                   ULONG extension_length_offset, ULONG total_extensions_length,
-                                                   ULONG *extension_length, ULONG available_size)
+                                                   UCHAR *packet_buffer, UINT32 *packet_length,
+                                                   UINT32 extension_length_offset, UINT32 total_extensions_length,
+                                                   UINT32 *extension_length, UINT32 available_size)
 {
-ULONG  offset;
-ULONG  length_offset;
+UINT32  offset;
+UINT32  length_offset;
 USHORT ext;
 UINT   i;
 UINT   num_ids;
@@ -1184,10 +1184,10 @@ NX_SECURE_TLS_PSK_STORE *psk_store;
 /**************************************************************************/
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 static UINT _nx_secure_tls_send_clienthello_psk_kem_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                              UCHAR *packet_buffer, ULONG *packet_length,
+                                                              UCHAR *packet_buffer, UINT32 *packet_length,
                                                               USHORT *extension_length)
 {
-ULONG offset;
+UINT32 offset;
 USHORT length;
 
     /* PSK Key Exchange Modes Extension structure (From TLS 1.3 RFC 8446):
@@ -1283,10 +1283,10 @@ USHORT length;
 /**************************************************************************/
 #ifndef NX_SECURE_TLS_SNI_EXTENSION_DISABLED
 static UINT _nx_secure_tls_send_clienthello_sni_extension(NX_SECURE_TLS_SESSION *tls_session,
-                                                          UCHAR *packet_buffer, ULONG *packet_offset,
-                                                          USHORT *extension_length, ULONG available_size)
+                                                          UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                          USHORT *extension_length, UINT32 available_size)
 {
-ULONG  offset;
+UINT32  offset;
 USHORT ext;
 UINT   data_length;
 
@@ -1428,11 +1428,11 @@ UINT   data_length;
 #ifndef NX_SECURE_TLS_DISABLE_SECURE_RENEGOTIATION
 static UINT _nx_secure_tls_send_clienthello_sec_reneg_extension(NX_SECURE_TLS_SESSION *tls_session,
                                                                 UCHAR *packet_buffer,
-                                                                ULONG *packet_offset,
+                                                                UINT32 *packet_offset,
                                                                 USHORT *extension_length,
-                                                                ULONG available_size)
+                                                                UINT32 available_size)
 {
-ULONG  offset;
+UINT32  offset;
 USHORT ext;
 UINT   data_length;
 
@@ -1592,10 +1592,10 @@ UINT   data_length;
 /**************************************************************************/
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
 static UINT _nx_secure_tls_send_clienthello_sec_spf_extensions(NX_SECURE_TLS_SESSION *tls_session,
-                                                               UCHAR *packet_buffer, ULONG *packet_offset,
-                                                               USHORT *extension_length, ULONG available_size)
+                                                               UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                               USHORT *extension_length, UINT32 available_size)
 {
-ULONG  offset;
+UINT32  offset;
 USHORT ext_len, list_len, ext, i;
 NX_SECURE_TLS_ECC *ecc_info;
 
@@ -1610,7 +1610,7 @@ NX_SECURE_TLS_ECC *ecc_info;
     /* Start with our passed-in packet offset. */
     offset = *packet_offset;
 
-    if (available_size < (offset + 12u + (ULONG)(ecc_info -> nx_secure_tls_ecc_supported_groups_count << 1)))
+    if (available_size < (offset + 12u + (UINT32)(ecc_info -> nx_secure_tls_ecc_supported_groups_count << 1)))
     {
 
         /* Packet buffer too small. */

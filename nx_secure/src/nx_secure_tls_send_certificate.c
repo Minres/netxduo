@@ -68,7 +68,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_send_certificate(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet,
-                                     ULONG wait_option)
+                                     UINT32 wait_option)
 {
 #ifndef NX_SECURE_DISABLE_X509
 UINT                 length;
@@ -133,7 +133,7 @@ USHORT               extensions_length;
         }
     }
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < 3u)
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < 3u)
     {
 
         /* Packet buffer is too small to hold random and ID. */

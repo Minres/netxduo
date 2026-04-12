@@ -85,7 +85,7 @@
 /*                                                                        */
 /**************************************************************************/
 VOID _nx_icmpv6_send_error_message(NX_IP *ip_ptr, NX_PACKET *offending_packet,
-                                   ULONG word1, ULONG error_pointer)
+                                   UINT32 word1, UINT32 error_pointer)
 {
 
 NX_PACKET       *pkt_ptr;
@@ -95,13 +95,13 @@ UINT             compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
 NX_ICMPV6_ERROR *icmpv6_error;
 UINT             bytes_to_copy, i;
-ULONG           *src_ip, *dest_ip;
-ULONG           *src_packet, *dest_packet;
+UINT32           *src_ip, *dest_ip;
+UINT32           *src_packet, *dest_packet;
 UINT             payload;
 #ifdef NX_IPSEC_ENABLE
 VOID            *sa = NX_NULL;
 UINT             ret = 0;
-ULONG            data_offset;
+UINT32            data_offset;
 NXD_ADDRESS      src_addr;
 NXD_ADDRESS      dest_addr;
 #endif /* NX_IPSEC_ENABLE */
@@ -169,7 +169,7 @@ NXD_ADDRESS      dest_addr;
     icmpv6_error -> nx_icmpv6_error_pointer = error_pointer;
 
     /* Change to network byte order. */
-    NX_CHANGE_ULONG_ENDIAN(icmpv6_error -> nx_icmpv6_error_pointer);
+    NX_CHANGE_UINT32_ENDIAN(icmpv6_error -> nx_icmpv6_error_pointer);
 
     /* Figure out how many bytes we should copy from the offending packet not including ethernet
        frame header. */
@@ -198,26 +198,26 @@ NXD_ADDRESS      dest_addr;
     /* Set the packet length and pointers.  The length will be increased to include
        the IPv6 header in the IP send function.  The Prepend function will be similarly
        updated in the IP send function. */
-    pkt_ptr -> nx_packet_length = bytes_to_copy + (ULONG)sizeof(NX_ICMPV6_ERROR);
+    pkt_ptr -> nx_packet_length = bytes_to_copy + (UINT32)sizeof(NX_ICMPV6_ERROR);
     pkt_ptr -> nx_packet_append_ptr = pkt_ptr -> nx_packet_prepend_ptr + pkt_ptr -> nx_packet_length;
 
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    src_packet  = (ULONG *)(offending_packet -> nx_packet_ip_header);
+    src_packet  = (UINT32 *)(offending_packet -> nx_packet_ip_header);
 
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
-    dest_packet = (ULONG *)NX_UCHAR_POINTER_ADD(icmpv6_error, sizeof(NX_ICMPV6_ERROR));
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
+    dest_packet = (UINT32 *)NX_UCHAR_POINTER_ADD(icmpv6_error, sizeof(NX_ICMPV6_ERROR));
 
-    /* Endian swap the incoming IPv6 header (10 ULONGs = 40 bytes)
+    /* Endian swap the incoming IPv6 header (10 UINT32s = 40 bytes)
        to network byte order. */
     for (i = 0; i < 10; i++)
     {
-        NX_CHANGE_ULONG_ENDIAN(*src_packet);
+        NX_CHANGE_UINT32_ENDIAN(*src_packet);
         src_packet++;
     }
 
     /* Reset the packet pointer to the received packet IP header. */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    src_packet  = (ULONG *)(offending_packet -> nx_packet_ip_header);
+    src_packet  = (UINT32 *)(offending_packet -> nx_packet_ip_header);
 
     /* Copy the data from the received packet to the ICMPv6 error packet. */
     for (; (INT)bytes_to_copy > 0; bytes_to_copy -= 4)
@@ -227,12 +227,12 @@ NXD_ADDRESS      dest_addr;
     }
 
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    src_packet  = (ULONG *)(offending_packet -> nx_packet_ip_header);
+    src_packet  = (UINT32 *)(offending_packet -> nx_packet_ip_header);
 
     /* Endian swap the IPv6 header back to host byte order. */
     for (i = 0; i < 10; i++)
     {
-        NX_CHANGE_ULONG_ENDIAN(*src_packet);
+        NX_CHANGE_UINT32_ENDIAN(*src_packet);
         src_packet++;
     }
 

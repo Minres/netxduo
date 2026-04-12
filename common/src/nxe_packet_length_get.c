@@ -62,7 +62,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_length_get(NX_PACKET *packet_ptr, ULONG *length)
+UINT  _nxe_packet_length_get(NX_PACKET *packet_ptr, UINT32 *length)
 {
 
 UINT status;

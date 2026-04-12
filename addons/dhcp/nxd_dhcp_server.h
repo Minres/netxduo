@@ -364,7 +364,7 @@ extern   "C" {
 #define NX_DHCP_PARAMETER_ERROR                 0x92    /* Invalid non pointer input   */
 #define NX_DHCP_INADEQUATE_PACKET_POOL_PAYLOAD  0x93    /* DHCP Server packet pool has inadequate packet payload for DHCP messages. */
 #define NX_DHCP_BAD_OPTION_LIST_ERROR           0x94    /* Server default option list has invalid characters. */
-#define NX_DHCP_INTERNAL_OPTION_PARSE_ERROR     0x95    /* Internal error parsing options from string to ULONG. */
+#define NX_DHCP_INTERNAL_OPTION_PARSE_ERROR     0x95    /* Internal error parsing options from string to UINT32. */
 #define NX_DHCP_NO_SERVER_OPTION_LIST           0x96    /* Server default option list is empty when server is configured to use it. */
 #define NX_DHCP_IMPROPERLY_TERMINATED_OPTION    0x97    /* Improperly formatted client option data e.g missing terminating symbol 0xFF. */
 #define NX_DHCP_ADD_OPTION_ERROR                0x98    /* Unable to add option to buffer of server DHCP response packet */
@@ -417,30 +417,30 @@ typedef struct NX_DHCP_CLIENT_STRUCT
     UCHAR           nx_dhcp_message_type;        /* DHCP message type (DISCOVER, REQUEST etc) received from Client. */
     CHAR            nx_dhcp_client_name[NX_DHCP_CLIENT_HOSTNAME_MAX];    
                                                  /* DHCP Client host name buffer. */
-    ULONG           nx_dhcp_xid;                 /* Transaction ID for client DHCP session   */
-    ULONG           nx_dhcp_source_ip_address;   /* Source IP of the client DHCP message. */
-    ULONG           nx_dhcp_destination_ip_address;   
+    UINT32           nx_dhcp_xid;                 /* Transaction ID for client DHCP session   */
+    UINT32           nx_dhcp_source_ip_address;   /* Source IP of the client DHCP message. */
+    UINT32           nx_dhcp_destination_ip_address;   
                                                  /* Destination IP of the client DHCP message. */
-    ULONG           nx_dhcp_clientip_address;    /* "Client IP address" (sometimes called "ci-addr" field). */
-    ULONG           nx_dhcp_your_ip_address;     /* "Your IP address" field in client DHCP message. */ 
-    ULONG           nx_dhcp_requested_ip_address;/* IP address requested in client message option. */
-    ULONG           nx_dhcp_requested_lease_time;/* IP address lease time requested in client message option. */
-    ULONG           nx_dhcp_assigned_ip_address; /* IP address the Server offers/assigns the client. */
+    UINT32           nx_dhcp_clientip_address;    /* "Client IP address" (sometimes called "ci-addr" field). */
+    UINT32           nx_dhcp_your_ip_address;     /* "Your IP address" field in client DHCP message. */ 
+    UINT32           nx_dhcp_requested_ip_address;/* IP address requested in client message option. */
+    UINT32           nx_dhcp_requested_lease_time;/* IP address lease time requested in client message option. */
+    UINT32           nx_dhcp_assigned_ip_address; /* IP address the Server offers/assigns the client. */
     UINT            nx_dhcp_client_iface_index;  /* Index into the server interface table matching the DHCP client's packet interface. */
-    ULONG           nx_dhcp_clientrec_server_ip; /* Next Server IP Address (may be another DHCP server) for advanced DHCP features */ 
-    ULONG           nx_dhcp_server_id;           /* Requested/assigned Server ID (usually set to DHCP server IP address) */ 
-    ULONG           nx_dhcp_router_ip_address;   /* Requested/assigned router on DHCP Client network. */
-    ULONG           nx_dhcp_dns_ip_address;      /* Requested/assigned DNS IP address; usually set to zero. */
-    ULONG           nx_dhcp_relay_ip_address;    /* Requested/assigned Relay IP address; usually set to zero. */
-    ULONG           nx_dhcp_subnet_mask;         /* Requested/assigned network mask */
-    ULONG           nx_dhcp_client_mac_msw;      /* Client MAC address high bits */
-    ULONG           nx_dhcp_client_mac_lsw;      /* Client MAC address low bits */
+    UINT32           nx_dhcp_clientrec_server_ip; /* Next Server IP Address (may be another DHCP server) for advanced DHCP features */ 
+    UINT32           nx_dhcp_server_id;           /* Requested/assigned Server ID (usually set to DHCP server IP address) */ 
+    UINT32           nx_dhcp_router_ip_address;   /* Requested/assigned router on DHCP Client network. */
+    UINT32           nx_dhcp_dns_ip_address;      /* Requested/assigned DNS IP address; usually set to zero. */
+    UINT32           nx_dhcp_relay_ip_address;    /* Requested/assigned Relay IP address; usually set to zero. */
+    UINT32           nx_dhcp_subnet_mask;         /* Requested/assigned network mask */
+    UINT32           nx_dhcp_client_mac_msw;      /* Client MAC address high bits */
+    UINT32           nx_dhcp_client_mac_lsw;      /* Client MAC address low bits */
     UINT            nx_dhcp_client_hwlen;        /* Length of hardware address. */
     UINT            nx_dhcp_client_hwtype;       /* Client interface hardware type e.g. Ethernet. */
-    ULONG           nx_dhcp_broadcast_flag_set;  /* Parse broadcast flags from DHCP messages. */
+    UINT32           nx_dhcp_broadcast_flag_set;  /* Parse broadcast flags from DHCP messages. */
     UINT            nx_dhcp_client_option_count; /* Number of user options in client request */ 
     UCHAR           nx_dhcp_user_options[NX_DHCP_CLIENT_OPTIONS_MAX];   
-    ULONG           nx_dhcp_session_timeout;     /* Time out on waiting for client's next response */
+    UINT32           nx_dhcp_session_timeout;     /* Time out on waiting for client's next response */
     UINT            nx_dhcp_response_type_to_client; 
                                                  /* DHCP code for response to send back to client. */
 
@@ -450,7 +450,7 @@ typedef struct NX_DHCP_CLIENT_STRUCT
    in a previously specified network interface. */
 typedef struct NX_DHCP_INTERFACE_IP_ADDRESS_STRUCT
 {
-    ULONG           nx_assignable_ip_address;       /* IP address available to assign to DHCP Client. */
+    UINT32           nx_assignable_ip_address;       /* IP address available to assign to DHCP Client. */
     UINT            assigned;                       /* IP address status e.g if currently assigned to a client host. */
     UINT            lease_time;                     /* Lease duration in secs. */
     UINT            owner_hwtype;                   /* Hardware type.  */
@@ -465,11 +465,11 @@ typedef struct NX_DHCP_INTERFACE_TABLE_STRUCT
                     nx_dhcp_ip_address_list[NX_DHCP_IP_ADDRESS_MAX_LIST_SIZE];    
                                                     /* IP address available to assign to DHCP Client. */
     NX_INTERFACE    *nx_dhcp_incoming_interface;    /* Pointer to DHCP Server interface. */
-    ULONG           nx_dhcp_server_ip_address;      /* DHCP Server's IP address for this interface. */
-    ULONG           nx_dhcp_dns_ip_address;         /* DHCP server DNS Server Address in message to DHCP Client..  */
-    ULONG           nx_dhcp_subnet_mask;            /* DHCP server interface subnet mask. */
-    ULONG           nx_dhcp_subnet;                 /* DHCP server interface subnet. */
-    ULONG           nx_dhcp_router_ip_address;      /* The router IP Address for DHCP client configuration  */
+    UINT32           nx_dhcp_server_ip_address;      /* DHCP Server's IP address for this interface. */
+    UINT32           nx_dhcp_dns_ip_address;         /* DHCP server DNS Server Address in message to DHCP Client..  */
+    UINT32           nx_dhcp_subnet_mask;            /* DHCP server interface subnet mask. */
+    UINT32           nx_dhcp_subnet;                 /* DHCP server interface subnet. */
+    UINT32           nx_dhcp_router_ip_address;      /* The router IP Address for DHCP client configuration  */
     UINT            nx_dhcp_address_list_size;      /* Actual number of assignable addresses for this interface. */
 
 } NX_DHCP_INTERFACE_TABLE;
@@ -481,7 +481,7 @@ typedef struct NX_DHCP_INTERFACE_TABLE_STRUCT
 
 typedef struct NX_DHCP_SERVER_STRUCT 
 {
-    ULONG           nx_dhcp_id;                     /* DHCP thread ID */
+    UINT32           nx_dhcp_id;                     /* DHCP thread ID */
     CHAR           *nx_dhcp_name;                   /* DHCP server name */
     NX_PACKET_POOL *nx_dhcp_packet_pool_ptr;        /* Pointer to DHCP server packet pool */
     TX_TIMER        nx_dhcp_slow_periodic_timer;    /* Timer for watching IP lease time outs. */
@@ -501,11 +501,11 @@ typedef struct NX_DHCP_SERVER_STRUCT
                                                     
     NX_DHCP_INTERFACE_TABLE nx_dhcp_interface_table[NX_MAX_PHYSICAL_INTERFACES];
                                                     /* Interface specific table of addresses available for DHCP clients. */
-    ULONG           nx_dhcp_discoveries_received;   /* The number of Discovery messages received   */ 
-    ULONG           nx_dhcp_requests_received;      /* The number of Request messages received  */ 
-    ULONG           nx_dhcp_informs_received;       /* The number of Inform messages received  */ 
-    ULONG           nx_dhcp_declines_received;      /* The number of Decline messages received  */ 
-    ULONG           nx_dhcp_releases_received;      /* The number of Release messages received  */ 
+    UINT32           nx_dhcp_discoveries_received;   /* The number of Discovery messages received   */ 
+    UINT32           nx_dhcp_requests_received;      /* The number of Request messages received  */ 
+    UINT32           nx_dhcp_informs_received;       /* The number of Inform messages received  */ 
+    UINT32           nx_dhcp_declines_received;      /* The number of Decline messages received  */ 
+    UINT32           nx_dhcp_releases_received;      /* The number of Release messages received  */ 
 
 } NX_DHCP_SERVER;
 
@@ -546,9 +546,9 @@ typedef struct NX_DHCP_SERVER_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
 
-UINT        nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
-UINT        nx_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG start_ip_address, ULONG end_ip_address, UINT *addresses_added);
-UINT        nx_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  ULONG subnet_mask, ULONG default_gateway_address, ULONG dns_server_address);
+UINT        nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
+UINT        nx_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 start_ip_address, UINT32 end_ip_address, UINT *addresses_added);
+UINT        nx_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  UINT32 subnet_mask, UINT32 default_gateway_address, UINT32 dns_server_address);
 UINT        nx_dhcp_server_delete(NX_DHCP_SERVER *dhcp_ptr);
 UINT        nx_dhcp_server_start(NX_DHCP_SERVER *dhcp_ptr);
 UINT        nx_dhcp_server_stop(NX_DHCP_SERVER *dhcp_ptr);
@@ -559,12 +559,12 @@ UINT        nx_dhcp_clear_client_record(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT
 /* DHCP source code is being compiled, do not perform any API mapping.  */
 
 
-UINT        _nxe_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
-UINT        _nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
-UINT        _nx_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG start_ip_address, ULONG end_ip_address, UINT *addresses_added);
-UINT        _nxe_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG start_ip_address, ULONG end_ip_address, UINT *addresses_added);
-UINT        _nxe_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  ULONG subnet_mask, ULONG default_gateway_address, ULONG dns_server_address);
-UINT        _nx_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  ULONG subnet_mask, ULONG default_gateway_address, ULONG dns_server_address);
+UINT        _nxe_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
+UINT        _nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, CHAR *name_ptr, NX_PACKET_POOL *packet_pool);
+UINT        _nx_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 start_ip_address, UINT32 end_ip_address, UINT *addresses_added);
+UINT        _nxe_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 start_ip_address, UINT32 end_ip_address, UINT *addresses_added);
+UINT        _nxe_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  UINT32 subnet_mask, UINT32 default_gateway_address, UINT32 dns_server_address);
+UINT        _nx_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index,  UINT32 subnet_mask, UINT32 default_gateway_address, UINT32 dns_server_address);
 UINT        _nxe_dhcp_server_delete(NX_DHCP_SERVER *dhcp_ptr);
 UINT        _nx_dhcp_server_delete(NX_DHCP_SERVER *dhcp_ptr);
 UINT        _nxe_dhcp_server_start(NX_DHCP_SERVER *dhcp_ptr);

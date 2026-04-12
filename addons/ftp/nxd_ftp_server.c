@@ -124,9 +124,9 @@ static VOID _nx_ftp_server_number_to_ascii(UCHAR *buffer_ptr, UINT buffer_size, 
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
-            UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
-            UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
+UINT  _nxe_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
+            UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
+            UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -201,9 +201,9 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
-            UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
-            UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
+UINT  _nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
+            UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
+            UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -278,7 +278,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nxde_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
             UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
             UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
 {
@@ -343,7 +343,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
             UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
             UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
 {
@@ -411,7 +411,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ftp_server_create_internal(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nx_ftp_server_create_internal(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
             UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
             UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info))
 {
@@ -436,7 +436,7 @@ UINT            status;
 
     /* Create the FTP Server thread.  */
     status =  tx_thread_create(&(ftp_server_ptr -> nx_ftp_server_thread), "FTP Server Thread", _nx_ftp_server_thread_entry,
-                               (ULONG) ftp_server_ptr, stack_ptr, stack_size, NX_FTP_SERVER_PRIORITY, NX_FTP_SERVER_PRIORITY,
+                               (UINT32) ftp_server_ptr, stack_ptr, stack_size, NX_FTP_SERVER_PRIORITY, NX_FTP_SERVER_PRIORITY,
                                NX_FTP_SERVER_TIME_SLICE, TX_DONT_START);
 
     /* Determine if an error occurred creating the thread.  */
@@ -466,7 +466,7 @@ UINT            status;
     /* Create the ThreadX activity timeout timer.  This will be used to periodically check to see if
        a client connection has gone silent and needs to be terminated.  */
     status =  tx_timer_create(&(ftp_server_ptr -> nx_ftp_server_timer), "FTP Server Timer", _nx_ftp_server_timeout,
-                              (ULONG) ftp_server_ptr, (NX_IP_PERIODIC_RATE * NX_FTP_TIMEOUT_PERIOD), 
+                              (UINT32) ftp_server_ptr, (NX_IP_PERIODIC_RATE * NX_FTP_TIMEOUT_PERIOD), 
                               (NX_IP_PERIODIC_RATE * NX_FTP_TIMEOUT_PERIOD), TX_NO_ACTIVATE);
 
     /* Determine if an error occurred creating the timer.  */
@@ -804,7 +804,7 @@ UINT  _nx_ftp_server_start(NX_FTP_SERVER *ftp_server_ptr)
 {
 
 UINT    status;
-ULONG   events;
+UINT32   events;
 
 
     /* Start listening on the FTP control socket.  */
@@ -1298,7 +1298,7 @@ VOID  _nx_ftp_server_thread_entry(ULONG ftp_server_address)
 
 NX_FTP_SERVER          *server_ptr;
 UINT                    status;
-ULONG                   events;
+UINT32                   events;
 
 
     /* Setup the server pointer.  */
@@ -1461,16 +1461,16 @@ UINT                    port_size;
 CHAR                    temp_buffer[10];
 #endif
 #ifndef NX_DISABLE_IPV4
-ULONG                   connect_ip4_address = 0;
+UINT32                   connect_ip4_address = 0;
 UINT                    commas;
-ULONG                   ip_address;
+UINT32                   ip_address;
 UINT                    temp;
 #endif /* NX_DISABLE_IPV4 */
 UINT                    i, j;
 INT                     k;
 UINT                    port;
-ULONG                   length;
-ULONG                   remaining_length;
+UINT32                   length;
+UINT32                   remaining_length;
 UINT                    status;
 UINT                    ftp_command;
 UINT                    single_file;
@@ -1479,13 +1479,13 @@ NX_PACKET               *packet_ptr;
 FX_LOCAL_PATH           temp_path;
 NX_FTP_CLIENT_REQUEST   *client_req_ptr;
 UINT                    attributes;
-ULONG                   size;
+UINT32                   size;
 UINT                    year, month, day;
 UINT                    hour, minute, second;
 CHAR                    filename[FX_MAX_LONG_NAME_LEN];
 const char              *months[] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
 UINT                    no_more_ftp_entries = NX_FALSE;
-ULONG                   block_size;
+UINT32                   block_size;
  
     year = 1900;
     month = 1;
@@ -1941,7 +1941,7 @@ ULONG                   block_size;
                         client_req_ptr -> nx_ftp_client_request_open_type =  NX_FTP_OPEN_FOR_READ;
 
                         /* Set the total bytes field to files size.  */
-                        client_req_ptr -> nx_ftp_client_request_total_bytes =  (ULONG)client_req_ptr -> nx_ftp_client_request_file.fx_file_current_file_size;
+                        client_req_ptr -> nx_ftp_client_request_total_bytes =  (UINT32)client_req_ptr -> nx_ftp_client_request_file.fx_file_current_file_size;
 
                         /* Now send a successful response to the client.  */
                         _nx_ftp_server_response(&(client_req_ptr -> nx_ftp_client_request_control_socket), packet_ptr,
@@ -1965,7 +1965,7 @@ ULONG                   block_size;
                             _nx_ftp_packet_allocate(ftp_server_ptr -> nx_ftp_server_packet_pool_ptr, client_req_ptr, &packet_ptr, NX_TCP_PACKET, NX_WAIT_FOREVER);
 
                             /* Calculate the maximum read size.  */
-                            length =  ((ULONG) (packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr)) - NX_PHYSICAL_TRAILER;
+                            length =  ((UINT32) (packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr)) - NX_PHYSICAL_TRAILER;
 
                             /* Determine if the length is greater than the connected MSS.  */
                             if (length > client_req_ptr -> nx_ftp_client_request_data_socket.nx_tcp_socket_connect_mss)
@@ -2827,7 +2827,7 @@ ULONG                   block_size;
                         status =  _nx_ftp_packet_allocate(ftp_server_ptr -> nx_ftp_server_packet_pool_ptr, client_req_ptr, &packet_ptr, NX_TCP_PACKET, NX_WAIT_FOREVER);
 
                         /* Calculate the remaining length.  */
-                        remaining_length =  (ULONG)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
+                        remaining_length =  (UINT32)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
 
                         /* Determine if the advertised MSS is even less.  */
                         if (remaining_length > client_req_ptr -> nx_ftp_client_request_data_socket.nx_tcp_socket_connect_mss)
@@ -2911,7 +2911,7 @@ ULONG                   block_size;
                                     }
 
                                     /* Calculate the remaining length.  */
-                                    remaining_length =  (ULONG)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
+                                    remaining_length =  (UINT32)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
 
                                     /* Determine if the advertised MSS is even less.  */
                                     if (remaining_length > client_req_ptr -> nx_ftp_client_request_data_socket.nx_tcp_socket_connect_mss)
@@ -3245,7 +3245,7 @@ ULONG                   block_size;
                         status =  _nx_ftp_packet_allocate(ftp_server_ptr -> nx_ftp_server_packet_pool_ptr, client_req_ptr, &packet_ptr, NX_TCP_PACKET, NX_WAIT_FOREVER);
 
                         /* Calculate the remaining length.  */
-                        remaining_length =  (ULONG)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
+                        remaining_length =  (UINT32)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
 
                         /* Determine if the advertised MSS is even less.  */
                         if (remaining_length > client_req_ptr -> nx_ftp_client_request_data_socket.nx_tcp_socket_connect_mss)
@@ -3354,7 +3354,7 @@ ULONG                   block_size;
                                     }
 
                                     /* Calculate the remaining length.  */
-                                    remaining_length =  (ULONG)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
+                                    remaining_length =  (UINT32)((packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr) - NX_PHYSICAL_TRAILER);
 
                                     /* Determine if the advertised MSS is even less.  */
                                     if (remaining_length > client_req_ptr -> nx_ftp_client_request_data_socket.nx_tcp_socket_connect_mss)
@@ -3523,7 +3523,7 @@ ULONG                   block_size;
                         {
 
                             /* Yes, numeric character is present.  Update the IP address.  */
-                            temp =  (temp*10) + (ULONG) (buffer_ptr[j] - '0');
+                            temp =  (temp*10) + (UINT32) (buffer_ptr[j] - '0');
                         }
 
                         /* Determine if a CR/LF is present.  */
@@ -3954,7 +3954,7 @@ ULONG                   block_size;
                     port_size = _nx_ftp_server_utility_fill_port_number(temp_buffer, port);
                     
                     /* Verify packet payload.  */
-                    if ((ULONG)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr) < (43 + port_size))
+                    if ((UINT32)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_prepend_ptr) < (43 + port_size))
                     {
 
                         /* Delete data socket.  */
@@ -4565,7 +4565,7 @@ VOID  _nx_ftp_server_data_disconnect_process(NX_FTP_SERVER *ftp_server_ptr)
 
 UINT                    i;
 UINT                    block_status;
-ULONG                   length;
+UINT32                   length;
 NX_PACKET               *packet_ptr;
 NX_FTP_CLIENT_REQUEST   *client_req_ptr;
 
@@ -4612,7 +4612,7 @@ NX_FTP_CLIENT_REQUEST   *client_req_ptr;
             {
 
                 /* Pickup the file length.  */
-                length =  (ULONG)client_req_ptr -> nx_ftp_client_request_file.fx_file_current_file_size;
+                length =  (UINT32)client_req_ptr -> nx_ftp_client_request_file.fx_file_current_file_size;
 
                 /* Allocate a packet for sending the file write response.  */
                 _nx_ftp_packet_allocate(ftp_server_ptr -> nx_ftp_server_packet_pool_ptr, client_req_ptr, &packet_ptr, NX_TCP_PACKET, NX_WAIT_FOREVER);
@@ -4732,7 +4732,7 @@ VOID  _nx_ftp_server_data_process(NX_FTP_SERVER *ftp_server_ptr)
 
 UINT                    i;
 UINT                    status;
-ULONG                   length;
+UINT32                   length;
 NX_PACKET               *packet_ptr;
 NX_PACKET               *next_packet_ptr;
 NX_FTP_CLIENT_REQUEST   *client_req_ptr;
@@ -4802,7 +4802,7 @@ NX_FTP_CLIENT_REQUEST   *client_req_ptr;
 
                 /* Write to the already opened file.  */
                 status = fx_file_write(&(client_req_ptr -> nx_ftp_client_request_file), next_packet_ptr -> nx_packet_prepend_ptr,
-                                            (ULONG)((next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr)));
+                                            (UINT32)((next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr)));
 
                 /* If unsuccessful file write, ok to receive the rest of the socket
                    packets from the receive queue. */
@@ -4812,14 +4812,14 @@ NX_FTP_CLIENT_REQUEST   *client_req_ptr;
                 
                     /* Increment the number of bytes received.  */
                     ftp_server_ptr -> nx_ftp_server_total_bytes_received += 
-                        (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+                        (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
                 }
 
                 /* If not successful, keep retrieving packets from the socket receive queue so we can free
                    up the packets. */
 
                 /* Update the remaining length to write.  */
-                length =  length - (ULONG) (next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+                length =  length - (UINT32) (next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
 
 #ifdef NX_DISABLE_PACKET_CHAIN
                 next_packet_ptr =  NX_NULL;
@@ -5085,7 +5085,7 @@ char    *buffer_ptr;
 /*    ThreadX                               ThreadX timer callback        */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_ftp_server_timeout(ULONG ftp_server_address)
+VOID  _nx_ftp_server_timeout(UINT32 ftp_server_address)
 {
 
 NX_FTP_SERVER   *server_ptr;
@@ -5519,7 +5519,7 @@ UINT _nx_ftp_utility_parse_IPv6_address(CHAR *buffer_ptr, UINT buffer_length, NX
 
 UINT j, k, i, m, colons, digit; 
 UINT  number_consecutive_zeros_to_add, remaining_colons, actual_colons_left;
-ULONG  temp;
+UINT32  temp;
 
 
     /* Initialize variables. */
@@ -5578,7 +5578,7 @@ ULONG  temp;
             /* Yes, is a numeric character is present?  Update the IP address.  */
             if (buffer_ptr[j] >= '0' && buffer_ptr[j] <= '9')
             {
-                temp =  (temp*16) + (ULONG) (buffer_ptr[j] - '0');
+                temp =  (temp*16) + (UINT32) (buffer_ptr[j] - '0');
             }
             else
             {
@@ -5619,7 +5619,7 @@ ULONG  temp;
                         digit = 0;
                 }
 
-                /* Update the ULONG. */
+                /* Update the UINT32. */
                 temp =  (temp*16 + digit);
             }
 
@@ -5656,7 +5656,7 @@ ULONG  temp;
             /* Increment the colon count. */
             colons++;
 
-            /* Are we in the middle of a ULONG? */
+            /* Are we in the middle of a UINT32? */
             if (colons % 2 == 1)
             {
 
@@ -5675,11 +5675,11 @@ ULONG  temp;
                 /* Add the number we just parsed. */
                 ipduo_address -> nxd_ip_address.v6[k] += temp;
 
-                /* Move to the next ULONG in the nxd_ip_address array. */
+                /* Move to the next UINT32 in the nxd_ip_address array. */
                 k++;
             }
 
-            /* Reset our counters and temporary ULONG. */
+            /* Reset our counters and temporary UINT32. */
             i = 0;
             temp =  0;
 
@@ -5724,7 +5724,7 @@ ULONG  temp;
                     return NX_FTP_INVALID_ADDRESS;
                 }
 
-                /* Compute the number of zeros to insert into the NXD_ADDRESS IPv6 ULONG array. */
+                /* Compute the number of zeros to insert into the NXD_ADDRESS IPv6 UINT32 array. */
                 number_consecutive_zeros_to_add = remaining_colons - actual_colons_left;
               
                 /* Add the zeroes until its time to start parsing rest of the IPv6 address string. */
@@ -5734,7 +5734,7 @@ ULONG  temp;
                     /* Determine where to add the 16 bits depending
                        on odd or even number colon we're on. */
 
-                    /* Are we in the middle of the current v6 ULONG?*/
+                    /* Are we in the middle of the current v6 UINT32?*/
                     if (colons % 2 == 1)
                     {
 
@@ -5746,7 +5746,7 @@ ULONG  temp;
                     else
                     {
 
-                        /* No, starting the next ULONG in v6 so just set to zero. */
+                        /* No, starting the next UINT32 in v6 so just set to zero. */
                         ipduo_address -> nxd_ip_address.v6[k] = 0;
                     }
 
@@ -5772,7 +5772,7 @@ ULONG  temp;
             /* Add the number we just parsed. */
             ipduo_address -> nxd_ip_address.v6[k] += temp;
 
-            /* Clear the temporary ULONG so we know we applied it to our IPv6 address array. */
+            /* Clear the temporary UINT32 so we know we applied it to our IPv6 address array. */
             temp = 0;
 
             /* This is the end of the IP address. Bail out...*/
@@ -5795,7 +5795,7 @@ ULONG  temp;
         return  NX_FTP_INVALID_ADDRESS;
     }
     
-    /* Is there a parsed number to apply to the last ULONG e.g. no terminating '|'
+    /* Is there a parsed number to apply to the last UINT32 e.g. no terminating '|' 
        in the buffer? */
     if (temp)
     {
@@ -5926,7 +5926,7 @@ UINT digits = 0;
                 {
         
                     /* Yes, numeric character is present.  Update the port number.  */
-                    *portnumber =  (*portnumber * 10) + (ULONG) (buffer_ptr[j] - '0');
+                    *portnumber =  (*portnumber * 10) + (UINT32) (buffer_ptr[j] - '0');
                      digits++;
 
                     /* Check for overflow. */
@@ -6086,12 +6086,12 @@ UINT    size;
 /*    _nx_ftp_server_command_process        Process command               */ 
 /*                                                                        */ 
 /**************************************************************************/
-VOID  _nx_ftp_server_block_size_get(NX_FTP_SERVER *ftp_server_ptr, UINT ftp_command, CHAR *filename, ULONG *block_size)
+VOID  _nx_ftp_server_block_size_get(NX_FTP_SERVER *ftp_server_ptr, UINT ftp_command, CHAR *filename, UINT32 *block_size)
 {
 
 UINT        j = 0;
 UINT        attributes;
-ULONG       size;
+UINT32       size;
 UINT        year, month, day;
 UINT        hour, minute, second;
 UINT        length;
@@ -6187,7 +6187,7 @@ UINT        status;
 /*    _nx_ftp_server_command_process        Process command               */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_server_block_header_send(NX_PACKET_POOL *pool_ptr, NX_FTP_CLIENT_REQUEST *client_request_ptr, ULONG block_size)
+UINT  _nx_ftp_server_block_header_send(NX_PACKET_POOL *pool_ptr, NX_FTP_CLIENT_REQUEST *client_request_ptr, UINT32 block_size)
 {
 
 UINT        status;
@@ -6290,8 +6290,8 @@ UCHAR       *buffer_ptr;
 UINT  _nx_ftp_server_block_header_retrieve(NX_FTP_CLIENT_REQUEST *ftp_client_ptr, NX_PACKET *packet_ptr)
 {
 
-ULONG       remaining_bytes;
-ULONG       delta;
+UINT32       remaining_bytes;
+UINT32       delta;
 UCHAR       *buffer_ptr;
 #ifndef NX_DISABLE_PACKET_CHAIN
 NX_PACKET   *before_last_packet;
@@ -6317,7 +6317,7 @@ NX_PACKET   *last_packet;
         buffer_ptr = packet_ptr -> nx_packet_prepend_ptr;
 
         /* Process block header.  */
-        ftp_client_ptr -> nx_ftp_client_request_block_bytes = (ULONG)((buffer_ptr[1] << 8) | buffer_ptr[2]);
+        ftp_client_ptr -> nx_ftp_client_request_block_bytes = (UINT32)((buffer_ptr[1] << 8) | buffer_ptr[2]);
 
         /* Skip the block header.  */
         packet_ptr -> nx_packet_prepend_ptr += 3;
@@ -6369,7 +6369,7 @@ NX_PACKET   *last_packet;
 
             /* Determine if the amount to adjust is less than the payload in the last packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
+            if (((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
             {
 
                 /* Yes, simply adjust the append pointer of the last packet in the chain.  */
@@ -6383,7 +6383,7 @@ NX_PACKET   *last_packet;
             {
 
                 /* Adjust the delta by the amount in the last packet.  */
-                delta =  delta - ((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
+                delta =  delta - ((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
 
                 /* Find the packet before the last packet.  */
                 before_last_packet =  packet_ptr;

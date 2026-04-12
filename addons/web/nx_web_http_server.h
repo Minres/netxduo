@@ -226,7 +226,7 @@ typedef struct NX_WEB_HTTP_SERVER_DATE_STRUCT
 typedef struct NX_WEB_HTTP_SERVER_NONCE_STRUCT
 {
     UINT            nonce_state;                                        /* The state of the nonce               */
-    ULONG           nonce_timestamp;                                    /* The time when the nonce is created   */
+    UINT32           nonce_timestamp;                                    /* The time when the nonce is created   */
     NX_TCP_SESSION  *nonce_session_ptr;                                 /* The session accepted with this nonce */
     UCHAR           nonce_buffer[NX_WEB_HTTP_SERVER_NONCE_SIZE];        /* Nonce for digest authetication       */
 } NX_WEB_HTTP_SERVER_NONCE;
@@ -264,23 +264,23 @@ typedef struct NX_WEB_HTTP_SERVER_MULTIPART_STRUCT
 
 typedef struct NX_WEB_HTTP_SERVER_STRUCT
 {
-    ULONG           nx_web_http_server_id;                              /* HTTP Server ID                       */
+    UINT32           nx_web_http_server_id;                              /* HTTP Server ID                       */
     CHAR           *nx_web_http_server_name;                            /* Name of this HTTP Server             */
     NX_IP          *nx_web_http_server_ip_ptr;                          /* Pointer to associated IP structure   */
     CHAR            nx_web_http_server_request_resource[NX_WEB_HTTP_MAX_RESOURCE + 1];
                                                                         /* Uniform Resource Locator (URL)       */
     NX_PACKET_POOL *nx_web_http_server_packet_pool_ptr;                 /* Pointer to HTTP Server packet pool   */
     FX_MEDIA       *nx_web_http_server_media_ptr;                       /* Pointer to media control block       */
-    ULONG           nx_web_http_server_get_requests;                    /* Number of get requests               */
-    ULONG           nx_web_http_server_head_requests;                   /* Number of head requests              */
-    ULONG           nx_web_http_server_put_requests;                    /* Number of put requests               */
-    ULONG           nx_web_http_server_delete_requests;                 /* Number of delete requests            */
-    ULONG           nx_web_http_server_post_requests;                   /* Number of post requests              */
-    ULONG           nx_web_http_server_unknown_requests;                /* Number of unknown requests           */
-    ULONG           nx_web_http_server_total_bytes_sent;                /* Number of total bytes sent           */
-    ULONG           nx_web_http_server_total_bytes_received;            /* Number of total bytes received       */
-    ULONG           nx_web_http_server_allocation_errors;               /* Number of allocation errors          */
-    ULONG           nx_web_http_server_invalid_http_headers;            /* Number of invalid http headers       */
+    UINT32           nx_web_http_server_get_requests;                    /* Number of get requests               */
+    UINT32           nx_web_http_server_head_requests;                   /* Number of head requests              */
+    UINT32           nx_web_http_server_put_requests;                    /* Number of put requests               */
+    UINT32           nx_web_http_server_delete_requests;                 /* Number of delete requests            */
+    UINT32           nx_web_http_server_post_requests;                   /* Number of post requests              */
+    UINT32           nx_web_http_server_unknown_requests;                /* Number of unknown requests           */
+    UINT32           nx_web_http_server_total_bytes_sent;                /* Number of total bytes sent           */
+    UINT32           nx_web_http_server_total_bytes_received;            /* Number of total bytes received       */
+    UINT32           nx_web_http_server_allocation_errors;               /* Number of allocation errors          */
+    UINT32           nx_web_http_server_invalid_http_headers;            /* Number of invalid http headers       */
     FX_FILE         nx_web_http_server_file;                            /* HTTP file control block              */
 
     NX_TCPSERVER    nx_web_http_server_tcpserver;                       /* TCP server with multiple sessions    */
@@ -335,7 +335,7 @@ typedef struct NX_WEB_HTTP_SERVER_STRUCT
 #ifdef __PRODUCT_NETXDUO__
     UINT (*nx_web_http_server_invalid_username_password_callback)(CHAR *resource, NXD_ADDRESS *client_nxd_address, UINT request_type);
 #else
-    UINT (*nx_web_http_server_invalid_username_password_callback)(CHAR *resource, ULONG client_address, UINT request_type);
+    UINT (*nx_web_http_server_invalid_username_password_callback)(CHAR *resource, UINT32 client_address, UINT request_type);
 #endif
     VOID (*nx_web_http_server_gmt_get)(NX_WEB_HTTP_SERVER_DATE *date);
     UINT (*nx_web_http_server_cache_info_get)(CHAR *resource, UINT *max_age, NX_WEB_HTTP_SERVER_DATE *last_modified);
@@ -434,22 +434,22 @@ typedef struct NX_WEB_HTTP_SERVER_STRUCT
 /* Define the prototypes accessible to the application software.  */
 
 
-UINT        nx_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, ULONG data_length);
+UINT        nx_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, UINT32 data_length);
 UINT        nx_web_http_server_callback_response_send(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code, CHAR *information, CHAR *additional_info);
 UINT        nx_web_http_server_callback_response_send_extended(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code,
                                                                UINT status_code_length, CHAR *information,
                                                                UINT information_length, CHAR *additional_info,
                                                                UINT additional_info_length);
-UINT        nx_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
+UINT        nx_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
 UINT        nx_web_http_server_packet_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr);
-UINT        nx_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG *content_length);
+UINT        nx_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 *content_length);
 
 #ifdef NX_DISABLE_ERROR_CHECKING
-UINT        _nx_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nx_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                    UINT (*authentication_check)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                    UINT (*request_notify)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr));
 #else
-UINT        _nxe_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nxe_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                     UINT (*authentication_check)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                     UINT (*request_notify)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr), UINT http_server_size);
 #endif /* NX_DISABLE_ERROR_CHECKING */
@@ -460,7 +460,7 @@ UINT        nx_web_http_server_query_get(NX_PACKET *packet_ptr, UINT query_numbe
 UINT        nx_web_http_server_start(NX_WEB_HTTP_SERVER *http_server_ptr);
 #ifdef NX_WEB_HTTPS_ENABLE
 UINT        nx_web_http_server_secure_configure(NX_WEB_HTTP_SERVER *http_server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                            VOID *metadata_buffer, ULONG metadata_size,
+                                            VOID *metadata_buffer, UINT32 metadata_size,
                                             UCHAR* packet_buffer, UINT packet_buffer_size,
                                             NX_SECURE_X509_CERT *identity_certificate,
                                             NX_SECURE_X509_CERT *trusted_certificates[],
@@ -476,10 +476,10 @@ UINT        nx_web_http_server_secure_ecc_configure(NX_WEB_HTTP_SERVER *http_ser
 #endif /* NX_SECURE_ENABLE_ECC_CIPHERSUITE */
 #endif /* NX_WEB_HTTPS_ENABLE */
 UINT        nx_web_http_server_stop(NX_WEB_HTTP_SERVER *http_server_ptr);
-UINT        nx_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
-UINT        nx_web_http_server_content_length_get(NX_PACKET *packet_ptr, ULONG *length);
-UINT        nx_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, ULONG buffer_size);
-UINT        nx_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG *available_offset, ULONG *available_length);
+UINT        nx_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
+UINT        nx_web_http_server_content_length_get(NX_PACKET *packet_ptr, UINT32 *length);
+UINT        nx_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, UINT32 buffer_size);
+UINT        nx_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 *available_offset, UINT32 *available_length);
 UINT        nx_web_http_server_callback_generate_response_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr,
                                                              CHAR *status_code, UINT content_length, CHAR *content_type,
                                                              CHAR* additional_header);
@@ -513,14 +513,14 @@ UINT        nx_web_http_server_authentication_check_set(NX_WEB_HTTP_SERVER *http
 
 /* HTTP source code is being compiled, do not perform any API mapping.  */
 
-UINT        _nx_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, ULONG data_length);
+UINT        _nx_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, UINT32 data_length);
 UINT        _nx_web_http_server_callback_response_send(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code, CHAR *information, CHAR *additional_info);
 UINT        _nx_web_http_server_callback_response_send_extended(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code,
                                                                 UINT status_code_length, CHAR *information,
                                                                 UINT information_length, CHAR *additional_info,
                                                                 UINT additional_info_length);
-UINT        _nx_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
-UINT        _nx_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nx_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
+UINT        _nx_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                 UINT (*authentication_check)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                 UINT (*request_notify)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr));
 UINT        _nx_web_http_server_delete(NX_WEB_HTTP_SERVER *http_server_ptr);
@@ -529,7 +529,7 @@ UINT        _nx_web_http_server_query_get(NX_PACKET *packet_ptr, UINT query_numb
 UINT        _nx_web_http_server_start(NX_WEB_HTTP_SERVER *http_server_ptr);
 #ifdef NX_WEB_HTTPS_ENABLE
 UINT        _nx_web_http_server_secure_configure(NX_WEB_HTTP_SERVER *http_server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                            VOID *metadata_buffer, ULONG metadata_size,
+                                            VOID *metadata_buffer, UINT32 metadata_size,
                                             UCHAR* packet_buffer, UINT packet_buffer_size,
                                             NX_SECURE_X509_CERT *identity_certificate,
                                             NX_SECURE_X509_CERT *trusted_certificates[],
@@ -545,10 +545,10 @@ UINT        _nx_web_http_server_secure_ecc_configure(NX_WEB_HTTP_SERVER *http_se
 #endif /* NX_SECURE_ENABLE_ECC_CIPHERSUITE */
 #endif /* NX_WEB_HTTPS_ENABLE */
 UINT        _nx_web_http_server_stop(NX_WEB_HTTP_SERVER *http_server_ptr);
-UINT        _nx_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
-UINT        _nx_web_http_server_content_length_get(NX_PACKET *packet_ptr, ULONG *length);
-UINT        _nx_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, ULONG buffer_size);
-UINT        _nx_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG *available_offset, ULONG *available_length);
+UINT        _nx_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
+UINT        _nx_web_http_server_content_length_get(NX_PACKET *packet_ptr, UINT32 *length);
+UINT        _nx_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, UINT32 buffer_size);
+UINT        _nx_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 *available_offset, UINT32 *available_length);
 UINT        _nx_web_http_server_callback_generate_response_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr,
                                                               CHAR *status_code, UINT content_length, CHAR *content_type,
                                                               CHAR* additional_header);
@@ -561,7 +561,7 @@ UINT        _nx_web_http_server_callback_packet_send(NX_WEB_HTTP_SERVER *server_
 UINT        _nx_web_http_server_gmt_callback_set(NX_WEB_HTTP_SERVER *server_ptr, VOID (*gmt_callback)(NX_WEB_HTTP_SERVER_DATE *));
 UINT        _nx_web_http_server_cache_info_callback_set(NX_WEB_HTTP_SERVER *server_ptr, UINT (*cache_info_get)(CHAR *, UINT *, NX_WEB_HTTP_SERVER_DATE *));
 UINT        _nx_web_http_server_mime_maps_additional_set(NX_WEB_HTTP_SERVER *server_ptr, NX_WEB_HTTP_SERVER_MIME_MAP *mime_maps, UINT mime_maps_num);
-UINT        _nx_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG *content_length);
+UINT        _nx_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 *content_length);
 UINT        _nx_web_http_server_packet_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr);
 UINT        _nx_web_http_server_invalid_userpassword_notify_set(NX_WEB_HTTP_SERVER *http_server_ptr, UINT (*invalid_username_password_callback)(CHAR *resource, NXD_ADDRESS *client_nxd_address, UINT request_type ));
 UINT        _nx_web_http_server_digest_authenticate_notify_set(NX_WEB_HTTP_SERVER *http_server_ptr,
@@ -591,8 +591,8 @@ UINT        _nx_web_http_server_type_get(NX_WEB_HTTP_SERVER *server_ptr, CHAR *n
 UINT        _nx_web_http_server_type_get_extended(NX_WEB_HTTP_SERVER *server_ptr, CHAR *name, UINT name_length,
                                                   CHAR *http_type_string, UINT http_type_string_max_size, UINT *string_size);
 
-UINT        _nx_web_http_server_receive(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_web_http_server_send(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT        _nx_web_http_server_receive(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_web_http_server_send(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
 VOID        _nx_web_http_server_connection_reset(NX_WEB_HTTP_SERVER *server_ptr, NX_TCP_SESSION *session_ptr, UINT wait_option);
 VOID        _nx_web_http_server_connection_disconnect(NX_WEB_HTTP_SERVER *server_ptr, NX_TCP_SESSION *session_ptr, UINT wait_option);
 
@@ -608,9 +608,9 @@ UINT        _nx_web_http_server_nonce_allocate(NX_WEB_HTTP_SERVER *server_ptr, N
 UINT        _nx_web_http_server_boundary_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr);
 #endif /* NX_WEB_HTTP_MULTIPART_ENABLE */
 
-UINT        _nx_web_http_server_match_string(UCHAR *src_start, UCHAR *src_end, UCHAR *target, ULONG target_length, ULONG *match_count, UCHAR **match_end_ptr);
-UINT        _nx_web_http_server_field_value_get(NX_PACKET *packet_ptr, UCHAR *field_name, ULONG name_length, UCHAR *field_value, ULONG field_value_size);
-UINT        _nx_web_http_server_memicmp(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length);
+UINT        _nx_web_http_server_match_string(UCHAR *src_start, UCHAR *src_end, UCHAR *target, UINT32 target_length, UINT32 *match_count, UCHAR **match_end_ptr);
+UINT        _nx_web_http_server_field_value_get(NX_PACKET *packet_ptr, UCHAR *field_name, UINT32 name_length, UCHAR *field_value, UINT32 field_value_size);
+UINT        _nx_web_http_server_memicmp(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length);
 
 UINT        _nx_web_http_server_generate_response_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr,
                                                          CHAR *status_code, UINT status_code_length,
@@ -630,27 +630,27 @@ VOID        _nx_web_http_server_get_client_keepalive(NX_WEB_HTTP_SERVER *server_
 #endif /* NX_WEB_HTTP_KEEPALIVE_DISABLE */
 
 UINT        _nx_web_http_server_chunked_check(NX_PACKET *packet_ptr);
-UINT        _nx_web_http_server_request_read(NX_WEB_HTTP_SERVER *server_ptr, UCHAR *data, ULONG wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
-UINT        _nx_web_http_server_request_byte_expect(NX_WEB_HTTP_SERVER *server_ptr, UCHAR data, ULONG wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
-UINT        _nx_web_http_server_chunked_size_get(NX_WEB_HTTP_SERVER *server_ptr, UINT *chunk_size, ULONG wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
-UINT        _nx_web_http_server_request_chunked_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG wait_option);
+UINT        _nx_web_http_server_request_read(NX_WEB_HTTP_SERVER *server_ptr, UCHAR *data, UINT32 wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
+UINT        _nx_web_http_server_request_byte_expect(NX_WEB_HTTP_SERVER *server_ptr, UCHAR data, UINT32 wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
+UINT        _nx_web_http_server_chunked_size_get(NX_WEB_HTTP_SERVER *server_ptr, UINT *chunk_size, UINT32 wait_option, NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr);
+UINT        _nx_web_http_server_request_chunked_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 wait_option);
 UINT        _nx_web_http_server_response_chunked_set(NX_WEB_HTTP_SERVER *server_ptr, UINT chunk_size, NX_PACKET *packet_ptr);
 UINT        _nx_web_http_server_response_packet_allocate(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT wait_option);
 UINT        _nxe_web_http_server_response_chunked_set(NX_WEB_HTTP_SERVER *server_ptr, UINT chunk_size, NX_PACKET *packet_ptr);
 UINT        _nxe_web_http_server_response_packet_allocate(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT wait_option);
-UINT        _nxe_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, ULONG data_length);
+UINT        _nxe_web_http_server_callback_data_send(NX_WEB_HTTP_SERVER *server_ptr, VOID *data_ptr, UINT32 data_length);
 UINT        _nxe_web_http_server_callback_response_send(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code, CHAR *information, CHAR *additional_info);
 UINT        _nxe_web_http_server_callback_response_send_extended(NX_WEB_HTTP_SERVER *server_ptr, CHAR *status_code,
                                                                  UINT status_code_length, CHAR *information,
                                                                  UINT information_length, CHAR *additional_info,
                                                                  UINT additional_info_length);
-UINT        _nxe_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
-UINT        _nxe_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG *content_length);
+UINT        _nxe_web_http_server_content_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
+UINT        _nxe_web_http_server_packet_content_find(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 *content_length);
 UINT        _nxe_web_http_server_packet_get(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr);
-UINT        _nxe_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset,
+UINT        _nxe_web_http_server_content_get_extended(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset,
                                                   CHAR *destination_ptr, UINT destination_size, UINT *actual_size);
-UINT        _nxe_web_http_server_content_length_get(NX_PACKET *packet_ptr, ULONG *content_length);
-UINT        _nxe_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nxe_web_http_server_content_length_get(NX_PACKET *packet_ptr, UINT32 *content_length);
+UINT        _nxe_web_http_server_create(NX_WEB_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, UINT server_port, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                     UINT (*authentication_check)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                     UINT (*request_notify)(NX_WEB_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr), UINT http_server_size);
 UINT        _nxe_web_http_server_delete(NX_WEB_HTTP_SERVER *http_server_ptr);
@@ -659,7 +659,7 @@ UINT        _nxe_web_http_server_query_get(NX_PACKET *packet_ptr, UINT query_num
 UINT        _nxe_web_http_server_start(NX_WEB_HTTP_SERVER *http_server_ptr);
 #ifdef NX_WEB_HTTPS_ENABLE
 UINT        _nxe_web_http_server_secure_configure(NX_WEB_HTTP_SERVER *http_server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                            VOID *metadata_buffer, ULONG metadata_size,
+                                            VOID *metadata_buffer, UINT32 metadata_size,
                                             UCHAR* packet_buffer, UINT packet_buffer_size,
                                             NX_SECURE_X509_CERT *identity_certificate,
                                             NX_SECURE_X509_CERT *trusted_certificates[],
@@ -680,8 +680,8 @@ UINT        _nxe_web_http_server_invalid_userpassword_notify_set(NX_WEB_HTTP_SER
 UINT        _nxe_web_http_server_type_get(NX_WEB_HTTP_SERVER *server_ptr, CHAR *name, CHAR *http_type_string, UINT *string_size);
 UINT        _nxe_web_http_server_type_get_extended(NX_WEB_HTTP_SERVER *server_ptr, CHAR *name, UINT name_length,
                                                    CHAR *http_type_string, UINT http_type_string_max_size, UINT *string_size);
-UINT        _nxe_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, ULONG buffer_size);
-UINT        _nxe_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG *available_offset, ULONG *available_length);
+UINT        _nxe_web_http_server_get_entity_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, UINT32 buffer_size);
+UINT        _nxe_web_http_server_get_entity_content(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 *available_offset, UINT32 *available_length);
 UINT        _nxe_web_http_server_callback_generate_response_header(NX_WEB_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr,
                                                                    CHAR *status_code, UINT content_length, CHAR *content_type,
                                                                    CHAR* additional_header);

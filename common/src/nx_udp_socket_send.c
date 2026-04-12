@@ -66,7 +66,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr,
-                          ULONG ip_address, UINT port)
+                          UINT32 ip_address, UINT port)
 {
 #ifndef NX_DISABLE_IPV4
 UINT        status;

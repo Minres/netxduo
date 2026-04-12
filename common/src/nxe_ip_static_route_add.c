@@ -75,8 +75,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    None                                                                */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_static_route_add(NX_IP *ip_ptr, ULONG network_address,
-                               ULONG net_mask, ULONG next_hop)
+UINT  _nxe_ip_static_route_add(NX_IP *ip_ptr, UINT32 network_address,
+                               UINT32 net_mask, UINT32 next_hop)
 {
 #if !defined(NX_DISABLE_IPV4) && defined(NX_ENABLE_IP_STATIC_ROUTING)
 

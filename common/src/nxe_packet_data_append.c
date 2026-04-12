@@ -70,8 +70,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_data_append(NX_PACKET *packet_ptr, VOID *data_start, ULONG data_size,
-                              NX_PACKET_POOL *pool_ptr, ULONG wait_option)
+UINT  _nxe_packet_data_append(NX_PACKET *packet_ptr, VOID *data_start, UINT32 data_size,
+                              NX_PACKET_POOL *pool_ptr, UINT32 wait_option)
 {
 
 UINT status;

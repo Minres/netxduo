@@ -91,8 +91,8 @@ NXD_IPV6_ADDRESS *address_ptr;
 #ifdef NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY
     if (ip_ptr -> nx_ipv6_address_change_notify)
     {
-        ipv6_addr_index = (ULONG)ipv6_address -> nxd_ipv6_address_index;
-        interface_index = (ULONG)ipv6_address -> nxd_ipv6_address_attached -> nx_interface_index;
+        ipv6_addr_index = (UINT32)ipv6_address -> nxd_ipv6_address_index;
+        interface_index = (UINT32)ipv6_address -> nxd_ipv6_address_attached -> nx_interface_index;
         ip_ptr -> nx_ipv6_address_change_notify(ip_ptr, NX_IPV6_ADDRESS_DAD_FAILURE, interface_index, ipv6_addr_index, &ipv6_address -> nxd_ipv6_address[0]);
     }
 #else

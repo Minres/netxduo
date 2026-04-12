@@ -260,13 +260,13 @@ NX_TCP_SESSION *session_ptr;
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_tcpserver_create(NX_IP *ip_ptr, NX_TCPSERVER *server_ptr, CHAR *name, 
-                          ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG window_size,
+                          UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 window_size,
                           VOID (*new_connection)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*receive_data)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*connection_end)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*connection_timeout)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
-                          ULONG timeout, VOID *stack_ptr, UINT stack_size,
-                          VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, ULONG accept_wait_option)
+                          UINT32 timeout, VOID *stack_ptr, UINT stack_size,
+                          VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, UINT32 accept_wait_option)
 {
 UINT            i;
 UINT            status;
@@ -286,7 +286,7 @@ UINT            status;
 
     /* Create the tcpserver thread. */
     status = tx_thread_create(&server_ptr -> nx_tcpserver_thread, "TCPSERVER Thread",
-                              _nx_tcpserver_thread_entry, (ULONG)server_ptr, stack_ptr,
+                              _nx_tcpserver_thread_entry, (UINT32)server_ptr, stack_ptr,
                               stack_size, thread_priority, thread_priority, 
                               TX_NO_TIME_SLICE, TX_DONT_START);
 
@@ -405,11 +405,11 @@ UINT            status;
 
 /* Setup TLS state per server session. */
 UINT _nx_tcpserver_tls_setup(NX_TCPSERVER *server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                             VOID *metadata_buffer, ULONG metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
+                             VOID *metadata_buffer, UINT32 metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
                              NX_SECURE_X509_CERT *trusted_certificates[], UINT trusted_certs_num, NX_SECURE_X509_CERT *remote_certificates[], UINT remote_certs_num, UCHAR *remote_certificate_buffer, UINT remote_cert_buffer_size)
 {
 NX_SECURE_TLS_SESSION *tls_session;
-ULONG session_metadata_size;
+UINT32 session_metadata_size;
 UCHAR *session_metadata;
 UCHAR *session_cert_buffer;
 UINT session_cert_buffer_size = 0;

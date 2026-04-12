@@ -52,19 +52,19 @@ static UINT nx_azure_iot_provisioning_client_send_req(NX_AZURE_IOT_PROVISIONING_
                                                       az_iot_provisioning_client_register_response const *register_response,
                                                       UINT wait_option);
 static VOID nx_azure_iot_provisioning_client_event_process(NX_AZURE_IOT *nx_azure_iot_ptr,
-                                                           ULONG common_events, ULONG module_own_events);
+                                                           UINT32 common_events, UINT32 module_own_events);
 static VOID nx_azure_iot_provisioning_client_update_state(NX_AZURE_IOT_PROVISIONING_CLIENT *context, UINT action_result);
 
-extern UINT _nxd_mqtt_process_publish_packet(NX_PACKET *packet_ptr, ULONG *topic_offset_ptr, USHORT *topic_length_ptr,
-                                             ULONG *message_offset_ptr, ULONG *message_length_ptr);
+extern UINT _nxd_mqtt_process_publish_packet(NX_PACKET *packet_ptr, UINT32 *topic_offset_ptr, USHORT *topic_length_ptr,
+                                             UINT32 *message_offset_ptr, UINT32 *message_length_ptr);
 
 static UINT nx_azure_iot_provisioning_client_process_message(NX_AZURE_IOT_PROVISIONING_CLIENT *context, NX_PACKET *packet_ptr,
                                                              NX_AZURE_IOT_PROVISIONING_RESPONSE *response)
 {
-ULONG topic_offset;
+UINT32 topic_offset;
 USHORT topic_length;
-ULONG message_offset;
-ULONG message_length;
+UINT32 message_offset;
+UINT32 message_length;
 az_span received_topic;
 az_span received_payload;
 az_result core_result;
@@ -77,7 +77,7 @@ UINT status;
         return(status);
     }
 
-    if ((ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) <
+    if ((UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) <
         (message_offset + message_length))
     {
         LogError(LogLiteralArgs("IoTProvisioning client failed to parse chained packet"));
@@ -743,7 +743,7 @@ NX_AZURE_IOT_PROVISIONING_THREAD *thread_list_prev = NX_NULL;
 }
 
 static UINT nx_azure_iot_provisioning_client_sas_token_get(NX_AZURE_IOT_PROVISIONING_CLIENT *prov_client_ptr,
-                                                           ULONG expiry_time_secs)
+                                                           UINT32 expiry_time_secs)
 {
 UCHAR *buffer_ptr;
 UINT buffer_size;
@@ -1137,7 +1137,7 @@ NX_AZURE_IOT_RESOURCE *resource_ptr;
 #endif /* NXD_MQTT_OVER_WEBSOCKET */
 
 static VOID nx_azure_iot_provisioning_client_event_process(NX_AZURE_IOT *nx_azure_iot_ptr,
-                                                           ULONG common_events, ULONG module_own_events)
+                                                           UINT32 common_events, UINT32 module_own_events)
 {
 NX_AZURE_IOT_RESOURCE *resource;
 NX_AZURE_IOT_PROVISIONING_CLIENT *provisioning_client;
@@ -1313,7 +1313,7 @@ UINT nx_azure_iot_provisioning_client_completion_callback_set(NX_AZURE_IOT_PROVI
 UINT nx_azure_iot_provisioning_client_symmetric_key_set(NX_AZURE_IOT_PROVISIONING_CLIENT *prov_client_ptr,
                                                         const UCHAR *symmetric_key, UINT symmetric_key_length)
 {
-ULONG expiry_time_secs;
+UINT32 expiry_time_secs;
 UINT status;
 
     if ((prov_client_ptr == NX_NULL) || (prov_client_ptr -> nx_azure_iot_ptr == NX_NULL) ||

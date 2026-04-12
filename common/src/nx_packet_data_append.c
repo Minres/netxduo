@@ -67,8 +67,8 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_data_append(NX_PACKET *packet_ptr, VOID *data_start, ULONG data_size,
-                             NX_PACKET_POOL *pool_ptr, ULONG wait_option)
+UINT  _nx_packet_data_append(NX_PACKET *packet_ptr, VOID *data_start, UINT32 data_size,
+                             NX_PACKET_POOL *pool_ptr, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_PACKET_CHAIN
@@ -76,8 +76,8 @@ UINT       status;                 /* Return status              */
 NX_PACKET *new_list_ptr;           /* Head of new list pointer   */
 NX_PACKET *last_packet =  NX_NULL; /* Last supplied packet       */
 #endif /* NX_DISABLE_PACKET_CHAIN */
-ULONG      available_bytes;        /* Number of available bytes  */
-ULONG      copy_size;              /* Size for each memory copy  */
+UINT32      available_bytes;        /* Number of available bytes  */
+UINT32      copy_size;              /* Size for each memory copy  */
 UCHAR     *source_ptr;             /* Buffer source pointer      */
 NX_PACKET *work_ptr;               /* Working packet pointer     */
 
@@ -101,7 +101,7 @@ NX_PACKET *work_ptr;               /* Working packet pointer     */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
             /*lint -e{737} suppress loss of sign, since nx_packet_data_end is assumed to be larger than nx_packet_append_ptr. */
             available_bytes =  available_bytes +
-                (ULONG)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
+                (UINT32)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
 
             /* Remember the last packet.  */
             last_packet =  work_ptr;
@@ -117,7 +117,7 @@ NX_PACKET *work_ptr;               /* Working packet pointer     */
 
         /* Just calculate the number of bytes available in the first packet.  */
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        available_bytes =  (ULONG)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr);
+        available_bytes =  (UINT32)(packet_ptr -> nx_packet_data_end - packet_ptr -> nx_packet_append_ptr);
     }
 
     /* Determine if any new packets are required to satisfy this request. */
@@ -190,7 +190,7 @@ NX_PACKET *work_ptr;               /* Working packet pointer     */
             /*lint -e{737} suppress loss of sign, since nx_packet_data_end is assumed to be larger than nx_packet_append_ptr. */
             /*lint -e{613} suppress possible use of null pointer, since "work_ptr" was set in _nx_packet_allocate. */
             available_bytes =  available_bytes +
-                (ULONG)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
+                (UINT32)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
         }
 
         /* At this point, all the necessary packets have been allocated and are present
@@ -241,7 +241,7 @@ NX_PACKET *work_ptr;               /* Working packet pointer     */
 
         /* Determine the amount of memory to copy.  */
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        if (data_size < (ULONG)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr))
+        if (data_size < (UINT32)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr))
         {
             copy_size =  data_size;
         }
@@ -249,7 +249,7 @@ NX_PACKET *work_ptr;               /* Working packet pointer     */
         {
 
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            copy_size =  (ULONG)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
+            copy_size =  (UINT32)(work_ptr -> nx_packet_data_end - work_ptr -> nx_packet_append_ptr);
         }
 #else
         copy_size = data_size;

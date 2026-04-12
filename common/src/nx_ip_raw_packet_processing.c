@@ -68,7 +68,7 @@
 /*    _nx_ip_packet_receive                 Packet receive processing     */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_raw_packet_processing(NX_IP *ip_ptr, ULONG protocol, NX_PACKET *packet_ptr)
+UINT  _nx_ip_raw_packet_processing(NX_IP *ip_ptr, UINT32 protocol, NX_PACKET *packet_ptr)
 {
 
 TX_INTERRUPT_SAVE_AREA

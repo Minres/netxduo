@@ -92,14 +92,14 @@ typedef struct NX_CRYPTO_DH_STRUCT
 UINT _nx_crypto_dh_setup(NX_CRYPTO_DH  *dh_ptr,
                          UCHAR  *local_public_key_ptr,
                          UINT   *local_public_key_len_ptr,
-                         ULONG   dh_group_num,
+                         UINT32   dh_group_num,
                          HN_UBASE *scratch_buf_ptr);
 
 UINT _nx_crypto_dh_compute_secret(NX_CRYPTO_DH  *dh_ptr,
                                   UCHAR  *share_secret_key_ptr,
-                                  ULONG  *share_secret_key_len_ptr,
+                                  UINT32  *share_secret_key_len_ptr,
                                   UCHAR  *remote_public_key,
-                                  ULONG   remote_public_key_len,
+                                  UINT32   remote_public_key_len,
                                   HN_UBASE *scratch_buf_ptr);
 
 #ifdef __cplusplus

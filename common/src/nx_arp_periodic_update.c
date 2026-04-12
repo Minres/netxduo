@@ -69,7 +69,7 @@ VOID  _nx_arp_periodic_update(NX_IP *ip_ptr)
 
 TX_INTERRUPT_SAVE_AREA
 
-ULONG      i;
+UINT32      i;
 NX_ARP    *arp_entry;
 NX_PACKET *packet_ptr;
 NX_PACKET *next_packet_ptr;

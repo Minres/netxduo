@@ -80,7 +80,7 @@ const UCHAR _nx_secure_tls_1_1_random[8] =
 UINT _nx_secure_tls_send_serverhello(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet)
 {
 #ifndef NX_SECURE_TLS_SERVER_DISABLED
-ULONG  length;
+UINT32  length;
 UINT   gmt_time;
 UINT   random_value;
 UINT   i;
@@ -97,7 +97,7 @@ UINT   status;
      */
 
     if ((6u + sizeof(tls_session -> nx_secure_tls_key_material.nx_secure_tls_server_random)) >
-        ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)))
+        ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)))
         
     {
 
@@ -123,7 +123,7 @@ UINT   status;
     {
         gmt_time = tls_session -> nx_secure_tls_session_time_function();
     }
-    NX_CHANGE_ULONG_ENDIAN(gmt_time);
+    NX_CHANGE_UINT32_ENDIAN(gmt_time);
 
     NX_SECURE_MEMCPY(tls_session -> nx_secure_tls_key_material.nx_secure_tls_server_random, (UCHAR *)&gmt_time, sizeof(gmt_time)); /* Use case of memcpy is verified. lgtm[cpp/banned-api-usage-required-any] */
 
@@ -193,7 +193,7 @@ UINT   status;
         length++;
 
         if ((length + tls_session->nx_secure_tls_session_id_length + 3) >
-            ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)))
+            ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)))
         {
 
             /* Packet buffer is too small to hold random. */
@@ -221,8 +221,8 @@ UINT   status;
 
     /* ============ TLS ServerHello extensions. ============= */
     status = _nx_secure_tls_send_serverhello_extensions(tls_session, packet_buffer, &length,
-                                                        ((ULONG)(send_packet -> nx_packet_data_end) -
-                                                         (ULONG)packet_buffer));
+                                                        ((UINT32)(send_packet -> nx_packet_data_end) -
+                                                         (UINT32)packet_buffer));
 
     if (status)
     {

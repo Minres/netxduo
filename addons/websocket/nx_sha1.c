@@ -167,8 +167,8 @@ UINT  _nx_sha1_initialize(NX_SHA1 *context)
 UINT  _nx_sha1_update(NX_SHA1 *context, UCHAR *input_ptr, UINT input_length)
 {
 
-ULONG   current_bytes;
-ULONG   needed_fill_bytes;
+UINT32   current_bytes;
+UINT32   needed_fill_bytes;
 
 
     /* Determine if the context is non-null.  */
@@ -286,8 +286,8 @@ UINT  _nx_sha1_digest_calculate(NX_SHA1 *context, UCHAR digest[20])
 {
 
 UCHAR   bit_count_string[8];
-ULONG   current_byte_count;
-ULONG   padding_bytes;
+UINT32   current_byte_count;
+UINT32   padding_bytes;
 
 
     /* Move the lower portion of the bit count into the array.  */
@@ -375,10 +375,10 @@ ULONG   padding_bytes;
 VOID  _nx_sha1_process_buffer(NX_SHA1 *context, UCHAR buffer[64])
 {
 
-ULONG       *w;
+UINT32       *w;
 UINT        t;
-ULONG       temp;
-ULONG       a, b, c, d, e;
+UINT32       temp;
+UINT32       a, b, c, d, e;
 
 
     /* Setup pointers to the word array.  */
@@ -390,7 +390,7 @@ ULONG       a, b, c, d, e;
     {
 
         /* Setup each entry.  */
-        w[t] =  (((ULONG) buffer[t * 4]) << 24) | (((ULONG) buffer[(t * 4) + 1]) << 16) | (((ULONG) buffer[(t * 4) + 2]) << 8) | ((ULONG) buffer[(t * 4) + 3]);
+        w[t] =  (((UINT32) buffer[t * 4]) << 24) | (((UINT32) buffer[(t * 4) + 1]) << 16) | (((UINT32) buffer[(t * 4) + 2]) << 8) | ((UINT32) buffer[(t * 4) + 3]);
     }
 
     /* Setup the remaining entries of the word array.  */

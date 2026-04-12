@@ -162,7 +162,7 @@ typedef struct NX_ICMPV6_ERROR_STRUCT
     NX_ICMPV6_HEADER nx_icmpv6_error_header;
 
     /* Pointer to the original IPv6 packet where error is detected. */
-    ULONG            nx_icmpv6_error_pointer;
+    UINT32            nx_icmpv6_error_pointer;
 } NX_ICMPV6_ERROR;
 
 
@@ -188,10 +188,10 @@ typedef struct NX_ICMPV6_ND_STRUCT
     NX_ICMPV6_HEADER nx_icmpv6_nd_header;
 
     /* Neighbor Discovery flag. */
-    ULONG            nx_icmpv6_nd_flag;
+    UINT32            nx_icmpv6_nd_flag;
 
     /* Neighbor Discovery taget address. */
-    ULONG            nx_icmpv6_nd_targetAddress[4];
+    UINT32            nx_icmpv6_nd_targetAddress[4];
 } NX_ICMPV6_ND;
 
 /* Define the ICMPv6 additional option type. */
@@ -229,17 +229,17 @@ typedef struct NX_ICMPV6_OPTION_PREFIX_STRUCT
     UCHAR nx_icmpv6_option_prefix_flag;
 
     /* Valid life time, in seconds. */
-    ULONG nx_icmpv6_option_prefix_valid_lifetime;
+    UINT32 nx_icmpv6_option_prefix_valid_lifetime;
 
     /* Preferred life time, in seconds. */
-    ULONG nx_icmpv6_option_prefix_preferred_lifetime;
+    UINT32 nx_icmpv6_option_prefix_preferred_lifetime;
 
     /* Unused  */
     /*lint -esym(768,NX_ICMPV6_OPTION_PREFIX_STRUCT::nx_icmpv6_option_prefix_reserved) suppress member not referenced. It is reserved for future use. */
-    ULONG nx_icmpv6_option_prefix_reserved;
+    UINT32 nx_icmpv6_option_prefix_reserved;
 
     /* Prefix. */
-    ULONG nx_icmpv6_option_prefix[4];
+    UINT32 nx_icmpv6_option_prefix[4];
 } NX_ICMPV6_OPTION_PREFIX;
 
 /* Define the MTU option type. */
@@ -252,7 +252,7 @@ typedef struct NX_ICMPV6_OPTION_MTU_STRUCT
     NX_ICMPV6_HEADER nx_icmpv6_option_mtu_icmpv6_header;
 
     /* MTU length. */
-    ULONG nx_icmpv6_option_mtu_path_mtu;
+    UINT32 nx_icmpv6_option_mtu_path_mtu;
 
 } NX_ICMPV6_OPTION_MTU;
 
@@ -264,7 +264,7 @@ typedef struct NX_ICMPV6_RS_STRUCT
     NX_ICMPV6_HEADER nx_icmpv6_rs_icmpv6_header;
 
     /* Unused; reserved for future use. */
-    ULONG            nx_icmpv6_rs_reserved;
+    UINT32            nx_icmpv6_rs_reserved;
 } NX_ICMPV6_RS;
 
 /* Define the Router advertisement type. */
@@ -284,10 +284,10 @@ typedef struct NX_ICMPV6_RA_STRUCT
     USHORT nx_icmpv6_ra_router_lifetime;
 
     /* Router reachable time, in millisecond */
-    ULONG nx_icmpv6_ra_reachable_time;
+    UINT32 nx_icmpv6_ra_reachable_time;
 
     /* Local network retrans timer, in millisecond. */
-    ULONG nx_icmpv6_ra_retrans_time;
+    UINT32 nx_icmpv6_ra_retrans_time;
 } NX_ICMPV6_RA;
 
 
@@ -300,19 +300,19 @@ typedef struct NX_ICMPV6_REDIRECT_MESSAGE_STRUCT
 
     /* Unused field. */
     /*lint -esym(768,NX_ICMPV6_REDIRECT_MESSAGE_STRUCT::nx_icmpv6_redirect_reserved) suppress member not referenced. It is reserved for future use. */
-    ULONG nx_icmpv6_redirect_reserved;
+    UINT32 nx_icmpv6_redirect_reserved;
 
     /* Next hop address. */
-    ULONG nx_icmpv6_redirect_target_address[4];
+    UINT32 nx_icmpv6_redirect_target_address[4];
 
     /* Redirected host address. */
-    ULONG nx_icmpv6_redirect_destination_address[4];
+    UINT32 nx_icmpv6_redirect_destination_address[4];
 } NX_ICMPV6_REDIRECT_MESSAGE;
 
 #ifndef NX_DISABLE_ICMPV6_ERROR_MESSAGE
 /* Define macros for sending out ICMPv6 error messages. */
 #define NX_ICMPV6_SEND_DEST_UNREACHABLE(ip_ptr, packet, code) \
-    _nx_icmpv6_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMPV6_DEST_UNREACHABLE_TYPE << 24) | ((code) << 16)), 0)
+    _nx_icmpv6_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMPV6_DEST_UNREACHABLE_TYPE << 24) | ((code) << 16)), 0)
 
 #if 0
 #define NX_ICMPV6_SEND_PACKET_TOO_BIG(ip_ptr, packet, code) \
@@ -320,21 +320,21 @@ typedef struct NX_ICMPV6_REDIRECT_MESSAGE_STRUCT
 #endif
 
 #define NX_ICMPV6_SEND_TIME_EXCEED(ip_ptr, packet, code) \
-    _nx_icmpv6_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMPV6_TIME_EXCEED_TYPE << 24) | ((code) << 16)), 0)
+    _nx_icmpv6_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMPV6_TIME_EXCEED_TYPE << 24) | ((code) << 16)), 0)
 
 #define NX_ICMPV6_SEND_PARAMETER_PROBLEM(ip_ptr, packet, code, offset) \
-    _nx_icmpv6_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMPV6_PARAMETER_PROBLEM_TYPE << 24) | ((code) << 16)), (offset))
+    _nx_icmpv6_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMPV6_PARAMETER_PROBLEM_TYPE << 24) | ((code) << 16)), (offset))
 
 #endif /* NX_DISABLE_ICMPV6_ERROR_MESSAGE */
 
 /* Define ICMPv6 API function prototypes. */
 
 UINT _nx_icmp_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address,
-                    CHAR *data_ptr, ULONG data_size,
-                    NX_PACKET **response_ptr, ULONG wait_option);
+                    CHAR *data_ptr, UINT32 data_size,
+                    NX_PACKET **response_ptr, UINT32 wait_option);
 UINT _nx_icmp_interface_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address,
-                              CHAR *data_ptr, ULONG data_size, NXD_IPV6_ADDRESS *ipv6_address,
-                              NX_PACKET **response_ptr, ULONG wait_option);
+                              CHAR *data_ptr, UINT32 data_size, NXD_IPV6_ADDRESS *ipv6_address,
+                              NX_PACKET **response_ptr, UINT32 wait_option);
 VOID _nx_icmpv6_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 
 
@@ -369,7 +369,7 @@ VOID _nx_icmpv6_process_redirect(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 /* Define service for sending ICMPv6 error messages. */
 
 #ifndef NX_DISABLE_ICMPV6_ERROR_MESSAGE
-VOID _nx_icmpv6_send_error_message(NX_IP *ip_ptr, NX_PACKET *packet, ULONG word1, ULONG pointer);
+VOID _nx_icmpv6_send_error_message(NX_IP *ip_ptr, NX_PACKET *packet, UINT32 word1, UINT32 pointer);
 #endif /* NX_DISABLE_ICMPV6_ERROR_MESSAGE */
 
 /* Define service for sending router solicitation requests. */
@@ -382,20 +382,20 @@ UINT _nx_icmpv6_send_rs(NX_IP *ip_ptr, UINT if_index);
 
 VOID _nx_icmpv6_send_queued_packets(NX_IP *ip_ptr, ND_CACHE_ENTRY *nd_entry);
 UINT _nx_icmpv6_validate_options(NX_ICMPV6_OPTION *option, INT length, INT additional_check);
-UINT _nxd_ipv6_destination_table_find_next_hop(NX_IP *ip_ptr, ULONG *destination_ip, ULONG *next_hop);
-UINT _nx_icmpv6_dest_table_find(NX_IP *ip_ptr, ULONG *destination_address, NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr,
-                                ULONG path_mtu, ULONG mtu_timeout);
-UINT _nx_icmpv6_dest_table_add(NX_IP *ip_ptr, ULONG *destination_address,
-                               NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr, ULONG *next_hop,
-                               ULONG path_mtu, ULONG mtu_timeout, NXD_IPV6_ADDRESS *ipv6_address);
+UINT _nxd_ipv6_destination_table_find_next_hop(NX_IP *ip_ptr, UINT32 *destination_ip, UINT32 *next_hop);
+UINT _nx_icmpv6_dest_table_find(NX_IP *ip_ptr, UINT32 *destination_address, NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr,
+                                UINT32 path_mtu, UINT32 mtu_timeout);
+UINT _nx_icmpv6_dest_table_add(NX_IP *ip_ptr, UINT32 *destination_address,
+                               NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr, UINT32 *next_hop,
+                               UINT32 path_mtu, UINT32 mtu_timeout, NXD_IPV6_ADDRESS *ipv6_address);
 VOID _nx_icmpv6_process_echo_reply(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_icmpv6_process_echo_request(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_icmpv6_process_ns(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_icmpv6_process_na(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
-VOID _nx_icmpv6_DAD_clear_NDCache_entry(NX_IP *ip_ptr, ULONG *ip_addr);
+VOID _nx_icmpv6_DAD_clear_NDCache_entry(NX_IP *ip_ptr, UINT32 *ip_addr);
 UINT _nx_icmpv6_validate_neighbor_message(NX_PACKET *packet_ptr);
 VOID _nx_icmpv6_DAD_failure(NX_IP *ip_ptr, NXD_IPV6_ADDRESS *ipv6_address);
-VOID _nx_icmpv6_send_ns(NX_IP *ip_ptr, ULONG *neighbor_IP_address, INT send_slla, NXD_IPV6_ADDRESS *outgoing_address,
+VOID _nx_icmpv6_send_ns(NX_IP *ip_ptr, UINT32 *neighbor_IP_address, INT send_slla, NXD_IPV6_ADDRESS *outgoing_address,
                         INT sendUnicast, ND_CACHE_ENTRY *NDCacheEntry);
 #endif /* FEATURE_NX_IPV6 */
 

@@ -73,7 +73,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_session_certificate_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                     ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *session,
+                                                     UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *session,
                                                                        NX_SECURE_X509_CERT *certificate))
 {
     /* Set the function pointer in the TLS session. */

@@ -112,12 +112,12 @@ extern   "C" {
 #define NX_AZURE_IOT_ADU_AGENT_PROPERTY_NAME_CREATED_DATE_TIME          "createdDateTime"
 
 /* Define ADU events. These events are processed by the cloud thread.  */
-#define NX_AZURE_IOT_ADU_AGENT_UPDATE_EVENT                             ((ULONG)0x00000001)
-#define NX_AZURE_IOT_ADU_AGENT_DOWNLOAD_INSTALL_EVENT                   ((ULONG)0x00000002)
-#define NX_AZURE_IOT_ADU_AGENT_APPLY_EVENT                              ((ULONG)0x00000004)
-#define NX_AZURE_IOT_ADU_AGENT_DNS_RESPONSE_RECEIVE_EVENT               ((ULONG)0x00000008)
-#define NX_AZURE_IOT_ADU_AGENT_HTTP_CONNECT_DONE_EVENT                  ((ULONG)0x00000010)
-#define NX_AZURE_IOT_ADU_AGENT_HTTP_RECEIVE_EVENT                       ((ULONG)0x00000020)
+#define NX_AZURE_IOT_ADU_AGENT_UPDATE_EVENT                             ((UINT32)0x00000001)
+#define NX_AZURE_IOT_ADU_AGENT_DOWNLOAD_INSTALL_EVENT                   ((UINT32)0x00000002)
+#define NX_AZURE_IOT_ADU_AGENT_APPLY_EVENT                              ((UINT32)0x00000004)
+#define NX_AZURE_IOT_ADU_AGENT_DNS_RESPONSE_RECEIVE_EVENT               ((UINT32)0x00000008)
+#define NX_AZURE_IOT_ADU_AGENT_HTTP_CONNECT_DONE_EVENT                  ((UINT32)0x00000010)
+#define NX_AZURE_IOT_ADU_AGENT_HTTP_RECEIVE_EVENT                       ((UINT32)0x00000020)
 
 /* Define the agent state values. Interaction between agent and server.
    https://docs.microsoft.com/en-us/azure/iot-hub-device-update/device-update-plug-and-play#state  */
@@ -339,7 +339,7 @@ typedef struct NX_AZURE_IOT_ADU_AGENT_DRIVER_STRUCT
     UINT                                    nx_azure_iot_adu_agent_driver_firmware_data_size;
 
     /* Define the return pointer for raw driver command requests.  */
-    ULONG                                  *nx_azure_iot_adu_agent_driver_return_ptr;
+    UINT32                                  *nx_azure_iot_adu_agent_driver_return_ptr;
 
 } NX_AZURE_IOT_ADU_AGENT_DRIVER;
 
@@ -354,7 +354,7 @@ typedef struct NX_AZURE_IOT_ADU_AGENT_CRYPTO_STRUCT
     /* RSA. Reuse the metadata from TLS cipher metadata.  */
     NX_CRYPTO_METHOD                        *method_rsa;
     UCHAR                                   *method_rsa_metadata;
-    ULONG                                    method_rsa_metadata_size;
+    UINT32                                    method_rsa_metadata_size;
     VOID                                    *handler;
 
     /* SHA256.  */
@@ -624,7 +624,7 @@ typedef struct NX_AZURE_IOT_ADU_AGENT_DOWNLOADER_STRUCT
     UINT                                    dns_query_count;
 
     /* Timeout.  */
-    ULONG                                   timeout;
+    UINT32                                   timeout;
 
     /* Buffer for manifest.  */
     UCHAR                                  *manifest_buffer_ptr;

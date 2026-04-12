@@ -68,7 +68,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_igmp_multicast_interface_leave_internal(NX_IP *ip_ptr, ULONG group_address, UINT interface_index)
+UINT  _nx_igmp_multicast_interface_leave_internal(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index)
 {
 
 UINT          i;

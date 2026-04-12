@@ -75,8 +75,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_igmp_info_get(NX_IP *ip_ptr, ULONG *igmp_reports_sent, ULONG *igmp_queries_received,
-                         ULONG *igmp_checksum_errors, ULONG *current_groups_joined)
+UINT  _nxe_igmp_info_get(NX_IP *ip_ptr, UINT32 *igmp_reports_sent, UINT32 *igmp_queries_received,
+                         UINT32 *igmp_checksum_errors, UINT32 *current_groups_joined)
 {
 
 #ifndef NX_DISABLE_IPV4

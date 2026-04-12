@@ -71,9 +71,9 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_icmp_ping(NX_IP *ip_ptr, ULONG ip_address,
-                     CHAR *data_ptr, ULONG data_size,
-                     NX_PACKET **response_ptr, ULONG wait_option)
+UINT  _nxe_icmp_ping(NX_IP *ip_ptr, UINT32 ip_address,
+                     CHAR *data_ptr, UINT32 data_size,
+                     NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4

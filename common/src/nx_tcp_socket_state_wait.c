@@ -66,7 +66,7 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_state_wait(NX_TCP_SOCKET *socket_ptr, UINT desired_state, ULONG wait_option)
+UINT  _nx_tcp_socket_state_wait(NX_TCP_SOCKET *socket_ptr, UINT desired_state, UINT32 wait_option)
 {
 
     /* If trace is enabled, insert this event into the trace buffer.  */

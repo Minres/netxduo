@@ -79,7 +79,7 @@ UINT _nx_crypto_method_hmac_sha1_init(struct  NX_CRYPTO_METHOD_STRUCT *method,
                                       UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                       VOID  **handle,
                                       VOID  *crypto_metadata,
-                                      ULONG crypto_metadata_size);
+                                      UINT32 crypto_metadata_size);
 
 UINT _nx_crypto_method_hmac_sha1_cleanup(VOID *crypto_metadata);
 
@@ -89,12 +89,12 @@ UINT _nx_crypto_method_hmac_sha1_operation(UINT op,      /* Encrypt, Decrypt, Au
                                            UCHAR *key,
                                            NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                            UCHAR *input,
-                                           ULONG input_length_in_byte,
+                                           UINT32 input_length_in_byte,
                                            UCHAR *iv_ptr,
                                            UCHAR *output,
-                                           ULONG output_length_in_byte,
+                                           UINT32 output_length_in_byte,
                                            VOID *crypto_metadata,
-                                           ULONG crypto_metadata_size,
+                                           UINT32 crypto_metadata_size,
                                            VOID *packet_ptr,
                                            VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));
 

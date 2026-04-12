@@ -71,17 +71,17 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_receive(NX_TCP_SOCKET *socket_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_tcp_socket_receive(NX_TCP_SOCKET *socket_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 NX_IP                 *ip_ptr;
 NX_TCP_HEADER         *header_ptr;
 NX_PACKET             *head_packet_ptr;
-ULONG                  header_length;
+UINT32                  header_length;
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
     /* Setup the pointer to the associated IP instance.  */
@@ -176,7 +176,7 @@ ULONG                  trace_timestamp;
         header_ptr =  (NX_TCP_HEADER *)head_packet_ptr -> nx_packet_prepend_ptr;
 
         /* Calculate the header size for this packet.  */
-        header_length =  (header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+        header_length =  (header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
         /* Adjust the packet prepend pointer and length to position past the TCP header.  */
         head_packet_ptr -> nx_packet_prepend_ptr =  head_packet_ptr -> nx_packet_prepend_ptr + header_length;

@@ -180,8 +180,8 @@ typedef struct NX_PTP_MSG_HEADER_STRUCT
     UCHAR  domainNumber;
     USHORT messageLength;
     USHORT flagField;
-    ULONG  cFieldHigh;
-    ULONG  cFieldLow;
+    UINT32  cFieldHigh;
+    UINT32  cFieldLow;
     UCHAR *sourcePortIdentity;
     USHORT sequenceId;
     UCHAR  logMessageInterval;
@@ -198,7 +198,7 @@ typedef struct NX_PTP_MSG_HEADER_STRUCT
         v_ = (USHORT)(t_ | *p_++); }
 
 #define NX_PTP_RD32(p_, v_)       { \
-        ULONG t_;                   \
+        UINT32 t_;                   \
         t_ = *p_++;                 \
         t_ <<= 8;                   \
         t_ |= *p_++;                \
@@ -208,7 +208,7 @@ typedef struct NX_PTP_MSG_HEADER_STRUCT
         v_ = t_ |= *p_++; }
 
 #if defined(NX_ENABLE_GPTP) || defined(NX_PTP_ENABLE_MASTER) || defined(NX_PTP_ENABLE_REVERSE_SYNC)
-static VOID  _nx_ptp_utility_32_unsigned_write(UCHAR *dest_ptr, ULONG value)
+static VOID  _nx_ptp_utility_32_unsigned_write(UCHAR *dest_ptr, UINT32 value)
 {
 
     *(dest_ptr)     = (UCHAR)((value >> 24) & 0xFF);
@@ -265,7 +265,7 @@ static VOID  _nx_ptp_utility_32_unsigned_write(UCHAR *dest_ptr, ULONG value)
 /**************************************************************************/
 static VOID _nx_ptp_msg_parse_timestamp(UCHAR *ptr, NX_PTP_TIME *time_ptr)
 {
-ULONG nanoseconds = (ULONG)time_ptr -> nanosecond;
+UINT32 nanoseconds = (UINT32)time_ptr -> nanosecond;
 
     NX_PTP_RD16(ptr, time_ptr -> second_high);
     NX_PTP_RD32(ptr, time_ptr -> second_low);
@@ -737,7 +737,7 @@ NX_PTP_CLIENT *client_ptr = (NX_PTP_CLIENT *)(socket_ptr -> nx_udp_socket_reserv
 /*                                                                        */
 /**************************************************************************/
 static UINT _nx_ptp_client_ethernet_receive_notify(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr,
-                                                   ULONG physical_address_msw, ULONG physical_address_lsw,
+                                                   UINT32 physical_address_msw, UINT32 physical_address_lsw,
                                                    UINT packet_type, UINT header_size, VOID *context,
                                                    struct NX_LINK_TIME_STRUCT *time_ptr)
 {
@@ -972,7 +972,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_MSG_TIMESTAMP_LEN;
 
     /* set final length of message */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - packet_ptr -> nx_packet_prepend_ptr);
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - packet_ptr -> nx_packet_prepend_ptr);
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -1109,7 +1109,7 @@ ULONG64     correctionNS = (hdr -> cFieldHigh << 16) | (hdr -> cFieldLow >> 16);
 
         /* add correction field to offset.  */
         correction.second_high = 0;
-        correction.second_low = (ULONG)(correctionNS / 1000000000);
+        correction.second_low = (UINT32)(correctionNS / 1000000000);
         correction.nanosecond = (LONG)(correctionNS % 1000000000);
         _nx_ptp_client_utility_time_sum(&client_ptr -> nx_ptp_client_sync, &correction,
                                         &client_ptr -> nx_ptp_client_sync);
@@ -1623,7 +1623,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_MSG_PDELAY_RESERVED_LEN;
 
     /* set final message length */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -1934,7 +1934,7 @@ NX_INTERFACE     *if_ptr;
     *ptr++ = (UCHAR)((client_ptr -> nx_ptp_client_pdelay_resp_origin).second_high);
     _nx_ptp_utility_32_unsigned_write(ptr, (client_ptr -> nx_ptp_client_pdelay_resp_origin).second_low);
     ptr += 4;
-    _nx_ptp_utility_32_unsigned_write(ptr, (ULONG)(client_ptr -> nx_ptp_client_pdelay_resp_origin.nanosecond));
+    _nx_ptp_utility_32_unsigned_write(ptr, (UINT32)(client_ptr -> nx_ptp_client_pdelay_resp_origin.nanosecond));
     ptr += 4;
 
     /* write requestingPortIdentity */ 
@@ -1942,7 +1942,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_CLOCK_PORT_IDENTITY_SIZE;
 
     /* set final message length */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -2112,7 +2112,7 @@ NX_INTERFACE     *if_ptr;
     _nx_ptp_utility_32_unsigned_write(ptr, (client_ptr -> nx_ptp_client_pdelay_req_receipt).second_low);
     ptr += 4;
     /* 4 for nanosecond */
-    _nx_ptp_utility_32_unsigned_write(ptr, (ULONG)(client_ptr -> nx_ptp_client_pdelay_req_receipt.nanosecond));
+    _nx_ptp_utility_32_unsigned_write(ptr, (UINT32)(client_ptr -> nx_ptp_client_pdelay_req_receipt.nanosecond));
     ptr += 4;
 
     /* write requestingPortIdentity */ 
@@ -2120,7 +2120,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_CLOCK_PORT_IDENTITY_SIZE;
 
     /* set final message length */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -2294,7 +2294,7 @@ NX_INTERFACE     *if_ptr;
     _nx_ptp_utility_32_unsigned_write(ptr, (client_ptr -> nx_ptp_client_sync_ts_local).second_low);
     ptr += 4;
     /* 4 for nanosecond */
-    _nx_ptp_utility_32_unsigned_write(ptr, (ULONG)(client_ptr -> nx_ptp_client_sync_ts_local.nanosecond));
+    _nx_ptp_utility_32_unsigned_write(ptr, (UINT32)(client_ptr -> nx_ptp_client_sync_ts_local.nanosecond));
     ptr += 4;
 
     /* Follow_Up information TLV definition 801AS-2020 11.4.4.3. Required by 801AS-2020 Section 7.5 g) */
@@ -2321,7 +2321,7 @@ NX_INTERFACE     *if_ptr;
     ptr += PTP_FOLLOW_UP_TLV_ZEROES;
 
     /* set final length of message */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - packet_ptr -> nx_packet_prepend_ptr);
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - packet_ptr -> nx_packet_prepend_ptr);
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -2478,7 +2478,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_MSG_TIMESTAMP_LEN;
 
     /* set final length of message */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - packet_ptr -> nx_packet_prepend_ptr);
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - packet_ptr -> nx_packet_prepend_ptr);
     packet_ptr -> nx_packet_append_ptr = ptr;
 
     #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -2676,7 +2676,7 @@ NX_INTERFACE     *if_ptr;
     ptr += NX_PTP_CLOCK_IDENTITY_SIZE;
 
     /* set final message length */
-    packet_ptr -> nx_packet_length = (ULONG)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
+    packet_ptr -> nx_packet_length = (UINT32)(ptr - (packet_ptr -> nx_packet_prepend_ptr));
     packet_ptr -> nx_packet_append_ptr = ptr;
 
 #if NX_PTP_CLIENT_TRANSPORT_UDP
@@ -3495,7 +3495,7 @@ UINT status;
     /* create the Client thread */
     status = tx_thread_create(&client_ptr -> nx_ptp_client_thread,
                               "NetX PTP Client", _nx_ptp_client_thread_entry,
-                              (ULONG)client_ptr, thread_stack, stack_size,
+                              (UINT32)client_ptr, thread_stack, stack_size,
                               thread_priority, thread_priority,
                               NX_PTP_CLIENT_THREAD_TIME_SLICE, TX_DONT_START);
     if (status != TX_SUCCESS)
@@ -3753,7 +3753,7 @@ UINT _nx_ptp_client_start(NX_PTP_CLIENT *client_ptr, UCHAR *client_port_identity
 TX_INTERRUPT_SAVE_AREA
 UINT  state;
 UINT  status;
-ULONG msw, lsw;
+UINT32 msw, lsw;
 #if defined(NX_ENABLE_IPV6_MULTICAST) && defined(FEATURE_NX_IPV6)
 NXD_ADDRESS maddr;
 #endif
@@ -5096,7 +5096,7 @@ UINT _nxe_ptp_client_utility_time_sum(NX_PTP_TIME *time1_ptr, NX_PTP_TIME *time2
 UINT _nx_ptp_client_utility_time_diff(NX_PTP_TIME *time1_ptr, NX_PTP_TIME *time2_ptr, NX_PTP_TIME *result_ptr)
 {
 LONG  sec_hi;
-ULONG sec_lo;
+UINT32 sec_lo;
 LONG  ns;
 
     /* compute difference of seconds */
@@ -5189,7 +5189,7 @@ LONG  ns;
 UINT _nx_ptp_client_utility_time_sum(NX_PTP_TIME *time1_ptr, NX_PTP_TIME *time2_ptr, NX_PTP_TIME *result_ptr)
 {
 LONG  sec_hi;
-ULONG sec_lo;
+UINT32 sec_lo;
 LONG  ns;
 
     /* compute sum of seconds */
@@ -5337,10 +5337,10 @@ UINT _nx_ptp_client_utility_convert_time_to_date(NX_PTP_TIME *time_ptr, LONG off
 #define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
 #define SECS_PER_DAY    (24 * SECS_PER_HOUR)
 LONG  secs_high;
-ULONG secs_low;
+UINT32 secs_low;
 UINT  year, month, day, hour, minute;
-ULONG secs_per_year, secs_per_month;
-ULONG weekday;
+UINT32 secs_per_year, secs_per_month;
+UINT32 weekday;
 UINT  is_leap;
 
     /* get number of seconds */
@@ -5350,7 +5350,7 @@ UINT  is_leap;
     /* add local time offset */
     if (offset != 0)
     {
-        _nx_ptp_client_utility_add64(&secs_high, &secs_low, offset < 0 ? -1 : 0, (ULONG)offset);
+        _nx_ptp_client_utility_add64(&secs_high, &secs_low, offset < 0 ? -1 : 0, (UINT32)offset);
     }
     if (secs_high < 0)
     {
@@ -5426,7 +5426,7 @@ UINT  is_leap;
     date_time_ptr -> minute       = (UCHAR)minute;
     date_time_ptr -> second       = (UCHAR)secs_low;
     date_time_ptr -> weekday      = (UCHAR)weekday;
-    date_time_ptr -> nanosecond   = (ULONG)time_ptr -> nanosecond;
+    date_time_ptr -> nanosecond   = (UINT32)time_ptr -> nanosecond;
 
     return(NX_SUCCESS);
 }
@@ -5468,10 +5468,10 @@ UINT  is_leap;
 /*                                          Convert time to date          */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ptp_client_utility_add64(LONG *a_hi, ULONG *a_lo, LONG b_hi, ULONG b_lo)
+VOID _nx_ptp_client_utility_add64(LONG *a_hi, UINT32 *a_lo, LONG b_hi, UINT32 b_lo)
 {
 LONG  r_hi;
-ULONG r_lo;
+UINT32 r_lo;
 
     r_hi = *a_hi + b_hi;
     r_lo = *a_lo + b_lo;
@@ -5518,10 +5518,10 @@ ULONG r_lo;
 /*    _nx_ptp_client_utility_time_diff      Diff two PTP times            */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ptp_client_utility_sub64(LONG *a_hi, ULONG *a_lo, LONG b_hi, ULONG b_lo)
+VOID _nx_ptp_client_utility_sub64(LONG *a_hi, UINT32 *a_lo, LONG b_hi, UINT32 b_lo)
 {
 LONG  r_hi;
-ULONG r_lo;
+UINT32 r_lo;
 
     r_hi = *a_hi - b_hi;
     r_lo = *a_lo - b_lo;
@@ -5569,9 +5569,9 @@ ULONG r_lo;
 /*    _nx_ptp_client_soft_clock_callback    Soft PTP clock                */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ptp_client_utility_inc64(LONG *a_hi, ULONG *a_lo)
+VOID _nx_ptp_client_utility_inc64(LONG *a_hi, UINT32 *a_lo)
 {
-ULONG r_lo;
+UINT32 r_lo;
 
     r_lo = *a_lo + 1;
     if (r_lo == 0)
@@ -5616,9 +5616,9 @@ ULONG r_lo;
 /*    _nx_ptp_client_utility_time_diff      Diff two PTP times            */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ptp_client_utility_dec64(LONG *a_hi, ULONG *a_lo)
+VOID _nx_ptp_client_utility_dec64(LONG *a_hi, UINT32 *a_lo)
 {
-ULONG r_lo;
+UINT32 r_lo;
 
     r_lo = *a_lo;
     if (r_lo == 0)
@@ -5661,7 +5661,7 @@ ULONG r_lo;
 /*    _nx_ptp_client_utility_time_div_by_2  Divide a PTP time by 2        */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ptp_client_utility_neg64(LONG *a_hi, ULONG *a_lo)
+VOID _nx_ptp_client_utility_neg64(LONG *a_hi, UINT32 *a_lo)
 {
 LONG r_hi;
 
@@ -5710,7 +5710,7 @@ VOID _nx_ptp_client_utility_time_div_by_2(NX_PTP_TIME *time_ptr)
 {
 UINT  neg;
 LONG  sec_hi;
-ULONG sec_lo;
+UINT32 sec_lo;
 LONG  ns;
 
     /* get current time value */

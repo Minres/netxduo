@@ -67,7 +67,7 @@ extern   "C" {
 
 /* Define macros that get the data on unaligned address.  */
 #define NX_MDNS_GET_USHORT_DATA(data)           (USHORT)((*(data) << 8) | (*(data + 1)))
-#define NX_MDNS_GET_ULONG_DATA(data)            (ULONG)((*(data) << 24) | (*(data + 1) << 16) | (*(data + 2) << 8) | (*(data + 3)))
+#define NX_MDNS_GET_UINT32_DATA(data)            (UINT32)((*(data) << 24) | (*(data + 1) << 16) | (*(data + 2) << 8) | (*(data + 3)))
 
 /* Disable the mDNS Server functionality.  By default mDNS server
    function is enabled.  To remove the mDNS server function from
@@ -400,16 +400,16 @@ extern   "C" {
 
 
 /* Define mDNS event flags.  */
-#define NX_MDNS_ALL_EVENTS                      ((ULONG) 0xFFFFFFFF)    /* All event flags.                         */
-#define NX_MDNS_PKT_RX_EVENT                    ((ULONG) 0x00000001)    /* Receive the mDNS packet.                 */
-#define NX_MDNS_QUERY_SEND_EVENT                ((ULONG) 0x00000002)    /* Send the mDNS Query packet.              */
-#define NX_MDNS_RESPONSE_SEND_EVENT             ((ULONG) 0x00000004)    /* Send the mDNS Response packet.           */
-#define NX_MDNS_PROBING_SEND_EVENT              ((ULONG) 0x00000008)    /* Send the mDNS Probing packet.            */
-#define NX_MDNS_ANNOUNCING_SEND_EVENT           ((ULONG) 0x00000010)    /* Send the mDNS Announcing packet.         */
-#define NX_MDNS_GOODBYE_SEND_EVENT              ((ULONG) 0x00000020)    /* Send the mDNS Goodbye packet.            */
-#define NX_MDNS_TIMER_EVENT                     ((ULONG) 0x00000040)    /* Process the mDNS timer event.            */
-#define NX_MDNS_ADDRESS_CHANGE_EVENT            ((ULONG) 0x00000080)    /* Process the mDNS address change event.   */
-#define NX_MDNS_RR_ELAPSED_TIMER_EVENT          ((ULONG) 0x00000100)    /* Process the mDNS rr elapsed tiemr event. */
+#define NX_MDNS_ALL_EVENTS                      ((UINT32) 0xFFFFFFFF)    /* All event flags.                         */
+#define NX_MDNS_PKT_RX_EVENT                    ((UINT32) 0x00000001)    /* Receive the mDNS packet.                 */
+#define NX_MDNS_QUERY_SEND_EVENT                ((UINT32) 0x00000002)    /* Send the mDNS Query packet.              */
+#define NX_MDNS_RESPONSE_SEND_EVENT             ((UINT32) 0x00000004)    /* Send the mDNS Response packet.           */
+#define NX_MDNS_PROBING_SEND_EVENT              ((UINT32) 0x00000008)    /* Send the mDNS Probing packet.            */
+#define NX_MDNS_ANNOUNCING_SEND_EVENT           ((UINT32) 0x00000010)    /* Send the mDNS Announcing packet.         */
+#define NX_MDNS_GOODBYE_SEND_EVENT              ((UINT32) 0x00000020)    /* Send the mDNS Goodbye packet.            */
+#define NX_MDNS_TIMER_EVENT                     ((UINT32) 0x00000040)    /* Process the mDNS timer event.            */
+#define NX_MDNS_ADDRESS_CHANGE_EVENT            ((UINT32) 0x00000080)    /* Process the mDNS address change event.   */
+#define NX_MDNS_RR_ELAPSED_TIMER_EVENT          ((UINT32) 0x00000100)    /* Process the mDNS rr elapsed tiemr event. */
 
 
 /* Define return code constants.  */
@@ -614,7 +614,7 @@ extern   "C" {
 
 typedef struct NX_MDNS_RR_A_STRUCT
 {
-    ULONG           nx_mdns_rr_a_address;
+    UINT32           nx_mdns_rr_a_address;
 } NX_MDNS_RR_A;
 
 
@@ -704,11 +704,11 @@ typedef struct NX_MDNS_RR_SOA_STRUCT
 {
     UCHAR*          nx_mdns_rr_soa_mname;
     UCHAR*          nx_mdns_rr_soa_rname;
-    ULONG           nx_mdns_rr_soa_serial;
-    ULONG           nx_mdns_rr_soa_refresh;
-    ULONG           nx_mdns_rr_soa_retry;
-    ULONG           nx_mdns_rr_soa_expire;
-    ULONG           nx_mdns_rr_soa_minmum;
+    UINT32           nx_mdns_rr_soa_serial;
+    UINT32           nx_mdns_rr_soa_refresh;
+    UINT32           nx_mdns_rr_soa_retry;
+    UINT32           nx_mdns_rr_soa_expire;
+    UINT32           nx_mdns_rr_soa_minmum;
 } NX_MDNS_RR_SOA;
 
 /* MB RDATA format
@@ -783,7 +783,7 @@ typedef struct NX_MDNS_RR_NULL_STRUCT
 
 typedef struct NX_MDNS_RR_WKS_STRUCT
 {
-    ULONG           nx_mdns_rr_wks_address;
+    UINT32           nx_mdns_rr_wks_address;
     UCHAR           nx_mdns_rr_wks_protocol;
     UCHAR           nx_mdns_rr_wks_reserved[3];
     UCHAR*          nx_mdns_rr_wks_bit_map;
@@ -882,7 +882,7 @@ typedef struct NX_MDNS_RR_TXT_STRUCT
 
 typedef struct NX_MDNS_RR_AAAA_STRUCT
 {
-    ULONG           nx_mdns_rr_aaaa_address[4];
+    UINT32           nx_mdns_rr_aaaa_address[4];
 } NX_MDNS_RR_AAAA;
 
 /* SRV RDATA format
@@ -965,7 +965,7 @@ typedef struct NX_MDNS_RR_STRUCT
 
     USHORT  nx_mdns_rr_class;                   /* RR CLASS.                                                            */
 
-    ULONG   nx_mdns_rr_ttl;                     /* The time interval that the RR may be cached before the source of
+    UINT32   nx_mdns_rr_ttl;                     /* The time interval that the RR may be cached before the source of 
                                                    the information should again be consulted.                           */
 
     USHORT  nx_mdns_rr_rdata_length;            /* The length of rdata. nx_mdns_rr_rdata                                */
@@ -974,15 +974,15 @@ typedef struct NX_MDNS_RR_STRUCT
 
     UCHAR   nx_mdns_rr_retransmit_count;        /* Define the count for the retransmit the RR.                          */
 
-    ULONG   nx_mdns_rr_retransmit_lifetime;     /* Define the lifetime for retransmit the RR.                           */
+    UINT32   nx_mdns_rr_retransmit_lifetime;     /* Define the lifetime for retransmit the RR.                           */
 
-    ULONG   nx_mdns_rr_timer_count;             /* Define the timer count for the retransmit the RR.                    */
+    UINT32   nx_mdns_rr_timer_count;             /* Define the timer count for the retransmit the RR.                    */
 
-    ULONG   nx_mdns_rr_elapsed_time;            /* Define the time elasped for the peer RR.                             */
+    UINT32   nx_mdns_rr_elapsed_time;            /* Define the time elasped for the peer RR.                             */
 
-    ULONG   nx_mdns_rr_remaining_ticks;         /* Define the remaining ticks of the peer RR.                           */
+    UINT32   nx_mdns_rr_remaining_ticks;         /* Define the remaining ticks of the peer RR.                           */
 
-    ULONG   nx_mdns_rr_response_interval;       /* Define the time interval for two responses. Local RR.                */
+    UINT32   nx_mdns_rr_response_interval;       /* Define the time interval for two responses. Local RR.                */
 
     UCHAR   nx_mdns_rr_interface_index;         /* RR interface index.                                                  */
 
@@ -1078,9 +1078,9 @@ typedef struct NX_MDNS_SERVICE_STRUCT
 
     UCHAR                   service_text_valid;     /* Flag indicating text fields are valid.               */
 
-    ULONG                   service_ipv4;           /* The IPv4 address for service.                        */
+    UINT32                   service_ipv4;           /* The IPv4 address for service.                        */
 
-    ULONG                   service_ipv6[NX_MDNS_IPV6_ADDRESS_COUNT][4];    /* The IPv6 address for service.*/
+    UINT32                   service_ipv6[NX_MDNS_IPV6_ADDRESS_COUNT][4];    /* The IPv6 address for service.*/
 
     UCHAR                   buffer[NX_MDNS_NAME_MAX+1]; /* The buffer for service instance, type and domain.*/
     
@@ -1091,7 +1091,7 @@ typedef struct NX_MDNS_SERVICE_STRUCT
 
 typedef struct NX_MDNS_STRUCT 
 {
-    ULONG                   nx_mdns_id;             /* Multicast DNS ID.                                    */
+    UINT32                   nx_mdns_id;             /* Multicast DNS ID.                                    */
 
     NX_IP*                  nx_mdns_ip_ptr;         /* Pointer to associated IP structure.                  */ 
     
@@ -1121,7 +1121,7 @@ typedef struct NX_MDNS_STRUCT
        how many threads are suspended attempting to receive from the same TCP port.  */
     TX_THREAD*              nx_mdns_rr_receive_suspension_list;                 /* The suspended thread.    */
 
-    ULONG                   nx_mdns_rr_receive_suspended_count;                 /* The suspended count.     */
+    UINT32                   nx_mdns_rr_receive_suspended_count;                 /* The suspended count.     */
 
     UCHAR*                  nx_mdns_local_service_cache;        /* Pointer to the cache.                    */
     
@@ -1131,17 +1131,17 @@ typedef struct NX_MDNS_STRUCT
     
     UINT                    nx_mdns_peer_service_cache_size;    /* The size of cache.                       */ 
 
-    ULONG                   nx_mdns_service_ignore_mask;        /* The mask specifying services types to be ignored.                        */
+    UINT32                   nx_mdns_service_ignore_mask;        /* The mask specifying services types to be ignored.                        */
 
-    ULONG                   nx_mdns_service_notify_mask;        /* The service mask for listen the service and notify the applicaiton.      */
+    UINT32                   nx_mdns_service_notify_mask;        /* The service mask for listen the service and notify the applicaiton.      */
 
-    ULONG                   nx_mdns_timer_min_count;            /* The minimum timer count indicate the intervals between last timer event and next timer event. */
+    UINT32                   nx_mdns_timer_min_count;            /* The minimum timer count indicate the intervals between last timer event and next timer event. */
         
     USHORT                  nx_mdns_announcing_period;          /* Number of ticks for the initial period. Default value is 1 second.       */
 
     USHORT                  nx_mdns_announcing_retrans_interval;    /* Number of ticks to wait ticks before sending out repeated announcement message. */    
        
-    ULONG                   nx_mdns_announcing_period_interval;     /* Number of ticks between two announcing period.                       */
+    UINT32                   nx_mdns_announcing_period_interval;     /* Number of ticks between two announcing period.                       */
 
     UCHAR                   nx_mdns_announcing_count;           /* Number of repetitions between one announcing period. Default value is 1. */
 
@@ -1151,19 +1151,19 @@ typedef struct NX_MDNS_STRUCT
     
     UCHAR                   nx_mdns_started;                    /* mDNS task has been started.                                              */
     
-    ULONG                   nx_mdns_local_rr_count;             /* The number of resource records in the local cache.                       */
+    UINT32                   nx_mdns_local_rr_count;             /* The number of resource records in the local cache.                       */
     
-    ULONG                   nx_mdns_local_string_count;         /* The number of strings in the local cache.                                */
+    UINT32                   nx_mdns_local_string_count;         /* The number of strings in the local cache.                                */
     
-    ULONG                   nx_mdns_local_string_bytes;         /* The number of total bytes in string table in the local cache.            */
+    UINT32                   nx_mdns_local_string_bytes;         /* The number of total bytes in string table in the local cache.            */
     
-    ULONG                   nx_mdns_peer_rr_count;              /* The number of resource records in the peer cache.                        */
+    UINT32                   nx_mdns_peer_rr_count;              /* The number of resource records in the peer cache.                        */
     
-    ULONG                   nx_mdns_peer_string_count;          /* The number of strings in the peer cache.                                 */
+    UINT32                   nx_mdns_peer_string_count;          /* The number of strings in the peer cache.                                 */
     
-    ULONG                   nx_mdns_peer_string_bytes;          /* The number of total bytes in string table in the peer cache.             */
+    UINT32                   nx_mdns_peer_string_bytes;          /* The number of total bytes in string table in the peer cache.             */
     
-    ULONG                   nx_mdns_first_probing_delay;        /* The delay of first probing for unique RR.                                */
+    UINT32                   nx_mdns_first_probing_delay;        /* The delay of first probing for unique RR.                                */
 
     VOID                    (*nx_mdns_probing_notify)(struct NX_MDNS_STRUCT *, UCHAR *, UINT);
 
@@ -1250,12 +1250,12 @@ typedef struct NX_MDNS_STRUCT
 
 /* Define Thread function prototypes.  */
 UINT        _nx_mdns_create(NX_MDNS *mdns_ptr, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool,
-                            UINT priority, VOID *stack_ptr, ULONG stack_size, UCHAR *host_name,
+                            UINT priority, VOID *stack_ptr, UINT32 stack_size, UCHAR *host_name,
                             VOID *local_cache_ptr, UINT local_cache_size, 
                             VOID *peer_cache_ptr, UINT peer_cache_size,
                             VOID (*probing_notify)(NX_MDNS *mdns_ptr, UCHAR *name, UINT probing_state));
 UINT        _nxe_mdns_create(NX_MDNS *mdns_ptr, NX_IP *ip_ptr, NX_PACKET_POOL *packet_pool,
-                             UINT priority, VOID *stack_ptr, ULONG stack_size, UCHAR *host_name,
+                             UINT priority, VOID *stack_ptr, UINT32 stack_size, UCHAR *host_name,
                              VOID *local_cache_ptr, UINT local_cache_size, 
                              VOID *peer_cache_ptr, UINT peer_cache_size,
                              VOID (*probing_notify)(NX_MDNS *mdns_ptr, UCHAR *name, UINT probing_state));
@@ -1273,11 +1273,11 @@ UINT        _nx_mdns_domain_name_set(NX_MDNS *mdns_ptr, UCHAR *domain_name);
 UINT        _nxe_mdns_domain_name_set(NX_MDNS *mdns_ptr, UCHAR *domain_name);
 
 #ifndef NX_MDNS_DISABLE_SERVER
-UINT        _nx_mdns_service_announcement_timing_set(NX_MDNS *mdns_ptr, UINT t, UINT p, UINT k, UINT retrans_interval, ULONG period_interval, UINT max_time);
-UINT        _nxe_mdns_service_announcement_timing_set(NX_MDNS *mdns_ptr, UINT t, UINT p, UINT k, UINT retrans_interval, ULONG period_interval, UINT max_time);
-UINT        _nx_mdns_service_add(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UCHAR *txt, ULONG ttl,
+UINT        _nx_mdns_service_announcement_timing_set(NX_MDNS *mdns_ptr, UINT t, UINT p, UINT k, UINT retrans_interval, UINT32 period_interval, UINT max_time);
+UINT        _nxe_mdns_service_announcement_timing_set(NX_MDNS *mdns_ptr, UINT t, UINT p, UINT k, UINT retrans_interval, UINT32 period_interval, UINT max_time);
+UINT        _nx_mdns_service_add(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UCHAR *txt, UINT32 ttl,
                                  USHORT priority, USHORT weights, USHORT port, UCHAR is_unique, UINT interface_index);
-UINT        _nxe_mdns_service_add(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UCHAR *txt, ULONG ttl,
+UINT        _nxe_mdns_service_add(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UCHAR *txt, UINT32 ttl,
                                   USHORT priority, USHORT weights, USHORT port, UCHAR is_unique, UINT interface_index);
 UINT        _nx_mdns_service_delete(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type); 
 UINT        _nxe_mdns_service_delete(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type);
@@ -1294,16 +1294,16 @@ UINT        _nx_mdns_service_query_stop(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *t
 UINT        _nxe_mdns_service_query_stop(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type);
 UINT        _nx_mdns_service_lookup(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UINT service_index, NX_MDNS_SERVICE *service);
 UINT        _nxe_mdns_service_lookup(NX_MDNS *mdns_ptr, UCHAR *name, UCHAR *type, UCHAR *sub_type, UINT service_index, NX_MDNS_SERVICE *service);    
-UINT        _nx_mdns_service_ignore_set(NX_MDNS *mdns_ptr, ULONG service_mask);
-UINT        _nxe_mdns_service_ignore_set(NX_MDNS *mdns_ptr, ULONG service_mask);
-UINT        _nx_mdns_service_notify_set(NX_MDNS *mdns_ptr, ULONG service_mask,
+UINT        _nx_mdns_service_ignore_set(NX_MDNS *mdns_ptr, UINT32 service_mask);
+UINT        _nxe_mdns_service_ignore_set(NX_MDNS *mdns_ptr, UINT32 service_mask);
+UINT        _nx_mdns_service_notify_set(NX_MDNS *mdns_ptr, UINT32 service_mask,
                                         VOID (*service_change_notify)(NX_MDNS *mdns_ptr, NX_MDNS_SERVICE *service_ptr, UINT state)); 
-UINT        _nxe_mdns_service_notify_set(NX_MDNS *mdns_ptr, ULONG service_mask,
+UINT        _nxe_mdns_service_notify_set(NX_MDNS *mdns_ptr, UINT32 service_mask,
                                         VOID (*service_change_notify)(NX_MDNS *mdns_ptr, NX_MDNS_SERVICE *service_ptr, UINT state));
 UINT        _nx_mdns_service_notify_clear(NX_MDNS *mdns_ptr); 
 UINT        _nxe_mdns_service_notify_clear(NX_MDNS *mdns_ptr);
-UINT        _nx_mdns_host_address_get(NX_MDNS *mdns_ptr, UCHAR *host_name, ULONG *ipv4_address, ULONG *ipv6_address, UINT timeout);
-UINT        _nxe_mdns_host_address_get(NX_MDNS *mdns_ptr, UCHAR *host_name, ULONG *ipv4_address, ULONG *ipv6_address, UINT timeout);
+UINT        _nx_mdns_host_address_get(NX_MDNS *mdns_ptr, UCHAR *host_name, UINT32 *ipv4_address, UINT32 *ipv6_address, UINT timeout);
+UINT        _nxe_mdns_host_address_get(NX_MDNS *mdns_ptr, UCHAR *host_name, UINT32 *ipv4_address, UINT32 *ipv6_address, UINT timeout);
 UINT        _nx_mdns_peer_cache_clear(NX_MDNS *mdns_ptr); 
 UINT        _nxe_mdns_peer_cache_clear(NX_MDNS *mdns_ptr);
 #endif /* NX_MDNS_DISABLE_CLIENT  */

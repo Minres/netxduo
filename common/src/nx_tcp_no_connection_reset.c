@@ -77,13 +77,13 @@ VOID  _nx_tcp_no_connection_reset(NX_IP *ip_ptr, NX_PACKET *packet_ptr, NX_TCP_H
 {
 
 NX_TCP_SOCKET fake_socket;
-ULONG         header_length;
+UINT32         header_length;
 #ifdef NX_IPSEC_ENABLE
 VOID         *sa;
 NXD_ADDRESS   source_ip;
 NXD_ADDRESS   destination_ip;
 UINT          ret;
-ULONG         data_offset = 0;
+UINT32         data_offset = 0;
 #endif /* NX_IPSEC_ENABLE */
 
 
@@ -168,7 +168,7 @@ ULONG         data_offset = 0;
     if (!(tcp_header_ptr -> nx_tcp_header_word_3 & NX_TCP_ACK_BIT))
     {
         /* Get the header length.  */
-        header_length = (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+        header_length = (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
         /* Update sequence number to set the reset acknowledge number.  */
         tcp_header_ptr -> nx_tcp_sequence_number += (packet_ptr -> nx_packet_length - header_length);

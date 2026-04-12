@@ -73,7 +73,7 @@
 /*                                            processing                  */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_tcp_packet_send_ack(NX_TCP_SOCKET *socket_ptr, ULONG tx_sequence)
+VOID  _nx_tcp_packet_send_ack(NX_TCP_SOCKET *socket_ptr, UINT32 tx_sequence)
 {
     _nx_tcp_packet_send_control(socket_ptr, NX_TCP_ACK_BIT, tx_sequence,
                                 socket_ptr -> nx_tcp_socket_rx_sequence, 0, 0, NX_NULL);

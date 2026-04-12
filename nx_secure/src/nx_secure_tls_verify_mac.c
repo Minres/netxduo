@@ -65,7 +65,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_verify_mac(NX_SECURE_TLS_SESSION *tls_session, UCHAR *header_data,
-                               USHORT header_length, NX_PACKET *packet_ptr, ULONG offset, UINT *length)
+                               USHORT header_length, NX_PACKET *packet_ptr, UINT32 offset, UINT *length)
 {
 UCHAR *mac_secret;
 UINT status;

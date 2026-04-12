@@ -119,7 +119,7 @@ ULONG             ip_events;
 NX_PACKET        *packet_ptr;
 UINT              i;
 UINT              index;
-ULONG             foo;
+UINT32             foo;
 #ifdef FEATURE_NX_IPV6
 NXD_IPV6_ADDRESS *interface_ipv6_address;
 #endif /* FEATURE_NX_IPV6 */
@@ -199,7 +199,7 @@ NXD_IPV6_ADDRESS *interface_ipv6_address;
 
             while (interface_ipv6_address)
             {
-            ULONG multicast_address[4];
+            UINT32 multicast_address[4];
 
                 SET_SOLICITED_NODE_MULTICAST_ADDRESS(multicast_address, interface_ipv6_address -> nxd_ipv6_address);
                 _nx_ipv6_multicast_join(ip_ptr, multicast_address, &ip_ptr -> nx_ip_interface[i]);
@@ -208,7 +208,7 @@ NXD_IPV6_ADDRESS *interface_ipv6_address;
 #ifndef NX_DISABLE_ICMPV6_ROUTER_SOLICITATION
             if (ip_ptr -> nx_ipv6_packet_receive)
             {
-            ULONG address[4];
+            UINT32 address[4];
 
                 /* Create the all-node multicast group address, */
                 address[0] = 0xFF020000;

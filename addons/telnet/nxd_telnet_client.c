@@ -77,7 +77,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, 
-                                  UINT server_port, ULONG wait_option)
+                                  UINT server_port, UINT32 wait_option)
 {
 
 UINT    status;
@@ -144,7 +144,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, 
-                                 UINT server_port, ULONG wait_option)
+                                 UINT server_port, UINT32 wait_option)
 
 {
 
@@ -227,7 +227,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, ULONG server_ip, UINT server_port, ULONG wait_option)
+UINT  _nxe_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, UINT32 server_ip, UINT server_port, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -302,8 +302,8 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, ULONG server_ip_address, 
-                                UINT server_port, ULONG wait_option)
+UINT  _nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, UINT32 server_ip_address, 
+                                UINT server_port, UINT32 wait_option)
 {
 #ifndef NX_DISABLE_IPV4
 NXD_ADDRESS server_ipduo_address;
@@ -360,7 +360,7 @@ NXD_ADDRESS server_ipduo_address;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, ULONG window_size)
+UINT  _nxe_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, UINT32 window_size)
 {
 
 UINT    status;
@@ -414,7 +414,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, ULONG window_size)
+UINT  _nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, UINT32 window_size)
 {
 
 UINT    status;
@@ -593,7 +593,7 @@ UINT  _nx_telnet_client_delete(NX_TELNET_CLIENT *client_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_option)
+UINT  _nxe_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -649,7 +649,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_option)
+UINT  _nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, UINT32 wait_option)
 {
 
 
@@ -706,7 +706,7 @@ UINT  _nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_opti
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nxe_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -762,7 +762,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -811,7 +811,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nxe_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -867,7 +867,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;

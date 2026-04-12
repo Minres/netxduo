@@ -76,7 +76,7 @@ VOID  _nx_ipv6_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 {
 
 UINT              error;
-ULONG             delta;
+UINT32             delta;
 UINT              pkt_length;
 UCHAR             next_header_type;
 NX_IPV6_HEADER   *ip_header_ptr;
@@ -100,16 +100,16 @@ INT               i = 0;
     ip_header_ptr = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Byte swap WORD 1 to obtain IPv6 payload length. */
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
 
     pkt_length = (UINT)((ip_header_ptr -> nx_ip_header_word_1 >> 16) + sizeof(NX_IPV6_HEADER));
 
     /* Make sure the packet length field matches the payload length field in the IPv6 header. */
-    if (packet_ptr -> nx_packet_length != (ULONG)pkt_length)
+    if (packet_ptr -> nx_packet_length != (UINT32)pkt_length)
     {
 
         /* Determine if the packet length is less than the size reported in the IP header.  */
-        if (packet_ptr -> nx_packet_length < (ULONG)pkt_length)
+        if (packet_ptr -> nx_packet_length < (UINT32)pkt_length)
         {
 
             /* The incoming packet has a wrong payload size. */
@@ -158,7 +158,7 @@ INT               i = 0;
 
             /* Determine if the amount to adjust is less than the payload in the last packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
+            if (((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
             {
 
                 /* Yes, simply adjust the append pointer of the last packet in the chain.  */
@@ -172,7 +172,7 @@ INT               i = 0;
             {
 
                 /* Adjust the delta by the amount in the last packet.  */
-                delta =  delta - ((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
+                delta =  delta - ((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
 
                 /* Find the packet before the last packet.  */
                 before_last_packet =  packet_ptr;
@@ -215,7 +215,7 @@ INT               i = 0;
     }
 
     /* Byte swap the rest of the IPv6 header fields. */
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
     NX_IPV6_ADDRESS_CHANGE_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
     NX_IPV6_ADDRESS_CHANGE_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
 
@@ -306,7 +306,7 @@ INT               i = 0;
      */
 
     packet_ptr -> nx_packet_prepend_ptr += sizeof(NX_IPV6_HEADER);
-    packet_ptr -> nx_packet_length -= (ULONG)sizeof(NX_IPV6_HEADER);
+    packet_ptr -> nx_packet_length -= (UINT32)sizeof(NX_IPV6_HEADER);
 
     packet_ptr -> nx_packet_option_offset = 6;
     next_header_type = (UCHAR)((ip_header_ptr -> nx_ip_header_word_1 >> 8) & 0xFF);

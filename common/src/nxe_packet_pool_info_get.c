@@ -73,9 +73,9 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_pool_info_get(NX_PACKET_POOL *pool_ptr, ULONG *total_packets, ULONG *free_packets,
-                                ULONG *empty_pool_requests, ULONG *empty_pool_suspensions,
-                                ULONG *invalid_packet_releases)
+UINT  _nxe_packet_pool_info_get(NX_PACKET_POOL *pool_ptr, UINT32 *total_packets, UINT32 *free_packets,
+                                UINT32 *empty_pool_requests, UINT32 *empty_pool_suspensions,
+                                UINT32 *invalid_packet_releases)
 {
 
 UINT status;

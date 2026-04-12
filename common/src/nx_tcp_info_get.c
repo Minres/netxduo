@@ -84,12 +84,12 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_info_get(NX_IP *ip_ptr, ULONG *tcp_packets_sent, ULONG *tcp_bytes_sent,
-                       ULONG *tcp_packets_received, ULONG *tcp_bytes_received,
-                       ULONG *tcp_invalid_packets, ULONG *tcp_receive_packets_dropped,
-                       ULONG *tcp_checksum_errors, ULONG *tcp_connections,
-                       ULONG *tcp_disconnections, ULONG *tcp_connections_dropped,
-                       ULONG *tcp_retransmit_packets)
+UINT  _nx_tcp_info_get(NX_IP *ip_ptr, UINT32 *tcp_packets_sent, UINT32 *tcp_bytes_sent,
+                       UINT32 *tcp_packets_received, UINT32 *tcp_bytes_received,
+                       UINT32 *tcp_invalid_packets, UINT32 *tcp_receive_packets_dropped,
+                       UINT32 *tcp_checksum_errors, UINT32 *tcp_connections,
+                       UINT32 *tcp_disconnections, UINT32 *tcp_connections_dropped,
+                       UINT32 *tcp_retransmit_packets)
 {
 
     /* Obtain the IP mutex so we can examine the bound port.  */

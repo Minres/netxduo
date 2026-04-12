@@ -47,7 +47,7 @@
 
 /* Define UDP constants.  */
 
-#define NX_UDP_ID ((ULONG)0x55445020)
+#define NX_UDP_ID ((UINT32)0x55445020)
 
 
 /* Define Basic UDP packet header data type.  This will be used to
@@ -62,7 +62,7 @@ typedef struct NX_UDP_HEADER_STRUCT
             bits 31-16  UDP 16-bit source port number
             bits 15-0   UDP 16-bit destination port number
      */
-    ULONG nx_udp_header_word_0;
+    UINT32 nx_udp_header_word_0;
 
     /* Define the second and final word of the UDP header.  This word contains
        the following information:
@@ -70,7 +70,7 @@ typedef struct NX_UDP_HEADER_STRUCT
             bits 31-16  UDP 16-bit UDP length (including 8 header bytes)
             bits 15-0   UDP 16-bit checksum (including header and pseudo IP header)
      */
-    ULONG nx_udp_header_word_1;
+    UINT32 nx_udp_header_word_1;
 } NX_UDP_HEADER;
 
 
@@ -80,36 +80,36 @@ UINT _nxd_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, NXD_
 VOID _nx_udp_bind_cleanup(TX_THREAD *thread_ptr NX_CLEANUP_PARAMETER);
 UINT _nx_udp_enable(NX_IP *ip_ptr);
 UINT _nx_udp_free_port_find(NX_IP *ip_ptr, UINT port, UINT *free_port_ptr);
-UINT _nx_udp_info_get(NX_IP *ip_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                      ULONG *udp_packets_received, ULONG *udp_bytes_received,
-                      ULONG *udp_invalid_packets, ULONG *udp_receive_packets_dropped,
-                      ULONG *udp_checksum_errors);
+UINT _nx_udp_info_get(NX_IP *ip_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                      UINT32 *udp_packets_received, UINT32 *udp_bytes_received,
+                      UINT32 *udp_invalid_packets, UINT32 *udp_receive_packets_dropped,
+                      UINT32 *udp_checksum_errors);
 VOID _nx_udp_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_udp_receive_cleanup(TX_THREAD *thread_ptr NX_CLEANUP_PARAMETER);
-UINT _nx_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, ULONG wait_option);
-UINT _nx_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, ULONG *bytes_available);
+UINT _nx_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, UINT32 wait_option);
+UINT _nx_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, UINT32 *bytes_available);
 UINT _nx_udp_socket_checksum_disable(NX_UDP_SOCKET *socket_ptr);
 UINT _nx_udp_socket_checksum_enable(NX_UDP_SOCKET *socket_ptr);
 UINT _nx_udp_socket_create(NX_IP *ip_ptr, NX_UDP_SOCKET *socket_ptr, CHAR *name,
-                           ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG queue_maximum);
+                           UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 queue_maximum);
 UINT _nx_udp_socket_delete(NX_UDP_SOCKET *socket_ptr);
-UINT _nx_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                             ULONG *udp_packets_received, ULONG *udp_bytes_received, ULONG *udp_packets_queued,
-                             ULONG *udp_receive_packets_dropped, ULONG *udp_checksum_errors);
+UINT _nx_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                             UINT32 *udp_packets_received, UINT32 *udp_bytes_received, UINT32 *udp_packets_queued,
+                             UINT32 *udp_receive_packets_dropped, UINT32 *udp_checksum_errors);
 UINT _nxd_udp_socket_source_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address, UINT port, UINT address_index);
 UINT _nxde_udp_socket_source_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address, UINT port, UINT address_index);
 UINT _nx_udp_socket_port_get(NX_UDP_SOCKET *socket_ptr, UINT *port_ptr);
 UINT _nx_udp_socket_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr,
-                            ULONG wait_option);
+                            UINT32 wait_option);
 UINT _nx_udp_socket_receive_notify(NX_UDP_SOCKET *socket_ptr,
                                    VOID (*udp_receive_notify)(NX_UDP_SOCKET *socket_ptr));
 
 UINT _nx_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr,
-                         ULONG ip_address, UINT port);
+                         UINT32 ip_address, UINT port);
 UINT _nx_udp_socket_unbind(NX_UDP_SOCKET *socket_ptr);
-UINT _nx_udp_source_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *port);
+UINT _nx_udp_source_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *port);
 UINT _nx_udp_socket_vlan_priority_set(NX_UDP_SOCKET *socket_ptr, UINT vlan_priority);
-UINT _nx_udp_packet_info_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *protocol, UINT *port, UINT *interface_index);
+UINT _nx_udp_packet_info_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *protocol, UINT *port, UINT *interface_index);
 UINT _nxd_udp_source_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address, UINT *port);
 #ifdef NX_ENABLE_TCPIP_OFFLOAD
 /* Define the direct UDP packet receive processing. This is used with TCP/IP offload feature.  */
@@ -122,35 +122,35 @@ VOID _nx_udp_socket_driver_packet_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET *
 
 UINT _nxe_udp_enable(NX_IP *ip_ptr);
 UINT _nxe_udp_free_port_find(NX_IP *ip_ptr, UINT port, UINT *free_port_ptr);
-UINT _nxe_udp_info_get(NX_IP *ip_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                       ULONG *udp_packets_received, ULONG *udp_bytes_received,
-                       ULONG *udp_invalid_packets, ULONG *udp_receive_packets_dropped,
-                       ULONG *udp_checksum_errors);
-UINT _nxe_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, ULONG wait_option);
-UINT _nxe_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, ULONG *bytes_available);
+UINT _nxe_udp_info_get(NX_IP *ip_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                       UINT32 *udp_packets_received, UINT32 *udp_bytes_received,
+                       UINT32 *udp_invalid_packets, UINT32 *udp_receive_packets_dropped,
+                       UINT32 *udp_checksum_errors);
+UINT _nxe_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, UINT32 wait_option);
+UINT _nxe_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, UINT32 *bytes_available);
 UINT _nxe_udp_socket_checksum_disable(NX_UDP_SOCKET *socket_ptr);
 UINT _nxe_udp_socket_checksum_enable(NX_UDP_SOCKET *socket_ptr);
 UINT _nxe_udp_socket_create(NX_IP *ip_ptr, NX_UDP_SOCKET *socket_ptr, CHAR *name,
-                            ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG queue_maximum, UINT udp_socket_size);
+                            UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 queue_maximum, UINT udp_socket_size);
 UINT _nxe_udp_socket_delete(NX_UDP_SOCKET *socket_ptr);
 
-UINT _nxe_udp_source_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *port);
+UINT _nxe_udp_source_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *port);
 UINT _nxe_udp_socket_vlan_priority_set(NX_UDP_SOCKET *socket_ptr, UINT vlan_priority);
 UINT _nxde_udp_source_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address, UINT *port);
-UINT _nxe_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                              ULONG *udp_packets_received, ULONG *udp_bytes_received, ULONG *udp_packets_queued,
-                              ULONG *udp_receive_packets_dropped, ULONG *udp_checksum_errors);
+UINT _nxe_udp_socket_info_get(NX_UDP_SOCKET *socket_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                              UINT32 *udp_packets_received, UINT32 *udp_bytes_received, UINT32 *udp_packets_queued,
+                              UINT32 *udp_receive_packets_dropped, UINT32 *udp_checksum_errors);
 UINT _nxe_udp_socket_port_get(NX_UDP_SOCKET *socket_ptr, UINT *port_ptr);
 UINT _nxe_udp_socket_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr,
-                             ULONG wait_option);
+                             UINT32 wait_option);
 UINT _nxe_udp_socket_receive_notify(NX_UDP_SOCKET *socket_ptr,
                                     VOID (*udp_receive_notify)(NX_UDP_SOCKET *socket_ptr));
 UINT _nx_udp_socket_source_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr,
-                                ULONG ip_address, UINT port, UINT address_index);
+                                UINT32 ip_address, UINT port, UINT address_index);
 UINT _nxe_udp_socket_source_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr,
-                                 ULONG ip_address, UINT port, UINT source_index);
+                                 UINT32 ip_address, UINT port, UINT source_index);
 UINT _nxe_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr_ptr,
-                          ULONG ip_address, UINT port);
+                          UINT32 ip_address, UINT port);
 UINT _nxe_udp_socket_unbind(NX_UDP_SOCKET *socket_ptr);
 
 
@@ -159,7 +159,7 @@ UINT _nxd_udp_packet_info_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address
                                   UINT *protocol, UINT *port, UINT *interface_index);
 UINT _nxde_udp_packet_info_extract(NX_PACKET *packet_ptr, NXD_ADDRESS *ip_address,
                                    UINT *protocol, UINT *port, UINT *interface_index);
-UINT _nxe_udp_packet_info_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *protocol, UINT *port, UINT *interface_index);
+UINT _nxe_udp_packet_info_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *protocol, UINT *port, UINT *interface_index);
 UINT _nxde_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr, NXD_ADDRESS *ip_address, UINT port);
 
 /* UDP component data declarations follow.  */

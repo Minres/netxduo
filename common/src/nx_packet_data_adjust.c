@@ -63,14 +63,14 @@
 /*    _nx_ip_forward_packet_process         Forward IP packet             */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_data_adjust(NX_PACKET *packet_ptr, ULONG header_size)
+UINT  _nx_packet_data_adjust(NX_PACKET *packet_ptr, UINT32 header_size)
 {
 
-ULONG           available_size;
-ULONG           shift_size;
+UINT32           available_size;
+UINT32           shift_size;
 #ifndef NX_DISABLE_PACKET_CHAIN
 UINT            status;
-ULONG           append_size;
+UINT32           append_size;
 UCHAR          *data_start;
 NX_PACKET      *work_ptr;
 #endif /* !NX_DISABLE_PACKET_CHAIN  */
@@ -94,7 +94,7 @@ NX_PACKET      *work_ptr;
     }
 
     /* Compute the total avilable size in this packet.  */
-    available_size = (ULONG)(((ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_data_start) +
+    available_size = (UINT32)(((ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_data_start) +
                              ((ALIGN_TYPE)packet_ptr -> nx_packet_data_end - (ALIGN_TYPE)packet_ptr -> nx_packet_append_ptr));
 
     /* 2. Would the header fit into the available space?  */
@@ -104,7 +104,7 @@ NX_PACKET      *work_ptr;
         /* Yes, adjust the data.  */
 
         /* Calculate the shift data size. */
-        shift_size = (ULONG)((ALIGN_TYPE)packet_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr);
+        shift_size = (UINT32)((ALIGN_TYPE)packet_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr);
 
         /* Move the data, */
         memmove(packet_ptr -> nx_packet_data_start + header_size, packet_ptr -> nx_packet_prepend_ptr, shift_size); /* Use case of memmove is verified.  */
@@ -148,7 +148,7 @@ NX_PACKET      *work_ptr;
         work_ptr -> nx_packet_append_ptr = (UCHAR *)((ALIGN_TYPE)work_ptr -> nx_packet_prepend_ptr + append_size);
 
         /* Secondly, calculate the shift data size.  */
-        shift_size = (ULONG)(((ALIGN_TYPE)packet_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr) - append_size);
+        shift_size = (UINT32)(((ALIGN_TYPE)packet_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr) - append_size);
 
         /* Move the data.  */
         memmove(packet_ptr -> nx_packet_data_start + header_size, packet_ptr -> nx_packet_prepend_ptr, shift_size); /* Use case of memmove is verified.  */

@@ -68,7 +68,7 @@
 /**************************************************************************/
 UINT _nx_secure_dtls_allocate_handshake_packet(NX_SECURE_DTLS_SESSION *dtls_session,
                                                NX_PACKET_POOL *packet_pool, NX_PACKET **packet_ptr,
-                                               ULONG wait_option)
+                                               UINT32 wait_option)
 {
 UINT status;
 
@@ -85,7 +85,7 @@ UINT status;
         return(NX_SECURE_TLS_ALLOCATE_PACKET_FAILED);
     }
 
-    if (((ULONG)((*packet_ptr) -> nx_packet_data_end) - (ULONG)((*packet_ptr) -> nx_packet_prepend_ptr)) <
+    if (((UINT32)((*packet_ptr) -> nx_packet_data_end) - (UINT32)((*packet_ptr) -> nx_packet_prepend_ptr)) <
         NX_SECURE_DTLS_HANDSHAKE_HEADER_SIZE)
     {
 

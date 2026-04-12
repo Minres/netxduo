@@ -86,7 +86,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT  _nxe_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
             void (*new_connection)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection), 
             void (*receive_data)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr),
             void (*connection_end)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection))
@@ -162,7 +162,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT  _nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
             void (*new_connection)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection), 
             void (*receive_data)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr),
             void (*connection_end)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection))
@@ -176,7 +176,7 @@ UINT            status;
 
     /* Create the TELNET Server thread.  */
     status =  tx_thread_create(&(server_ptr -> nx_telnet_server_thread), "TELNET Server Thread", 
-                               _nx_telnet_server_thread_entry, (ULONG) server_ptr, stack_ptr, 
+                               _nx_telnet_server_thread_entry, (UINT32) server_ptr, stack_ptr, 
                                stack_size, NX_TELNET_SERVER_PRIORITY, NX_TELNET_SERVER_PRIORITY, 
                                TX_NO_TIME_SLICE, TX_DONT_START);
 
@@ -696,7 +696,7 @@ NX_TELNET_CLIENT_REQUEST   *client_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nxe_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -756,7 +756,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT                        status;

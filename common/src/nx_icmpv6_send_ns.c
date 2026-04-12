@@ -33,7 +33,7 @@
 
 
 #ifdef FEATURE_NX_IPV6
-static const ULONG _nx_ipv6_unspecified_address[4] = {0, 0, 0, 0};
+static const UINT32 _nx_ipv6_unspecified_address[4] = {0, 0, 0, 0};
 
 /**************************************************************************/
 /*                                                                        */
@@ -82,7 +82,7 @@ static const ULONG _nx_ipv6_unspecified_address[4] = {0, 0, 0, 0};
 /*                                                                        */
 /**************************************************************************/
 VOID _nx_icmpv6_send_ns(NX_IP                 *ip_ptr,
-                        ULONG                 *neighbor_IP_address,
+                        UINT32                 *neighbor_IP_address,
                         INT                    send_slla,
                         NXD_IPV6_ADDRESS      *outgoing_address,
                         INT                    sendUnicast,
@@ -95,8 +95,8 @@ USHORT        checksum;
 UINT          compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
 NX_ICMPV6_ND *nd_ptr;
-ULONG        *src_address;
-ULONG         dest_address[4];
+UINT32        *src_address;
+UINT32         dest_address[4];
 NX_IP_DRIVER  driver_request;
 
 
@@ -194,7 +194,7 @@ NX_IP_DRIVER  driver_request;
     {
 
         /*lint -e{929} suppress cast of pointer to pointer, since it is necessary  */
-        src_address = (ULONG *)_nx_ipv6_unspecified_address;
+        src_address = (UINT32 *)_nx_ipv6_unspecified_address;
     }
 
     pkt_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr = outgoing_address;
@@ -208,7 +208,7 @@ NX_IP_DRIVER  driver_request;
     USHORT           *mac_addr;
     NX_ICMPV6_OPTION *nd_options;
 
-        /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
         nd_options = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(nd_ptr, sizeof(NX_ICMPV6_ND));
 
         /* Fill in the options field */
@@ -278,9 +278,9 @@ NX_IP_DRIVER  driver_request;
         mac_addr = NDCacheEntry -> nx_nd_cache_mac_addr;
 
         /* Set unicast destination MAC. */
-        driver_request.nx_ip_driver_physical_address_msw = ((ULONG)mac_addr[0] << 8) | mac_addr[1];
+        driver_request.nx_ip_driver_physical_address_msw = ((UINT32)mac_addr[0] << 8) | mac_addr[1];
         driver_request.nx_ip_driver_physical_address_lsw =
-            ((ULONG)mac_addr[2] << 24) | ((ULONG)mac_addr[3] << 16) | ((ULONG)mac_addr[4] << 8) | mac_addr[5];
+            ((UINT32)mac_addr[2] << 24) | ((UINT32)mac_addr[3] << 16) | ((UINT32)mac_addr[4] << 8) | mac_addr[5];
     }
     else
     {
@@ -296,7 +296,7 @@ NX_IP_DRIVER  driver_request;
     ip_ptr -> nx_ip_total_packets_sent++;
 
     /* Increment the IP bytes sent count.  */
-    ip_ptr -> nx_ip_total_bytes_sent +=  pkt_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER);
+    ip_ptr -> nx_ip_total_bytes_sent +=  pkt_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER);
 #endif
 
     /* Add debug information. */

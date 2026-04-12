@@ -83,13 +83,13 @@ NX_PACKET                   *packet_ptr;
 NX_TCP_HEADER               *tcp_header_ptr;
 NXD_ADDRESS                  source_ip;
 UINT                         source_port;
-ULONG                        mss = 0;
-ULONG                        option_words;
+UINT32                        mss = 0;
+UINT32                        option_words;
 #ifndef NX_DISABLE_IPV4
 NX_IPV4_HEADER              *ipv4_header_ptr;
 #endif /* !NX_DISABLE_IPV4  */
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
-ULONG                        rwin_scale = 0;
+UINT32                        rwin_scale = 0;
 #endif /* NX_ENABLE_TCP_WINDOW_SCALING */
 VOID                         (*listen_callback)(NX_TCP_SOCKET *socket_ptr, UINT port);
 
@@ -220,10 +220,10 @@ VOID                         (*listen_callback)(NX_TCP_SOCKET *socket_ptr, UINT 
                             /* Yes, there are one or more option words.  */
 
                             /* Derive the Maximum Segment Size (MSS) in the option words.  */
-                            _nx_tcp_mss_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (ULONG)sizeof(ULONG), &mss);
+                            _nx_tcp_mss_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (UINT32)sizeof(UINT32), &mss);
 
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
-                            _nx_tcp_window_scaling_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (ULONG)sizeof(ULONG), &rwin_scale);
+                            _nx_tcp_window_scaling_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (UINT32)sizeof(UINT32), &rwin_scale);
 #endif /* NX_ENABLE_TCP_WINDOW_SCALING */
                         }
                     }

@@ -96,7 +96,7 @@ extern   "C" {
 
 typedef struct NX_TELNET_CLIENT_STRUCT 
 {
-    ULONG           nx_telnet_client_id;                               /* TELNET Client ID                      */
+    UINT32           nx_telnet_client_id;                               /* TELNET Client ID                      */
     CHAR           *nx_telnet_client_name;                             /* Name of this TELNET client            */
     NX_IP          *nx_telnet_client_ip_ptr;                           /* Pointer to associated IP structure    */ 
     NX_TCP_SOCKET   nx_telnet_client_socket;                           /* Client TELNET socket                  */
@@ -140,33 +140,33 @@ typedef struct NX_TELNET_CLIENT_STRUCT
 #endif
 
 /* Define the prototypes accessible to the application software.  */
-UINT    nxd_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, ULONG wait_option);
-UINT    nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, ULONG server_ip_address, UINT server_port, ULONG wait_option);
-UINT    nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, ULONG window_size);
+UINT    nxd_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, UINT32 wait_option);
+UINT    nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, UINT32 server_ip_address, UINT server_port, UINT32 wait_option);
+UINT    nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, UINT32 window_size);
 UINT    nx_telnet_client_delete(NX_TELNET_CLIENT *client_ptr);
-UINT    nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_option);
-UINT    nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT    nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT    nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, UINT32 wait_option);
+UINT    nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT    nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
 
 
 #else
 
 /* TELNET source code is being compiled, do not perform any API mapping.  */
-UINT    _nxde_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, ULONG wait_option);
-UINT    _nxd_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, ULONG wait_option);
+UINT    _nxde_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, UINT32 wait_option);
+UINT    _nxd_telnet_client_connect(NX_TELNET_CLIENT *my_client, NXD_ADDRESS *server_ip_address, UINT server_port, UINT32 wait_option);
 
-UINT    _nxe_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, ULONG server_ip_address, UINT server_port, ULONG wait_option);
-UINT    _nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, ULONG server_ip_address, UINT server_port, ULONG wait_option);
-UINT    _nxe_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, ULONG window_size);
-UINT    _nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, ULONG window_size);
+UINT    _nxe_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, UINT32 server_ip_address, UINT server_port, UINT32 wait_option);
+UINT    _nx_telnet_client_connect(NX_TELNET_CLIENT *client_ptr, UINT32 server_ip_address, UINT server_port, UINT32 wait_option);
+UINT    _nxe_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, UINT32 window_size);
+UINT    _nx_telnet_client_create(NX_TELNET_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, UINT32 window_size);
 UINT    _nxe_telnet_client_delete(NX_TELNET_CLIENT *client_ptr);
 UINT    _nx_telnet_client_delete(NX_TELNET_CLIENT *client_ptr);
-UINT    _nxe_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_option);
-UINT    _nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, ULONG wait_option);
-UINT    _nxe_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT    _nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT    _nxe_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT    _nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT    _nxe_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, UINT32 wait_option);
+UINT    _nx_telnet_client_disconnect(NX_TELNET_CLIENT *client_ptr, UINT32 wait_option);
+UINT    _nxe_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT    _nx_telnet_client_packet_receive(NX_TELNET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT    _nxe_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT    _nx_telnet_client_packet_send(NX_TELNET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
 
 
 #endif

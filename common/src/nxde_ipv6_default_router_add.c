@@ -77,7 +77,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxde_ipv6_default_router_add(NX_IP *ip_ptr, NXD_ADDRESS *router_addr,
-                                    ULONG router_lifetime, UINT interface_index)
+                                    UINT32 router_lifetime, UINT interface_index)
 
 
 {

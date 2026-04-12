@@ -136,7 +136,7 @@ typedef  struct NX_ICMP_HEADER_STRUCT
 
      */
 
-    ULONG nx_icmp_header_word_0;
+    UINT32 nx_icmp_header_word_0;
 
     /* Define the second and final word of the ICMP header.  This word contains
        the following information:
@@ -144,7 +144,7 @@ typedef  struct NX_ICMP_HEADER_STRUCT
             bits 31-16  ICMP 16-bit Identification
             bits 15-0   ICMP 16-bit Sequence Number
      */
-    ULONG nx_icmp_header_word_1;
+    UINT32 nx_icmp_header_word_1;
 } NX_ICMP_HEADER;
 
 /* Define the ICMP echo request header message size.  */
@@ -175,7 +175,7 @@ typedef struct NX_ICMPV4_ERROR_STRUCT
     NX_ICMPV4_HEADER nx_icmpv4_error_header;
 
     /* Pointer to the original IPv4 packet where error is detected. */
-    ULONG            nx_icmpv4_error_pointer;
+    UINT32            nx_icmpv4_error_pointer;
 } NX_ICMPV4_ERROR;
 
 /* ICMP echo request message type. */
@@ -199,13 +199,13 @@ typedef struct NX_ICMPV4_ECHO_STRUCT
 #ifndef NX_DISABLE_ICMPV4_ERROR_MESSAGE
 /* Define macros for sending out ICMPv4 error messages. */
 #define NX_ICMPV4_SEND_DEST_UNREACHABLE(ip_ptr, packet, code) \
-    _nx_icmpv4_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMP_DEST_UNREACHABLE_TYPE << 24) | ((code) << 16)), 0)
+    _nx_icmpv4_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMP_DEST_UNREACHABLE_TYPE << 24) | ((code) << 16)), 0)
 
 #define NX_ICMPV4_SEND_TIME_EXCEED(ip_ptr, packet, code) \
-    _nx_icmpv4_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMP_TIME_EXCEEDED_TYPE << 24) | ((code) << 16)), 0)
+    _nx_icmpv4_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMP_TIME_EXCEEDED_TYPE << 24) | ((code) << 16)), 0)
 
 #define NX_ICMPV4_SEND_PARAMETER_PROBLEM(ip_ptr, packet, code, offset) \
-    _nx_icmpv4_send_error_message((ip_ptr), (packet), (ULONG)((NX_ICMP_PARAMETER_PROB_TYPE << 24) | ((code) << 16)), (offset))
+    _nx_icmpv4_send_error_message((ip_ptr), (packet), (UINT32)((NX_ICMP_PARAMETER_PROB_TYPE << 24) | ((code) << 16)), (offset))
 
 #endif /* NX_DISABLE_ICMPV4_ERROR_MESSAGE */
 
@@ -213,7 +213,7 @@ typedef struct NX_ICMPV4_ECHO_STRUCT
 /* Define service for sending ICMPv4 error messages. */
 
 #ifndef NX_DISABLE_ICMPV4_ERROR_MESSAGE
-VOID _nx_icmpv4_send_error_message(NX_IP *ip_ptr, NX_PACKET *packet, ULONG word1, ULONG pointer);
+VOID _nx_icmpv4_send_error_message(NX_IP *ip_ptr, NX_PACKET *packet, UINT32 word1, UINT32 pointer);
 #endif /* NX_DISABLE_ICMPV4_ERROR_MESSAGE */
 
 /* Define internal ICMPv4 handling functions. */
@@ -223,31 +223,31 @@ VOID _nx_icmp_queue_process(NX_IP *ip_ptr);
 VOID _nx_icmpv4_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_icmpv4_process_echo_reply(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
 VOID _nx_icmpv4_process_echo_request(NX_IP *ip_ptr, NX_PACKET *packet_ptr);
-UINT _nx_icmp_interface_ping(NX_IP *ip_ptr, ULONG ip_address,
-                             NX_INTERFACE *interface_ptr, ULONG next_hop_address,
-                             CHAR *data_ptr, ULONG data_size,
-                             NX_PACKET **response_ptr, ULONG wait_option);
+UINT _nx_icmp_interface_ping(NX_IP *ip_ptr, UINT32 ip_address,
+                             NX_INTERFACE *interface_ptr, UINT32 next_hop_address,
+                             CHAR *data_ptr, UINT32 data_size,
+                             NX_PACKET **response_ptr, UINT32 wait_option);
 #endif /* NX_DISABLE_IPV4 */
 
 
 /* Define ICMPv4 API function prototypes. */
 
 UINT _nx_icmp_enable(NX_IP *ip_ptr);
-UINT _nx_icmp_info_get(NX_IP *ip_ptr, ULONG *pings_sent, ULONG *ping_timeouts,
-                       ULONG *ping_threads_suspended, ULONG *ping_responses_received,
-                       ULONG *icmp_checksum_errors, ULONG *icmp_unhandled_messages);
-UINT _nx_icmp_ping(NX_IP *ip_ptr, ULONG ip_address, CHAR *data, ULONG data_size,
-                   NX_PACKET **response_ptr, ULONG wait_option);
+UINT _nx_icmp_info_get(NX_IP *ip_ptr, UINT32 *pings_sent, UINT32 *ping_timeouts,
+                       UINT32 *ping_threads_suspended, UINT32 *ping_responses_received,
+                       UINT32 *icmp_checksum_errors, UINT32 *icmp_unhandled_messages);
+UINT _nx_icmp_ping(NX_IP *ip_ptr, UINT32 ip_address, CHAR *data, UINT32 data_size,
+                   NX_PACKET **response_ptr, UINT32 wait_option);
 
 /* Define error checking shells for API services.  These are only referenced by the
    application.  */
 
 UINT _nxe_icmp_enable(NX_IP *ip_ptr);
-UINT _nxe_icmp_info_get(NX_IP *ip_ptr, ULONG *pings_sent, ULONG *ping_timeouts,
-                        ULONG *ping_threads_suspended, ULONG *ping_responses_received,
-                        ULONG *icmp_checksum_errors, ULONG *icmp_unhandled_messages);
-UINT _nxe_icmp_ping(NX_IP *ip_ptr, ULONG ip_address, CHAR *data, ULONG data_size,
-                    NX_PACKET **response_ptr, ULONG wait_option);
+UINT _nxe_icmp_info_get(NX_IP *ip_ptr, UINT32 *pings_sent, UINT32 *ping_timeouts,
+                        UINT32 *ping_threads_suspended, UINT32 *ping_responses_received,
+                        UINT32 *icmp_checksum_errors, UINT32 *icmp_unhandled_messages);
+UINT _nxe_icmp_ping(NX_IP *ip_ptr, UINT32 ip_address, CHAR *data, UINT32 data_size,
+                    NX_PACKET **response_ptr, UINT32 wait_option);
 
 
 #endif

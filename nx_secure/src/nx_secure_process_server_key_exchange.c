@@ -92,8 +92,8 @@ UINT _nx_secure_process_server_key_exchange(const NX_SECURE_TLS_CIPHERSUITE_INFO
                                             USHORT protocol_version, UCHAR *packet_buffer, UINT message_length,
                                             NX_SECURE_TLS_KEY_MATERIAL *tls_key_material, NX_SECURE_TLS_CREDENTIALS *tls_credentials,
                                             NX_SECURE_TLS_HANDSHAKE_HASH *tls_handshake_hash,
-                                            VOID *public_cipher_metadata, ULONG public_cipher_metadata_size,
-                                            VOID *public_auth_metadata, ULONG public_auth_metadata_size, VOID *tls_ecc_curves)
+                                            VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size,
+                                            VOID *public_auth_metadata, UINT32 public_auth_metadata_size, VOID *tls_ecc_curves)
 {
 
 #ifdef NX_SECURE_ENABLE_PSK_CIPHERSUITES
@@ -463,7 +463,7 @@ UINT                                  i;
 											   NX_NULL,
 											   0,
 											   packet_buffer,
-											   (ULONG)(4 + key_length),
+											   (UINT32)(4 + key_length),
 											   NX_NULL,
 											   NX_NULL,
 											   0,
@@ -611,7 +611,7 @@ UINT                                  i;
 														NX_NULL,
 														0,
 														packet_buffer,
-														(ULONG)(4 + key_length),
+														(UINT32)(4 + key_length),
 														NX_NULL,
 														NX_NULL,
 														0,

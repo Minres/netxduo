@@ -95,7 +95,7 @@ UINT status;
     }
 
     /* Check for an invalid port.  */
-    if ((!port) || (((ULONG)port) > (ULONG)NX_MAX_PORT))
+    if ((!port) || (((UINT32)port) > (UINT32)NX_MAX_PORT))
     {
         return(NX_INVALID_PORT);
     }

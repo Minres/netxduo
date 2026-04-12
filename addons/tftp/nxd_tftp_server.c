@@ -84,7 +84,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, 
-                                FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr)
+                                FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr)
 {
 
 UINT        status;
@@ -169,7 +169,7 @@ NX_PACKET   *packet_ptr;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, 
-                               FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr)
+                               FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr)
 {
 
 UINT        status;
@@ -212,7 +212,7 @@ UINT        status;
 
     /* Now create the TFTP Server thread.  */
     status =  tx_thread_create(&(tftp_server_ptr -> nx_tftp_server_thread), "TFTP Server Thread", _nx_tftp_server_thread_entry, 
-                (ULONG) tftp_server_ptr, stack_ptr, stack_size, NX_TFTP_SERVER_PRIORITY, NX_TFTP_SERVER_PRIORITY, 
+                (UINT32) tftp_server_ptr, stack_ptr, stack_size, NX_TFTP_SERVER_PRIORITY, NX_TFTP_SERVER_PRIORITY, 
                 NX_TFTP_SERVER_TIME_SLICE, TX_DONT_START);
 
     /* Determine if an error occurred creating the thread.  */
@@ -254,7 +254,7 @@ UINT        status;
     /* Create the ThreadX retransmit timeout timer.  This will be used to retransmit TFTP server
        packets if the Client has not responded or sends a duplicate (old) ACK or data packet.  */
     status =  tx_timer_create(&(tftp_server_ptr -> nx_tftp_server_timer), "TFTP Server Timer", 
-                              _nx_tftp_server_timer_entry, (ULONG) tftp_server_ptr, 
+                              _nx_tftp_server_timer_entry, (UINT32) tftp_server_ptr, 
                               (NX_TFTP_SERVER_TIMEOUT_PERIOD), 
                               (NX_TFTP_SERVER_TIMEOUT_PERIOD), TX_NO_ACTIVATE);
 
@@ -745,7 +745,7 @@ NX_TFTP_SERVER   *server_ptr;
 /*                                                                        */ 
 /*  INPUT                                                                 */ 
 /*                                                                        */ 
-/*    ULONG                                 Pointer to TFTP server        */ 
+/*    UINT32                                 Pointer to TFTP server        */ 
 /*                                                                        */ 
 /*  OUTPUT                                                                */ 
 /*                                                                        */ 
@@ -929,7 +929,7 @@ VOID  _nx_tftp_server_thread_entry(ULONG tftp_server)
 
 NX_TFTP_SERVER          *server_ptr;
 UINT                    status;
-ULONG                   events;
+UINT32                   events;
 
 
     /* Setup the server pointer.  */
@@ -1019,7 +1019,7 @@ VOID _nx_tftp_server_process_received_data(NX_TFTP_SERVER *server_ptr)
 UINT         status;
 NX_PACKET    *packet_ptr;
 UCHAR        request_code[2];
-ULONG        bytes_copyed;
+UINT32        bytes_copyed;
 
 
     /* Wait for a request on the TFTP UDP well known port 69.  */
@@ -1163,8 +1163,8 @@ ULONG        bytes_copyed;
 void  _nx_tftp_server_open_for_read_process(NX_TFTP_SERVER *server_ptr, NX_PACKET *packet_ptr)
 {
 NXD_ADDRESS              ip_address;
-ULONG                    file_size;
-ULONG                    actual_size;
+UINT32                    file_size;
+UINT32                    actual_size;
 UINT                     port;
 UCHAR                    *buffer_ptr;
 NX_TFTP_CLIENT_REQUEST   *client_request_ptr;
@@ -1304,7 +1304,7 @@ UINT                     count = 0;
         return;
     }
 
-    if (4u + NX_TFTP_FILE_TRANSFER_MAX > ((ULONG)(new_packet -> nx_packet_data_end) - (ULONG)(new_packet -> nx_packet_append_ptr)))
+    if (4u + NX_TFTP_FILE_TRANSFER_MAX > ((UINT32)(new_packet -> nx_packet_data_end) - (UINT32)(new_packet -> nx_packet_append_ptr)))
     {
         /* Release the original packet.  */
         nx_packet_release(packet_ptr);
@@ -1613,7 +1613,7 @@ UINT                    count = 0;
         return;
     }
 
-    if (4u > ((ULONG)(new_packet -> nx_packet_data_end) - (ULONG)(new_packet -> nx_packet_append_ptr)))
+    if (4u > ((UINT32)(new_packet -> nx_packet_data_end) - (UINT32)(new_packet -> nx_packet_append_ptr)))
     {
         nx_packet_release(new_packet);
 
@@ -1743,7 +1743,7 @@ VOID  _nx_tftp_server_data_process(NX_TFTP_SERVER *server_ptr, NX_PACKET *packet
 NXD_ADDRESS             ip_address;
 UINT                    port;
 USHORT                  block_number;
-ULONG                   bytes_copyed;
+UINT32                   bytes_copyed;
 NX_TFTP_CLIENT_REQUEST  *client_request_ptr;
 UINT                    status;
 
@@ -1985,7 +1985,7 @@ VOID  _nx_tftp_server_ack_process(NX_TFTP_SERVER *server_ptr, NX_PACKET *packet_
 NXD_ADDRESS             ip_address;
 UINT                    port;
 USHORT                  block_number;
-ULONG                   bytes_copyed;
+UINT32                   bytes_copyed;
 NX_TFTP_CLIENT_REQUEST  *client_request_ptr;
 UINT                    status;
 
@@ -2150,7 +2150,7 @@ UINT _nx_tftp_server_send_data(NX_TFTP_SERVER *server_ptr, NX_TFTP_CLIENT_REQUES
 {
 
 UINT        status;
-ULONG       actual_size = 0;
+UINT32       actual_size = 0;
 NX_PACKET   *new_packet;
 UCHAR       *buffer_ptr;
 
@@ -2181,7 +2181,7 @@ UCHAR       *buffer_ptr;
         return status;
     }
 
-    if (4u + NX_TFTP_FILE_TRANSFER_MAX > ((ULONG)(new_packet -> nx_packet_data_end) - (ULONG)(new_packet -> nx_packet_append_ptr)))
+    if (4u + NX_TFTP_FILE_TRANSFER_MAX > ((UINT32)(new_packet -> nx_packet_data_end) - (UINT32)(new_packet -> nx_packet_append_ptr)))
     {
         nx_packet_release(new_packet);
         return(NX_SIZE_ERROR);
@@ -2371,7 +2371,7 @@ NX_PACKET   *new_packet;
         return status;
     }
 
-    if (4u > ((ULONG)(new_packet -> nx_packet_data_end) - (ULONG)(new_packet -> nx_packet_append_ptr)))
+    if (4u > ((UINT32)(new_packet -> nx_packet_data_end) - (UINT32)(new_packet -> nx_packet_append_ptr)))
     {
         nx_packet_release(new_packet);
         return(NX_SIZE_ERROR);
@@ -2717,7 +2717,7 @@ NX_PACKET   *new_packet;
         return;
     }
 
-    if (6u > ((ULONG)(new_packet -> nx_packet_data_end) - (ULONG)(new_packet -> nx_packet_append_ptr)))
+    if (6u > ((UINT32)(new_packet -> nx_packet_data_end) - (UINT32)(new_packet -> nx_packet_append_ptr)))
     {
         nx_packet_release(new_packet);
         return;
@@ -2756,7 +2756,7 @@ NX_PACKET   *new_packet;
     *buffer_ptr++ =  NX_NULL;
 
     /* Setup the packet pointers appropriately.  */
-    new_packet -> nx_packet_length =  (ULONG)(buffer_ptr - new_packet -> nx_packet_prepend_ptr);
+    new_packet -> nx_packet_length =  (UINT32)(buffer_ptr - new_packet -> nx_packet_prepend_ptr);
     new_packet -> nx_packet_append_ptr =  buffer_ptr;
 
     /* Send the data packet out.  */

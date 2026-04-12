@@ -274,7 +274,7 @@ static const UINT _nx_secure_x509_oid_map_size = sizeof(_nx_secure_x509_oid_map)
 /*                                          Parse policy qualifiers       */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_secure_x509_oid_parse(const UCHAR *oid, ULONG length, UINT *oid_value)
+VOID _nx_secure_x509_oid_parse(const UCHAR *oid, UINT32 length, UINT *oid_value)
 {
 INT  compare_val;
 UINT i;

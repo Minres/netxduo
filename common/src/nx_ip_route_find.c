@@ -82,11 +82,11 @@
 /*    None                                                                */
 /*                                                                        */
 /**************************************************************************/
-ULONG  _nx_ip_route_find(NX_IP *ip_ptr, ULONG destination_address, NX_INTERFACE **ip_interface_ptr, ULONG *next_hop_address)
+UINT32  _nx_ip_route_find(NX_IP *ip_ptr, UINT32 destination_address, NX_INTERFACE **ip_interface_ptr, UINT32 *next_hop_address)
 {
 
 NX_INTERFACE *interface_ptr;
-ULONG         i;
+UINT32         i;
 
     /* Initialize the next hop address. */
     *next_hop_address = 0;

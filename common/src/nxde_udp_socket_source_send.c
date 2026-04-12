@@ -173,7 +173,7 @@ UINT ip_header_size;
     }
 
     /* Check for an invalid port.  */
-    if (((ULONG)port) > (ULONG)NX_MAX_PORT)
+    if (((UINT32)port) > (UINT32)NX_MAX_PORT)
     {
         return(NX_INVALID_PORT);
     }

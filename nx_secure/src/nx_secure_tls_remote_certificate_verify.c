@@ -72,7 +72,7 @@ UINT _nx_secure_tls_remote_certificate_verify(NX_SECURE_TLS_SESSION *tls_session
 UINT                              status;
 NX_SECURE_X509_CERT              *remote_certificate;
 NX_SECURE_X509_CERTIFICATE_STORE *store;
-ULONG                             current_time;
+UINT32                             current_time;
 
 
     /* We need to find the remote certificate that represents the endpoint - the leaf in the PKI. */

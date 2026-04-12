@@ -66,7 +66,7 @@
 /*    _nx_icmpv6_perform_DAD              Verify IPv6 address is unique   */
 /*                                                                        */
 /**************************************************************************/
-void _nx_icmpv6_DAD_clear_NDCache_entry(NX_IP *ip_ptr, ULONG *ip_addr)
+void _nx_icmpv6_DAD_clear_NDCache_entry(NX_IP *ip_ptr, UINT32 *ip_addr)
 {
 
 ND_CACHE_ENTRY *NDCacheEntry;

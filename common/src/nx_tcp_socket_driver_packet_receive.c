@@ -119,20 +119,20 @@ NX_TCP_HEADER *header_ptr;
     packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_TCP_HEADER);
 
     /* Add the length of the TCP header.  */
-    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_TCP_HEADER);
+    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_TCP_HEADER);
 
     /* Pickup the pointer to the head of the TCP packet.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
     header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Build the output request in the TCP header.  */
-    header_ptr -> nx_tcp_header_word_0 = (((ULONG)(socket_ptr -> nx_tcp_socket_connect_port)) << NX_SHIFT_BY_16) |
-                                          (ULONG)socket_ptr -> nx_tcp_socket_port;
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_0);
+    header_ptr -> nx_tcp_header_word_0 = (((UINT32)(socket_ptr -> nx_tcp_socket_connect_port)) << NX_SHIFT_BY_16) |
+                                          (UINT32)socket_ptr -> nx_tcp_socket_port;
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_0);
     header_ptr -> nx_tcp_acknowledgment_number = 0;
     header_ptr -> nx_tcp_sequence_number = 0;
     header_ptr -> nx_tcp_header_word_3 = NX_TCP_HEADER_SIZE | NX_TCP_ACK_BIT | NX_TCP_PSH_BIT;
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
     header_ptr -> nx_tcp_header_word_4 = 0;
 
 #ifndef NX_DISABLE_IPV4

@@ -66,11 +66,11 @@
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_arp_packet_send(NX_IP *ip_ptr, ULONG destination_ip, NX_INTERFACE *nx_interface)
+VOID  _nx_arp_packet_send(NX_IP *ip_ptr, UINT32 destination_ip, NX_INTERFACE *nx_interface)
 {
 
 NX_PACKET   *request_ptr;
-ULONG       *message_ptr;
+UINT32       *message_ptr;
 NX_IP_DRIVER driver_request;
 
     /* nx_interface must not be NX_NULL. */
@@ -126,31 +126,31 @@ NX_IP_DRIVER driver_request;
 
     /* Setup the pointer to the message area.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    message_ptr =  (ULONG *)request_ptr -> nx_packet_prepend_ptr;
+    message_ptr =  (UINT32 *)request_ptr -> nx_packet_prepend_ptr;
 
     /* Write the Hardware type into the message.  */
-    *message_ptr =      (ULONG)(NX_ARP_HARDWARE_TYPE << 16) | (NX_ARP_PROTOCOL_TYPE);
-    *(message_ptr + 1) =  (ULONG)(NX_ARP_HARDWARE_SIZE << 24) | (NX_ARP_PROTOCOL_SIZE << 16) |
+    *message_ptr =      (UINT32)(NX_ARP_HARDWARE_TYPE << 16) | (NX_ARP_PROTOCOL_TYPE);
+    *(message_ptr + 1) =  (UINT32)(NX_ARP_HARDWARE_SIZE << 24) | (NX_ARP_PROTOCOL_SIZE << 16) |
         NX_ARP_OPTION_REQUEST;
 
     /*lint -e{613} suppress possible use of null pointer, since nx_interface must not be NULL.  */
-    *(message_ptr + 2) =  (ULONG)(nx_interface -> nx_interface_physical_address_msw << 16) |
+    *(message_ptr + 2) =  (UINT32)(nx_interface -> nx_interface_physical_address_msw << 16) |
         (nx_interface -> nx_interface_physical_address_lsw >> 16);
-    *(message_ptr + 3) =  (ULONG)(nx_interface -> nx_interface_physical_address_lsw << 16) |
+    *(message_ptr + 3) =  (UINT32)(nx_interface -> nx_interface_physical_address_lsw << 16) |
         (nx_interface -> nx_interface_ip_address >> 16);
-    *(message_ptr + 4) =  (ULONG)(nx_interface -> nx_interface_ip_address << 16);
-    *(message_ptr + 5) =  (ULONG)0;
-    *(message_ptr + 6) =  (ULONG)destination_ip;
+    *(message_ptr + 4) =  (UINT32)(nx_interface -> nx_interface_ip_address << 16);
+    *(message_ptr + 5) =  (UINT32)0;
+    *(message_ptr + 6) =  (UINT32)destination_ip;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the ARP message.  */
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 1));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 2));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 3));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 4));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 5));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 6));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 1));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 2));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 3));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 4));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 5));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 6));
 
     /* Set up the driver request. */
     driver_request.nx_ip_driver_ptr =                   ip_ptr;

@@ -37,7 +37,7 @@
     The most significant byte is the result of {02} dot S, and the least significant byte is the result
     of {03} dot S[x,c].
  */
-NX_CRYPTO_AES_TABLE ULONG aes_encryption_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_encryption_table[256] =
 {
     0xc66363a5, 0xf87c7c84, 0xee777799, 0xf67b7b8d, 0xfff2f20d, 0xd66b6bbd, 0xde6f6fb1, 0x91c5c554,
     0x60303050, 0x02010103, 0xce6767a9, 0x562b2b7d, 0xe7fefe19, 0xb5d7d762, 0x4dababe6, 0xec76769a,
@@ -85,7 +85,7 @@ NX_CRYPTO_AES_TABLE ULONG aes_encryption_table[256] =
    The most significant byte is the result of {0e} dot S, and the least significant byte is the result
    of {0b} dot S[x,c].
  */
-NX_CRYPTO_AES_TABLE ULONG aes_decryption_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_decryption_table[256] =
 {
     0x51f4a750, 0x7e416553, 0x1a17a4c3, 0x3a275e96, 0x3bab6bcb, 0x1f9d45f1, 0xacfa58ab, 0x4be30393,
     0x2030fa55, 0xad766df6, 0x88cc7691, 0xf5024c25, 0x4fe5d7fc, 0xc52acbd7, 0x26354480, 0xb562a38f,
@@ -130,7 +130,7 @@ NX_CRYPTO_AES_TABLE ULONG aes_decryption_table[256] =
     The most significant byte is the result of {0e} dot S, and the least significant byte is the result
     of {0b} dot S[x,c].
  */
-NX_CRYPTO_AES_TABLE ULONG aes_inv_mix_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_inv_mix_table[256] =
 {
     0x00000000, 0x0e090d0b, 0x1c121a16, 0x121b171d, 0x3824342c, 0x362d3927, 0x24362e3a, 0x2a3f2331,
     0x70486858, 0x7e416553, 0x6c5a724e, 0x62537f45, 0x486c5c74, 0x4665517f, 0x547e4662, 0x5a774b69,
@@ -179,7 +179,7 @@ NX_CRYPTO_AES_TABLE ULONG aes_inv_mix_table[256] =
     of {03} dot S[x,c].
  */
 
-NX_CRYPTO_AES_TABLE ULONG aes_encryption_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_encryption_table[256] =
 {
     0xa56363c6, 0x847c7cf8, 0x997777ee, 0x8d7b7bf6, 0x0df2f2ff, 0xbd6b6bd6, 0xb16f6fde, 0x54c5c591,
     0x50303060, 0x03010102, 0xa96767ce, 0x7d2b2b56, 0x19fefee7, 0x62d7d7b5, 0xe6abab4d, 0x9a7676ec,
@@ -226,7 +226,7 @@ NX_CRYPTO_AES_TABLE ULONG aes_encryption_table[256] =
    The most significant byte is the result of {0e} dot S, and the least significant byte is the result
    of {0b} dot S[x,c].
  */
-NX_CRYPTO_AES_TABLE ULONG aes_decryption_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_decryption_table[256] =
 {
     0x50a7f451, 0x5365417e, 0xc3a4171a, 0x965e273a, 0xcb6bab3b, 0xf1459d1f, 0xab58faac, 0x9303e34b,
     0x55fa3020, 0xf66d76ad, 0x9176cc88, 0x254c02f5, 0xfcd7e54f, 0xd7cb2ac5, 0x80443526, 0x8fa362b5,
@@ -272,7 +272,7 @@ NX_CRYPTO_AES_TABLE ULONG aes_decryption_table[256] =
     of {0b} dot S[x,c].
  */
 
-NX_CRYPTO_AES_TABLE ULONG aes_inv_mix_table[256] =
+NX_CRYPTO_AES_TABLE UINT32 aes_inv_mix_table[256] =
 {
     0x00000000, 0x0b0d090e, 0x161a121c, 0x1d171b12, 0x2c342438, 0x27392d36, 0x3a2e3624, 0x31233f2a,
     0x58684870, 0x5365417e, 0x4e725a6c, 0x457f5362, 0x745c6c48, 0x7f516546, 0x62467e54, 0x694b775a,
@@ -865,7 +865,7 @@ UINT  *w = aes_ptr -> nx_crypto_aes_decrypt_key_schedule;
 UINT   V0, V1, V2, V3;
 
 UCHAR  S;
-ULONG  val;
+UINT32  val;
 
 
 /*
@@ -1281,8 +1281,8 @@ UINT *expanded_key;
 UINT  V0, V1, V2, V3;
 
 UCHAR S;
-ULONG val;
-ULONG key;
+UINT32 val;
+UINT32 key;
 
     expanded_key = aes_ptr -> nx_crypto_aes_decrypt_key_schedule;
 
@@ -1633,7 +1633,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_init(struct NX_CRYPTO_METHOD_STRUCT *
                                                 UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                 VOID **handle,
                                                 VOID *crypto_metadata,
-                                                ULONG crypto_metadata_size)
+                                                UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_PARAMETER_NOT_USED(handle);
@@ -1647,7 +1647,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_init(struct NX_CRYPTO_METHOD_STRUCT *
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -1776,12 +1776,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_operation(UINT op,      /* Encrypt, D
                                                      UCHAR *key,
                                                      NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                      UCHAR *input,
-                                                     ULONG input_length_in_byte,
+                                                     UINT32 input_length_in_byte,
                                                      UCHAR *iv_ptr,
                                                      UCHAR *output,
-                                                     ULONG output_length_in_byte,
+                                                     UINT32 output_length_in_byte,
                                                      VOID *crypto_metadata,
-                                                     ULONG crypto_metadata_size,
+                                                     UINT32 crypto_metadata_size,
                                                      VOID *packet_ptr,
                                                      VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -1790,7 +1790,7 @@ UINT    status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -1913,12 +1913,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_cbc_operation(UINT op,      /* Encryp
                                                          UCHAR *key,
                                                          NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                          UCHAR *input,
-                                                         ULONG input_length_in_byte,
+                                                         UINT32 input_length_in_byte,
                                                          UCHAR *iv_ptr,
                                                          UCHAR *output,
-                                                         ULONG output_length_in_byte,
+                                                         UINT32 output_length_in_byte,
                                                          VOID *crypto_metadata,
-                                                         ULONG crypto_metadata_size,
+                                                         UINT32 crypto_metadata_size,
                                                          VOID *packet_ptr,
                                                          VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -1936,7 +1936,7 @@ UINT    status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -2079,12 +2079,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_ccm_operation(UINT op,      /* Encryp
                                                          UCHAR *key,
                                                          NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                          UCHAR *input,
-                                                         ULONG input_length_in_byte,
+                                                         UINT32 input_length_in_byte,
                                                          UCHAR *iv_ptr,
                                                          UCHAR *output,
-                                                         ULONG output_length_in_byte,
+                                                         UINT32 output_length_in_byte,
                                                          VOID *crypto_metadata,
-                                                         ULONG crypto_metadata_size,
+                                                         UINT32 crypto_metadata_size,
                                                          VOID *packet_ptr,
                                                          VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -2102,7 +2102,7 @@ UINT    status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -2134,7 +2134,7 @@ UINT    status;
                 break;
             }
 
-            if (input_length_in_byte < (ULONG)(method -> nx_crypto_ICV_size_in_bits >> 3) ||
+            if (input_length_in_byte < (UINT32)(method -> nx_crypto_ICV_size_in_bits >> 3) ||
                 output_length_in_byte < input_length_in_byte - (method -> nx_crypto_ICV_size_in_bits >> 3))
             {
                 status = NX_CRYPTO_INVALID_BUFFER_SIZE;
@@ -2368,12 +2368,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_gcm_operation(UINT op,      /* Encryp
                                                          UCHAR *key,
                                                          NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                          UCHAR *input,
-                                                         ULONG input_length_in_byte,
+                                                         UINT32 input_length_in_byte,
                                                          UCHAR *iv_ptr,
                                                          UCHAR *output,
-                                                         ULONG output_length_in_byte,
+                                                         UINT32 output_length_in_byte,
                                                          VOID *crypto_metadata,
-                                                         ULONG crypto_metadata_size,
+                                                         UINT32 crypto_metadata_size,
                                                          VOID *packet_ptr,
                                                          VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -2393,7 +2393,7 @@ UINT    status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -2655,12 +2655,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_ctr_operation(UINT op,      /* Encryp
                                                          UCHAR *key,
                                                          NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                          UCHAR *input,
-                                                         ULONG input_length_in_byte,
+                                                         UINT32 input_length_in_byte,
                                                          UCHAR *iv_ptr,
                                                          UCHAR *output,
-                                                         ULONG output_length_in_byte,
+                                                         UINT32 output_length_in_byte,
                                                          VOID *crypto_metadata,
-                                                         ULONG crypto_metadata_size,
+                                                         UINT32 crypto_metadata_size,
                                                          VOID *packet_ptr,
                                                          VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -2677,7 +2677,7 @@ UINT                status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -2797,12 +2797,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_aes_xcbc_operation(UINT op,      /* Encry
                                                           UCHAR *key,
                                                           NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                           UCHAR *input,
-                                                          ULONG input_length_in_byte,
+                                                          UINT32 input_length_in_byte,
                                                           UCHAR *iv_ptr,
                                                           UCHAR *output,
-                                                          ULONG output_length_in_byte,
+                                                          UINT32 output_length_in_byte,
                                                           VOID *crypto_metadata,
-                                                          ULONG crypto_metadata_size,
+                                                          UINT32 crypto_metadata_size,
                                                           VOID *packet_ptr,
                                                           VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -2820,7 +2820,7 @@ UINT            status;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (key == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (key == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

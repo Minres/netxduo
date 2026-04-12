@@ -50,10 +50,10 @@
 
 /* Define macros that swap the endian for little endian ports.  */
 #if NX_CRYPTO_LITTLE_ENDIAN
-#define NX_CRYPTO_CHANGE_ULONG_ENDIAN(arg)       (arg) = _byteswap_ulong(arg)
+#define NX_CRYPTO_CHANGE_UINT32_ENDIAN(arg)       (arg) = _byteswap_ulong(arg)
 #define NX_CRYPTO_CHANGE_USHORT_ENDIAN(arg)      (arg) = _byteswap_ushort(arg)
 #else
-#define NX_CRYPTO_CHANGE_ULONG_ENDIAN(a)
+#define NX_CRYPTO_CHANGE_UINT32_ENDIAN(a)
 #define NX_CRYPTO_CHANGE_USHORT_ENDIAN(a)
 #endif
 
@@ -64,7 +64,7 @@ typedef unsigned char                             UCHAR;
 typedef int                                       INT;
 typedef unsigned int                              UINT;
 typedef long                                      LONG;
-typedef unsigned long                             ULONG;
+typedef unsigned long                             UINT32;
 typedef short                                     SHORT;
 typedef unsigned short                            USHORT;
 #endif

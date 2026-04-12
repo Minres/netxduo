@@ -74,7 +74,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_disconnect(NX_TCP_SOCKET *socket_ptr, ULONG wait_option)
+UINT  _nx_tcp_socket_disconnect(NX_TCP_SOCKET *socket_ptr, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_RESET_DISCONNECT

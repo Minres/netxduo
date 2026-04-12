@@ -93,7 +93,7 @@ NX_PACKET *next_packet_ptr;
         next_packet_ptr =  packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
 
         /* Mark the packet as no longer being in a TCP queue.  */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ALLOCATED;
 
         /* Has the packet been transmitted?  */

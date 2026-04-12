@@ -66,7 +66,7 @@
 /*                                             message.                   */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_ipv6_destination_table_find_next_hop(NX_IP *ip_ptr, ULONG *destination_ip, ULONG *next_hop)
+UINT _nxd_ipv6_destination_table_find_next_hop(NX_IP *ip_ptr, UINT32 *destination_ip, UINT32 *next_hop)
 {
 
 UINT i, table_size;

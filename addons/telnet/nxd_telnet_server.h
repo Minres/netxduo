@@ -189,8 +189,8 @@ extern   "C" {
 typedef struct NX_TELNET_CLIENT_REQUEST_STRUCT
 {
     UINT            nx_telnet_client_request_connection;                /* Logical connection number            */
-    ULONG           nx_telnet_client_request_activity_timeout;          /* Timeout for client activity          */ 
-    ULONG           nx_telnet_client_request_total_bytes;               /* Total bytes read or written          */ 
+    UINT32           nx_telnet_client_request_activity_timeout;          /* Timeout for client activity          */ 
+    UINT32           nx_telnet_client_request_total_bytes;               /* Total bytes read or written          */ 
     NX_TCP_SOCKET   nx_telnet_client_request_socket;                    /* Client request socket                */ 
 #ifndef NX_TELNET_SERVER_OPTION_DISABLE
     USHORT          nx_telnet_client_agree_server_will_echo_success;    /* True if server will echo negotiation success      */
@@ -204,16 +204,16 @@ typedef struct NX_TELNET_CLIENT_REQUEST_STRUCT
 
 typedef struct NX_TELNET_SERVER_STRUCT 
 {
-    ULONG           nx_telnet_server_id;                               /* TELNET Server ID                      */
+    UINT32           nx_telnet_server_id;                               /* TELNET Server ID                      */
     CHAR           *nx_telnet_server_name;                             /* Name of this TELNET server            */
     NX_IP          *nx_telnet_server_ip_ptr;                           /* Pointer to associated IP structure    */ 
-    ULONG           nx_telnet_server_connection_requests;              /* Number of connection requests         */ 
-    ULONG           nx_telnet_server_disconnection_requests;           /* Number of disconnection requests      */ 
-    ULONG           nx_telnet_server_total_bytes_sent;                 /* Number of total bytes sent            */ 
-    ULONG           nx_telnet_server_total_bytes_received;             /* Number of total bytes received        */ 
-    ULONG           nx_telnet_server_relisten_errors;                  /* Number of relisten errors             */ 
-    ULONG           nx_telnet_server_activity_timeouts;                /* Number of activity timeouts           */ 
-    ULONG           nx_telnet_server_open_connections;                 /* Number of currently open connections  */ 
+    UINT32           nx_telnet_server_connection_requests;              /* Number of connection requests         */ 
+    UINT32           nx_telnet_server_disconnection_requests;           /* Number of disconnection requests      */ 
+    UINT32           nx_telnet_server_total_bytes_sent;                 /* Number of total bytes sent            */ 
+    UINT32           nx_telnet_server_total_bytes_received;             /* Number of total bytes received        */ 
+    UINT32           nx_telnet_server_relisten_errors;                  /* Number of relisten errors             */ 
+    UINT32           nx_telnet_server_activity_timeouts;                /* Number of activity timeouts           */ 
+    UINT32           nx_telnet_server_open_connections;                 /* Number of currently open connections  */ 
 
 #ifndef NX_TELNET_SERVER_OPTION_DISABLE
 #ifndef NX_TELNET_SERVER_USER_CREATE_PACKET_POOL
@@ -278,13 +278,13 @@ typedef struct NX_TELNET_SERVER_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
 
-UINT    nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT    nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
             void (*new_connection)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection), 
             void (*receive_data)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr),
             void (*connection_end)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection));
 UINT    nx_telnet_server_delete(NX_TELNET_SERVER *server_ptr);
 UINT    nx_telnet_server_disconnect(NX_TELNET_SERVER *server_ptr, UINT logical_connection);
-UINT    nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT    nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, UINT32 wait_option);
 #ifdef NX_TELNET_SERVER_USER_CREATE_PACKET_POOL 
 UINT    nx_telnet_server_packet_pool_set(NX_TELNET_SERVER *server_ptr, NX_PACKET_POOL *pool_ptr);
 #endif /* NX_TELNET_SERVER_USER_CREATE_PACKET_POOL */
@@ -297,11 +297,11 @@ UINT    nx_telnet_server_get_open_connection_count(NX_TELNET_SERVER *server_ptr,
 
 /* TELNET source code is being compiled, do not perform any API mapping.  */
 
-UINT    _nxe_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT    _nxe_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
             void (*new_connection)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection), 
             void (*receive_data)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr),
             void (*connection_end)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection));
-UINT    _nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT    _nx_telnet_server_create(NX_TELNET_SERVER *server_ptr, CHAR *server_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
             void (*new_connection)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection), 
             void (*receive_data)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection, NX_PACKET *packet_ptr),
             void (*connection_end)(struct NX_TELNET_SERVER_STRUCT *telnet_server_ptr, UINT logical_connection));
@@ -309,8 +309,8 @@ UINT    _nxe_telnet_server_delete(NX_TELNET_SERVER *server_ptr);
 UINT    _nx_telnet_server_delete(NX_TELNET_SERVER *server_ptr);
 UINT    _nxe_telnet_server_disconnect(NX_TELNET_SERVER *server_ptr, UINT logical_connection);
 UINT    _nx_telnet_server_disconnect(NX_TELNET_SERVER *server_ptr, UINT logical_connection);
-UINT    _nxe_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT    _nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT    _nxe_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT    _nx_telnet_server_packet_send(NX_TELNET_SERVER *server_ptr, UINT logical_connection, NX_PACKET *packet_ptr, UINT32 wait_option);
 #ifdef NX_TELNET_SERVER_USER_CREATE_PACKET_POOL 
 UINT    _nxe_telnet_server_packet_pool_set(NX_TELNET_SERVER *server_ptr, NX_PACKET_POOL *pool_ptr);
 UINT    _nx_telnet_server_packet_pool_set(NX_TELNET_SERVER *server_ptr, NX_PACKET_POOL *pool_ptr);

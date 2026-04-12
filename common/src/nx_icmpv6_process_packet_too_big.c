@@ -86,10 +86,10 @@ UINT _nx_icmpv6_process_packet_too_big(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 
 UINT                       status = NX_INVALID_MTU_DATA;
 NX_ICMPV6_OPTION_MTU      *icmpv6_mtu_option_ptr;
-ULONG                      mtu;
+UINT32                      mtu;
 NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
-ULONG                     *original_destination_ip;
-ULONG                      default_next_hop_address[4];
+UINT32                     *original_destination_ip;
+UINT32                      default_next_hop_address[4];
 NX_IPV6_HEADER            *ip_header_ptr, *original_ip_header_ptr;
 NX_INTERFACE              *if_ptr;
 
@@ -115,7 +115,7 @@ NX_INTERFACE              *if_ptr;
     }
 #endif /* NX_DISABLE_RX_SIZE_CHECKING */
 
-    memset(&default_next_hop_address[0], 0, (4 * sizeof(ULONG)));
+    memset(&default_next_hop_address[0], 0, (4 * sizeof(UINT32)));
 
     if_ptr = packet_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr -> nxd_ipv6_address_attached;
 
@@ -140,7 +140,7 @@ NX_INTERFACE              *if_ptr;
     COPY_IPV6_ADDRESS(ip_header_ptr -> nx_ip_header_source_ip, &default_next_hop_address[0]);
 
     /*  Handle endianness. */
-    NX_CHANGE_ULONG_ENDIAN(icmpv6_mtu_option_ptr -> nx_icmpv6_option_mtu_path_mtu);
+    NX_CHANGE_UINT32_ENDIAN(icmpv6_mtu_option_ptr -> nx_icmpv6_option_mtu_path_mtu);
 
     /* Create a local variable for convenience. */
     mtu = icmpv6_mtu_option_ptr -> nx_icmpv6_option_mtu_path_mtu;

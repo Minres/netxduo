@@ -39,27 +39,27 @@
 
 /* Bring in externals for caller checking code.  */
 
-#define MQTT_ALL_EVENTS               ((ULONG)0xFFFFFFFF)
-#define MQTT_TIMEOUT_EVENT            ((ULONG)0x00000001)
-#define MQTT_PACKET_RECEIVE_EVENT     ((ULONG)0x00000002)
-#define MQTT_START_EVENT              ((ULONG)0x00000004)
-#define MQTT_DELETE_EVENT             ((ULONG)0x00000008)
-#define MQTT_PING_TIMEOUT_EVENT       ((ULONG)0x00000010)
-#define MQTT_NETWORK_DISCONNECT_EVENT ((ULONG)0x00000020)
-#define MQTT_TCP_ESTABLISH_EVENT      ((ULONG)0x00000040)
+#define MQTT_ALL_EVENTS               ((UINT32)0xFFFFFFFF)
+#define MQTT_TIMEOUT_EVENT            ((UINT32)0x00000001)
+#define MQTT_PACKET_RECEIVE_EVENT     ((UINT32)0x00000002)
+#define MQTT_START_EVENT              ((UINT32)0x00000004)
+#define MQTT_DELETE_EVENT             ((UINT32)0x00000008)
+#define MQTT_PING_TIMEOUT_EVENT       ((UINT32)0x00000010)
+#define MQTT_NETWORK_DISCONNECT_EVENT ((UINT32)0x00000020)
+#define MQTT_TCP_ESTABLISH_EVENT      ((UINT32)0x00000040)
 
 static UINT _nxd_mqtt_client_create_internal(NXD_MQTT_CLIENT *client_ptr, CHAR *client_name,
                                              CHAR *client_id, UINT client_id_length,
                                              NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr,
-                                             VOID *stack_ptr, ULONG stack_size, UINT mqtt_thread_priority);
+                                             VOID *stack_ptr, UINT32 stack_size, UINT mqtt_thread_priority);
 static UINT _nxd_mqtt_packet_send(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT wait_option);
 static UINT _nxd_mqtt_packet_receive(NXD_MQTT_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT wait_option);
 static UINT _nxd_mqtt_copy_transmit_packet(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, NX_PACKET **new_packet_ptr,
                                            USHORT packet_id, UCHAR set_duplicate_flag, UINT wait_option);
 static VOID _nxd_mqtt_release_transmit_packet(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, NX_PACKET *previous_packet_ptr);
 static VOID _nxd_mqtt_release_receive_packet(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, NX_PACKET *previous_packet_ptr);
-static UINT _nxd_mqtt_client_retransmit_message(NXD_MQTT_CLIENT *client_ptr, ULONG wait_option);
-static UINT _nxd_mqtt_client_connect_packet_send(NXD_MQTT_CLIENT *client_ptr, ULONG wait_option);
+static UINT _nxd_mqtt_client_retransmit_message(NXD_MQTT_CLIENT *client_ptr, UINT32 wait_option);
+static UINT _nxd_mqtt_client_connect_packet_send(NXD_MQTT_CLIENT *client_ptr, UINT32 wait_option);
 
 /**************************************************************************/
 /*                                                                        */
@@ -176,13 +176,13 @@ UINT   ret;
 /*    _nxd_mqtt_process_sub_unsub_ack                                     */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_mqtt_read_remaining_length(NX_PACKET *packet_ptr, UINT *remaining_length, ULONG *offset_ptr)
+UINT _nxd_mqtt_read_remaining_length(NX_PACKET *packet_ptr, UINT *remaining_length, UINT32 *offset_ptr)
 {
 UINT   value = 0;
 UCHAR  bytes[4] = {0};
 UINT   multiplier = 1;
 UINT   byte_count = 0;
-ULONG  bytes_copied;
+UINT32  bytes_copied;
 
     if (nx_packet_data_extract_offset(packet_ptr, 1, &bytes, sizeof(bytes), &bytes_copied))
     {
@@ -494,7 +494,7 @@ UCHAR               temp_data[2];
 /*    _nxd_mqtt_client_send_simple_message                                */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_mqtt_client_packet_allocate(NXD_MQTT_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT _nxd_mqtt_client_packet_allocate(NXD_MQTT_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 UINT status = NXD_MQTT_SUCCESS;
 
@@ -1023,7 +1023,7 @@ static VOID _nxd_mqtt_release_receive_packet(NXD_MQTT_CLIENT *client_ptr, NX_PAC
 /*    _nxd_mqtt_packet_receive_process                                    */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nxd_mqtt_process_connack(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+static UINT _nxd_mqtt_process_connack(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    ret = NXD_MQTT_COMMUNICATION_FAILURE;
@@ -1155,15 +1155,15 @@ MQTT_PACKET_CONNACK *connack_packet_ptr = (MQTT_PACKET_CONNACK *)(packet_ptr -> 
 /*    _nxd_mqtt_process_publish                                           */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_mqtt_process_publish_packet(NX_PACKET *packet_ptr, ULONG *topic_offset_ptr, USHORT *topic_length_ptr,
-                                      ULONG *message_offset_ptr, ULONG *message_length_ptr)
+UINT _nxd_mqtt_process_publish_packet(NX_PACKET *packet_ptr, UINT32 *topic_offset_ptr, USHORT *topic_length_ptr,
+                                      UINT32 *message_offset_ptr, UINT32 *message_length_ptr)
 {
 UCHAR  QoS;
 UINT   remaining_length = 0;
 UINT   topic_length;
-ULONG  offset;
+UINT32  offset;
 UCHAR  bytes[2];
-ULONG  bytes_copied;
+UINT32  bytes_copied;
 
 
     QoS = (UCHAR)((*(packet_ptr -> nx_packet_prepend_ptr) & MQTT_PUBLISH_QOS_LEVEL_FIELD) >> 1);
@@ -1212,7 +1212,7 @@ ULONG  bytes_copied;
     }
 
     *message_offset_ptr = offset;
-    *message_length_ptr = (ULONG)remaining_length;
+    *message_length_ptr = (UINT32)remaining_length;
 
     /* Return */
     return(NXD_MQTT_SUCCESS);
@@ -1272,9 +1272,9 @@ UINT                          packet_consumed = NX_FALSE;
 UCHAR                         fixed_header;
 USHORT                        transmit_packet_id;
 UINT                          topic_length;
-ULONG                         offset;
+UINT32                         offset;
 UCHAR                         bytes[2];
-ULONG                         bytes_copied;
+UINT32                         bytes_copied;
 
     QoS = (UCHAR)((*(packet_ptr -> nx_packet_prepend_ptr) & MQTT_PUBLISH_QOS_LEVEL_FIELD) >> 1);
 
@@ -1580,7 +1580,7 @@ USHORT                        transmit_packet_id;
                         return(1);
                     }
 
-                    if (4u > ((ULONG)(response_packet -> nx_packet_data_end) - (ULONG)(response_packet -> nx_packet_append_ptr)))
+                    if (4u > ((UINT32)(response_packet -> nx_packet_data_end) - (UINT32)(response_packet -> nx_packet_append_ptr)))
                     {
                         nx_packet_release(response_packet);
 
@@ -1688,9 +1688,9 @@ UCHAR      response_header;
 UCHAR      fixed_header;
 USHORT     transmit_packet_id;
 UINT       remaining_length;
-ULONG      offset;
+UINT32      offset;
 UCHAR      bytes[2];
-ULONG      bytes_copied;
+UINT32      bytes_copied;
 
 
     response_header = *(packet_ptr -> nx_packet_prepend_ptr);
@@ -2016,9 +2016,9 @@ UINT       status;
 UCHAR      packet_type;
 UINT       remaining_length;
 UINT       packet_consumed;
-ULONG      offset;
-ULONG      bytes_copied;
-ULONG      packet_length;
+UINT32      offset;
+UINT32      bytes_copied;
+UINT32      packet_length;
 
     for (;;)
     {
@@ -2182,9 +2182,9 @@ ULONG      packet_length;
 
                 /* Multiple MQTT message in one packet. */
                 packet_length = packet_ptr -> nx_packet_length - offset;
-                while ((ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) <= offset)
+                while ((UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) <= offset)
                 {
-                    offset -= (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
+                    offset -= (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
 
                     /* Current packet can be released. */
                     previous_packet_ptr = packet_ptr;
@@ -2478,7 +2478,7 @@ UINT       status;
 /*    _nxd_mqtt_client_publish                                            */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_mqtt_client_append_message(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, CHAR *message, UINT length, ULONG wait_option)
+UINT _nxd_mqtt_client_append_message(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr, CHAR *message, UINT length, UINT32 wait_option)
 {
 UINT ret = 0;
 UCHAR len[2];
@@ -2542,7 +2542,7 @@ UCHAR len[2];
 /*    _nxd_mqtt_process_disconnect                                        */
 /*                                                                        */
 /**************************************************************************/
-VOID _nxd_mqtt_client_connection_end(NXD_MQTT_CLIENT *client_ptr, ULONG wait_option)
+VOID _nxd_mqtt_client_connection_end(NXD_MQTT_CLIENT *client_ptr, UINT32 wait_option)
 {
 
     /* Obtain the mutex. */
@@ -2700,7 +2700,7 @@ NXD_MQTT_CLIENT *client_ptr = (NXD_MQTT_CLIENT *)client;
 /*   _nxd_mqtt_client_create                                              */
 /*                                                                        */
 /**************************************************************************/
-static VOID _nxd_mqtt_client_event_process(VOID *mqtt_client, ULONG common_events, ULONG module_own_events)
+static VOID _nxd_mqtt_client_event_process(VOID *mqtt_client, UINT32 common_events, UINT32 module_own_events)
 {
 NXD_MQTT_CLIENT *client_ptr = (NXD_MQTT_CLIENT *)mqtt_client;
 
@@ -2958,8 +2958,8 @@ NXD_MQTT_CLIENT *client_ptr = (NXD_MQTT_CLIENT *)(socket_ptr -> nx_tcp_socket_re
 UINT _nxd_mqtt_client_create(NXD_MQTT_CLIENT *client_ptr, CHAR *client_name,
                              CHAR *client_id, UINT client_id_length,
                              NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr,
-                             VOID *stack_ptr, ULONG stack_size, UINT mqtt_thread_priority,
-                             VOID *memory_ptr, ULONG memory_size)
+                             VOID *stack_ptr, UINT32 stack_size, UINT mqtt_thread_priority,
+                             VOID *memory_ptr, UINT32 memory_size)
 {
 
 UINT    status;
@@ -3078,7 +3078,7 @@ UINT    status;
 static UINT _nxd_mqtt_client_create_internal(NXD_MQTT_CLIENT *client_ptr, CHAR *client_name,
                                              CHAR *client_id, UINT client_id_length,
                                              NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr,
-                                             VOID *stack_ptr, ULONG stack_size, UINT mqtt_thread_priority)
+                                             VOID *stack_ptr, UINT32 stack_size, UINT mqtt_thread_priority)
 {
 #ifndef NXD_MQTT_CLOUD_ENABLE
 UINT                status;
@@ -3108,7 +3108,7 @@ UINT                status;
 
     /* Now create MQTT client thread */
     status = tx_thread_create(&(client_ptr -> nxd_mqtt_thread), client_name, _nxd_mqtt_thread_entry,
-                              (ULONG)client_ptr, stack_ptr, stack_size, mqtt_thread_priority, mqtt_thread_priority,
+                              (UINT32)client_ptr, stack_ptr, stack_size, mqtt_thread_priority, mqtt_thread_priority,
                               NXD_MQTT_CLIENT_THREAD_TIME_SLICE, TX_DONT_START);
 
     /* Determine if an error occurred. */
@@ -3482,7 +3482,7 @@ UINT _nxde_mqtt_client_login_set(NXD_MQTT_CLIENT *client_ptr,
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nxd_mqtt_client_retransmit_message(NXD_MQTT_CLIENT *client_ptr, ULONG wait_option)
+static UINT _nxd_mqtt_client_retransmit_message(NXD_MQTT_CLIENT *client_ptr, UINT32 wait_option)
 {
 NX_PACKET          *transmit_packet_ptr;
 NX_PACKET          *packet_ptr;
@@ -3601,7 +3601,7 @@ UCHAR               fixed_header;
 /*                                                                        */
 /**************************************************************************/
 UINT _nxd_mqtt_client_connect(NXD_MQTT_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
-                              UINT keepalive, UINT clean_session, ULONG wait_option)
+                              UINT keepalive, UINT clean_session, UINT32 wait_option)
 {
 NX_PACKET           *packet_ptr;
 UINT                 status;
@@ -3671,7 +3671,7 @@ UINT                 old_priority;
         client_ptr -> nxd_mqtt_ping_timeout = NXD_MQTT_PING_TIMEOUT_DELAY;
 
         /* Create timer */
-        tx_timer_create(&(client_ptr -> nxd_mqtt_timer), "MQTT Timer", _nxd_mqtt_periodic_timer_entry, (ULONG)client_ptr,
+        tx_timer_create(&(client_ptr -> nxd_mqtt_timer), "MQTT Timer", _nxd_mqtt_periodic_timer_entry, (UINT32)client_ptr,
                         client_ptr -> nxd_mqtt_timer_value, client_ptr -> nxd_mqtt_timer_value, TX_AUTO_ACTIVATE);
     }
     else
@@ -3922,7 +3922,7 @@ UINT                 old_priority;
 /*    _nxd_mqtt_tls_establish_process                                     */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_mqtt_client_connect_packet_send(NXD_MQTT_CLIENT *client_ptr, ULONG wait_option)
+UINT _nxd_mqtt_client_connect_packet_send(NXD_MQTT_CLIENT *client_ptr, UINT32 wait_option)
 {
 NX_PACKET           *packet_ptr;
 UINT                 status;
@@ -4160,7 +4160,7 @@ UINT                 keepalive = (client_ptr -> nxd_mqtt_keepalive/NX_IP_PERIODI
 UINT _nxd_mqtt_client_secure_connect(NXD_MQTT_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                      UINT (*tls_setup)(NXD_MQTT_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *,
                                                        NX_SECURE_X509_CERT *, NX_SECURE_X509_CERT *),
-                                     UINT keepalive, UINT clean_session, ULONG wait_option)
+                                     UINT keepalive, UINT clean_session, UINT32 wait_option)
 {
 UINT ret;
 
@@ -4303,7 +4303,7 @@ UINT _nxd_mqtt_client_delete(NXD_MQTT_CLIENT *client_ptr)
 /*                                                                        */
 /**************************************************************************/
 UINT _nxd_mqtt_client_publish_packet_send(NXD_MQTT_CLIENT *client_ptr, NX_PACKET *packet_ptr,
-                                          USHORT packet_id, UINT QoS, ULONG wait_option)
+                                          USHORT packet_id, UINT QoS, UINT32 wait_option)
 {
 
 UINT       status;
@@ -4424,7 +4424,7 @@ UINT       ret = NXD_MQTT_SUCCESS;
 /*                                                                        */
 /**************************************************************************/
 UINT _nxd_mqtt_client_publish(NXD_MQTT_CLIENT *client_ptr, CHAR *topic_name, UINT topic_name_length,
-                              CHAR *message, UINT message_length, UINT retain, UINT QoS, ULONG wait_option)
+                              CHAR *message, UINT message_length, UINT retain, UINT QoS, UINT32 wait_option)
 {
 
 NX_PACKET *packet_ptr;
@@ -4726,7 +4726,7 @@ UCHAR     *byte;
         return(NXD_MQTT_INTERNAL_ERROR);
     }
 
-    if (2u > ((ULONG)(packet_ptr -> nx_packet_data_end) - (ULONG)(packet_ptr -> nx_packet_append_ptr)))
+    if (2u > ((UINT32)(packet_ptr -> nx_packet_data_end) - (UINT32)(packet_ptr -> nx_packet_append_ptr)))
     {
         nx_packet_release(packet_ptr);
 
@@ -4949,10 +4949,10 @@ UINT _nxd_mqtt_client_message_get(NXD_MQTT_CLIENT *client_ptr, UCHAR *topic_buff
 
 UINT                status;
 NX_PACKET          *packet_ptr;
-ULONG               topic_offset;
+UINT32               topic_offset;
 USHORT              topic_length;
-ULONG               message_offset;
-ULONG               message_length;
+UINT32               message_offset;
+UINT32               message_length;
 
     tx_mutex_get(client_ptr -> nxd_mqtt_client_mutex_ptr, NX_WAIT_FOREVER);
     while (client_ptr -> message_receive_queue_depth)
@@ -4983,9 +4983,9 @@ ULONG               message_length;
             *actual_topic_length = 0;
             *actual_message_length = 0;
             nx_packet_data_extract_offset(packet_ptr, topic_offset, topic_buffer,
-                                          topic_length, (ULONG *)actual_topic_length);
+                                          topic_length, (UINT32 *)actual_topic_length);
             nx_packet_data_extract_offset(packet_ptr, message_offset, message_buffer,
-                                          message_length, (ULONG *)actual_message_length);
+                                          message_length, (UINT32 *)actual_message_length);
             nx_packet_release(packet_ptr);
 
             tx_mutex_put(client_ptr -> nxd_mqtt_client_mutex_ptr);
@@ -5042,8 +5042,8 @@ ULONG               message_length;
 /**************************************************************************/
 UINT _nxde_mqtt_client_create(NXD_MQTT_CLIENT *client_ptr, CHAR *client_name, CHAR *client_id, UINT client_id_length,
                               NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr,
-                              VOID *stack_ptr, ULONG stack_size, UINT mqtt_thread_priority,
-                              VOID *memory_ptr, ULONG memory_size)
+                              VOID *stack_ptr, UINT32 stack_size, UINT mqtt_thread_priority,
+                              VOID *memory_ptr, UINT32 memory_size)
 {
 
 
@@ -5101,7 +5101,7 @@ UINT _nxde_mqtt_client_create(NXD_MQTT_CLIENT *client_ptr, CHAR *client_name, CH
 /*                                                                        */
 /**************************************************************************/
 UINT _nxde_mqtt_client_connect(NXD_MQTT_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
-                               UINT keepalive, UINT clean_session, ULONG wait_option)
+                               UINT keepalive, UINT clean_session, UINT32 wait_option)
 {
 
 UINT status;
@@ -5179,7 +5179,7 @@ UINT status;
 UINT _nxde_mqtt_client_secure_connect(NXD_MQTT_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                       UINT (*tls_setup)(NXD_MQTT_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *,
                                                         NX_SECURE_X509_CERT *, NX_SECURE_X509_CERT *),
-                                      UINT keepalive, UINT clean_session, ULONG wait_option)
+                                      UINT keepalive, UINT clean_session, UINT32 wait_option)
 {
 
 UINT status;
@@ -5299,7 +5299,7 @@ UINT status;
 /*                                                                        */
 /**************************************************************************/
 UINT _nxde_mqtt_client_publish(NXD_MQTT_CLIENT *client_ptr, CHAR *topic_name, UINT topic_name_length,
-                               CHAR *message, UINT message_length, UINT retain, UINT QoS, ULONG wait_option)
+                               CHAR *message, UINT message_length, UINT retain, UINT QoS, UINT32 wait_option)
 {
     /* Validate client_ptr */
     if (client_ptr == NX_NULL)

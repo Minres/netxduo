@@ -69,7 +69,7 @@ UINT _nx_crypto_method_des_init(struct NX_CRYPTO_METHOD_STRUCT *method,
                                 UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                 VOID **handle,
                                 VOID *crypto_metadata,
-                                ULONG crypto_metadata_size);
+                                UINT32 crypto_metadata_size);
 
 UINT _nx_crypto_method_des_cleanup(VOID *crypto_metadata);
 
@@ -79,12 +79,12 @@ UINT _nx_crypto_method_des_operation(UINT op,      /* Encrypt, Decrypt, Authenti
                                      UCHAR *key,
                                      NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                      UCHAR *input,
-                                     ULONG input_length_in_byte,
+                                     UINT32 input_length_in_byte,
                                      UCHAR *iv_ptr,
                                      UCHAR *output,
-                                     ULONG output_length_in_byte,
+                                     UINT32 output_length_in_byte,
                                      VOID *crypto_metadata,
-                                     ULONG crypto_metadata_size,
+                                     UINT32 crypto_metadata_size,
                                      VOID *packet_ptr,
                                      VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));
 
@@ -93,8 +93,8 @@ UINT _nx_crypto_method_des_operation(UINT op,      /* Encrypt, Decrypt, Authenti
 typedef struct NX_CRYPTO_DES_STRUCT
 {
 
-    ULONG nx_des_encryption_keys[32];           /* Contains the encryption keys     */
-    ULONG nx_des_decryption_keys[32];           /* Contains the decryption keys     */
+    UINT32 nx_des_encryption_keys[32];           /* Contains the encryption keys     */
+    UINT32 nx_des_decryption_keys[32];           /* Contains the decryption keys     */
     NX_CRYPTO_CBC nx_crypto_cbc_context;        /* CBC metadata                     */
 } NX_CRYPTO_DES;
 
@@ -104,7 +104,7 @@ typedef struct NX_CRYPTO_DES_STRUCT
 UINT _nx_crypto_des_key_set(NX_CRYPTO_DES * context, UCHAR key[8]);
 UINT _nx_crypto_des_encrypt(NX_CRYPTO_DES * context, UCHAR source[8], UCHAR destination[8], UINT length);
 UINT _nx_crypto_des_decrypt(NX_CRYPTO_DES * context, UCHAR source[8], UCHAR destination[8], UINT length);
-VOID _nx_crypto_des_process_block(UCHAR source[8], UCHAR destination[8], ULONG keys[32]);
+VOID _nx_crypto_des_process_block(UCHAR source[8], UCHAR destination[8], UINT32 keys[32]);
 
 #ifdef __cplusplus
 }

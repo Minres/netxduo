@@ -26,7 +26,7 @@
 
 /* Local helper function. */
 static UINT _nx_secure_x509_asn1_time_to_unix_convert(const UCHAR *asn1_time, USHORT asn1_length,
-                                                      USHORT format, ULONG *unix_time);
+                                                      USHORT format, UINT32 *unix_time);
 
 /**************************************************************************/
 /*                                                                        */
@@ -63,10 +63,10 @@ static UINT _nx_secure_x509_asn1_time_to_unix_convert(const UCHAR *asn1_time, US
 /*                                          Verify the server certificate */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_secure_x509_expiration_check(NX_SECURE_X509_CERT *certificate, ULONG current_time)
+UINT _nx_secure_x509_expiration_check(NX_SECURE_X509_CERT *certificate, UINT32 current_time)
 {
-ULONG not_before;
-ULONG not_after;
+UINT32 not_before;
+UINT32 not_after;
 UINT  status;
 
     /* First, convert the X.509 ASN.1 time format into 32-bit UINX-epoch format of the "not before" field. */
@@ -106,7 +106,7 @@ UINT  status;
 
 /* Helper function to convert the ASN.1 time formats into UNIX epoch time for comparison. */
 
-#define date_2_chars_to_int(buffer, index) (ULONG)(((buffer[index] - '0') * 10) + (buffer[index + 1] - '0'))
+#define date_2_chars_to_int(buffer, index) (UINT32)(((buffer[index] - '0') * 10) + (buffer[index + 1] - '0'))
 
 /* Array indexed on month - 1 gives the total number of days in all previous months (through last day of previous
    month). Leap years are handled in the logic below and are not reflected in this array. */
@@ -149,9 +149,9 @@ static const UINT days_before_month[12] = {0, 31, 59, 90, 120, 151, 181, 212, 24
 /*                                                                        */
 /**************************************************************************/
 static UINT _nx_secure_x509_asn1_time_to_unix_convert(const UCHAR *asn1_time, USHORT asn1_length,
-                                                      USHORT format, ULONG *unix_time)
+                                                      USHORT format, UINT32 *unix_time)
 {
-ULONG year, month, day, hour, minute, second;
+UINT32 year, month, day, hour, minute, second;
 UINT index;
 
     NX_CRYPTO_PARAMETER_NOT_USED(asn1_length);

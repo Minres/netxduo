@@ -124,7 +124,7 @@ UINT              i;
 
     /* Take care of endian-ness. */
     NX_IPV6_ADDRESS_CHANGE_ENDIAN(nd_ptr -> nx_icmpv6_nd_targetAddress);
-    NX_CHANGE_ULONG_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
+    NX_CHANGE_UINT32_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
 
     /* Validate the neighbor advertisement message. */
     if (_nx_icmpv6_validate_neighbor_message(packet_ptr) != NX_SUCCESS)
@@ -139,7 +139,7 @@ UINT              i;
         ipv6_header_ptr = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_header;
 
         /* Find the option field. */
-        /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
         option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(nd_ptr, sizeof(NX_ICMPV6_ND));
         option_length = (UINT)packet_ptr -> nx_packet_length - (UINT)sizeof(NX_ICMPV6_ND);
 
@@ -155,7 +155,7 @@ UINT              i;
             /* Get the next option. */
             option_length -= ((UINT)(option_ptr -> nx_icmpv6_option_length) << 3);
 
-            /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+            /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
             option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, ((option_ptr -> nx_icmpv6_option_length) << 3));
         }
 
@@ -168,7 +168,7 @@ UINT              i;
 
         /* Determine the NA packet destination type. */
         /* Is the destination a multicast address? */
-        if ((ipv6_header_ptr -> nx_ip_header_destination_ip[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000)
+        if ((ipv6_header_ptr -> nx_ip_header_destination_ip[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000)
         {
 
             /* Yes; Were there any options in the NA packet? */

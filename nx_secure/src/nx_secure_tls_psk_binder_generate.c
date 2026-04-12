@@ -29,7 +29,7 @@
 
 #if 0
 // Utility function to print buffer
-static void print_buffer(const char* buf_name, const UCHAR* buf, ULONG size)
+static void print_buffer(const char* buf_name, const UCHAR* buf, UINT32 size)
 {
 UINT i;
     printf("Buffer %s of size: %ld. Data:\n", buf_name, size);

@@ -72,7 +72,7 @@ UINT  _nx_arp_gratuitous_send(NX_IP *ip_ptr, VOID (*response_handler)(NX_IP *ip_
 {
 
 #ifndef NX_DISABLE_IPV4
-ULONG i;
+UINT32 i;
 
     /* Get mutex protection.  */
     tx_mutex_get(&(ip_ptr -> nx_ip_protection), TX_WAIT_FOREVER);

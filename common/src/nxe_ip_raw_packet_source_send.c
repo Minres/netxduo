@@ -74,7 +74,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET **packet_ptr_ptr,
-                                     ULONG destination_ip, UINT address_index, ULONG type_of_service)
+                                     UINT32 destination_ip, UINT address_index, UINT32 type_of_service)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -85,7 +85,7 @@ NX_PACKET *packet_ptr;
     packet_ptr =  *packet_ptr_ptr;
 
     /* Check for invalid input pointers.  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((ip_ptr == NX_NULL) || (ip_ptr -> nx_ip_id != NX_IP_ID) ||
         (packet_ptr == NX_NULL) || (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)))
     {

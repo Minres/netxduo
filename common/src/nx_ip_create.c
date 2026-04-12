@@ -76,9 +76,9 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_create(NX_IP *ip_ptr, CHAR *name, ULONG ip_address, ULONG network_mask,
+UINT  _nx_ip_create(NX_IP *ip_ptr, CHAR *name, UINT32 ip_address, UINT32 network_mask,
                     NX_PACKET_POOL *default_pool, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *),
-                    VOID *memory_ptr, ULONG memory_size, UINT priority)
+                    VOID *memory_ptr, UINT32 memory_size, UINT priority)
 {
 
 TX_INTERRUPT_SAVE_AREA
@@ -94,8 +94,8 @@ TX_THREAD *current_thread;
 #endif /* NX_DISABLE_IPV4 */
 
     /* Reference the version ID and option words to ensure they are linked in.  */
-    if (((ULONG)_nx_system_build_options_1 | (ULONG)_nx_system_build_options_2 | (ULONG)_nx_system_build_options_3 |
-         (ULONG)_nx_system_build_options_4 | (ULONG)_nx_system_build_options_5 | (ULONG)_nx_version_id[0]) == 0)
+    if (((UINT32)_nx_system_build_options_1 | (UINT32)_nx_system_build_options_2 | (UINT32)_nx_system_build_options_3 |
+         (UINT32)_nx_system_build_options_4 | (UINT32)_nx_system_build_options_5 | (UINT32)_nx_version_id[0]) == 0)
     {
 
         /* We should never get here!  */
@@ -216,16 +216,16 @@ TX_THREAD *current_thread;
 
     /* Create the internal IP thread for handling more processing intensive
        duties.  */
-    /*lint -e{923} suppress cast of pointer to ULONG.  */
-    tx_thread_create(&(ip_ptr -> nx_ip_thread), name, _nx_ip_thread_entry, (ULONG)(ALIGN_TYPE)(ip_ptr),
+    /*lint -e{923} suppress cast of pointer to UINT32.  */
+    tx_thread_create(&(ip_ptr -> nx_ip_thread), name, _nx_ip_thread_entry, (UINT32)(ALIGN_TYPE)(ip_ptr),
                      memory_ptr, memory_size, priority, priority, 1, TX_AUTO_START);
 
     NX_THREAD_EXTENSION_PTR_SET(&(ip_ptr -> nx_ip_thread), ip_ptr)
 
     /* Create the periodic timer for this IP instance.  */
-    /*lint -e{923} suppress cast of pointer to ULONG.  */
+    /*lint -e{923} suppress cast of pointer to UINT32.  */
     tx_timer_create(&(ip_ptr -> nx_ip_periodic_timer), name,
-                    _nx_ip_periodic_timer_entry, (ULONG)(ALIGN_TYPE)ip_ptr,
+                    _nx_ip_periodic_timer_entry, (UINT32)(ALIGN_TYPE)ip_ptr,
                     NX_IP_PERIODIC_RATE, NX_IP_PERIODIC_RATE, TX_AUTO_ACTIVATE);
 
     NX_TIMER_EXTENSION_PTR_SET(&(ip_ptr -> nx_ip_periodic_timer), ip_ptr)

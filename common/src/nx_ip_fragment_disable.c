@@ -150,7 +150,7 @@ NX_PACKET *release_packet;
             next_packet =  next_packet -> nx_packet_union_next.nx_packet_fragment_next;
 
             /* Reset tcp_queue_next before releasing. */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             release_packet -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
             /* Release the current packet.  */

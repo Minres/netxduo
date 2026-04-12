@@ -70,7 +70,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxd_ipv6_default_router_get(NX_IP *ip_ptr, UINT interface_index, NXD_ADDRESS *router_addr,
-                                   ULONG *router_lifetime, ULONG *prefix_length)
+                                   UINT32 *router_lifetime, UINT32 *prefix_length)
 {
 #ifdef FEATURE_NX_IPV6
 UINT status;

@@ -65,7 +65,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_secure_tls_packet_allocate(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET_POOL *pool_ptr,
-                                     NX_PACKET **packet_ptr, ULONG wait_option)
+                                     NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 UINT status;
 

@@ -82,7 +82,7 @@ TX_INTERRUPT_SAVE_AREA
 
 NX_IPV6_HEADER *ipv6_header;
 USHORT          sequence_num;
-ULONG           suspended;
+UINT32           suspended;
 TX_THREAD      *thread_ptr;
 NX_ICMPV6_ECHO *echo_ptr;
 
@@ -227,7 +227,7 @@ NX_ICMPV6_ECHO *echo_ptr;
 
             /* Adjust this packet to remove the ICMP header that is still in front of
                the response message.  */
-            packet_ptr -> nx_packet_length      = packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_ICMPV6_ECHO);
+            packet_ptr -> nx_packet_length      = packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_ICMPV6_ECHO);
             packet_ptr -> nx_packet_prepend_ptr = packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_ICMPV6_ECHO);
 
             /* Return this block pointer to the suspended thread waiting for

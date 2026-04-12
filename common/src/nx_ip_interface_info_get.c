@@ -75,8 +75,8 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_ip_interface_info_get(NX_IP *ip_ptr, UINT interface_index, CHAR **interface_name,
-                               ULONG *ip_address, ULONG *network_mask, ULONG *mtu_size,
-                               ULONG *physical_address_msw, ULONG *physical_address_lsw)
+                               UINT32 *ip_address, UINT32 *network_mask, UINT32 *mtu_size,
+                               UINT32 *physical_address_msw, UINT32 *physical_address_lsw)
 {
 NX_INTERFACE *nx_interface;
 

@@ -95,8 +95,8 @@
 /*                                                   interface            */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_icmp_interface_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, ULONG data_size,
-                               NXD_IPV6_ADDRESS *ipv6_address, NX_PACKET **response_ptr, ULONG wait_option)
+UINT  _nx_icmp_interface_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, UINT32 data_size,
+                               NXD_IPV6_ADDRESS *ipv6_address, NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 TX_INTERRUPT_SAVE_AREA
@@ -104,12 +104,12 @@ TX_INTERRUPT_SAVE_AREA
 UINT            status;
 NX_PACKET      *request_ptr;
 NX_ICMPV6_ECHO *echo_header_ptr;
-ULONG           checksum;
-ULONG           sequence;
+UINT32           checksum;
+UINT32           sequence;
 TX_THREAD      *thread_ptr;
 
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG           ip_address_lsw;
+UINT32           ip_address_lsw;
 #endif /* TX_ENABLE_EVENT_TRACE */
 #ifdef NX_IPSEC_ENABLE
 VOID           *sa = NX_NULL;
@@ -216,12 +216,12 @@ UINT            compute_checksum = 1;
 
 #ifdef TX_ENABLE_EVENT_TRACE
     /* If trace is enabled, insert this event into the trace buffer.  */
-/*     NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_ICMP_SEND, ip_ptr, dest_ip_byte3, request_ptr, (((ULONG) NX_ICMP_ECHO_REQUEST_TYPE) << 24), NX_TRACE_INTERNAL_EVENTS, 0, 0) */
+/*     NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_ICMP_SEND, ip_ptr, dest_ip_byte3, request_ptr, (((UINT32) NX_ICMP_ECHO_REQUEST_TYPE) << 24), NX_TRACE_INTERNAL_EVENTS, 0, 0) */
 #endif /* TX_ENABLE_EVENT_TRACE */
 
     /* Calculate the ICMP echo request message size and store it in the
        packet header.  */
-    request_ptr -> nx_packet_length += (ULONG)sizeof(NX_ICMPV6_ECHO);
+    request_ptr -> nx_packet_length += (UINT32)sizeof(NX_ICMPV6_ECHO);
 
     /* Adjust the nx_packet_prepend_ptr for ICMP header. */
     request_ptr -> nx_packet_prepend_ptr -= sizeof(NX_ICMPV6_ECHO);

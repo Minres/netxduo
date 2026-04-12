@@ -100,7 +100,7 @@ NXD_IPV6_ADDRESS *interface_addr;
 #if defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
 UINT              compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV6_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
-ULONG             dest_address[4];
+UINT32             dest_address[4];
 
 
     /* Initialize local variable: assume source address is specified. */
@@ -145,7 +145,7 @@ ULONG             dest_address[4];
     NX_IPV6_ADDRESS_CHANGE_ENDIAN(nd_ptr -> nx_icmpv6_nd_targetAddress);
 
     /* Convert flag field to host byte order. */
-    NX_CHANGE_ULONG_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
+    NX_CHANGE_UINT32_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
 
 
     /* Validate the packet. */
@@ -241,7 +241,7 @@ ULONG             dest_address[4];
     }
 
     /* Get a pointer to the ICMPv6 options. */
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(header_ptr, sizeof(NX_ICMPV6_ND));
 
     /* We'll need to keep track of option data to parse the options. */
@@ -287,17 +287,17 @@ ULONG             dest_address[4];
 
             /* Entry already exists.  If the mac address is the same, do not update the entry. Otherwise,
                update the entry and set the state to STALE (RFC2461 7.2.3) */
-            ULONG mac_msw, mac_lsw, new_msw, new_lsw;
+            UINT32 mac_msw, mac_lsw, new_msw, new_lsw;
 
             /*lint -e{928} suppress cast from pointer to pointer, since it is necessary  */
             UCHAR *new_mac = (UCHAR *)&option_ptr -> nx_icmpv6_option_data;
 
                 /*lint -e{644} suppress variable might not be initialized, since "nd_entry" was initialized in _nx_nd_cache_find_entry. */
-                mac_msw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
-                mac_lsw = ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
-                          ((ULONG)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
-                new_msw = ((ULONG)(new_mac[0]) << 8) | (new_mac[1]);
-                new_lsw = ((ULONG)(new_mac[2]) << 24) | ((ULONG)(new_mac[3]) << 16) | ((ULONG)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
+                mac_msw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[0]) << 8) | (nd_entry -> nx_nd_cache_mac_addr[1]);
+                mac_lsw = ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[2]) << 24) | ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[3]) << 16) |
+                          ((UINT32)(nd_entry -> nx_nd_cache_mac_addr[4]) << 8) | nd_entry -> nx_nd_cache_mac_addr[5];
+                new_msw = ((UINT32)(new_mac[0]) << 8) | (new_mac[1]);
+                new_lsw = ((UINT32)(new_mac[2]) << 24) | ((UINT32)(new_mac[3]) << 16) | ((UINT32)(new_mac[4]) << 8) | new_mac[5]; /* lgtm[cpp/overflow-buffer] */
                 if ((mac_msw != new_msw) || (mac_lsw != new_lsw)) /* If the new MAC is different from what we have in the table. */
                 {
 
@@ -328,7 +328,7 @@ ULONG             dest_address[4];
 
         option_length -= ((UINT)(option_ptr -> nx_icmpv6_option_length) << 3);
 
-        /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
         option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option_ptr, ((option_ptr -> nx_icmpv6_option_length) << 3));
     }
 
@@ -383,7 +383,7 @@ ULONG             dest_address[4];
         nd_ptr -> nx_icmpv6_nd_flag = (0x60000000);
     }
 
-    NX_CHANGE_ULONG_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
+    NX_CHANGE_UINT32_ENDIAN(nd_ptr -> nx_icmpv6_nd_flag);
 
     /* nd_ptr -> targetAddress has been converted to host byte order.
        We need to convert it back to network byte order. */
@@ -415,7 +415,7 @@ ULONG             dest_address[4];
         Fill in the options.  Since we are using the same packet,
         the option_ptr is already pointing to the option field.
      */
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(header_ptr, sizeof(NX_ICMPV6_ND));
     option_ptr -> nx_icmpv6_option_type = ICMPV6_OPTION_TYPE_TRG_LINK_ADDR;
     option_ptr -> nx_icmpv6_option_length = 1;

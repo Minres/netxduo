@@ -64,7 +64,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_record_hash_initialize(NX_SECURE_TLS_SESSION *tls_session,
-                                           ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                           UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                            UCHAR *header, UINT header_length, UINT *hash_length,
                                            UCHAR *mac_secret)
 {

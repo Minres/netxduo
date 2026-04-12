@@ -76,7 +76,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxd_ipv6_address_get(NX_IP *ip_ptr, UINT address_index, NXD_ADDRESS *ip_address,
-                            ULONG *prefix_length, UINT *interface_index)
+                            UINT32 *prefix_length, UINT *interface_index)
 {
 #ifdef FEATURE_NX_IPV6
 
@@ -85,7 +85,7 @@ TX_INTERRUPT_SAVE_AREA
 UINT              status;
 NXD_IPV6_ADDRESS *interface_ipv6_address_next;
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG             ip_address_lsw;
+UINT32             ip_address_lsw;
 #endif /* TX_ENABLE_EVENT_TRACE */
 
 

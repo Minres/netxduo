@@ -85,7 +85,7 @@ NX_IPV6_HEADER *ip_header_ptr = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_hea
     {
 
     case 3: /* Discard the packet and send ICMP Parameter Problem to unicast address */
-        if ((ip_header_ptr -> nx_ip_header_destination_ip[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000)
+        if ((ip_header_ptr -> nx_ip_header_destination_ip[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000)
         {
 
             /* If the destination address is a multicast address, we discard the packet. */
@@ -103,7 +103,7 @@ NX_IPV6_HEADER *ip_header_ptr = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_hea
 
 #ifndef NX_DISABLE_ICMPV6_ERROR_MESSAGE
 
-        NX_ICMPV6_SEND_PARAMETER_PROBLEM(ip_ptr, packet_ptr, 2, (ULONG)(offset + sizeof(NX_IPV6_HEADER)));
+        NX_ICMPV6_SEND_PARAMETER_PROBLEM(ip_ptr, packet_ptr, 2, (UINT32)(offset + sizeof(NX_IPV6_HEADER)));
 #else
         NX_PARAMETER_NOT_USED(ip_ptr);
         NX_PARAMETER_NOT_USED(offset);

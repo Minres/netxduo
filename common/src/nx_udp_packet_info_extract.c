@@ -69,7 +69,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_packet_info_extract(NX_PACKET *packet_ptr, ULONG *ip_address,
+UINT  _nx_udp_packet_info_extract(NX_PACKET *packet_ptr, UINT32 *ip_address,
                                   UINT *protocol, UINT *port, UINT *interface_index)
 {
 

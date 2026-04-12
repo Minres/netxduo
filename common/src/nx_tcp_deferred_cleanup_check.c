@@ -70,8 +70,8 @@
 VOID  _nx_tcp_deferred_cleanup_check(NX_IP *ip_ptr)
 {
 
-ULONG          created_sockets;
-ULONG          suspended_threads;
+UINT32          created_sockets;
+UINT32          suspended_threads;
 NX_TCP_SOCKET *socket_ptr;
 TX_THREAD     *thread_ptr;
 

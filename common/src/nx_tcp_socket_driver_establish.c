@@ -134,7 +134,7 @@ struct NX_TCP_LISTEN_STRUCT *listen_ptr;
         {
             socket_ptr -> nx_tcp_socket_connect_ip.nxd_ip_address.v4 = ip_address.nxd_ip_address.v4;
             socket_ptr -> nx_tcp_socket_mss =
-                (ULONG)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
+                (UINT32)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
         }
 #endif /* !NX_DISABLE_IPV4  */
 
@@ -144,7 +144,7 @@ struct NX_TCP_LISTEN_STRUCT *listen_ptr;
             COPY_IPV6_ADDRESS(ip_address.nxd_ip_address.v6,
                               socket_ptr -> nx_tcp_socket_connect_ip.nxd_ip_address.v6);
             socket_ptr -> nx_tcp_socket_mss =
-                (ULONG)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
+                (UINT32)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
         }
 #endif /* FEATURE_NX_IPV6 */
 

@@ -76,12 +76,12 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_ipv6_address_set(NX_IP *ip_ptr, UINT if_index, NXD_ADDRESS *ip_address, ULONG prefix_length, UINT *address_index)
+UINT  _nxde_ipv6_address_set(NX_IP *ip_ptr, UINT if_index, NXD_ADDRESS *ip_address, UINT32 prefix_length, UINT *address_index)
 {
 #ifdef FEATURE_NX_IPV6
 
 UINT  status;
-ULONG AddressType;
+UINT32 AddressType;
 
 
     /* Check for invalid input pointers.  */

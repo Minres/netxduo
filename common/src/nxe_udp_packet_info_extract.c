@@ -75,7 +75,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_udp_packet_info_extract(NX_PACKET *packet_ptr, ULONG *ip_address,
+UINT  _nxe_udp_packet_info_extract(NX_PACKET *packet_ptr, UINT32 *ip_address,
                                    UINT *protocol, UINT *port, UINT *interface_index)
 {
 #ifndef NX_DISABLE_IPV4

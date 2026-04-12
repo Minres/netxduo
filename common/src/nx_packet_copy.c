@@ -72,12 +72,12 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_packet_copy(NX_PACKET *packet_ptr, NX_PACKET **new_packet_ptr,
-                      NX_PACKET_POOL *pool_ptr, ULONG wait_option)
+                      NX_PACKET_POOL *pool_ptr, UINT32 wait_option)
 {
 
 NX_PACKET *work_ptr;                    /* Working packet pointer     */
 NX_PACKET *source_ptr;                  /* Source packet pointer      */
-ULONG      size;                        /* Packet data size           */
+UINT32      size;                        /* Packet data size           */
 UINT       status;                      /* Return status              */
 UINT       first_packet;                /* First packet flag          */
 UINT       data_prepend_offset;         /* Data prepend offset        */
@@ -85,7 +85,7 @@ UINT       ip_header_offset;            /* IP header offset           */
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 
@@ -155,7 +155,7 @@ ULONG                  trace_timestamp;
 
             /* Calculate this packet's data size.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            size =  (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_data_start);
+            size =  (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_data_start);
 
             /* Copy the data from the source packet into the new packet using
                the data append feature.  */
@@ -166,7 +166,7 @@ ULONG                  trace_timestamp;
 
             /* Calculate this packet's data size.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            size =  (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
+            size =  (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
 
             /* Copy the data from the source packet into the new packet using
                the data append feature.  */

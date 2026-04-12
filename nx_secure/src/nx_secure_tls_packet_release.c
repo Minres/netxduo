@@ -87,8 +87,8 @@ NX_PACKET *current_packet;
     while (current_packet)
     {
         NX_SECURE_MEMSET(current_packet -> nx_packet_data_start, 0,
-                         (ULONG)current_packet -> nx_packet_data_end -
-                         (ULONG)current_packet -> nx_packet_data_start);
+                         (UINT32)current_packet -> nx_packet_data_end -
+                         (UINT32)current_packet -> nx_packet_data_start);
         current_packet = current_packet -> nx_packet_next;
     }
     return(nx_packet_release(packet_ptr));

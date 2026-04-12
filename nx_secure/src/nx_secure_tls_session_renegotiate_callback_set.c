@@ -66,7 +66,7 @@
 /**************************************************************************/
 #ifndef NX_SECURE_TLS_DISABLE_SECURE_RENEGOTIATION
 UINT _nx_secure_tls_session_renegotiate_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                     ULONG (*func_ptr)(struct NX_SECURE_TLS_SESSION_STRUCT *session))
+                                                     UINT32 (*func_ptr)(struct NX_SECURE_TLS_SESSION_STRUCT *session))
 {
     /* Set the function pointer in the TLS session. */
     tls_session -> nx_secure_tls_session_renegotiation_callback = func_ptr;

@@ -71,7 +71,7 @@ VOID  _nx_rarp_packet_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 
 TX_INTERRUPT_SAVE_AREA
 
-ULONG *message_ptr;
+UINT32 *message_ptr;
 UINT   i;
 VOID   (*address_change_notify)(NX_IP *, VOID *) = NX_NULL;
 VOID  *additional_info = NX_NULL;
@@ -99,16 +99,16 @@ VOID   (*address_change_notify_internal)(NX_IP *, VOID *) = NX_NULL;
 
     /* Setup a pointer to the RARP message.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    message_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    message_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the RARP message.  */
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 1));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 2));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 3));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 4));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 5));
-    NX_CHANGE_ULONG_ENDIAN(*(message_ptr + 6));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 1));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 2));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 3));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 4));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 5));
+    NX_CHANGE_UINT32_ENDIAN(*(message_ptr + 6));
 
     /* If trace is enabled, insert this event into the trace buffer.  */
     NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_RARP_RECEIVE, ip_ptr, *(message_ptr + 6), packet_ptr, *(message_ptr + 1), NX_TRACE_INTERNAL_EVENTS, 0, 0);

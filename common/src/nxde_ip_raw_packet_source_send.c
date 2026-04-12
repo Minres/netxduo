@@ -77,7 +77,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxde_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
-                                      NXD_ADDRESS *destination_ip, UINT address_index, ULONG protocol, UINT ttl, ULONG tos)
+                                      NXD_ADDRESS *destination_ip, UINT address_index, UINT32 protocol, UINT ttl, UINT32 tos)
 {
 
 UINT status;

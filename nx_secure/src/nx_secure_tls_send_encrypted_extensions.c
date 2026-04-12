@@ -69,7 +69,7 @@ UINT status;
     NX_PARAMETER_NOT_USED(tls_session);
 
     /* Sending 0-length encrypted extensions - still requires the length field (16 bits). */
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < 2u)
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < 2u)
     {
         
         /* Packet buffer too small. */

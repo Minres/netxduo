@@ -82,7 +82,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_udp_socket_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr_ptr,
-                           ULONG ip_address, UINT port)
+                           UINT32 ip_address, UINT port)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -94,7 +94,7 @@ UINT       status;
     packet_ptr =  *packet_ptr_ptr;
 
     /* Check for invalid input pointers.  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((socket_ptr == NX_NULL) || (socket_ptr -> nx_udp_socket_id != NX_UDP_ID) ||
         (packet_ptr == NX_NULL) || (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)))
     {
@@ -115,7 +115,7 @@ UINT       status;
     }
 
     /* Check for an invalid port.  */
-    if (((ULONG)port) > (ULONG)NX_MAX_PORT)
+    if (((UINT32)port) > (UINT32)NX_MAX_PORT)
     {
         return(NX_INVALID_PORT);
     }

@@ -68,14 +68,14 @@ UINT _nx_secure_x509_subject_alt_names_find(NX_SECURE_X509_EXTENSION *extension,
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 const UCHAR *current_buffer;
-ULONG        length;
-ULONG        header_length;
+UINT32        length;
+UINT32        header_length;
 UINT         status;
 const UCHAR *compare_name;
-ULONG        compare_length;
+UINT32        compare_length;
 INT          compare_value;
 
     /* Now, parse the subjectAltName extension. */

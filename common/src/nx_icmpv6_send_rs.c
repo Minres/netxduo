@@ -30,7 +30,7 @@
 
 #ifdef FEATURE_NX_IPV6
 #ifndef NX_DISABLE_ICMPV6_ROUTER_SOLICITATION
-static const ULONG _nx_ipv6_all_router_address[4] = {0xff020000, 0, 0, 2};
+static const UINT32 _nx_ipv6_all_router_address[4] = {0xff020000, 0, 0, 2};
 
 /**************************************************************************/
 /*                                                                        */
@@ -120,7 +120,7 @@ NX_ICMPV6_OPTION *rs_options;
     NX_PACKET_DEBUG(__FILE__, __LINE__, pkt_ptr);
 
     /* Find a valid IPv6 address. */
-    if (_nxd_ipv6_interface_find(ip_ptr, (ULONG *)_nx_ipv6_all_router_address,
+    if (_nxd_ipv6_interface_find(ip_ptr, (UINT32 *)_nx_ipv6_all_router_address,
                                  &pkt_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr,
                                  &ip_ptr -> nx_ip_interface[if_index]))
     {
@@ -146,7 +146,7 @@ NX_ICMPV6_OPTION *rs_options;
     rs_ptr -> nx_icmpv6_rs_reserved = 0;
 
     /* Get a pointer to the Option header in the ICMPv6 header. */
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     rs_options = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(rs_ptr, sizeof(NX_ICMPV6_RS));
 
     /* Fill in the options field */
@@ -185,7 +185,7 @@ NX_ICMPV6_OPTION *rs_options;
         checksum = _nx_ip_checksum_compute(pkt_ptr, NX_PROTOCOL_ICMPV6,
                                            (UINT)pkt_ptr -> nx_packet_length,
                                            pkt_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr -> nxd_ipv6_address,
-                                           (ULONG *)_nx_ipv6_all_router_address);
+                                           (UINT32 *)_nx_ipv6_all_router_address);
 
         checksum = (USHORT)(~checksum);
 
@@ -204,7 +204,7 @@ NX_ICMPV6_OPTION *rs_options;
     /*lint -e{929} suppress cast of pointer to pointer, since it is necessary  */
     _nx_ipv6_packet_send(ip_ptr, pkt_ptr, NX_PROTOCOL_ICMPV6, pkt_ptr -> nx_packet_length, 255,
                          pkt_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr -> nxd_ipv6_address,
-                         (ULONG *)_nx_ipv6_all_router_address);
+                         (UINT32 *)_nx_ipv6_all_router_address);
 
     return(NX_SUCCESS);
 }

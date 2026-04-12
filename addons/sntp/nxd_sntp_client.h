@@ -76,7 +76,7 @@ extern   "C" {
 #define     BROADCAST_MODE      1
 #define     UNICAST_MODE        2
 
-#define NX_SNTP_CLIENT_RECEIVE_EVENT                ((ULONG) 0x00000001)    /* Event flag to signal a receive packet event                          */ 
+#define NX_SNTP_CLIENT_RECEIVE_EVENT                ((UINT32) 0x00000001)    /* Event flag to signal a receive packet event                          */ 
 
 /* Define the minimum size of the packet NTP/SNTP time message
    (e.g. without authentication data).  */
@@ -504,8 +504,8 @@ extern   "C" {
 
     typedef struct NX_SNTP_TIME_STRUCT
     {
-        ULONG    seconds;                                                   /* Seconds, in the 32 bit field of an NTP time data.  */
-        ULONG    fraction;                                                  /* Fraction of a second, in the 32 bit fraction field of an NTP time data.  */
+        UINT32    seconds;                                                   /* Seconds, in the 32 bit field of an NTP time data.  */
+        UINT32    fraction;                                                  /* Fraction of a second, in the 32 bit fraction field of an NTP time data.  */
 
     } NX_SNTP_TIME;
 
@@ -522,15 +522,15 @@ extern   "C" {
         UINT peer_clock_precision;                                          /* Precision of the NTP server clock. Applicable only in server NTP messages.  */
 
         /* These are represented as 32 bit data fields in the time message format*/
-        ULONG root_delay;                                                   /* Round trip time from NTP Server to primary reference source. Applicable only in server NTP messages.  */
-        ULONG clock_dispersion;                                             /* Server reference clock type (but if stratum is zero, indicates server status when not able to send time updates.  */ 
+        UINT32 root_delay;                                                   /* Round trip time from NTP Server to primary reference source. Applicable only in server NTP messages.  */
+        UINT32 clock_dispersion;                                             /* Server reference clock type (but if stratum is zero, indicates server status when not able to send time updates.  */ 
         UCHAR reference_clock_id[4];                                        /* Maximum error in server clock based to the clock frequency tolerance. Applicable only in server NTP messages.  */ 
 
         /* These are represented as 64 bit data fields in the time message format*/
-        ULONG reference_clock_update_time_stamp[2];                         /* Time at which the server clock was last set or corrected in a server time message.  */
-        ULONG originate_time_stamp[2];                                      /* Time at which the Client update request left the Client in a server time message.  */
-        ULONG receive_time_stamp[2];                                        /* Time at which the server received the Client request in a server time message.  */
-        ULONG transmit_time_stamp[2];                                       /* Time at which the server transmitted its reply to the Client in a server time message (or the time client request was sent in the client request message).  */
+        UINT32 reference_clock_update_time_stamp[2];                         /* Time at which the server clock was last set or corrected in a server time message.  */
+        UINT32 originate_time_stamp[2];                                      /* Time at which the Client update request left the Client in a server time message.  */
+        UINT32 receive_time_stamp[2];                                        /* Time at which the server received the Client request in a server time message.  */
+        UINT32 transmit_time_stamp[2];                                       /* Time at which the server transmitted its reply to the Client in a server time message (or the time client request was sent in the client request message).  */
 
         /* Optional authenticator fields.  */
         UCHAR KeyIdentifier[4];                                             /* Key Identifier and Message Digest fields contain the...  */
@@ -549,7 +549,7 @@ extern   "C" {
 
     typedef struct NX_SNTP_CLIENT_STRUCT
     {
-        ULONG                           nx_sntp_client_id;                       /* SNTP ID for identifying the client service task.  */
+        UINT32                           nx_sntp_client_id;                       /* SNTP ID for identifying the client service task.  */
         NX_IP                          *nx_sntp_client_ip_ptr;                   /* Pointer to the Client IP instance.  */
         UINT                            nx_sntp_client_interface_index;          /* Index to SNTP network interface  */
         NX_PACKET_POOL                 *nx_sntp_client_packet_pool_ptr;          /* Pointer to the Client packet pool.  */
@@ -571,12 +571,12 @@ extern   "C" {
         NXD_ADDRESS                     nx_sntp_multicast_server_address;        /* IP address Client should listen on to receive broadcasts from a multicast server.  */
         UINT                            nx_sntp_client_unicast_initialized;      /* Client task is ready to receive unicast time data.  */
         NXD_ADDRESS                     nx_sntp_unicast_time_server;             /* Client's unicast time server.  */
-        ULONG                           nx_sntp_client_unicast_poll_interval;    /* Unicast interval at which client is polling the time server.  */
+        UINT32                           nx_sntp_client_unicast_poll_interval;    /* Unicast interval at which client is polling the time server.  */
         UINT                            nx_sntp_client_backoff_count;            /* Count of times the back off rate has been applied to the poll interval */
         TX_TIMER                        nx_sntp_update_timer;                    /* SNTP update timer; expires when no data received for specified time lapse.  */
-        ULONG                           nx_sntp_update_time_remaining;           /* Time (in seconds) remaining that the Client task can continue running without receiving a valid update.  */
+        UINT32                           nx_sntp_update_time_remaining;           /* Time (in seconds) remaining that the Client task can continue running without receiving a valid update.  */
         LONG                            nx_sntp_client_roundtrip_time_msec;      /* Round trip time (msec) for a packet to travel to server and back to client. Does not include server processing time.  */
-        ULONG                           nx_sntp_client_local_ntp_time_elapsed;   /* Seconds elapsed since local time is updated last time. */
+        UINT32                           nx_sntp_client_local_ntp_time_elapsed;   /* Seconds elapsed since local time is updated last time. */
         NX_SNTP_TIME_MESSAGE            nx_sntp_current_server_time_message;     /* Time update which the Client has just received from its server.  */
         NX_SNTP_TIME_MESSAGE            nx_sntp_current_time_message_request;    /* Client request to send to its time server.  */
         NX_SNTP_TIME_MESSAGE            nx_sntp_previous_server_time_message;    /* Previous valid time update received from the Client time server.  */
@@ -588,7 +588,7 @@ extern   "C" {
                                                                                  /* Pointer to callback service for handling an impending leap second.  */
         UINT                            (*kiss_of_death_handler)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT code);
                                                                                  /* Pointer to callback service for handling kiss of death packets received from server.  */   
-        VOID                            (*random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand);
+        VOID                            (*random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand);
                                                                                  /* Pointer to callback service for random number generator.  */
 
         VOID                            (*nx_sntp_client_time_update_notify)(NX_SNTP_TIME_MESSAGE *time_update_ptr, NX_SNTP_TIME *local_time);
@@ -663,22 +663,22 @@ extern   "C" {
 UINT   nx_sntp_client_create(NX_SNTP_CLIENT *client_ptr, NX_IP *ip_ptr, UINT iface_index, NX_PACKET_POOL *packet_pool_ptr,   
                              UINT (*leap_second_handler)(NX_SNTP_CLIENT *client_ptr, UINT indicator), 
                              UINT (*kiss_of_death_handler)(NX_SNTP_CLIENT *client_ptr, UINT code),
-                             VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand));
+                             VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand));
 UINT    nx_sntp_client_delete (NX_SNTP_CLIENT *client_ptr);
-UINT    nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer); 
-UINT    nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer, UINT buffer_size);
+UINT    nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer); 
+UINT    nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer, UINT buffer_size);
 UINT    nxd_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *multicast_server_address, NXD_ADDRESS *broadcast_time_server);
-UINT    nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr,  ULONG multicast_server_address, ULONG broadcast_time_server);
+UINT    nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr,  UINT32 multicast_server_address, UINT32 broadcast_time_server);
 UINT    nxd_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *unicast_time_server);
-UINT    nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, ULONG unicast_time_server);
+UINT    nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, UINT32 unicast_time_server);
 UINT    nx_sntp_client_receiving_updates(NX_SNTP_CLIENT *client_ptr, UINT *server_status);
 UINT    nx_sntp_client_run_broadcast(NX_SNTP_CLIENT *client_ptr);
 UINT    nx_sntp_client_run_unicast(NX_SNTP_CLIENT *client_ptr);
-UINT    nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, ULONG seconds, ULONG fraction);
+UINT    nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 seconds, UINT32 fraction);
 UINT    nx_sntp_client_stop(NX_SNTP_CLIENT *client_ptr);
-UINT    nx_sntp_client_utility_msecs_to_fraction(ULONG msecs, ULONG *fraction);
-UINT    nx_sntp_client_utility_usecs_to_fraction(ULONG usecs, ULONG *fraction);
-UINT    nx_sntp_client_utility_fraction_to_usecs(ULONG fraction, ULONG *usecs); 
+UINT    nx_sntp_client_utility_msecs_to_fraction(UINT32 msecs, UINT32 *fraction);
+UINT    nx_sntp_client_utility_usecs_to_fraction(UINT32 usecs, UINT32 *fraction);
+UINT    nx_sntp_client_utility_fraction_to_usecs(UINT32 fraction, UINT32 *usecs); 
 UINT    nx_sntp_client_utility_display_date_time(NX_SNTP_CLIENT *client_ptr, CHAR *buffer, UINT length);
 UINT    nx_sntp_client_request_unicast_time(NX_SNTP_CLIENT *client_ptr, UINT wait_option);       
 UINT    nx_sntp_client_set_time_update_notify(NX_SNTP_CLIENT *client_ptr, VOID (time_update_cb)(NX_SNTP_TIME_MESSAGE *time_update_ptr, NX_SNTP_TIME *local_time));
@@ -691,41 +691,41 @@ UINT    nx_sntp_client_set_time_update_notify(NX_SNTP_CLIENT *client_ptr, VOID (
 UINT   _nx_sntp_client_create(NX_SNTP_CLIENT *client_ptr, NX_IP *ip_ptr, UINT iface_index, NX_PACKET_POOL *packet_pool_ptr,   
                             UINT (*leap_second_handler)(NX_SNTP_CLIENT *client_ptr, UINT indicator), 
                             UINT (*kiss_of_death_handler)(NX_SNTP_CLIENT *client_ptr, UINT code),
-                            VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand));
+                            VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand));
 UINT   _nxe_sntp_client_create(NX_SNTP_CLIENT *client_ptr, NX_IP *ip_ptr, UINT iface_index, NX_PACKET_POOL *packet_pool_ptr,   
                             UINT (*leap_second_handler)(NX_SNTP_CLIENT *client_ptr, UINT indicator), 
                             UINT (*kiss_of_death_handler)(NX_SNTP_CLIENT *client_ptr, UINT code),
-                            VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand));
+                            VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand));
 UINT    _nx_sntp_client_delete (NX_SNTP_CLIENT *client_ptr);
 UINT    _nxe_sntp_client_delete (NX_SNTP_CLIENT *client_ptr);
-UINT    _nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer); 
-UINT    _nxe_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer); 
-UINT    _nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer, UINT buffer_size); 
-UINT    _nxe_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer, UINT buffer_size);
+UINT    _nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer); 
+UINT    _nxe_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer); 
+UINT    _nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer, UINT buffer_size); 
+UINT    _nxe_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer, UINT buffer_size);
 UINT    _nxde_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *multicast_server_address, NXD_ADDRESS *broadcast_time_server);
 UINT    _nxd_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *multicast_server_address, NXD_ADDRESS *broadcast_time_server);
-UINT    _nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, ULONG multicast_server_address, ULONG broadcast_time_server);
-UINT    _nxe_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, ULONG multicast_server_address, ULONG broadcast_time_server);
+UINT    _nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, UINT32 multicast_server_address, UINT32 broadcast_time_server);
+UINT    _nxe_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, UINT32 multicast_server_address, UINT32 broadcast_time_server);
 UINT    _nxde_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *unicast_time_server);
 UINT    _nxd_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRESS *unicast_time_server);
-UINT    _nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, ULONG unicast_time_server);
-UINT    _nxe_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, ULONG unicast_time_server);
+UINT    _nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, UINT32 unicast_time_server);
+UINT    _nxe_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, UINT32 unicast_time_server);
 UINT    _nx_sntp_client_receiving_updates(NX_SNTP_CLIENT *client_ptr, UINT *server_status);
 UINT    _nxe_sntp_client_receiving_updates(NX_SNTP_CLIENT *client_ptr, UINT *server_status);
 UINT    _nx_sntp_client_run_broadcast(NX_SNTP_CLIENT *client_ptr);
 UINT    _nxe_sntp_client_run_broadcast(NX_SNTP_CLIENT *client_ptr);
 UINT    _nx_sntp_client_run_unicast(NX_SNTP_CLIENT *client_ptr);
 UINT    _nxe_sntp_client_run_unicast(NX_SNTP_CLIENT *client_ptr);
-UINT    _nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, ULONG seconds, ULONG fraction); 
-UINT    _nxe_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, ULONG seconds, ULONG fraction); 
+UINT    _nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 seconds, UINT32 fraction); 
+UINT    _nxe_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 seconds, UINT32 fraction); 
 UINT    _nx_sntp_client_stop(NX_SNTP_CLIENT *client_ptr);
 UINT    _nxe_sntp_client_stop(NX_SNTP_CLIENT *client_ptr);
-UINT    _nx_sntp_client_utility_msecs_to_fraction(ULONG msecs, ULONG *fraction);
-UINT    _nxe_sntp_client_utility_msecs_to_fraction(ULONG msecs, ULONG *fraction);
-UINT    _nx_sntp_client_utility_usecs_to_fraction(ULONG usecs, ULONG *fraction);
-UINT    _nxe_sntp_client_utility_usecs_to_fraction(ULONG usecs, ULONG *fraction);
-UINT    _nx_sntp_client_utility_fraction_to_usecs(ULONG fraction, ULONG *usecs); 
-UINT    _nxe_sntp_client_utility_fraction_to_usecs(ULONG fraction, ULONG *usecs); 
+UINT    _nx_sntp_client_utility_msecs_to_fraction(UINT32 msecs, UINT32 *fraction);
+UINT    _nxe_sntp_client_utility_msecs_to_fraction(UINT32 msecs, UINT32 *fraction);
+UINT    _nx_sntp_client_utility_usecs_to_fraction(UINT32 usecs, UINT32 *fraction);
+UINT    _nxe_sntp_client_utility_usecs_to_fraction(UINT32 usecs, UINT32 *fraction);
+UINT    _nx_sntp_client_utility_fraction_to_usecs(UINT32 fraction, UINT32 *usecs); 
+UINT    _nxe_sntp_client_utility_fraction_to_usecs(UINT32 fraction, UINT32 *usecs); 
 UINT    _nx_sntp_client_utility_display_date_time(NX_SNTP_CLIENT *client_ptr, CHAR *buffer, UINT length);
 UINT    _nxe_sntp_client_utility_display_date_time(NX_SNTP_CLIENT *client_ptr, CHAR *buffer, UINT length);
 UINT    _nxe_sntp_client_utility_display_NTP_time(NX_SNTP_CLIENT *client_ptr, CHAR *buffer);
@@ -748,17 +748,17 @@ VOID    _nx_sntp_client_process_unicast(NX_SNTP_CLIENT *client_ptr);
 UINT    _nx_sntp_client_process_time_data(NX_SNTP_CLIENT *client_ptr);
 UINT    _nx_sntp_client_process_update_packet(NX_SNTP_CLIENT *client_ptr); 
 VOID    _nx_sntp_client_receive_notify(NX_UDP_SOCKET *socket_ptr);
-UINT    _nx_sntp_client_receive_time_update(NX_SNTP_CLIENT *client_ptr, ULONG timeout);
+UINT    _nx_sntp_client_receive_time_update(NX_SNTP_CLIENT *client_ptr, UINT32 timeout);
 UINT    _nx_sntp_client_reset_current_time_message(NX_SNTP_CLIENT *client_ptr);
 UINT    _nx_sntp_client_send_unicast_request(NX_SNTP_CLIENT *client_ptr); 
 VOID    _nx_sntp_client_thread_entry(ULONG sntp_instance);
 VOID    _nx_sntp_client_update_timeout_entry(ULONG info);
 UINT    _nx_sntp_client_utility_add_msecs_to_ntp_time(NX_SNTP_TIME *timeA_ptr, LONG msecs_to_add);
-UINT    _nx_sntp_client_utility_convert_fraction_to_msecs(ULONG *milliseconds, NX_SNTP_TIME *time_ptr);
+UINT    _nx_sntp_client_utility_convert_fraction_to_msecs(UINT32 *milliseconds, NX_SNTP_TIME *time_ptr);
 UINT    _nx_sntp_client_utility_convert_seconds_to_date(NX_SNTP_TIME *current_NTP_time_ptr, UINT current_year, NX_SNTP_DATE_TIME *current_date_time_ptr);
 UINT    _nx_sntp_client_utility_convert_refID_KOD_code(UCHAR *reference_id, UINT *code_id);
-UINT    _nx_sntp_client_utility_get_msec_diff(NX_SNTP_TIME *timeA_ptr, NX_SNTP_TIME *timeB_ptr, ULONG *total_difference_msecs, UINT *pos_diff);    
-UINT    _nx_sntp_client_utility_addition_overflow_check(ULONG temp1, ULONG temp2);
+UINT    _nx_sntp_client_utility_get_msec_diff(NX_SNTP_TIME *timeA_ptr, NX_SNTP_TIME *timeB_ptr, UINT32 *total_difference_msecs, UINT *pos_diff);    
+UINT    _nx_sntp_client_utility_addition_overflow_check(UINT32 temp1, UINT32 temp2);
 UINT    _nx_sntp_client_utility_convert_time_to_UCHAR(NX_SNTP_TIME *time, NX_SNTP_TIME_MESSAGE *time_message_ptr, UINT which_stamp);
 UINT    _nx_sntp_client_utility_is_zero_data(UCHAR *data, UINT size);
 

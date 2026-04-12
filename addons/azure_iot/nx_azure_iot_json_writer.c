@@ -45,17 +45,17 @@ NX_PACKET *tail_packet_ptr;
     }
 
     NX_ASSERT((tail_packet_ptr -> nx_packet_data_start + writer_ptr -> nx_tail_packet_offset +
-               (ULONG)(allocator_context -> bytes_used)) <=
+               (UINT32)(allocator_context -> bytes_used)) <=
               tail_packet_ptr -> nx_packet_data_end);
 
     /* Update tail.  */
     tail_packet_ptr -> nx_packet_append_ptr =
         tail_packet_ptr -> nx_packet_data_start + writer_ptr -> nx_tail_packet_offset +
-        (ULONG)(allocator_context -> bytes_used);
+        (UINT32)(allocator_context -> bytes_used);
     tail_packet_ptr -> nx_packet_next = new_paket_ptr;
 
     /* Update head.  */
-    packet_ptr -> nx_packet_length += (ULONG)(allocator_context -> bytes_used);
+    packet_ptr -> nx_packet_length += (UINT32)(allocator_context -> bytes_used);
     packet_ptr -> nx_packet_last = new_paket_ptr;
 
     writer_ptr -> nx_tail_packet_offset = 0;
@@ -134,7 +134,7 @@ NX_PACKET *tail_packet_ptr;
     json_writer_ptr -> packet_ptr = packet_ptr;
     json_writer_ptr -> wait_option = wait_option;
     json_writer_ptr -> nx_tail_packet_offset =
-        (ULONG)(tail_packet_ptr -> nx_packet_append_ptr - tail_packet_ptr -> nx_packet_data_start);
+        (UINT32)(tail_packet_ptr -> nx_packet_append_ptr - tail_packet_ptr -> nx_packet_data_start);
     json_writer_ptr -> nx_packet_init_length = packet_ptr -> nx_packet_length;
 
     return(NX_AZURE_IOT_SUCCESS);

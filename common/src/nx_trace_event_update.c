@@ -68,7 +68,7 @@
 /*    Internal NetX Duo Functions                                         */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_trace_event_update(TX_TRACE_BUFFER_ENTRY *event, ULONG timestamp, ULONG event_id, ULONG info_field_1, ULONG info_field_2, ULONG info_field_3, ULONG info_field_4)
+VOID  _nx_trace_event_update(TX_TRACE_BUFFER_ENTRY *event, UINT32 timestamp, UINT32 event_id, UINT32 info_field_1, UINT32 info_field_2, UINT32 info_field_3, UINT32 info_field_4)
 {
 
 TX_INTERRUPT_SAVE_AREA

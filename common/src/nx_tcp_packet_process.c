@@ -91,8 +91,8 @@ VOID  _nx_tcp_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 
 UINT                         index;
 UINT                         port;
-ULONG                       *source_ip = NX_NULL;
-ULONG                       *dest_ip = NX_NULL;
+UINT32                       *source_ip = NX_NULL;
+UINT32                       *dest_ip = NX_NULL;
 UINT                         source_port;
 NX_TCP_SOCKET               *socket_ptr;
 NX_TCP_HEADER               *tcp_header_ptr;
@@ -101,23 +101,23 @@ VOID                         (*listen_callback)(NX_TCP_SOCKET *socket_ptr, UINT 
 #ifndef NX_DISABLE_EXTENDED_NOTIFY_SUPPORT
 VOID                         (*queue_callback)(struct NX_TCP_LISTEN_STRUCT *listen_ptr);
 #endif
-ULONG                        option_words;
-ULONG                        mss = 0;
-ULONG                        checksum;
+UINT32                        option_words;
+UINT32                        mss = 0;
+UINT32                        checksum;
 NX_INTERFACE                *interface_ptr = NX_NULL;
 #if defined(NX_DISABLE_TCP_RX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
 UINT                         compute_checksum = 1;
 #endif /* defined(NX_DISABLE_TCP_RX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
-ULONG                        queued_count;
+UINT32                        queued_count;
 NX_PACKET                   *queued_ptr;
 NX_PACKET                   *queued_prev_ptr;
-ULONG                       *queued_source_ip;
+UINT32                       *queued_source_ip;
 UINT                         queued_source_port;
 UINT                         is_a_RST_request;
 UINT                         is_valid_option_flag = NX_TRUE;
 UINT                         status;
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
-ULONG                        rwin_scale = 0xFF;
+UINT32                        rwin_scale = 0xFF;
 #endif /* NX_ENABLE_TCP_WINDOW_SCALING */
 
 #ifdef NX_DISABLE_TCP_RX_CHECKSUM
@@ -232,11 +232,11 @@ ULONG                        rwin_scale = 0xFF;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the TCP header.  */
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
 
     /* Determine if there are any option words...  Note there are always 5 words in a TCP header.  */
     option_words =  (tcp_header_ptr -> nx_tcp_header_word_3 >> 28) - 5;
@@ -267,7 +267,7 @@ ULONG                        rwin_scale = 0xFF;
         /* Yes, there are one or more option words.  */
 
         /* Derive the Maximum Segment Size (MSS) in the option words.  */
-        status = _nx_tcp_mss_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (ULONG)sizeof(ULONG), &mss);
+        status = _nx_tcp_mss_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (UINT32)sizeof(UINT32), &mss);
 
         /* Check the status. if status is NX_FALSE, means Option Length is invalid.  */
         if (status == NX_FALSE)
@@ -300,7 +300,7 @@ ULONG                        rwin_scale = 0xFF;
         }
 
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
-        status = _nx_tcp_window_scaling_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (ULONG)sizeof(ULONG), &rwin_scale);
+        status = _nx_tcp_window_scaling_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)), option_words * (UINT32)sizeof(UINT32), &rwin_scale);
 
         /* Check the status. if status is NX_FALSE, means Option Length is invalid.  */
         if (status == NX_FALSE)
@@ -806,7 +806,7 @@ ULONG                        rwin_scale = 0xFF;
                     {
 
                         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-                        queued_source_port = (UINT)(*((ULONG *)queued_ptr -> nx_packet_prepend_ptr) >> NX_SHIFT_BY_16);
+                        queued_source_port = (UINT)(*((UINT32 *)queued_ptr -> nx_packet_prepend_ptr) >> NX_SHIFT_BY_16);
 
 #ifndef NX_DISABLE_IPV4
                         /* Pickup the queued source port and source IP address for comparison.  */
@@ -814,7 +814,7 @@ ULONG                        rwin_scale = 0xFF;
                         {
 
                             /*lint -e{929} -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-                            queued_source_ip = (ULONG *)(((ULONG *)queued_ptr -> nx_packet_prepend_ptr) - 2);
+                            queued_source_ip = (UINT32 *)(((UINT32 *)queued_ptr -> nx_packet_prepend_ptr) - 2);
 
                             /* Determine if this matches the current connection request.  */
                             if ((*queued_source_ip == *source_ip) && (queued_source_port == source_port))
@@ -850,7 +850,7 @@ ULONG                        rwin_scale = 0xFF;
                         {
 
                             /*lint -e{929} -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-                            queued_source_ip = (ULONG *)(((ULONG *)queued_ptr -> nx_packet_prepend_ptr) - 8);
+                            queued_source_ip = (UINT32 *)(((UINT32 *)queued_ptr -> nx_packet_prepend_ptr) - 8);
 
                             /* Determine if this matches the current connection request.  */
                             if ((CHECK_IPV6_ADDRESSES_SAME(queued_source_ip, source_ip)) && (queued_source_port == source_port))

@@ -72,7 +72,7 @@ NX_IPV6_HEADER   *ipv6_header;
 NX_ICMPV6_RA     *header_ptr;
 NX_ICMPV6_OPTION *option_ptr;
 INT               option_length;
-ULONG             source_address_type, dest_address_type;
+UINT32             source_address_type, dest_address_type;
 
 
     /* Set a pointer to he ICMP message header.  */
@@ -96,8 +96,8 @@ ULONG             source_address_type, dest_address_type;
     }
 
     /* IP destination address must be multicast address or solicited sender link local address. */
-    if ((dest_address_type  != (ULONG)(IPV6_ADDRESS_LINKLOCAL | IPV6_ADDRESS_UNICAST)) &&
-        (dest_address_type  != (ULONG)(IPV6_ALL_NODE_MCAST | IPV6_ADDRESS_MULTICAST)))
+    if ((dest_address_type  != (UINT32)(IPV6_ADDRESS_LINKLOCAL | IPV6_ADDRESS_UNICAST)) &&
+        (dest_address_type  != (UINT32)(IPV6_ALL_NODE_MCAST | IPV6_ADDRESS_MULTICAST)))
     {
 
         return(NX_NOT_SUCCESSFUL);
@@ -118,7 +118,7 @@ ULONG             source_address_type, dest_address_type;
     }
 
     /* Locate the option field. */
-    /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+    /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
     option_ptr = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(header_ptr, sizeof(NX_ICMPV6_RA));
     option_length = (INT)(packet_ptr -> nx_packet_length - sizeof(NX_ICMPV6_RA));
 

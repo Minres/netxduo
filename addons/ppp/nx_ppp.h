@@ -387,7 +387,7 @@ extern   "C" {
 typedef struct NX_PPP_DEBUG_ENTRY_STRUCT
 {
 
-    ULONG           nx_ppp_debug_entry_time_stamp;
+    UINT32           nx_ppp_debug_entry_time_stamp;
     UCHAR           nx_ppp_debug_ppp_state;
     UCHAR           nx_ppp_debug_lcp_state;
     UCHAR           nx_ppp_debug_pap_state;
@@ -395,7 +395,7 @@ typedef struct NX_PPP_DEBUG_ENTRY_STRUCT
     UCHAR           nx_ppp_debug_ipcp_state;
     UCHAR           nx_ppp_debug_authenticated;
     UCHAR           nx_ppp_debug_frame_type;
-    ULONG           nx_ppp_debug_packet_length;
+    UINT32           nx_ppp_debug_packet_length;
     UCHAR           nx_ppp_debug_frame[NX_PPP_DEBUG_FRAME_SIZE];
 } NX_PPP_DEBUG_ENTRY;
 
@@ -406,7 +406,7 @@ typedef struct NX_PPP_DEBUG_ENTRY_STRUCT
 typedef struct NX_PPP_STRUCT 
 {
 
-    ULONG           nx_ppp_id;
+    UINT32           nx_ppp_id;
     CHAR            *nx_ppp_name;
     NX_IP           *nx_ppp_ip_ptr;
     NX_INTERFACE    *nx_ppp_interface_ptr;
@@ -416,7 +416,7 @@ typedef struct NX_PPP_STRUCT
     UCHAR           nx_ppp_receive_id;
     UCHAR           nx_ppp_lcp_echo_reply_id;
     UCHAR           nx_ppp_reserved;
-    ULONG           nx_ppp_mru;
+    UINT32           nx_ppp_mru;
     UINT            nx_ppp_server;
     UINT            nx_ppp_state;
     UINT            nx_ppp_lcp_state;
@@ -432,102 +432,102 @@ typedef struct NX_PPP_STRUCT
     CHAR            nx_ppp_chap_random_value[NX_PPP_VALUE_SIZE + 1];
     UCHAR           nx_ppp_ipcp_local_ip[4];
     UCHAR           nx_ppp_ipcp_peer_ip[4];
-    ULONG           nx_ppp_primary_dns_address;
-    ULONG           nx_ppp_secondary_dns_address; 
+    UINT32           nx_ppp_primary_dns_address;
+    UINT32           nx_ppp_secondary_dns_address; 
     UINT            nx_ppp_dns_address_retries;
     UINT            nx_ppp_secondary_dns_address_retries;
-    ULONG           nx_ppp_timeout;
-    ULONG           nx_ppp_receive_timeouts;
-    ULONG           nx_ppp_protocol_retry_counter;
+    UINT32           nx_ppp_timeout;
+    UINT32           nx_ppp_receive_timeouts;
+    UINT32           nx_ppp_protocol_retry_counter;
 #ifndef NX_PPP_DISABLE_INFO
-    ULONG           nx_ppp_packet_allocate_timeouts;
-    ULONG           nx_ppp_frame_timeouts;
-    ULONG           nx_ppp_internal_errors;
-    ULONG           nx_ppp_frame_crc_errors;
-    ULONG           nx_ppp_packet_overflow;
-    ULONG           nx_ppp_bytes_received;
-    ULONG           nx_ppp_bytes_sent;
-    ULONG           nx_ppp_bytes_dropped;
-    ULONG           nx_ppp_bytes_invalid;
-    ULONG           nx_ppp_total_frames_received;
-    ULONG           nx_ppp_lcp_frames_received;
-    ULONG           nx_ppp_lcp_frames_sent;
-    ULONG           nx_ppp_lcp_configure_requests_sent;
-    ULONG           nx_ppp_lcp_configure_requests_received;
-    ULONG           nx_ppp_lcp_configure_acks_sent;
-    ULONG           nx_ppp_lcp_configure_acks_received;
-    ULONG           nx_ppp_lcp_configure_naks_sent;
-    ULONG           nx_ppp_lcp_configure_naks_received;
-    ULONG           nx_ppp_lcp_configure_rejects_sent;
-    ULONG           nx_ppp_lcp_configure_rejects_received;
-    ULONG           nx_ppp_lcp_terminate_requests_sent;
-    ULONG           nx_ppp_lcp_terminate_requests_received;
-    ULONG           nx_ppp_lcp_terminate_acks_sent;
-    ULONG           nx_ppp_lcp_terminate_acks_received;
-    ULONG           nx_ppp_lcp_code_rejects_sent;
-    ULONG           nx_ppp_lcp_code_rejects_received;
-    ULONG           nx_ppp_lcp_protocol_rejects_sent;
-    ULONG           nx_ppp_lcp_protocol_rejects_received;
-    ULONG           nx_ppp_lcp_echo_requests_sent;
-    ULONG           nx_ppp_lcp_echo_replies_received;
-    ULONG           nx_ppp_lcp_echo_requests_received;
-    ULONG           nx_ppp_lcp_echo_requests_dropped;
-    ULONG           nx_ppp_lcp_echo_replies_sent;
-    ULONG           nx_ppp_lcp_discard_requests_sent;
-    ULONG           nx_ppp_lcp_discard_requests_received;
-    ULONG           nx_ppp_lcp_unknown_requests_received;
-    ULONG           nx_ppp_lcp_state_machine_unhandled_requests;
-    ULONG           nx_ppp_lcp_state_machine_timeouts;
+    UINT32           nx_ppp_packet_allocate_timeouts;
+    UINT32           nx_ppp_frame_timeouts;
+    UINT32           nx_ppp_internal_errors;
+    UINT32           nx_ppp_frame_crc_errors;
+    UINT32           nx_ppp_packet_overflow;
+    UINT32           nx_ppp_bytes_received;
+    UINT32           nx_ppp_bytes_sent;
+    UINT32           nx_ppp_bytes_dropped;
+    UINT32           nx_ppp_bytes_invalid;
+    UINT32           nx_ppp_total_frames_received;
+    UINT32           nx_ppp_lcp_frames_received;
+    UINT32           nx_ppp_lcp_frames_sent;
+    UINT32           nx_ppp_lcp_configure_requests_sent;
+    UINT32           nx_ppp_lcp_configure_requests_received;
+    UINT32           nx_ppp_lcp_configure_acks_sent;
+    UINT32           nx_ppp_lcp_configure_acks_received;
+    UINT32           nx_ppp_lcp_configure_naks_sent;
+    UINT32           nx_ppp_lcp_configure_naks_received;
+    UINT32           nx_ppp_lcp_configure_rejects_sent;
+    UINT32           nx_ppp_lcp_configure_rejects_received;
+    UINT32           nx_ppp_lcp_terminate_requests_sent;
+    UINT32           nx_ppp_lcp_terminate_requests_received;
+    UINT32           nx_ppp_lcp_terminate_acks_sent;
+    UINT32           nx_ppp_lcp_terminate_acks_received;
+    UINT32           nx_ppp_lcp_code_rejects_sent;
+    UINT32           nx_ppp_lcp_code_rejects_received;
+    UINT32           nx_ppp_lcp_protocol_rejects_sent;
+    UINT32           nx_ppp_lcp_protocol_rejects_received;
+    UINT32           nx_ppp_lcp_echo_requests_sent;
+    UINT32           nx_ppp_lcp_echo_replies_received;
+    UINT32           nx_ppp_lcp_echo_requests_received;
+    UINT32           nx_ppp_lcp_echo_requests_dropped;
+    UINT32           nx_ppp_lcp_echo_replies_sent;
+    UINT32           nx_ppp_lcp_discard_requests_sent;
+    UINT32           nx_ppp_lcp_discard_requests_received;
+    UINT32           nx_ppp_lcp_unknown_requests_received;
+    UINT32           nx_ppp_lcp_state_machine_unhandled_requests;
+    UINT32           nx_ppp_lcp_state_machine_timeouts;
 #ifndef NX_PPP_DISABLE_PAP
-    ULONG           nx_ppp_pap_frames_received;
-    ULONG           nx_ppp_pap_frames_sent;
-    ULONG           nx_ppp_pap_authenticate_requests_sent;
-    ULONG           nx_ppp_pap_authenticate_requests_received;
-    ULONG           nx_ppp_pap_authenticate_acks_sent;
-    ULONG           nx_ppp_pap_authenticate_acks_received;
-    ULONG           nx_ppp_pap_authenticate_naks_sent;
-    ULONG           nx_ppp_pap_authenticate_naks_received;
-    ULONG           nx_ppp_pap_unknown_requests_received;
-    ULONG           nx_ppp_pap_state_machine_unhandled_requests;
-    ULONG           nx_ppp_pap_state_machine_timeouts;
+    UINT32           nx_ppp_pap_frames_received;
+    UINT32           nx_ppp_pap_frames_sent;
+    UINT32           nx_ppp_pap_authenticate_requests_sent;
+    UINT32           nx_ppp_pap_authenticate_requests_received;
+    UINT32           nx_ppp_pap_authenticate_acks_sent;
+    UINT32           nx_ppp_pap_authenticate_acks_received;
+    UINT32           nx_ppp_pap_authenticate_naks_sent;
+    UINT32           nx_ppp_pap_authenticate_naks_received;
+    UINT32           nx_ppp_pap_unknown_requests_received;
+    UINT32           nx_ppp_pap_state_machine_unhandled_requests;
+    UINT32           nx_ppp_pap_state_machine_timeouts;
 #endif
 #ifndef NX_PPP_DISABLE_CHAP
-    ULONG           nx_ppp_chap_frames_received;
-    ULONG           nx_ppp_chap_frames_sent;
-    ULONG           nx_ppp_chap_challenge_requests_sent;
-    ULONG           nx_ppp_chap_challenge_requests_received;
-    ULONG           nx_ppp_chap_challenge_responses_sent;
-    ULONG           nx_ppp_chap_challenge_responses_received;
-    ULONG           nx_ppp_chap_challenge_successes_sent;
-    ULONG           nx_ppp_chap_challenge_successes_received;
-    ULONG           nx_ppp_chap_challenge_failures_sent;
-    ULONG           nx_ppp_chap_challenge_failures_received;
-    ULONG           nx_ppp_chap_unknown_requests_received;
-    ULONG           nx_ppp_chap_state_machine_unhandled_requests;
-    ULONG           nx_ppp_chap_state_machine_timeouts;
+    UINT32           nx_ppp_chap_frames_received;
+    UINT32           nx_ppp_chap_frames_sent;
+    UINT32           nx_ppp_chap_challenge_requests_sent;
+    UINT32           nx_ppp_chap_challenge_requests_received;
+    UINT32           nx_ppp_chap_challenge_responses_sent;
+    UINT32           nx_ppp_chap_challenge_responses_received;
+    UINT32           nx_ppp_chap_challenge_successes_sent;
+    UINT32           nx_ppp_chap_challenge_successes_received;
+    UINT32           nx_ppp_chap_challenge_failures_sent;
+    UINT32           nx_ppp_chap_challenge_failures_received;
+    UINT32           nx_ppp_chap_unknown_requests_received;
+    UINT32           nx_ppp_chap_state_machine_unhandled_requests;
+    UINT32           nx_ppp_chap_state_machine_timeouts;
 #endif
-    ULONG           nx_ppp_ipcp_frames_received;
-    ULONG           nx_ppp_ipcp_frames_sent;
-    ULONG           nx_ppp_ipcp_configure_requests_sent;
-    ULONG           nx_ppp_ipcp_configure_requests_received;
-    ULONG           nx_ppp_ipcp_configure_acks_sent;
-    ULONG           nx_ppp_ipcp_configure_acks_received;
-    ULONG           nx_ppp_ipcp_configure_naks_sent;
-    ULONG           nx_ppp_ipcp_configure_naks_received;
-    ULONG           nx_ppp_ipcp_configure_rejects_sent;
-    ULONG           nx_ppp_ipcp_configure_rejects_received;
-    ULONG           nx_ppp_ipcp_terminate_requests_sent;
-    ULONG           nx_ppp_ipcp_terminate_requests_received;
-    ULONG           nx_ppp_ipcp_terminate_acks_sent;
-    ULONG           nx_ppp_ipcp_terminate_acks_received;
-    ULONG           nx_ppp_ipcp_unknown_requests_received;
-    ULONG           nx_ppp_ipcp_state_machine_unhandled_requests;
-    ULONG           nx_ppp_ipcp_state_machine_timeouts;
-    ULONG           nx_ppp_ip_frames_received;
-    ULONG           nx_ppp_ip_frames_sent;
-    ULONG           nx_ppp_receive_frames_dropped;
-    ULONG           nx_ppp_transmit_frames_dropped;
-    ULONG           nx_ppp_invalid_frame_id;
+    UINT32           nx_ppp_ipcp_frames_received;
+    UINT32           nx_ppp_ipcp_frames_sent;
+    UINT32           nx_ppp_ipcp_configure_requests_sent;
+    UINT32           nx_ppp_ipcp_configure_requests_received;
+    UINT32           nx_ppp_ipcp_configure_acks_sent;
+    UINT32           nx_ppp_ipcp_configure_acks_received;
+    UINT32           nx_ppp_ipcp_configure_naks_sent;
+    UINT32           nx_ppp_ipcp_configure_naks_received;
+    UINT32           nx_ppp_ipcp_configure_rejects_sent;
+    UINT32           nx_ppp_ipcp_configure_rejects_received;
+    UINT32           nx_ppp_ipcp_terminate_requests_sent;
+    UINT32           nx_ppp_ipcp_terminate_requests_received;
+    UINT32           nx_ppp_ipcp_terminate_acks_sent;
+    UINT32           nx_ppp_ipcp_terminate_acks_received;
+    UINT32           nx_ppp_ipcp_unknown_requests_received;
+    UINT32           nx_ppp_ipcp_state_machine_unhandled_requests;
+    UINT32           nx_ppp_ipcp_state_machine_timeouts;
+    UINT32           nx_ppp_ip_frames_received;
+    UINT32           nx_ppp_ip_frames_sent;
+    UINT32           nx_ppp_receive_frames_dropped;
+    UINT32           nx_ppp_transmit_frames_dropped;
+    UINT32           nx_ppp_invalid_frame_id;
 #endif
 
     void            (*nx_ppp_byte_send)(UCHAR byte);
@@ -558,7 +558,7 @@ typedef struct NX_PPP_STRUCT
     USHORT          nx_ppp_serial_buffer_byte_count;
 
     NX_PACKET       *nx_ppp_receive_partial_packet;
-    ULONG           nx_ppp_receive_buffer_size;
+    UINT32           nx_ppp_receive_buffer_size;
     UCHAR           *nx_ppp_receive_buffer_ptr;
 
     NX_PACKET       *nx_ppp_head_packet;
@@ -572,11 +572,11 @@ typedef struct NX_PPP_STRUCT
 
     NX_PACKET       *nx_ppp_raw_packet_queue_head;
     NX_PACKET       *nx_ppp_raw_packet_queue_tail;
-    ULONG           nx_ppp_raw_packet_queue_count;
+    UINT32           nx_ppp_raw_packet_queue_count;
 
     NX_PACKET       *nx_ppp_ip_packet_queue_head;
     NX_PACKET       *nx_ppp_ip_packet_queue_tail;
-    ULONG           nx_ppp_ip_packet_queue_count;
+    UINT32           nx_ppp_ip_packet_queue_count;
 
     TX_THREAD       nx_ppp_thread;
     struct NX_PPP_STRUCT 
@@ -678,18 +678,18 @@ UINT    nx_ppp_chap_enable(NX_PPP *ppp_ptr,
                UINT (*get_responder_values)(CHAR *system, CHAR *name, CHAR *secret),
                UINT (*get_verification_values)(CHAR *system, CHAR *name, CHAR *secret));
 UINT    nx_ppp_create(NX_PPP *ppp_ptr, CHAR *name, NX_IP *ip_ptr, 
-               VOID *stack_memory_ptr, ULONG stack_size, UINT thread_priority, 
+               VOID *stack_memory_ptr, UINT32 stack_size, UINT thread_priority, 
                NX_PACKET_POOL *pool_ptr,
                void (*ppp_non_ppp_packet_handler)(NX_PACKET *packet_ptr),
                void (*ppp_byte_send)(UCHAR byte));
 UINT    nx_ppp_delete(NX_PPP *ppp_ptr);
-UINT    nx_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr);
-UINT    nx_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address);
-UINT    nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_address_ptr); 
-UINT    nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, ULONG secondary_dns_address);
+UINT    nx_ppp_dns_address_get(NX_PPP *ppp_ptr, UINT32 *dns_address_ptr);
+UINT    nx_ppp_dns_address_set(NX_PPP *ppp_ptr, UINT32 dns_address);
+UINT    nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, UINT32 *secondary_dns_address_ptr); 
+UINT    nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, UINT32 secondary_dns_address);
 void    nx_ppp_driver(NX_IP_DRIVER *driver_req_ptr);
 UINT    nx_ppp_interface_index_get(NX_PPP *ppp_ptr, UINT *index_ptr);
-UINT    nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, ULONG local_ip_address, ULONG peer_ip_address);
+UINT    nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, UINT32 local_ip_address, UINT32 peer_ip_address);
 UINT    nx_ppp_link_down_notify(NX_PPP *ppp_ptr, VOID (*ppp_link_down_callback)(NX_PPP *ppp_ptr));
 UINT    nx_ppp_link_up_notify(NX_PPP *ppp_ptr, VOID (*ppp_link_up_callback)(NX_PPP *ppp_ptr));
 UINT    nx_ppp_nak_authentication_notify(NX_PPP *ppp_ptr, void (*nak_authentication_notify)(void));
@@ -699,7 +699,7 @@ UINT    nx_ppp_start(NX_PPP *ppp_ptr);
 UINT    nx_ppp_stop(NX_PPP *ppp_ptr);
 UINT    nx_ppp_restart(NX_PPP *ppp_ptr);
 UINT    nx_ppp_status_get(NX_PPP *ppp_ptr, UINT *status_ptr);
-UINT    nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, ULONG data_size,  ULONG wait_option);
+UINT    nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, UINT32 data_size,  UINT32 wait_option);
 #ifdef NX_PPP_PPPOE_ENABLE
 UINT    nx_ppp_packet_receive(NX_PPP *ppp_ptr, NX_PACKET *packet_ptr);
 UINT    nx_ppp_packet_send_set(NX_PPP *ppp_ptr, void (*nx_ppp_packet_send)(NX_PACKET *packet_ptr));
@@ -720,29 +720,29 @@ UINT    _nx_ppp_chap_enable(NX_PPP *ppp_ptr,
                UINT (*get_responder_values)(CHAR *system, CHAR *name, CHAR *secret),
                UINT (*get_verification_values)(CHAR *system, CHAR *name, CHAR *secret));
 UINT    _nxe_ppp_create(NX_PPP *ppp_ptr, CHAR *name, NX_IP *ip_ptr, 
-               VOID *stack_memory_ptr, ULONG stack_size, UINT thread_priority, 
+               VOID *stack_memory_ptr, UINT32 stack_size, UINT thread_priority, 
                NX_PACKET_POOL *pool_ptr,
                void (*ppp_non_ppp_packet_handler)(NX_PACKET *packet_ptr),
                void (*ppp_byte_send)(UCHAR byte));
 UINT    _nx_ppp_create(NX_PPP *ppp_ptr, CHAR *name, NX_IP *ip_ptr, 
-               VOID *stack_memory_ptr, ULONG stack_size, UINT thread_priority, 
+               VOID *stack_memory_ptr, UINT32 stack_size, UINT thread_priority, 
                NX_PACKET_POOL *pool_ptr,
                void (*ppp_non_ppp_packet_handler)(NX_PACKET *packet_ptr),
                void (*ppp_byte_send)(UCHAR byte));
 UINT    _nxe_ppp_delete(NX_PPP *ppp_ptr);
 UINT    _nx_ppp_delete(NX_PPP *ppp_ptr);
-UINT    _nxe_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr);
-UINT    _nx_ppp_dns_address_get(NX_PPP *ppp_ptr, ULONG *dns_address_ptr);
-UINT    _nxe_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address);
-UINT    _nx_ppp_dns_address_set(NX_PPP *ppp_ptr, ULONG dns_address);
-UINT    _nxe_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_address_ptr);
-UINT    _nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, ULONG *secondary_dns_address_ptr);
-UINT    _nxe_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, ULONG secondary_dns_address);
-UINT    _nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, ULONG secondary_dns_address);
+UINT    _nxe_ppp_dns_address_get(NX_PPP *ppp_ptr, UINT32 *dns_address_ptr);
+UINT    _nx_ppp_dns_address_get(NX_PPP *ppp_ptr, UINT32 *dns_address_ptr);
+UINT    _nxe_ppp_dns_address_set(NX_PPP *ppp_ptr, UINT32 dns_address);
+UINT    _nx_ppp_dns_address_set(NX_PPP *ppp_ptr, UINT32 dns_address);
+UINT    _nxe_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, UINT32 *secondary_dns_address_ptr);
+UINT    _nx_ppp_secondary_dns_address_get(NX_PPP *ppp_ptr, UINT32 *secondary_dns_address_ptr);
+UINT    _nxe_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, UINT32 secondary_dns_address);
+UINT    _nx_ppp_secondary_dns_address_set(NX_PPP *ppp_ptr, UINT32 secondary_dns_address);
 UINT    _nxe_ppp_interface_index_get(NX_PPP *ppp_ptr, UINT *index_ptr);
 UINT    _nx_ppp_interface_index_get(NX_PPP *ppp_ptr, UINT *index_ptr);
-UINT    _nxe_ppp_ip_address_assign(NX_PPP *ppp_ptr, ULONG local_ip_address, ULONG peer_ip_address);
-UINT    _nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, ULONG local_ip_address, ULONG peer_ip_address);
+UINT    _nxe_ppp_ip_address_assign(NX_PPP *ppp_ptr, UINT32 local_ip_address, UINT32 peer_ip_address);
+UINT    _nx_ppp_ip_address_assign(NX_PPP *ppp_ptr, UINT32 local_ip_address, UINT32 peer_ip_address);
 UINT    _nxe_ppp_link_down_notify(NX_PPP *ppp_ptr, VOID (*ppp_link_down_callback)(NX_PPP *ppp_ptr));
 UINT    _nx_ppp_link_down_notify(NX_PPP *ppp_ptr, VOID (*ppp_link_down_callback)(NX_PPP *ppp_ptr));
 UINT    _nxe_ppp_link_up_notify(NX_PPP *ppp_ptr, VOID (*ppp_link_up_callback)(NX_PPP *ppp_ptr)); 
@@ -761,8 +761,8 @@ UINT    _nxe_ppp_restart(NX_PPP *ppp_ptr);
 UINT    _nx_ppp_restart(NX_PPP *ppp_ptr);
 UINT    _nxe_ppp_status_get(NX_PPP *ppp_ptr, UINT *status_ptr);
 UINT    _nx_ppp_status_get(NX_PPP *ppp_ptr, UINT *status_ptr);
-UINT    _nxe_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, ULONG data_size,  ULONG wait_option);
-UINT    _nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, ULONG data_size,  ULONG wait_option);
+UINT    _nxe_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, UINT32 data_size,  UINT32 wait_option);
+UINT    _nx_ppp_ping_request(NX_PPP *ppp_ptr, CHAR *data_ptr, UINT32 data_size,  UINT32 wait_option);
 #ifdef NX_PPP_PPPOE_ENABLE
 UINT    _nxe_ppp_packet_receive(NX_PPP *ppp_ptr, NX_PACKET *packet_ptr);
 UINT    _nx_ppp_packet_receive(NX_PPP *ppp_ptr, NX_PACKET *packet_ptr);

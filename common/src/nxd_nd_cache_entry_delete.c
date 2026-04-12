@@ -67,7 +67,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_nd_cache_entry_delete(NX_IP *ip_ptr, ULONG *dest_ip)
+UINT  _nxd_nd_cache_entry_delete(NX_IP *ip_ptr, UINT32 *dest_ip)
 {
 #ifdef FEATURE_NX_IPV6
 UINT            status;

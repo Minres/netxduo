@@ -595,7 +595,7 @@ typedef struct NX_SECURE_X509_EXTENSION_STRUCT
 
     /* Pointer to DER-encoded extension data. */
     const UCHAR *nx_secure_x509_extension_data;
-    ULONG        nx_secure_x509_extension_data_length;
+    UINT32        nx_secure_x509_extension_data_length;
 } NX_SECURE_X509_EXTENSION;
 
 
@@ -728,13 +728,13 @@ typedef struct NX_SECURE_X509_CERT_STRUCT
     VOID *nx_secure_x509_public_cipher_metadata_area;
 
     /* Define the public cipher metadata size. */
-    ULONG nx_secure_x509_public_cipher_metadata_size;
+    UINT32 nx_secure_x509_public_cipher_metadata_size;
 
     /* Define the hash metadata area. */
     VOID *nx_secure_x509_hash_metadata_area;
 
     /* Define the hash metadata size. */
-    ULONG nx_secure_x509_hash_metadata_size;
+    UINT32 nx_secure_x509_hash_metadata_size;
 
     /* This pointer points to a singly-linked list of certificates - used for the certificate stores. */
     struct NX_SECURE_X509_CERT_STRUCT *nx_secure_x509_next_certificate;
@@ -771,7 +771,7 @@ typedef struct NX_SECURE_X509_CERT_STRUCT
         struct
         {
             const UCHAR *key_data;
-            ULONG        key_length;
+            UINT32        key_length;
         } user_key;
     } nx_secure_x509_private_key;
 
@@ -785,7 +785,7 @@ typedef struct NX_SECURE_X509_CERT_STRUCT
 
     /* Pointer to start of extensions so we can optionally parse them later. */
     const UCHAR *nx_secure_x509_extensions_data;
-    ULONG        nx_secure_x509_extensions_data_length;
+    UINT32        nx_secure_x509_extensions_data_length;
 
     /* Indicates whether a certificate was allocated by the application or
        automatically by TLS. */
@@ -793,7 +793,7 @@ typedef struct NX_SECURE_X509_CERT_STRUCT
 } NX_SECURE_X509_CERT;
 
 UINT _nx_secure_x509_certificate_parse(const UCHAR *buffer, UINT length, UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-UINT _nx_secure_x509_asn1_tlv_block_parse(const UCHAR *buffer, ULONG *buffer_length, USHORT *tlv_type, USHORT *tlv_tag_class, ULONG *tlv_length, const UCHAR **tlv_data, ULONG *header_length);
+UINT _nx_secure_x509_asn1_tlv_block_parse(const UCHAR *buffer, UINT32 *buffer_length, USHORT *tlv_type, USHORT *tlv_tag_class, UINT32 *tlv_length, const UCHAR **tlv_data, UINT32 *header_length);
 
 UINT _nx_secure_x509_pkcs1_rsa_private_key_parse(const UCHAR *buffer, UINT length, UINT *bytes_processed, NX_SECURE_RSA_PRIVATE_KEY *rsa_key);
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
@@ -838,7 +838,7 @@ typedef struct NX_SECURE_X509_CRL_STRUCT
     /* Pointer to start of revoked certificate list. This will be parsed whenever a certificate
        is being validated. */
     const UCHAR *nx_secure_x509_crl_revoked_certs;
-    ULONG        nx_secure_x509_crl_revoked_certs_length;
+    UINT32        nx_secure_x509_crl_revoked_certs_length;
 } NX_SECURE_X509_CRL;
 
 #endif
@@ -897,7 +897,7 @@ UINT _nx_secure_x509_store_certificate_remove(NX_SECURE_X509_CERTIFICATE_STORE *
 
 /* Compares two distinguished names to see if they are equal. */
 INT _nx_secure_x509_distinguished_name_compare(NX_SECURE_X509_DISTINGUISHED_NAME *name,
-                                               NX_SECURE_X509_DISTINGUISHED_NAME *compare_name, ULONG compare_fields);
+                                               NX_SECURE_X509_DISTINGUISHED_NAME *compare_name, UINT32 compare_fields);
 
 /* Parse an X.509 DER-encoded distinguished name. */
 UINT _nx_secure_x509_distinguished_name_parse(const UCHAR *buffer, UINT length,
@@ -920,10 +920,10 @@ UINT _nx_secure_x509_certificate_verify(NX_SECURE_X509_CERTIFICATE_STORE *store,
 
 /* Verify a given certificate chain to see if the end-entity certificate can be traced through the chain to a trust anchor. */
 UINT _nx_secure_x509_certificate_chain_verify(NX_SECURE_X509_CERTIFICATE_STORE *store,
-                                              NX_SECURE_X509_CERT *certificate, ULONG current_time);
+                                              NX_SECURE_X509_CERT *certificate, UINT32 current_time);
 
 /* Parse an OID string, returning an internally-used constant (defined above) for use in other parsing. */
-VOID _nx_secure_x509_oid_parse(const UCHAR *oid, ULONG length, UINT *oid_value);
+VOID _nx_secure_x509_oid_parse(const UCHAR *oid, UINT32 length, UINT *oid_value);
 
 UINT _nx_secure_x509_pkcs7_decode(const UCHAR *signature_pointer, UINT signature_length,
                                   const UCHAR **signature_oid, UINT *signature_oid_length,
@@ -973,7 +973,7 @@ UINT _nx_secure_x509_crl_verify(NX_SECURE_X509_CERT *certificate, NX_SECURE_X509
                                 NX_SECURE_X509_CERTIFICATE_STORE *store,
                                 NX_SECURE_X509_CERT *issuer_certificate);
 #endif /* NX_SECURE_X509_DISABLE_CRL */
-UINT _nx_secure_x509_expiration_check(NX_SECURE_X509_CERT *certificate, ULONG current_time);
+UINT _nx_secure_x509_expiration_check(NX_SECURE_X509_CERT *certificate, UINT32 current_time);
 
 UINT _nx_secure_x509_extended_key_usage_extension_parse(NX_SECURE_X509_CERT *certificate,
                                                         UINT key_usage);

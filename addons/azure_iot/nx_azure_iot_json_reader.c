@@ -55,7 +55,7 @@ az_span span = az_span_create((UCHAR *)buffer_ptr, (INT)buffer_len);
         return(NX_AZURE_IOT_SUCCESS);
     }
 
-    reader_ptr -> json_length = (ULONG)buffer_len;
+    reader_ptr -> json_length = (UINT32)buffer_len;
 
     if (az_result_failed(az_json_reader_init(&(reader_ptr -> json_reader),
                                              span, NX_NULL)))

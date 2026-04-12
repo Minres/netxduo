@@ -60,7 +60,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_secure_dtls_packet_allocate(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET_POOL *pool_ptr,
-                                      NX_PACKET **packet_ptr, ULONG wait_option)
+                                      NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT status;

@@ -74,11 +74,11 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_socket_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_udp_socket_receive(NX_UDP_SOCKET *socket_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 TX_INTERRUPT_SAVE_AREA
 
-ULONG                 *temp_ptr;
+UINT32                 *temp_ptr;
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
 NX_INTERFACE          *interface_ptr = NX_NULL;
 #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
@@ -88,7 +88,7 @@ UINT                   compute_checksum = 1;
 TX_THREAD             *thread_ptr;
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 
@@ -270,12 +270,12 @@ ULONG                  trace_timestamp;
                or if the UDP packet has a zero in the checksum field (indicating it was not computed
                by the sender, skip the checksum processing.  */
             /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-            temp_ptr =  (ULONG *)(*packet_ptr) -> nx_packet_prepend_ptr;
+            temp_ptr =  (UINT32 *)(*packet_ptr) -> nx_packet_prepend_ptr;
             if ((!socket_ptr -> nx_udp_socket_disable_checksum && (*(temp_ptr + 1) & NX_LOWER_16_MASK)) || /* per-socket checksum is not disabled, and the checksum field is not zero*/
                 ((*packet_ptr) -> nx_packet_ip_version == NX_IP_VERSION_V6))                               /* It is IPv6 packet */
             {
-            ULONG         *ip_src_addr = NX_NULL, *ip_dest_addr = NX_NULL;
-            ULONG          checksum;
+            UINT32         *ip_src_addr = NX_NULL, *ip_dest_addr = NX_NULL;
+            UINT32          checksum;
             NX_PACKET     *current_ptr = *packet_ptr;
 #ifdef NX_LITTLE_ENDIAN
             NX_UDP_HEADER *udp_header_ptr;
@@ -311,8 +311,8 @@ ULONG                  trace_timestamp;
 
 #ifdef NX_LITTLE_ENDIAN
                 /* Restore UDP header to network byte order */
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 #endif /* NX_LITTLE_ENDIAN */
 
                 /* nx_ip_checksum_compute takes care of both even number length and odd number length */
@@ -325,8 +325,8 @@ ULONG                  trace_timestamp;
 
 #ifdef NX_LITTLE_ENDIAN
                 /* Convert UDP header to host byte order */
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 #endif /* NX_LITTLE_ENDIAN */
 
                 /* Perform the one's complement processing on the checksum.  */
@@ -360,13 +360,13 @@ ULONG                  trace_timestamp;
                     (socket_ptr -> nx_udp_socket_ip_ptr) -> nx_ip_udp_packets_received--;
 
                     /* Decrement the total UDP receive bytes.  */
-                    (socket_ptr -> nx_udp_socket_ip_ptr) -> nx_ip_udp_bytes_received -=  (*packet_ptr) -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER);
+                    (socket_ptr -> nx_udp_socket_ip_ptr) -> nx_ip_udp_bytes_received -=  (*packet_ptr) -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER);
 
                     /* Decrement the total UDP receive packets count.  */
                     socket_ptr -> nx_udp_socket_packets_received--;
 
                     /* Decrement the total UDP receive bytes.  */
-                    socket_ptr -> nx_udp_socket_bytes_received -=  (*packet_ptr) -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER);
+                    socket_ptr -> nx_udp_socket_bytes_received -=  (*packet_ptr) -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER);
 
                     /* Restore interrupts.  */
                     TX_RESTORE
@@ -399,7 +399,7 @@ ULONG                  trace_timestamp;
     /* Remove the UDP header.  */
 
     /* Decrease the packet length.  */
-    (*packet_ptr) -> nx_packet_length =  (*packet_ptr) -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER);
+    (*packet_ptr) -> nx_packet_length =  (*packet_ptr) -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER);
 
     /* Position past the UDP header pointer.  */
     (*packet_ptr) -> nx_packet_prepend_ptr =   (*packet_ptr) -> nx_packet_prepend_ptr + sizeof(NX_UDP_HEADER);

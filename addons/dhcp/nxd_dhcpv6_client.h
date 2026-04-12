@@ -566,8 +566,8 @@ typedef struct NX_DHCPV6_IA_ADDRESS_STRUCT
     USHORT          nx_op_code;                    /* IA internet address option code is 5 */
     USHORT          nx_option_length;              /* Length of the IA address option data = 24 not including length and op code field*/
     NXD_ADDRESS     nx_global_address;             /* Assigned Host IPv6 address */
-    ULONG           nx_preferred_lifetime;         /* Server's preference for IPv6 address T1 life time for itself */
-    ULONG           nx_valid_lifetime;             /* Server's assigned valid time for T2 for any server  */
+    UINT32           nx_preferred_lifetime;         /* Server's preference for IPv6 address T1 life time for itself */
+    UINT32           nx_valid_lifetime;             /* Server's assigned valid time for T2 for any server  */
     UINT            nx_address_status;             /* Indicates if the global address is registered and validated. */
     UINT            nx_address_map;                /* Map the IPv6 address with client, indicates if the IPv6 address already exists or not.  */
 
@@ -600,9 +600,9 @@ typedef struct NX_DHCPV6_IA_NA_STRUCT
 
     USHORT              nx_op_code;             /* IA NA address option code is 3 */
     USHORT              nx_option_length;       /* 12 + length of variable length fields in IA_NA option . */
-    ULONG               nx_IA_NA_id;            /* IANA identifier; must be unique among all client IANA's. Must be the same on restart per IANA */
-    ULONG               nx_T1;                  /* Time client can extend time before address lifetime expires from the server it got it from; applies to all addresses in IA_NA. */
-    ULONG               nx_T2;                  /* Same as T1 except this is when the client will request REBIND from another server. */
+    UINT32               nx_IA_NA_id;            /* IANA identifier; must be unique among all client IANA's. Must be the same on restart per IANA */
+    UINT32               nx_T1;                  /* Time client can extend time before address lifetime expires from the server it got it from; applies to all addresses in IA_NA. */
+    UINT32               nx_T2;                  /* Same as T1 except this is when the client will request REBIND from another server. */
 
 } NX_DHCPV6_IA_NA;
 
@@ -616,9 +616,9 @@ typedef struct NX_DHCPV6_DUID_STRUCT
     USHORT            nx_option_length;           /* Option length = 14 not including length and op code field; */
     USHORT            nx_duid_type;               /* 3 main types: hw; hw + time; vendor assigned ID (not supported here); requires DUID be stored in non volatile storage */
     USHORT            nx_hardware_type;           /* Only if LL/LLT type. Hardware type specified by IANA/RFC 826 e.g. IEEE 802; network byte order */
-    ULONG             nx_duid_time;               /* Only if LLT type. Time based on when DUID generated; network byte order. */
-    ULONG             nx_link_layer_address_msw;  /* Only if LL/LLT type. Pointer to Unique link layer address - most significant word (2/4 bytes)*/
-    ULONG             nx_link_layer_address_lsw;  /* Only if LL/LLT type. Pointer to Unique link layer address - least significant word (4 bytes) */
+    UINT32             nx_duid_time;               /* Only if LLT type. Time based on when DUID generated; network byte order. */
+    UINT32             nx_link_layer_address_msw;  /* Only if LL/LLT type. Pointer to Unique link layer address - most significant word (2/4 bytes)*/
+    UINT32             nx_link_layer_address_lsw;  /* Only if LL/LLT type. Pointer to Unique link layer address - least significant word (4 bytes) */
 
 } NX_DHCPV6_DUID;
 
@@ -642,7 +642,7 @@ typedef struct NX_DHCPV6_MESSAGE_HDR_STRUCT
 
     USHORT             nx_message_type;           /* Message type (1 byte) */
     USHORT             nx_reserved;               /* Reserved.  */
-    ULONG              nx_message_xid;            /* Message transaction ID (3 bytes)*/
+    UINT32              nx_message_xid;            /* Message transaction ID (3 bytes)*/
 } NX_DHCPV6_MESSAGE_HDR;
 
 /* Define the option request structure. This is how the Client requests information other than global IP address.
@@ -673,7 +673,7 @@ typedef struct NX_DHCPV6_CLIENT_FQDN_STRUCT
 
 typedef struct NX_DHCPV6_STRUCT 
 {
-    ULONG                   nx_dhcpv6_id;                               /* DHCPv6 Structure ID  */
+    UINT32                   nx_dhcpv6_id;                               /* DHCPv6 Structure ID  */
     CHAR                    *nx_dhcpv6_name;                            /* DHCPv6 name supplied at create */ 
     UINT                    nx_dhcpv6_client_address_index[NX_DHCPV6_MAX_IA_ADDRESS];         
                                                                         /* Index in IP address table where the Client assigned address is located. */
@@ -699,7 +699,7 @@ typedef struct NX_DHCPV6_STRUCT
     NX_DHCPV6_PREFERENCE    nx_dhcpv6_preference;                       /* Server's preference affecting the Client's DHCPv6 server selection. */
     NX_DHCPV6_OPTIONREQUEST nx_dhcpv6_option_request;                   /* Set of request options in Solicit, Renew, Confirm or Rebind message types. */
     NX_DHCPV6_CLIENT_FQDN   nx_dhcpv6_client_FQDN;                      /* Set of Client options in Solicit, Request, Renew, or Rebind message types. */
-    ULONG                   nx_dhcpv6_IP_lifetime_time_accrued;         /* Time since Client set received or renewed its IP address with the DHCPv6 server. */
+    UINT32                   nx_dhcpv6_IP_lifetime_time_accrued;         /* Time since Client set received or renewed its IP address with the DHCPv6 server. */
     UCHAR                   nx_status_message[NX_DHCPV6_MAX_MESSAGE_SIZE];                  /* Server's message in its Option status to client.  */
     NXD_ADDRESS             nx_dhcpv6_server_address;                   /* DHCPv6 server address.  */
     NXD_ADDRESS             nx_dhcpv6_DNS_name_server_address[NX_DHCPV6_NUM_DNS_SERVERS];   /* DNS name server IP address */
@@ -707,28 +707,28 @@ typedef struct NX_DHCPV6_STRUCT
     NXD_ADDRESS             nx_dhcpv6_client_destination_address;       /* The destination address where DHCP message should be sent, by default All_DHCP_Relay_Agents_and_Servers(FF02::1:2).  */
     UCHAR                   nx_dhcpv6_domain_name[NX_DHCPV6_DOMAIN_NAME_BUFFER_SIZE];       /* Buffer for holding domain name. */
     UCHAR                   nx_dhcpv6_time_zone[NX_DHCPV6_TIME_ZONE_BUFFER_SIZE];           /* Buffer for holding time zone. */
-    ULONG                   nx_dhcpv6_solicitations_sent;               /* The number of Solicit messages sent */ 
-    ULONG                   nx_dhcpv6_solicitation_responses;           /* The number of solicitations server responded to */ 
-    ULONG                   nx_dhcpv6_requests_sent;                    /* The number of Request messages sent */ 
-    ULONG                   nx_dhcpv6_request_responses;                /* The number of requests server responded to */ 
-    ULONG                   nx_dhcpv6_renews_sent;                      /* The number of renew messages sent */ 
-    ULONG                   nx_dhcpv6_renew_responses;                  /* The number of renews server responded to */ 
-    ULONG                   nx_dhcpv6_rebinds_sent;                     /* The number of Rebind messages sent */ 
-    ULONG                   nx_dhcpv6_rebind_responses;                 /* The number of Rebind requests Server responded to */ 
-    ULONG                   nx_dhcpv6_releases_sent;                    /* The number of Release messages sent */ 
-    ULONG                   nx_dhcpv6_release_responses;                /* The number of Releases server responded to  */ 
-    ULONG                   nx_dhcpv6_confirms_sent;                    /* The number of confirmations sent */ 
-    ULONG                   nx_dhcpv6_confirm_responses;                /* The number of confirmations server responded to */ 
-    ULONG                   nx_dhcpv6_declines_sent;                    /* The number of declines sent */ 
-    ULONG                   nx_dhcpv6_decline_responses;                /* The number of declines server responded to */ 
-    ULONG                   nx_dhcpv6_inform_req_sent;                  /* The number of Inform (option requests) sent */ 
-    ULONG                   nx_dhcpv6_inform_req_responses;             /* The number of Inform server responsed to */ 
-    ULONG                   nx_dhcpv6_transmission_timeout;             /* Timeout on Client messages before resending a request to the server. */
-    ULONG                   nx_dhcpv6_retransmission_count;             /* The number of request retransmissions to the server. */
-    ULONG                   nx_dhcpv6_init_retransmission_timeout;      /* The initial retransmission time. */
-    ULONG                   nx_dhcpv6_max_retransmission_count;         /* The maximum retransmission count. */
-    ULONG                   nx_dhcpv6_max_retransmission_timeout;       /* The maximum retransmission time. */
-    ULONG                   nx_dhcpv6_max_retransmission_duration;      /* The maximum retransmissions duration. */
+    UINT32                   nx_dhcpv6_solicitations_sent;               /* The number of Solicit messages sent */ 
+    UINT32                   nx_dhcpv6_solicitation_responses;           /* The number of solicitations server responded to */ 
+    UINT32                   nx_dhcpv6_requests_sent;                    /* The number of Request messages sent */ 
+    UINT32                   nx_dhcpv6_request_responses;                /* The number of requests server responded to */ 
+    UINT32                   nx_dhcpv6_renews_sent;                      /* The number of renew messages sent */ 
+    UINT32                   nx_dhcpv6_renew_responses;                  /* The number of renews server responded to */ 
+    UINT32                   nx_dhcpv6_rebinds_sent;                     /* The number of Rebind messages sent */ 
+    UINT32                   nx_dhcpv6_rebind_responses;                 /* The number of Rebind requests Server responded to */ 
+    UINT32                   nx_dhcpv6_releases_sent;                    /* The number of Release messages sent */ 
+    UINT32                   nx_dhcpv6_release_responses;                /* The number of Releases server responded to  */ 
+    UINT32                   nx_dhcpv6_confirms_sent;                    /* The number of confirmations sent */ 
+    UINT32                   nx_dhcpv6_confirm_responses;                /* The number of confirmations server responded to */ 
+    UINT32                   nx_dhcpv6_declines_sent;                    /* The number of declines sent */ 
+    UINT32                   nx_dhcpv6_decline_responses;                /* The number of declines server responded to */ 
+    UINT32                   nx_dhcpv6_inform_req_sent;                  /* The number of Inform (option requests) sent */ 
+    UINT32                   nx_dhcpv6_inform_req_responses;             /* The number of Inform server responsed to */ 
+    UINT32                   nx_dhcpv6_transmission_timeout;             /* Timeout on Client messages before resending a request to the server. */
+    UINT32                   nx_dhcpv6_retransmission_count;             /* The number of request retransmissions to the server. */
+    UINT32                   nx_dhcpv6_init_retransmission_timeout;      /* The initial retransmission time. */
+    UINT32                   nx_dhcpv6_max_retransmission_count;         /* The maximum retransmission count. */
+    UINT32                   nx_dhcpv6_max_retransmission_timeout;       /* The maximum retransmission time. */
+    UINT32                   nx_dhcpv6_max_retransmission_duration;      /* The maximum retransmissions duration. */
     UINT                    nx_dhcpv6_request_solicit_mode;             /* The mode of sending the solicit message with rapid commit option. */
     UINT                    nx_dhcpv6_reply_option_flags;               /* The flags indicate options the reply messages included. */
     USHORT                  nx_dhcpv6_reply_option_current_pref_value;  /* The preference value of current advertise message. */
@@ -762,7 +762,7 @@ typedef struct NX_DHCPV6_CLIENT_RECORD_STRUCT
     UINT                    nx_dhcpv6_client_interface_index;           /* DHCPv6 outgoing network interface index */ 
     UINT                    nx_dhcpv6_client_address_index[NX_DHCPV6_MAX_IA_ADDRESS];         
                                                                         /* Index in IP address table where the Client assigned address is located. */
-    ULONG                   nx_dhcpv6_IP_lifetime_time_accrued;         /* Time since Client set received or renewed its IP address with the DHCPv6 server. */
+    UINT32                   nx_dhcpv6_IP_lifetime_time_accrued;         /* Time since Client set received or renewed its IP address with the DHCPv6 server. */
     NX_DHCPV6_DUID          nx_dhcpv6_client_duid;                      /* Client DUID; ID by which Client and Server identify each other's DUID */
     NX_DHCPV6_DUID          nx_dhcpv6_server_duid;                      /* Server DUID; ID by which Client and Server identify each other's DUID */
     NX_DHCPV6_IA_NA         nx_dhcpv6_iana;                             /* Identity Association for non temp address - must be stored in non volatile memory */
@@ -877,27 +877,27 @@ typedef struct NX_DHCPV6_CLIENT_RECORD_STRUCT
 #endif
 
 /* Define the prototypes accessible to the application software.  */
-UINT        nx_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, ULONG stack_size,
+UINT        nx_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, UINT32 stack_size,
                                     VOID (*dhcpv6_state_change_notify)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT old_state, UINT new_state),                             
                                     VOID (*dhcpv6_server_error_handler)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT op_code, UINT status_code, UINT message_type));
 UINT        nx_dhcpv6_client_delete(NX_DHCPV6 *dhcpv6_ptr);
-UINT        nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, ULONG time);
-UINT        nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULONG T1, ULONG T2);
-UINT        nx_dhcpv6_create_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, ULONG preferred_lifetime, ULONG valid_lifetime);  
-UINT        nx_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, ULONG preferred_lifetime, ULONG valid_lifetime);  
+UINT        nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, UINT32 time);
+UINT        nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, UINT32 T1, UINT32 T2);
+UINT        nx_dhcpv6_create_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, UINT32 preferred_lifetime, UINT32 valid_lifetime);  
+UINT        nx_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, UINT32 preferred_lifetime, UINT32 valid_lifetime);  
 UINT        nx_dhcpv6_client_set_interface(NX_DHCPV6 *dhcpv6_ptr, UINT interface_index);
 UINT        nx_dhcpv6_client_set_destination_address(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *destination_address);
-UINT        nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG time_accrued);
-UINT        nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_id);
+UINT        nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 time_accrued);
+UINT        nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_id);
 UINT        nx_dhcpv6_get_IP_address(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ip_address);
-UINT        nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2, ULONG *preferred_lifetime, ULONG *valid_lifetime);
+UINT        nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
 UINT        nx_dhcpv6_get_other_option_data(NX_DHCPV6 *dhcpv6_ptr, UINT option_code, UCHAR *buffer, UINT buffer_length);
 UINT        nx_dhcpv6_get_DNS_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);   
 UINT        nx_dhcpv6_get_time_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);
-UINT        nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_accrued);
-UINT        nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2);
+UINT        nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_accrued);
+UINT        nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2);
 UINT        nx_dhcpv6_get_valid_ip_address_count(NX_DHCPV6 *dhcpv6_ptr, UINT *address_count);
-UINT        nx_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, ULONG *preferred_lifetime, ULONG *valid_lifetime);
+UINT        nx_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
 UINT        nx_dhcpv6_reinitialize(NX_DHCPV6 *dhcpv6_ptr);
 UINT        nx_dhcpv6_request_solicit(NX_DHCPV6 *dhcpv6_ptr);
 UINT        nx_dhcpv6_request_solicit_rapid(NX_DHCPV6 *dhcpv6_ptr);
@@ -916,7 +916,7 @@ UINT        nx_dhcpv6_resume(NX_DHCPV6 *dhcpv6_ptr);
 UINT        nx_dhcpv6_user_option_add_callback_set(NX_DHCPV6 *dhcpv6_ptr, UINT (*dhcpv6_user_option_add)(NX_DHCPV6 *dhcpv6_ptr, UINT interface_index, UINT message_type, UCHAR *user_option_ptr, UINT *user_option_length));
 #ifdef NX_DHCPV6_CLIENT_RESTORE_STATE
 UINT        nx_dhcpv6_client_get_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr);  
-UINT        nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, ULONG time_elapsed);
+UINT        nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, UINT32 time_elapsed);
 #endif
 
 
@@ -924,46 +924,46 @@ UINT        nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLI
 
 /* DHCP source code is being compiled, do not perform any API mapping.  */
 
-UINT        _nxe_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, ULONG stack_size,
+UINT        _nxe_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, UINT32 stack_size,
                                       VOID (*dhcpv6_state_change_notify)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT old_state, UINT new_state),
                                       VOID (*dhcpv6_server_error_handler)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT op_code, UINT status_code, UINT message_type));
-UINT        _nx_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, ULONG stack_size,
+UINT        _nx_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, UINT32 stack_size,
                                      VOID (*dhcpv6_state_change_notify)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT old_state, UINT new_state),
                                      VOID (*dhcpv6_server_error_handler)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT op_code, UINT status_code, UINT message_type));
 UINT        _nxe_dhcpv6_client_delete(NX_DHCPV6 *dhcpv6_ptr);
 UINT        _nx_dhcpv6_client_delete(NX_DHCPV6 *dhcpv6_ptr);
-UINT        _nxe_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, ULONG time);
-UINT        _nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, ULONG time);
-UINT        _nxe_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULONG T1, ULONG T2);
-UINT        _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULONG T1, ULONG T2);
-UINT        _nxe_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, ULONG preferred_lifetime, ULONG valid_lifetime);
-UINT        _nx_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, ULONG preferred_lifetime, ULONG valid_lifetime);
+UINT        _nxe_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, UINT32 time);
+UINT        _nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, UINT32 time);
+UINT        _nxe_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, UINT32 T1, UINT32 T2);
+UINT        _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, UINT32 T1, UINT32 T2);
+UINT        _nxe_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, UINT32 preferred_lifetime, UINT32 valid_lifetime);
+UINT        _nx_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, UINT32 preferred_lifetime, UINT32 valid_lifetime);
 UINT        _nxe_dhcpv6_client_set_interface(NX_DHCPV6 *dhcpv6_ptr, UINT interface_index);
 UINT        _nx_dhcpv6_client_set_interface(NX_DHCPV6 *dhcpv6_ptr, UINT interface_index); 
 UINT        _nxe_dhcpv6_client_set_destination_address(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *destination_address);
 UINT        _nx_dhcpv6_client_set_destination_address(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *destination_address);
-UINT        _nxe_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG time_accrued);
-UINT        _nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG time_accrued);
-UINT        _nxe_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_id);
-UINT        _nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_id);
+UINT        _nxe_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 time_accrued);
+UINT        _nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 time_accrued);
+UINT        _nxe_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_id);
+UINT        _nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_id);
 UINT        _nxe_dhcpv6_get_IP_address(NX_DHCPV6 *dhcpv6_ptr,  NXD_ADDRESS *ip_address);
 UINT        _nx_dhcpv6_get_IP_address(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ip_address);
-UINT        _nxe_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2, ULONG *preferred_lifetime, ULONG *valid_lifetime);
-UINT        _nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2, ULONG *preferred_lifetime, ULONG *valid_lifetime);
+UINT        _nxe_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
+UINT        _nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
 UINT        _nxe_dhcpv6_get_other_option_data(NX_DHCPV6 *dhcpv6_ptr, UINT option_code, UCHAR *buffer, UINT buffer_length);
 UINT        _nx_dhcpv6_get_other_option_data(NX_DHCPV6 *dhcpv6_ptr, UINT option_code, UCHAR *buffer, UINT buffer_length);
 UINT        _nxe_dhcpv6_get_DNS_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);
 UINT        _nx_dhcpv6_get_DNS_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);
 UINT        _nxe_dhcpv6_get_time_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);
 UINT        _nx_dhcpv6_get_time_server_address(NX_DHCPV6 *dhcpv6_ptr, UINT index, NXD_ADDRESS *server_address);
-UINT        _nxe_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_accrued);
-UINT        _nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_accrued);
-UINT        _nxe_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2);
-UINT        _nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2);
+UINT        _nxe_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_accrued);
+UINT        _nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_accrued);
+UINT        _nxe_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2);
+UINT        _nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2);
 UINT        _nxe_dhcpv6_get_valid_ip_address_count(NX_DHCPV6 *dhcpv6_ptr, UINT *address_count);
 UINT        _nx_dhcpv6_get_valid_ip_address_count(NX_DHCPV6 *dhcpv6_ptr, UINT *address_count);
-UINT        _nxe_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, ULONG *preferred_lifetime, ULONG *valid_lifetime);
-UINT        _nx_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, ULONG *preferred_lifetime, ULONG *valid_lifetime);
+UINT        _nxe_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
+UINT        _nx_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address, UINT32 *preferred_lifetime, UINT32 *valid_lifetime);
 UINT        _nxe_dhcpv6_reinitialize(NX_DHCPV6 *dhcpv6_ptr);
 UINT        _nx_dhcpv6_reinitialize(NX_DHCPV6 *dhcpv6_ptr);
 UINT        _nxe_dhcpv6_request_solicit(NX_DHCPV6 *dhcpv6_ptr);
@@ -999,8 +999,8 @@ UINT        _nx_dhcpv6_user_option_add_callback_set(NX_DHCPV6 *dhcpv6_ptr, UINT 
 #ifdef NX_DHCPV6_CLIENT_RESTORE_STATE
 UINT        _nxe_dhcpv6_client_get_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr);     
 UINT        _nx_dhcpv6_client_get_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr);  
-UINT        _nxe_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, ULONG time_elapsed);
-UINT        _nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, ULONG time_elapsed);
+UINT        _nxe_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, UINT32 time_elapsed);
+UINT        _nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, UINT32 time_elapsed);
 #endif
 
 #endif
@@ -1040,8 +1040,8 @@ UINT        _nx_dhcpv6_process_time_zone(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_da
 UINT        _nx_dhcpv6_process_time_server(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, UINT option_length);
 VOID        _nx_dhcpv6_IP_lifetime_timeout_entry(ULONG dhcpv6_ptr_value);
 VOID        _nx_dhcpv6_session_timeout_entry(ULONG dhcpv6_ptr_value);
-UINT        _nx_dhcpv6_utility_get_block_option_length(UCHAR *buffer_ptr, ULONG *option, ULONG *length);
-UINT        _nx_dhcpv6_utility_get_data(UCHAR *buffer, UINT size, ULONG *value);
+UINT        _nx_dhcpv6_utility_get_block_option_length(UCHAR *buffer_ptr, UINT32 *option, UINT32 *length);
+UINT        _nx_dhcpv6_utility_get_data(UCHAR *buffer, UINT size, UINT32 *value);
 INT         _nx_dhcpv6_utility_time_randomize(void);
 UINT        _nx_dhcpv6_update_retransmit_info(NX_DHCPV6 *dhcpv6_ptr);
 UINT        _nx_dhcpv6_register_IP_address(NX_DHCPV6 *dhcpv6_ptr);
@@ -1049,7 +1049,7 @@ UINT        _nx_dhcpv6_remove_assigned_address(NX_DHCPV6 *dhcpv6_ptr, UINT ia_in
 UINT        _nx_dhcpv6_name_string_encode(UCHAR *ptr, UCHAR *name);
 UINT        _nx_dhcpv6_name_string_unencode(UCHAR *data, UINT start, UCHAR *buffer, UINT size);
 #if !defined (NX_DISABLE_IPV6_DAD) && defined (NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY)
-VOID        _nx_dhcpv6_ipv6_address_DAD_notify(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT ipv6_addr_index, ULONG *ipv6_address);
+VOID        _nx_dhcpv6_ipv6_address_DAD_notify(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT ipv6_addr_index, UINT32 *ipv6_address);
 #endif
 
 /* Determine if a C++ compiler is being used.  If so, complete the standard

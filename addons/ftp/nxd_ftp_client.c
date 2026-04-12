@@ -90,8 +90,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, ULONG server_ip, CHAR *username, 
-                              CHAR *password, ULONG wait_option)
+UINT  _nxe_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 server_ip, CHAR *username, 
+                              CHAR *password, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -166,8 +166,8 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, ULONG server_ip, CHAR *username, 
-                             CHAR *password, ULONG wait_option)
+UINT  _nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 server_ip, CHAR *username, 
+                             CHAR *password, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -231,7 +231,7 @@ NXD_ADDRESS server_ipduo;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, 
-                              CHAR *password, ULONG wait_option)
+                              CHAR *password, UINT32 wait_option)
 {
 
 UINT        status;
@@ -295,7 +295,7 @@ UINT        status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, 
-                              CHAR *password, ULONG wait_option)
+                              CHAR *password, UINT32 wait_option)
 {
               
     /* Invoke the real connection call. */
@@ -345,7 +345,7 @@ UINT  _nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_ftp_client_connect_internal(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ip, CHAR *username, 
-                                      CHAR *password, ULONG wait_option)
+                                      CHAR *password, UINT32 wait_option)
 {
 
 NX_PACKET   *packet_ptr;
@@ -812,7 +812,7 @@ UINT        status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, 
-                             ULONG window_size, NX_PACKET_POOL *pool_ptr)
+                             UINT32 window_size, NX_PACKET_POOL *pool_ptr)
 {
 
 UINT    status;
@@ -870,7 +870,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, 
-                            ULONG window_size, NX_PACKET_POOL *pool_ptr)
+                            UINT32 window_size, NX_PACKET_POOL *pool_ptr)
 {
 
 UINT    status;
@@ -1123,7 +1123,7 @@ UINT  _nx_ftp_client_delete(NX_FTP_CLIENT *ftp_client_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option)
+UINT  _nxe_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option)
 {
 
 UINT    status;
@@ -1184,7 +1184,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option)
+UINT  _nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option)
 {
 
 UINT        i;
@@ -1343,7 +1343,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, ULONG wait_option)
+UINT  _nxe_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, UINT32 wait_option)
 {
 
 UINT    status;
@@ -1404,7 +1404,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, ULONG wait_option)
+UINT  _nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, UINT32 wait_option)
 {
 
 UINT        i;
@@ -1564,7 +1564,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option)
+UINT  _nxe_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option)
 {
 
 UINT    status;
@@ -1625,7 +1625,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option)
+UINT  _nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option)
 {
 
 UINT        i;
@@ -1788,7 +1788,7 @@ UINT        status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, 
-                                            NX_PACKET **packet_ptr, ULONG wait_option)
+                                            NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -1858,7 +1858,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, 
-                                           NX_PACKET **packet_ptr, ULONG wait_option)
+                                           NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT        i;
@@ -2125,7 +2125,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nxe_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -2187,7 +2187,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT        status;
@@ -2294,7 +2294,7 @@ UCHAR       *buffer_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nxe_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -2353,7 +2353,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 NX_PACKET   *packet_ptr;
@@ -2515,7 +2515,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nxe_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -2575,7 +2575,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 NX_PACKET   *packet_ptr;
@@ -2665,7 +2665,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, ULONG wait_option)
+UINT  _nxe_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT32 wait_option)
 {
 
 UINT    status;
@@ -2726,7 +2726,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, ULONG wait_option)
+UINT  _nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT32 wait_option)
 {
 
 UINT        i;
@@ -3094,7 +3094,7 @@ UINT  _nx_ftp_client_transfer_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT trans
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, ULONG wait_option)
+UINT  _nxe_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, UINT32 wait_option)
 {
 
 UINT    status;
@@ -3165,7 +3165,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, ULONG wait_option)
+UINT  _nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, UINT32 wait_option)
 {
 
 UINT        i;
@@ -3525,7 +3525,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nxe_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -3582,7 +3582,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -3657,7 +3657,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, ULONG wait_option)
+UINT  _nxe_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, UINT32 wait_option)
 {
 
 UINT    status;
@@ -3720,7 +3720,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, ULONG wait_option)
+UINT  _nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, UINT32 wait_option)
 {
 
 UINT        i;
@@ -3972,7 +3972,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, ULONG file_size)
+UINT  _nxe_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, UINT32 file_size)
 {
 
 UINT    status;
@@ -4030,7 +4030,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, ULONG file_size)
+UINT  _nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, UINT32 file_size)
 {
 
 UINT        status;
@@ -4106,7 +4106,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nxe_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -4164,11 +4164,11 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
-ULONG   file_size = 0;
+UINT32   file_size = 0;
 
 
     /* Determine if the file is open for writing.  */
@@ -4357,13 +4357,13 @@ CHAR number_buf[10]; /* 0x20010000 -> "2001:0000:" */
 /*                                                                        */
 /**************************************************************************/
 
-UINT  _nx_ftp_utility_convert_number_ascii(ULONG number, CHAR *numstring)
+UINT  _nx_ftp_utility_convert_number_ascii(UINT32 number, CHAR *numstring)
 {
 
 UINT    j; 
 UCHAR   c;
 
-    /* Go through each bit of the ULONG to convert. */
+    /* Go through each bit of the UINT32 to convert. */
     for (j = 0; j <=7 ; j++)
     {
 
@@ -4412,7 +4412,7 @@ UCHAR   c;
 /*  DESCRIPTION                                                           */
 /*                                                                        */
 /*    This function converts a number to ascii text e.g. used by          */
-/*    _nx_nat_utility_convert_portnumber_ULONG_to_ascii for inserting     */
+/*    _nx_nat_utility_convert_portnumber_UINT32_to_ascii for inserting     */
 /*    changed port numbers back into FTP PORT command .                   */
 /*                                                                        */
 /*  INPUT                                                                 */
@@ -4531,7 +4531,7 @@ UINT    digit;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_ftp_client_packet_allocate(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT _nx_ftp_client_packet_allocate(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT packet_type;
@@ -4610,13 +4610,13 @@ UINT status;
 /*    _nx_ftp_client_directory_listing_get  Get directory list            */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_active_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_active_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 UINT        status;
 UINT        data_port;
 #ifndef NX_DISABLE_IPV4
-ULONG       ip_address;
+UINT32       ip_address;
 #endif /* NX_DISABLE_IPV4 */
 UCHAR       *buffer_ptr;
 NX_PACKET   *packet_ptr;
@@ -4913,7 +4913,7 @@ UINT        ipduo_size;
 /*    _nx_ftp_client_directory_listing_get  Get directory list            */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_passive_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_passive_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 UCHAR       *buffer_ptr;
@@ -4923,8 +4923,8 @@ UINT        i;
 UINT        data_port;
 #ifndef NX_DISABLE_IPV4
 UINT        commas =      0;
-ULONG       ip_address =  0;
-ULONG       temp =        0;
+UINT32       ip_address =  0;
+UINT32       temp =        0;
 #endif /* NX_DISABLE_IPV4  */
 
 
@@ -5174,7 +5174,7 @@ ULONG       temp =        0;
             {
 
                 /* Yes, numeric character is present.  Update the IP address.  */
-                temp =  (temp*10) + (ULONG) (buffer_ptr[i] - '0');
+                temp =  (temp*10) + (UINT32) (buffer_ptr[i] - '0');
             }
 
             /* Determine if a CR/LF is present.  */
@@ -5346,7 +5346,7 @@ ULONG       temp =        0;
 /*                                          Continue to get directory list*/ 
 /*                                                                        */ 
 /**************************************************************************/
-VOID  _nx_ftp_client_data_socket_cleanup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+VOID  _nx_ftp_client_data_socket_cleanup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 
@@ -5410,7 +5410,7 @@ VOID  _nx_ftp_client_data_socket_cleanup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wa
 /*    _nx_ftp_client_directory_listing_get  Get directory list            */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_block_mode_send(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option)
+UINT  _nx_ftp_client_block_mode_send(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option)
 {
 
 UINT        status;
@@ -5533,7 +5533,7 @@ UCHAR       *buffer_ptr;
 /*    _nx_ftp_client_file_write             Send data packet to server    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_ftp_client_block_header_send(NX_FTP_CLIENT *ftp_client_ptr, ULONG block_size)
+UINT  _nx_ftp_client_block_header_send(NX_FTP_CLIENT *ftp_client_ptr, UINT32 block_size)
 {
 
 UINT        status;
@@ -5640,7 +5640,7 @@ UCHAR       *buffer_ptr;
 UINT  _nx_ftp_client_block_header_retrieve(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr)
 {
 
-ULONG       delta;
+UINT32       delta;
 UCHAR       *buffer_ptr;
 #ifndef NX_DISABLE_PACKET_CHAIN
 NX_PACKET   *before_last_packet;
@@ -5666,7 +5666,7 @@ NX_PACKET   *last_packet;
         buffer_ptr = packet_ptr -> nx_packet_prepend_ptr;
 
         /* Process block header.  */
-        ftp_client_ptr -> nx_ftp_client_block_total_size = (ULONG)((buffer_ptr[1] << 8) | buffer_ptr[2]);
+        ftp_client_ptr -> nx_ftp_client_block_total_size = (UINT32)((buffer_ptr[1] << 8) | buffer_ptr[2]);
         ftp_client_ptr -> nx_ftp_client_block_remaining_size = ftp_client_ptr -> nx_ftp_client_block_total_size;
 
         /* Skip the block header.  */
@@ -5718,7 +5718,7 @@ NX_PACKET   *last_packet;
 
             /* Determine if the amount to adjust is less than the payload in the last packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
+            if (((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
             {
 
                 /* Yes, simply adjust the append pointer of the last packet in the chain.  */
@@ -5732,7 +5732,7 @@ NX_PACKET   *last_packet;
             {
 
                 /* Adjust the delta by the amount in the last packet.  */
-                delta =  delta - ((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
+                delta =  delta - ((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
 
                 /* Find the packet before the last packet.  */
                 before_last_packet =  packet_ptr;

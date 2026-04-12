@@ -79,21 +79,21 @@
 /*    _nx_tcp_packet_send_probe             Send zero window probe packet */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_tcp_packet_send_control(NX_TCP_SOCKET *socket_ptr, ULONG control_bits, ULONG tx_sequence,
-                                  ULONG ack_number, ULONG option_word_1, ULONG option_word_2, UCHAR *data)
+VOID  _nx_tcp_packet_send_control(NX_TCP_SOCKET *socket_ptr, UINT32 control_bits, UINT32 tx_sequence,
+                                  UINT32 ack_number, UINT32 option_word_1, UINT32 option_word_2, UCHAR *data)
 {
 
 NX_IP         *ip_ptr;
 NX_PACKET     *packet_ptr;
 NX_TCP_HEADER *tcp_header_ptr;
-ULONG          checksum;
-ULONG          data_offset = 0;
-ULONG         *source_ip = NX_NULL, *dest_ip = NX_NULL;
+UINT32          checksum;
+UINT32          data_offset = 0;
+UINT32         *source_ip = NX_NULL, *dest_ip = NX_NULL;
 #if defined(NX_DISABLE_TCP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
 UINT           compute_checksum = 1;
 #endif /* defined(NX_DISABLE_TCP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
-ULONG          header_size;
-ULONG          window_size;
+UINT32          header_size;
+UINT32          window_size;
 
 #ifdef NX_DISABLE_TCP_TX_CHECKSUM
     compute_checksum = 0;
@@ -210,7 +210,7 @@ ULONG          window_size;
     tcp_header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Build the control request in the TCP header.  */
-    tcp_header_ptr -> nx_tcp_header_word_0 =        (((ULONG)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) | (ULONG)socket_ptr -> nx_tcp_socket_connect_port;
+    tcp_header_ptr -> nx_tcp_header_word_0 =        (((UINT32)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) | (UINT32)socket_ptr -> nx_tcp_socket_connect_port;
     tcp_header_ptr -> nx_tcp_sequence_number =      tx_sequence;
     tcp_header_ptr -> nx_tcp_acknowledgment_number = ack_number;
     tcp_header_ptr -> nx_tcp_header_word_3 =        header_size | control_bits | window_size;
@@ -222,11 +222,11 @@ ULONG          window_size;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the TCP header.  */
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
 
     /* Check whether or not data is set. */
     if (data)
@@ -243,17 +243,17 @@ ULONG          window_size;
 
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
            swap the endian of the TCP header.  */
-        NX_CHANGE_ULONG_ENDIAN(option_word_1);
-        NX_CHANGE_ULONG_ENDIAN(option_word_2);
+        NX_CHANGE_UINT32_ENDIAN(option_word_1);
+        NX_CHANGE_UINT32_ENDIAN(option_word_2);
 
         /* Set options. */
         /*lint --e{927} --e{826} suppress cast of pointer to pointer, since it is necessary  */
-        *((ULONG *)packet_ptr -> nx_packet_append_ptr) = option_word_1;
-        *(((ULONG *)packet_ptr -> nx_packet_append_ptr) + 1) = option_word_2;
+        *((UINT32 *)packet_ptr -> nx_packet_append_ptr) = option_word_1;
+        *(((UINT32 *)packet_ptr -> nx_packet_append_ptr) + 1) = option_word_2;
 
         /* Adjust packet information. */
-        packet_ptr -> nx_packet_append_ptr += (sizeof(ULONG) << 1);
-        packet_ptr -> nx_packet_length += (ULONG)(sizeof(ULONG) << 1);
+        packet_ptr -> nx_packet_append_ptr += (sizeof(UINT32) << 1);
+        packet_ptr -> nx_packet_length += (UINT32)(sizeof(UINT32) << 1);
     }
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
@@ -308,9 +308,9 @@ ULONG          window_size;
         checksum = ~checksum & NX_LOWER_16_MASK;
 
         /* Move the checksum into header.  */
-        NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+        NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
         tcp_header_ptr -> nx_tcp_header_word_4 =  (checksum << NX_SHIFT_BY_16);
-        NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+        NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
     }
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
     else

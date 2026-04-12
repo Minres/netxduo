@@ -77,17 +77,17 @@ VOID  _nx_ip_forward_packet_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 
 NX_IPV4_HEADER *ip_header_ptr;
 NX_INTERFACE   *outgoing_interface = NX_NULL;
-ULONG           next_hop_address = 0;
-ULONG           destination_ip;
-ULONG           time_to_live;
-ULONG           fragment_bit;
-ULONG           status;
+UINT32           next_hop_address = 0;
+UINT32           destination_ip;
+UINT32           time_to_live;
+UINT32           fragment_bit;
+UINT32           status;
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
 UINT            compute_checksum = 1;
 #endif
-ULONG           checksum;
-ULONG           old_m;
-ULONG           new_m;
+UINT32           checksum;
+UINT32           old_m;
+UINT32           new_m;
 
 
     /* The NetX IP forwarding consists of simply sending the same packet out through
@@ -178,7 +178,7 @@ ULONG           new_m;
 
 
             /* Clear the capability flag.  */
-            packet_ptr -> nx_packet_interface_capability_flag &= (ULONG)(~NX_INTERFACE_CAPABILITY_IPV4_RX_CHECKSUM);
+            packet_ptr -> nx_packet_interface_capability_flag &= (UINT32)(~NX_INTERFACE_CAPABILITY_IPV4_RX_CHECKSUM);
 
 
             /* Set the computer checksum flag.  */
@@ -202,7 +202,7 @@ ULONG           new_m;
             old_m = new_m + 0x0100;
 
             /* Update the checksum, get the new checksum(HC'),
-               The new_m is ULONG value, so need get the lower value after invert. */
+               The new_m is UINT32 value, so need get the lower value after invert. */
             checksum = ((~checksum) & 0xFFFF) + ((~old_m) & 0xFFFF) + new_m;
 
             /* Fold a 4-byte value into a two byte value */
@@ -225,11 +225,11 @@ ULONG           new_m;
 
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
            swap the endian of the IP header.  */
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
 
         /* Check whether the destination IP address matched with one interface of IP instance.  */
         /*lint -e{613} suppress possible use of null pointer, since "outgoing_interface" was set in _nx_ip_route_find. */

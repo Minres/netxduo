@@ -76,8 +76,8 @@ VOID  _nx_tcp_fast_periodic_processing(NX_IP *ip_ptr)
 {
 
 NX_TCP_SOCKET *socket_ptr;
-ULONG          sockets;
-ULONG          timer_rate;
+UINT32          sockets;
+UINT32          timer_rate;
 
 
     /* Pickup this timer's periodic rate.  */

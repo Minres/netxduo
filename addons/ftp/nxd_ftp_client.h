@@ -203,19 +203,19 @@ extern   "C" {
 
 typedef struct NX_FTP_CLIENT_STRUCT 
 {
-    ULONG           nx_ftp_client_id;                               /* FTP Client ID                       */
+    UINT32           nx_ftp_client_id;                               /* FTP Client ID                       */
     CHAR           *nx_ftp_client_name;                             /* Name of this FTP client             */
     NX_IP          *nx_ftp_client_ip_ptr;                           /* Pointer to associated IP structure  */ 
     NX_PACKET_POOL *nx_ftp_client_packet_pool_ptr;                  /* Pointer to FTP client packet pool   */ 
-    ULONG           nx_ftp_client_server_ip;                        /* Server's IP address                 */ 
+    UINT32           nx_ftp_client_server_ip;                        /* Server's IP address                 */ 
     UINT            nx_ftp_client_state;                            /* State of FTP client                 */ 
     NX_TCP_SOCKET   nx_ftp_client_control_socket;                   /* Client FTP control socket           */
     NX_TCP_SOCKET   nx_ftp_client_data_socket;                      /* Client FTP data transfer socket     */ 
     UINT            nx_ftp_client_data_port;                        /* Port the Client data socket binds   */
     UINT            nx_ftp_client_passive_transfer_enabled;         /* Client enabled for passive transfer */
     UINT            nx_ftp_client_transfer_mode;                    /* Client transfer mode                */
-    ULONG           nx_ftp_client_block_total_size;                 /* Total size of data in block mode    */
-    ULONG           nx_ftp_client_block_remaining_size;             /* Remaining size of data in block mode*/
+    UINT32           nx_ftp_client_block_total_size;                 /* Total size of data in block mode    */
+    UINT32           nx_ftp_client_block_remaining_size;             /* Remaining size of data in block mode*/
 } NX_FTP_CLIENT;
 
 
@@ -280,23 +280,23 @@ typedef struct NX_FTP_CLIENT_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
 
-UINT        nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, ULONG server_ip, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        nx_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, ULONG window_size, NX_PACKET_POOL *pool_ptr);
+UINT        nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 server_ip, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        nx_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, UINT32 window_size, NX_PACKET_POOL *pool_ptr);
 UINT        nx_ftp_client_delete(NX_FTP_CLIENT *ftp_client_ptr);
-UINT        nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, ULONG wait_option);
-UINT        nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        nx_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, ULONG wait_option);
-UINT        nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, ULONG wait_option);
-UINT        nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_ptr, CHAR *filename, CHAR *new_filename, ULONG wait_option);
-UINT        nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT        nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, ULONG file_size);
+UINT        nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, UINT32 wait_option);
+UINT        nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        nx_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT32 wait_option);
+UINT        nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, UINT32 wait_option);
+UINT        nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_ptr, CHAR *filename, CHAR *new_filename, UINT32 wait_option);
+UINT        nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT        nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, UINT32 file_size);
 UINT        nx_ftp_client_passive_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT passive_mode_enabled);
 UINT        nx_ftp_client_transfer_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT transfer_mode);
 
@@ -304,40 +304,40 @@ UINT        nx_ftp_client_transfer_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT 
 
 /* FTP source code is being compiled, do not perform any API mapping.  */
 
-UINT        _nxe_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, ULONG server_ip, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, ULONG server_ip, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxde_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxe_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, ULONG window_size, NX_PACKET_POOL *pool_ptr);
-UINT        _nx_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, ULONG window_size, NX_PACKET_POOL *pool_ptr);
+UINT        _nxe_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 server_ip, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nx_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 server_ip, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxde_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxd_ftp_client_connect(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ipduo, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxe_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, UINT32 window_size, NX_PACKET_POOL *pool_ptr);
+UINT        _nx_ftp_client_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *ftp_client_name, NX_IP *ip_ptr, UINT32 window_size, NX_PACKET_POOL *pool_ptr);
 UINT        _nxe_ftp_client_delete(NX_FTP_CLIENT *ftp_client_ptr);
 UINT        _nx_ftp_client_delete(NX_FTP_CLIENT *ftp_client_ptr);
-UINT        _nxe_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        _nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        _nxe_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, ULONG wait_option);
-UINT        _nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, ULONG wait_option);
-UINT        _nxe_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        _nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, ULONG wait_option);
-UINT        _nxe_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, ULONG wait_option);
-UINT        _nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, ULONG wait_option);
-UINT        _nxe_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, ULONG wait_option);
-UINT        _nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, ULONG wait_option);
-UINT        _nxe_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, ULONG wait_option);
-UINT        _nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_ptr, CHAR *filename, CHAR *new_filename, ULONG wait_option);
-UINT        _nxe_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT        _nxe_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, ULONG file_size);
-UINT        _nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, ULONG file_size);
+UINT        _nxe_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        _nx_ftp_client_directory_create(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        _nxe_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, UINT32 wait_option);
+UINT        _nx_ftp_client_directory_default_set(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, UINT32 wait_option);
+UINT        _nxe_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        _nx_ftp_client_directory_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_name, UINT32 wait_option);
+UINT        _nxe_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_directory_listing_get(NX_FTP_CLIENT *ftp_client_ptr, CHAR *directory_path, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_directory_listing_continue(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_disconnect(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_file_close(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT32 wait_option);
+UINT        _nx_ftp_client_file_delete(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, UINT32 wait_option);
+UINT        _nx_ftp_client_file_open(NX_FTP_CLIENT *ftp_client_ptr, CHAR *file_name, UINT open_type, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_file_read(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_rename(NX_FTP_CLIENT *ftp_client_ptr, CHAR *filename, CHAR *new_filename, UINT32 wait_option);
+UINT        _nx_ftp_client_file_rename(NX_FTP_CLIENT *ftp_ptr, CHAR *filename, CHAR *new_filename, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_file_write(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT        _nxe_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, UINT32 file_size);
+UINT        _nx_ftp_client_file_size_set(NX_FTP_CLIENT *ftp_client_ptr, UINT32 file_size);
 UINT        _nxe_ftp_client_passive_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT passive_mode_enabled);
 UINT        _nx_ftp_client_passive_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT passive_mode_enabled);
 UINT        _nxe_ftp_client_transfer_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT transfer_mode);
@@ -347,16 +347,16 @@ UINT        _nx_ftp_client_transfer_mode_set(NX_FTP_CLIENT *ftp_client_ptr, UINT
 
 /* Internal functions. */
 VOID        _nx_ftp_client_data_disconnect(NX_TCP_SOCKET *data_socket_ptr);
-UINT        _nx_ftp_client_packet_allocate(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_active_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_passive_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-VOID        _nx_ftp_client_data_socket_cleanup(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_block_mode_send(NX_FTP_CLIENT *ftp_client_ptr, ULONG wait_option);
-UINT        _nx_ftp_client_block_header_send(NX_FTP_CLIENT *ftp_client_ptr, ULONG block_size);
+UINT        _nx_ftp_client_packet_allocate(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_active_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_passive_transfer_setup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+VOID        _nx_ftp_client_data_socket_cleanup(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_block_mode_send(NX_FTP_CLIENT *ftp_client_ptr, UINT32 wait_option);
+UINT        _nx_ftp_client_block_header_send(NX_FTP_CLIENT *ftp_client_ptr, UINT32 block_size);
 UINT        _nx_ftp_client_block_header_retrieve(NX_FTP_CLIENT *ftp_client_ptr, NX_PACKET *packet_ptr);
-UINT        _nx_ftp_client_connect_internal(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ip, CHAR *username, CHAR *password, ULONG wait_option);
+UINT        _nx_ftp_client_connect_internal(NX_FTP_CLIENT *ftp_client_ptr, NXD_ADDRESS *server_ip, CHAR *username, CHAR *password, UINT32 wait_option);
 UINT        _nx_ftp_utility_convert_IPv6_to_ascii(NX_TCP_SOCKET *tcp_socket_ptr, CHAR *buffer, UINT buffer_length, UINT *size);
-UINT        _nx_ftp_utility_convert_number_ascii(ULONG number, CHAR *numstring);
+UINT        _nx_ftp_utility_convert_number_ascii(UINT32 number, CHAR *numstring);
 UINT        _nx_ftp_utility_convert_portnumber_ascii(UINT number, CHAR *numstring, UINT *numstring_length);
 
 

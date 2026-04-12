@@ -65,7 +65,7 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_driver_direct_command(NX_IP *ip_ptr, UINT command, ULONG *return_value_ptr)
+UINT  _nx_ip_driver_direct_command(NX_IP *ip_ptr, UINT command, UINT32 *return_value_ptr)
 {
 
     return(_nx_ip_driver_interface_direct_command(ip_ptr, command, 0, return_value_ptr));

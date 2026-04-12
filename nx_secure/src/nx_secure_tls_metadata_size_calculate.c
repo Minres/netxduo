@@ -60,7 +60,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_metadata_size_calculate(const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                            ULONG *metadata_size)
+                                            UINT32 *metadata_size)
 {
 
 UINT                            i;
@@ -73,7 +73,7 @@ UINT                            max_handshake_hash_metadata_size = 0;
 UINT                            max_handshake_hash_scratch_size  = 0;
 NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite_table;
 USHORT                          ciphersuite_table_size;
-ULONG                           max_total_metadata_size;
+UINT32                           max_total_metadata_size;
 #ifndef NX_SECURE_DISABLE_X509
 NX_SECURE_X509_CRYPTO          *cert_crypto;
 USHORT                          cert_crypto_size;

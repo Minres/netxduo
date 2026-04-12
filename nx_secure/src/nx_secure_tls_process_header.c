@@ -65,10 +65,10 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_process_header(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *packet_ptr,
-                                   ULONG record_offset, USHORT *message_type, UINT *length,
+                                   UINT32 record_offset, USHORT *message_type, UINT *length,
                                    UCHAR *header_data, USHORT *header_length)
 {
-ULONG  bytes_copied;
+UINT32  bytes_copied;
 UINT   status;
 USHORT protocol_version;
 

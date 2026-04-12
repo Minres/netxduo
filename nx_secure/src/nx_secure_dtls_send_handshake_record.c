@@ -69,13 +69,13 @@
 /**************************************************************************/
 UINT _nx_secure_dtls_send_handshake_record(NX_SECURE_DTLS_SESSION *dtls_session,
                                            NX_PACKET *send_packet, UCHAR handshake_type,
-                                           ULONG wait_option, UINT include_in_finished)
+                                           UINT32 wait_option, UINT include_in_finished)
 {
 UINT       status;
 UCHAR     *packet_buffer;
-ULONG      length;
+UINT32      length;
 NX_PACKET *current_packet;
-ULONG      fragment_length;
+UINT32      fragment_length;
 
 
     /* Build up the DTLS handshake header.
@@ -140,7 +140,7 @@ ULONG      fragment_length;
         do
         {
             /* Update the handshake hash with the data. */
-            length = (ULONG)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
+            length = (UINT32)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
             _nx_secure_tls_handshake_hash_update(&dtls_session -> nx_secure_dtls_tls_session, current_packet -> nx_packet_prepend_ptr,
                                                  (UINT)length);
 

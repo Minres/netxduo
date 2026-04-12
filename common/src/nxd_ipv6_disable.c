@@ -76,13 +76,13 @@ UINT  _nxd_ipv6_disable(NX_IP *ip_ptr)
 #ifdef FEATURE_NX_IPV6
 
 TX_INTERRUPT_SAVE_AREA
-ULONG address[4];
+UINT32 address[4];
 UINT  i;
 
 
     /* Make sure IPv6 is not already enabled. */
-    /* Cast the function pointer into a ULONG. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-    /*lint -e{923} suppress cast of pointer to ULONG.  */
+    /* Cast the function pointer into a UINT32. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+    /*lint -e{923} suppress cast of pointer to UINT32.  */
     if ((ALIGN_TYPE)ip_ptr -> nx_ipv6_packet_receive == NX_NULL)
     {
         return(NX_SUCCESS);

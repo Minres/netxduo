@@ -78,8 +78,8 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_icmp_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, ULONG data_size,
-                     NX_PACKET **response_ptr, ULONG wait_option)
+UINT  _nx_icmp_ping6(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, UINT32 data_size,
+                     NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 UINT              status;

@@ -62,7 +62,7 @@
 /*    _nd_cache_delete                      Delete a neighbor cache.      */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_invalidate_destination_entry(NX_IP *ip_ptr, ULONG *next_hop_ip)
+VOID _nx_invalidate_destination_entry(NX_IP *ip_ptr, UINT32 *next_hop_ip)
 {
 
 UINT i, table_size;

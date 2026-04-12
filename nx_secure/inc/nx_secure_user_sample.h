@@ -326,13 +326,13 @@
 
 /* If the handshake hash state cannot be copied using memory copy on metadata,
    NX_SECURE_HASH_METADATA_CLONE should be defined to a function that clones the hash state.
-   UINT nx_crypto_hash_clone(VOID *dest_metadata, VOID *source_metadata, ULONG length);
+   UINT nx_crypto_hash_clone(VOID *dest_metadata, VOID *source_metadata, UINT32 length);
    #define NX_SECURE_HASH_METADATA_CLONE nx_crypto_hash_clone
 */
 
 /* If cleaning up is required for the handshake hash crypto after being cloned,
    NX_SECURE_HASH_CLONE_CLEANUP macro should be defined to a clean up function:
-   UINT nx_crypto_clone_cleanup(VOID *metadata, ULONG length);
+   UINT nx_crypto_clone_cleanup(VOID *metadata, UINT32 length);
    #define NX_SECURE_HASH_CLONE_CLEANUP nx_crypto_clone_cleanup
 */
 

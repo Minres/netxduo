@@ -58,13 +58,13 @@ TX_MUTEX                *nx_bsd_protection_ptr;
 
 
 /* Define IP fast periodic timer entry. */
-VOID                    (*nx_bsd_ip_fast_periodic_timer_entry)(ULONG id);
+VOID                    (*nx_bsd_ip_fast_periodic_timer_entry)(UINT32 id);
 
 /* Define BSD system clock time. The precision depends on _nx_ip_fast_timer_rate. */
-ULONG                   nx_bsd_system_clock;
+UINT32                   nx_bsd_system_clock;
 
 /* Define BSD system clock timer rate. */
-ULONG                   nx_bsd_timer_rate;
+UINT32                   nx_bsd_timer_rate;
 
 /* Define the event flag group for notifying threads suspended on BSD sockets to wakeup.  */
 
@@ -94,7 +94,7 @@ TX_BLOCK_POOL           nx_bsd_socket_block_pool;
 
 /* Define the memory area for the socket block pool... use TCP socket size, since it is the larger.  */
 
-static ULONG            nx_bsd_socket_pool_memory[NX_BSD_MAX_SOCKETS * (sizeof(NX_TCP_SOCKET) + sizeof(VOID *)) / sizeof(ULONG)];
+static UINT32            nx_bsd_socket_pool_memory[NX_BSD_MAX_SOCKETS * (sizeof(NX_TCP_SOCKET) + sizeof(VOID *)) / sizeof(UINT32)];
 
 /* Define the block pool that will be used to dynamically allocate addrinfo struct. */
 
@@ -105,8 +105,8 @@ TX_BLOCK_POOL           nx_bsd_addrinfo_block_pool;
  * Every address may be  mapped to 3 socktypes, SOCK_STREAM, SOCK_DGRAM and SOCK_RAW,
  * 3 blocks for addrinfo) + 1 block for IP adddress = 4 blocks */
 
-static ULONG            nx_bsd_addrinfo_pool_memory[(NX_BSD_IPV4_ADDR_MAX_NUM + NX_BSD_IPV6_ADDR_MAX_NUM) * 4
-                                                    *(sizeof(struct nx_bsd_addrinfo) + sizeof(VOID *)) / sizeof(ULONG)];
+static UINT32            nx_bsd_addrinfo_pool_memory[(NX_BSD_IPV4_ADDR_MAX_NUM + NX_BSD_IPV6_ADDR_MAX_NUM) * 4
+                                                    *(sizeof(struct nx_bsd_addrinfo) + sizeof(VOID *)) / sizeof(UINT32)];
 
 #ifdef NX_BSD_ENABLE_DNS
 
@@ -118,8 +118,8 @@ extern NX_DNS *_nx_dns_instance_ptr;
 TX_BLOCK_POOL           nx_bsd_cname_block_pool;
 
 /* Here we just support a CNAME per IP address. */
-static ULONG            nx_bsd_cname_pool_memory[(NX_BSD_IPV4_ADDR_MAX_NUM + NX_BSD_IPV6_ADDR_MAX_NUM) *
-                                                          (NX_DNS_NAME_MAX + 1) / sizeof(ULONG)];
+static UINT32            nx_bsd_cname_pool_memory[(NX_BSD_IPV4_ADDR_MAX_NUM + NX_BSD_IPV6_ADDR_MAX_NUM) *
+                                                          (NX_DNS_NAME_MAX + 1) / sizeof(UINT32)];
 #endif /* NX_DNS_ENABLE_EXTENDED_RR_TYPES */
 #endif /* NX_BSD_ENABLE_DNS */
 
@@ -128,8 +128,8 @@ NX_LINK_RECEIVE_QUEUE  nx_bsd_socket_link_receive_queue[NX_MAX_IP_INTERFACES];
 #endif
 
 /* Buffer used to store IP address get from DNS. */
-static ULONG           nx_bsd_ipv4_addr_buffer[NX_BSD_IPV4_ADDR_PER_HOST];
-static ULONG           nx_bsd_ipv6_addr_buffer[NX_BSD_IPV6_ADDR_PER_HOST * 4];
+static UINT32           nx_bsd_ipv4_addr_buffer[NX_BSD_IPV4_ADDR_PER_HOST];
+static UINT32           nx_bsd_ipv6_addr_buffer[NX_BSD_IPV6_ADDR_PER_HOST * 4];
 
 /* Utility character type functions*/
 static UINT nx_bsd_isspace(UCHAR c);
@@ -143,7 +143,7 @@ static VOID  nx_bsd_tcp_receive_notify(NX_TCP_SOCKET *socket_ptr);
 static VOID  nx_bsd_tcp_socket_disconnect_notify(NX_TCP_SOCKET *socket_ptr);
 static VOID  nx_bsd_udp_receive_notify(NX_UDP_SOCKET *socket_ptr);
 #ifdef NX_ENABLE_IP_RAW_PACKET_FILTER
-static UINT  nx_bsd_raw_packet_filter(NX_IP *ip_ptr, ULONG protocol, NX_PACKET *packet_ptr);
+static UINT  nx_bsd_raw_packet_filter(NX_IP *ip_ptr, UINT32 protocol, NX_PACKET *packet_ptr);
 #ifdef FEATURE_NX_IPV6
 static VOID  _nxd_bsd_swap_ipv6_extension_headers(NX_PACKET *packet_ptr, UCHAR header_type);
 #endif /* FEATURE_NX_IPV6 */
@@ -157,7 +157,7 @@ static VOID  nx_bsd_udp_packet_received(INT sockID, NX_PACKET *packet_ptr);
 static UINT  nx_bsd_tcp_syn_received_notify(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet_ptr);
 static INT   nx_bsd_tcp_create_listen_socket(INT master_sockid, INT backlog);
 static VOID  nx_bsd_tcp_pending_connection(UINT local_port, NX_TCP_SOCKET *socket_ptr);
-static INT   nx_bsd_find_interface_by_source_addr(UINT addr_family, ULONG* ip_addr);
+static INT   nx_bsd_find_interface_by_source_addr(UINT addr_family, UINT32* ip_addr);
 #ifndef NX_DISABLE_IPV4
 static VOID  _nxd_bsd_ipv4_packet_send(NX_PACKET *packet_ptr);
 #endif /* NX_DISABLE_IPV4 */
@@ -166,12 +166,12 @@ static INT   nx_bsd_send_internal(INT sockID, const CHAR *msg, INT msgLength, IN
 static INT   nx_bsd_recv_internal(INT sockID, struct nx_bsd_iovec *iov, size_t iovlen, INT flags,
                                   struct nx_bsd_sockaddr *fromAddr, INT *fromAddrLen);
 #ifdef FEATURE_NX_IPV6
-static VOID  _nxd_bsd_ipv6_packet_send(NX_PACKET *packet_ptr, ULONG *src_addr, ULONG *dest_addr);
+static VOID  _nxd_bsd_ipv6_packet_send(NX_PACKET *packet_ptr, UINT32 *src_addr, UINT32 *dest_addr);
 #endif /* FEATURE_NX_IPV6 */
 
-static INT   inet_ntoa_internal(const VOID *src, CHAR *dst, ULONG dst_size);
+static INT   inet_ntoa_internal(const VOID *src, CHAR *dst, UINT32 dst_size);
 static INT   bsd_string_to_number(const CHAR *string, UINT *number);
-static ULONG _nx_bsd_string_length(CHAR * string);
+static UINT32 _nx_bsd_string_length(CHAR * string);
 
 #ifdef NX_BSD_RAW_PPPOE_SUPPORT
 static INT   nx_bsd_pppoe_internal_sendto(NX_BSD_SOCKET *bsd_socket_ptr, CHAR *msg, INT msgLength,
@@ -185,7 +185,7 @@ static INT   _nx_bsd_hardware_internal_sendto(NX_BSD_SOCKET *bsd_socket_ptr, CHA
 static VOID  _nx_bsd_hardware_packet_received(NX_PACKET *packet_ptr, UCHAR *consumed);
 #ifdef NX_ENABLE_VLAN
 static UINT  _nx_bsd_ethernet_receive_notify(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr,
-                                             ULONG physical_address_msw, ULONG physical_address_lsw,
+                                             UINT32 physical_address_msw, UINT32 physical_address_lsw,
                                              UINT packet_type, UINT header_size, VOID *context,
                                              struct NX_LINK_TIME_STRUCT *time_ptr);
 #endif /* NX_ENABLE_VLAN */
@@ -199,7 +199,7 @@ static VOID             nx_bsd_thread_entry(ULONG info);
 static TX_TIMER         nx_bsd_timer;
 static VOID             nx_bsd_timer_entry(ULONG info);
 #endif
-UINT  bsd_number_convert(UINT number, CHAR *string, ULONG buffer_len, UINT base);
+UINT  bsd_number_convert(UINT number, CHAR *string, UINT32 buffer_len, UINT base);
 VOID  nx_bsd_socket_timed_wait_callback(NX_TCP_SOCKET *tcp_socket_ptr);
 
 #define FDSET_READ       1
@@ -208,7 +208,7 @@ VOID  nx_bsd_socket_timed_wait_callback(NX_TCP_SOCKET *tcp_socket_ptr);
 
 extern TX_THREAD       *_tx_thread_current_ptr;
 
-static ULONG  _nx_bsd_serv_list_len;
+static UINT32  _nx_bsd_serv_list_len;
 static struct NX_BSD_SERVICE_LIST  *_nx_bsd_serv_list_ptr;
 
 
@@ -262,12 +262,12 @@ static struct NX_BSD_SERVICE_LIST  *_nx_bsd_serv_list_ptr;
 /*                                                                        */
 /**************************************************************************/
 INT  nx_bsd_initialize(NX_IP *default_ip, NX_PACKET_POOL *default_pool, CHAR *bsd_thread_stack_area,
-                    ULONG bsd_thread_stack_size, UINT bsd_thread_priority)
+                    UINT32 bsd_thread_stack_size, UINT bsd_thread_priority)
 {
 
 INT         i;
 UINT        status;
-ULONG       info;
+UINT32       info;
 
 #ifndef NX_ENABLE_EXTENDED_NOTIFY_SUPPORT
 
@@ -500,7 +500,7 @@ static VOID nx_bsd_timeout_process()
 {
 
 INT             i;
-ULONG           status;
+UINT32           status;
 INT             master_socket_index;
 NX_BSD_SOCKET  *bsd_socket_ptr;
 
@@ -554,7 +554,7 @@ NX_BSD_SOCKET  *bsd_socket_ptr;
                    {
 
                        /* No; Turn off the disconnection_request flag. */
-                       bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_DISCONNECTION_REQUEST);
+                       bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_DISCONNECTION_REQUEST);
 
                        /* Remove the underlying NetX socket from the listen state. */
                        nx_tcp_server_socket_unaccept(bsd_socket_ptr -> nx_bsd_socket_tcp_socket);
@@ -599,8 +599,8 @@ NX_BSD_SOCKET  *bsd_socket_ptr;
 
                    /* Mark this socket as error, and remove the CONNECT and INPROGRESS flags */
                    nx_bsd_socket_array[i].nx_bsd_socket_status_flags |= NX_BSD_SOCKET_ERROR;
-                   nx_bsd_socket_array[i].nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
-                   nx_bsd_socket_array[i].nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTED);
+                   nx_bsd_socket_array[i].nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
+                   nx_bsd_socket_array[i].nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTED);
                    nx_bsd_socket_array[i].nx_bsd_socket_error_code = ECONNREFUSED;
 
                    /* Wake up the socket that could be listening on it. */
@@ -901,7 +901,7 @@ UINT            index;
             nx_bsd_set_errno(ENOMEM);
 
             /* Clear the allocated internal BSD socket.  */
-            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_IN_USE);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_IN_USE);
 
             /* Release the mutex.  */
             tx_mutex_put(nx_bsd_protection_ptr);
@@ -1152,7 +1152,7 @@ UINT            index;
     }
 
     /* Set the protocol family: AF_INET or AF_INET6.   */
-    bsd_socket_ptr -> nx_bsd_socket_family = (ULONG)protocolFamily;
+    bsd_socket_ptr -> nx_bsd_socket_family = (UINT32)protocolFamily;
 
     /* For UDP and RAW sockets, set the maximum receive queue depth. */
     if(bsd_socket_ptr -> nx_bsd_socket_protocol != NX_PROTOCOL_TCP)
@@ -1168,7 +1168,7 @@ UINT            index;
         /* Release the BSD protection.  */
 
         /* Clear the BSD socket in use flag.  */
-        bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_IN_USE);
+        bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_IN_USE);
 
         if ((type == SOCK_DGRAM) || (type == SOCK_STREAM))
         {
@@ -1258,8 +1258,8 @@ UINT                status;
 NX_TCP_SOCKET       *tcp_socket_ptr;
 NX_UDP_SOCKET       *udp_socket_ptr;
 NX_BSD_SOCKET       *bsd_socket_ptr;
-ULONG               timeout;
-ULONG               actual_status;
+UINT32               timeout;
+UINT32               actual_status;
 
     /* Check for a valid socket ID.  */
     if ((sockID < NX_BSD_SOCKFD_START) || (sockID >= (NX_BSD_SOCKFD_START + NX_BSD_MAX_SOCKETS)))
@@ -1335,7 +1335,7 @@ ULONG               actual_status;
             bsd_socket_ptr -> nx_bsd_socket_peer_port = 0;
 
             /* Clear the connect flag. */
-            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTED);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTED);
 
             /* All done.  Return. */
 
@@ -1505,7 +1505,7 @@ ULONG               actual_status;
         if(bsd_socket_ptr -> nx_bsd_socket_status_flags & NX_BSD_SOCKET_CONNECTION_INPROGRESS)
         {
 
-            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
 
             /* Release the protection mutex.  */
             tx_mutex_put(nx_bsd_protection_ptr);
@@ -1549,7 +1549,7 @@ ULONG               actual_status;
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & ((ULONG)(~NX_BSD_SOCKET_ERROR));
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & ((UINT32)(~NX_BSD_SOCKET_ERROR));
 
         nx_bsd_set_errno(errcode);
 
@@ -1587,7 +1587,7 @@ ULONG               actual_status;
         {
 
             /* Clear the client socket flag.  */
-            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CLIENT);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CLIENT);
 
             /* Set the socket error depending on NetX error status return. */
             nx_bsd_set_error_code(bsd_socket_ptr, status);
@@ -1700,7 +1700,7 @@ ULONG               actual_status;
     bsd_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_CONNECTED;
 
     /* Clear the CONNECTION_INPROGRESS flag. */
-    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
+    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
 
     /* Mark the connection_request flag */
     bsd_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_CONNECTION_REQUEST;
@@ -1727,8 +1727,8 @@ ULONG               actual_status;
     /* Error condition: the thread that was executing connect is not the current thread. */
 
     /* Clear the connected flags and peer infomration .*/
-    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTED);
-    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_REQUEST);
+    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTED);
+    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_REQUEST);
     memset(&bsd_socket_ptr -> nx_bsd_socket_source_ip_address, 0, sizeof(NXD_ADDRESS));
     bsd_socket_ptr -> nx_bsd_socket_source_port = 0;
 
@@ -1875,7 +1875,7 @@ INT                 address_conflict;
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(bsd_socket_ptr -> nx_bsd_socket_error_code);
 
@@ -1932,7 +1932,7 @@ INT                 address_conflict;
     if(localAddress -> sa_family == AF_INET)
     {
 
-    ULONG local_addr;
+    UINT32 local_addr;
     INT if_index;
 
         /* Pickup the local port.  */
@@ -1957,7 +1957,7 @@ INT                 address_conflict;
                    (nx_bsd_default_ip -> nx_ip_interface[if_index].nx_interface_ip_address == local_addr))
                 {
 
-                    bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (ULONG)(&nx_bsd_default_ip -> nx_ip_interface[if_index]);
+                    bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (UINT32)(&nx_bsd_default_ip -> nx_ip_interface[if_index]);
                     bsd_socket_ptr -> nx_bsd_socket_local_bind_interface_index = (UINT)if_index;
                     break;
                 }
@@ -1969,7 +1969,7 @@ INT                 address_conflict;
     if(localAddress -> sa_family == AF_INET6)
     {
 
-    ULONG ipv6_addr[4];
+    UINT32 ipv6_addr[4];
     INT if_index;
 
         /* Pickup the local port.  */
@@ -1998,7 +1998,7 @@ INT                 address_conflict;
                    (nx_bsd_default_ip -> nx_ipv6_address[if_index].nxd_ipv6_address[3] == ipv6_addr[3]))
                 {
 
-                    bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (ULONG)(&nx_bsd_default_ip -> nx_ipv6_address[if_index]);
+                    bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (UINT32)(&nx_bsd_default_ip -> nx_ipv6_address[if_index]);
 
                     bsd_socket_ptr -> nx_bsd_socket_local_bind_interface_index = (UINT)if_index;
                     break;
@@ -2013,7 +2013,7 @@ INT                 address_conflict;
     UINT if_index;
 
         if_index = (UINT)(((struct nx_bsd_sockaddr_ll *)localAddress) -> sll_ifindex);
-        bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (ULONG)(&nx_bsd_default_ip -> nx_ip_interface[if_index]);
+        bsd_socket_ptr -> nx_bsd_socket_local_bind_interface = (UINT32)(&nx_bsd_default_ip -> nx_ip_interface[if_index]);
         bsd_socket_ptr -> nx_bsd_socket_local_bind_interface_index = if_index;
     }
 #endif /* NX_BSD_RAW_SUPPORT */
@@ -2460,7 +2460,7 @@ INT                 ret;
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -2545,7 +2545,7 @@ INT                 ret;
             /* It  is ready.. we are ready to listen on this socket. */
 
             bsd_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_ENABLE_LISTEN;
-            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
             bsd_socket_ptr -> nx_bsd_socket_tcp_socket -> nx_tcp_socket_client_type =  NX_FALSE;
             bsd_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_SERVER_MASTER_SOCKET;
 
@@ -2632,7 +2632,7 @@ NX_BSD_SOCKET       *bsd_secondary_socket;
 INT                 sec_sock_id;
 INT                 ret = 0;
 INT                 connected = 0;
-ULONG               requested_events;
+UINT32               requested_events;
 INT                 secondary_socket_id = 0;
 #ifndef NX_DISABLE_IPV4
 struct nx_bsd_sockaddr_in
@@ -2703,7 +2703,7 @@ struct nx_bsd_sockaddr_in6
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -2821,7 +2821,7 @@ struct nx_bsd_sockaddr_in6
             connected = 1;
             bsd_secondary_socket = &nx_bsd_socket_array[secondary_socket_id];
             bsd_secondary_socket -> nx_bsd_socket_family = bsd_socket_ptr -> nx_bsd_socket_family;
-            bsd_secondary_socket -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
+            bsd_secondary_socket -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
 
         }
         else
@@ -2879,7 +2879,7 @@ struct nx_bsd_sockaddr_in6
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_secondary_socket -> nx_bsd_socket_status_flags =
-            bsd_secondary_socket -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_secondary_socket -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -2900,7 +2900,7 @@ struct nx_bsd_sockaddr_in6
     /* Update the BSD socket source port and sender IP address. */
     status = nxd_tcp_socket_peer_info_get(bsd_secondary_socket -> nx_bsd_socket_tcp_socket,
                                           &bsd_secondary_socket -> nx_bsd_socket_source_ip_address,
-                                          (ULONG *)(&bsd_secondary_socket -> nx_bsd_socket_source_port));
+                                          (UINT32 *)(&bsd_secondary_socket -> nx_bsd_socket_source_port));
 
     memcpy(&bsd_secondary_socket -> nx_bsd_socket_peer_ip, &bsd_secondary_socket -> nx_bsd_socket_source_ip_address,  sizeof(NXD_ADDRESS)); /* Use case of memcpy is verified. */
 
@@ -3009,8 +3009,8 @@ struct nx_bsd_sockaddr_in6
     (bsd_secondary_socket -> nx_bsd_socket_union_id).nx_bsd_socket_master_socket_id = NX_BSD_MAX_SOCKETS;
 
     /* Clear the master socket connect flags. */
-    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTED);
-    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_REQUEST);
+    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTED);
+    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_REQUEST);
 
     /* Reset the master_socket_id */
     ret = nx_bsd_tcp_create_listen_socket(sockID, 0);
@@ -3100,7 +3100,7 @@ NX_UDP_SOCKET       *udp_socket_ptr;
 NX_BSD_SOCKET       *bsd_socket_ptr;
 UINT                packet_type = 0;
 UINT                wait_option;
-ULONG               data_sent = (ULONG)msgLength;
+UINT32               data_sent = (UINT32)msgLength;
 
     bsd_socket_ptr = &nx_bsd_socket_array[sockID];
 
@@ -3205,7 +3205,7 @@ ULONG               data_sent = (ULONG)msgLength;
     }
 
     /* Now copy the data into the NetX packet.  */
-    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (ULONG)msgLength, nx_bsd_default_packet_pool, wait_option);
+    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (UINT32)msgLength, nx_bsd_default_packet_pool, wait_option);
 
     /* Was the data copy successful?  */
     if (status != NX_SUCCESS)
@@ -3320,14 +3320,14 @@ ULONG               data_sent = (ULONG)msgLength;
         {
 
         /* Yes it is. Make sure the packet source and destination interface are set. */
-        ULONG *ip_addr_ptr;
+        UINT32 *ip_addr_ptr;
         UINT   src_interface;
 
 #ifndef NX_DISABLE_IPV4
             if(bsd_socket_ptr -> nx_bsd_socket_family == AF_INET)
             {
 
-                ip_addr_ptr = (ULONG*)(packet_ptr -> nx_packet_prepend_ptr + 12);
+                ip_addr_ptr = (UINT32*)(packet_ptr -> nx_packet_prepend_ptr + 12);
 
                 src_interface = (UINT)nx_bsd_find_interface_by_source_addr(AF_INET, ip_addr_ptr);
 
@@ -3343,7 +3343,7 @@ ULONG               data_sent = (ULONG)msgLength;
                 {
 
 #ifdef NX_ENABLE_IP_ID_RANDOMIZATION
-                    ULONG rand_id = (ULONG)NX_RAND();
+                    UINT32 rand_id = (UINT32)NX_RAND();
                     *(packet_ptr -> nx_packet_prepend_ptr + 4) = (UCHAR)((rand_id & 0xFFFF) >> 8);
                     *(packet_ptr -> nx_packet_prepend_ptr + 5) = (UCHAR)(rand_id & 0xFF);
 #else
@@ -3365,7 +3365,7 @@ ULONG               data_sent = (ULONG)msgLength;
             if(bsd_socket_ptr -> nx_bsd_socket_family == AF_INET6)
             {
 
-                ip_addr_ptr = (ULONG*)(packet_ptr -> nx_packet_prepend_ptr + 8);
+                ip_addr_ptr = (UINT32*)(packet_ptr -> nx_packet_prepend_ptr + 8);
                 src_interface = (UINT)nx_bsd_find_interface_by_source_addr(AF_INET6, ip_addr_ptr);
 
                 if(src_interface == NX_BSD_LOCAL_IF_INADDR_ANY)
@@ -3377,7 +3377,7 @@ ULONG               data_sent = (ULONG)msgLength;
                 {
 
                     NX_IPV6_HEADER *ipv6_header;
-                    ULONG src_addr[4], dest_addr[4];
+                    UINT32 src_addr[4], dest_addr[4];
 
                     packet_ptr -> nx_packet_ip_header = packet_ptr -> nx_packet_prepend_ptr;
 
@@ -3566,7 +3566,7 @@ NX_BSD_SOCKET *bsd_socket_ptr;
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -3714,7 +3714,7 @@ USHORT               peer_port = 0;
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -4104,15 +4104,15 @@ UINT                 status;
 NX_PACKET           *packet_ptr;
 NX_BSD_SOCKET       *bsd_socket_ptr;
 NX_TCP_SOCKET       *tcp_socket_ptr;
-ULONG                requested_events;
-ULONG                bytes_received;
-ULONG                bytes_copied;
-ULONG                buffer_used = 0;
+UINT32                requested_events;
+UINT32                bytes_received;
+UINT32                bytes_copied;
+UINT32                buffer_used = 0;
 UINT                 wait_option;
 UINT                 remaining_wait_option;
-ULONG                offset;
+UINT32                offset;
 UINT                 header_size = 0;
-ULONG                start_time = nx_bsd_system_clock;
+UINT32                start_time = nx_bsd_system_clock;
 #ifndef NX_DISABLE_IPV4
 struct nx_bsd_sockaddr_in
                      peer4_address;
@@ -4187,7 +4187,7 @@ struct nx_bsd_sockaddr_in6
 
         /* Clear the error flag.  The application is expected to close the socket at this point.*/
         bsd_socket_ptr -> nx_bsd_socket_status_flags =
-            bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+            bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
 
         nx_bsd_set_errno(errcode);
 
@@ -4469,11 +4469,11 @@ struct nx_bsd_sockaddr_in6
                 /* Byte-Swap the basic IPv4 header.  The NetX Duo IP receive process does not
                    examine the extension header.  Therefore it does not perform byte swap
                    on extension headers. */
-                NX_CHANGE_ULONG_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_0));
-                NX_CHANGE_ULONG_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_1));
-                NX_CHANGE_ULONG_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_2));
-                NX_CHANGE_ULONG_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_source_ip));
-                NX_CHANGE_ULONG_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_destination_ip));
+                NX_CHANGE_UINT32_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_0));
+                NX_CHANGE_UINT32_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_1));
+                NX_CHANGE_UINT32_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_word_2));
+                NX_CHANGE_UINT32_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_source_ip));
+                NX_CHANGE_UINT32_ENDIAN((((NX_IPV4_HEADER*)(packet_ptr -> nx_packet_ip_header)) -> nx_ip_header_destination_ip));
 
             }
 #endif /* NX_DISABLE_IPV4 */
@@ -4491,8 +4491,8 @@ struct nx_bsd_sockaddr_in6
                 /* Pick up the next header. */
                 next_header_type = (ipv6_header_ptr -> nx_ip_header_word_1 >> 8) & 0xFF;
 
-                NX_CHANGE_ULONG_ENDIAN(ipv6_header_ptr -> nx_ip_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(ipv6_header_ptr -> nx_ip_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(ipv6_header_ptr -> nx_ip_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(ipv6_header_ptr -> nx_ip_header_word_1);
                 NX_IPV6_ADDRESS_CHANGE_ENDIAN(ipv6_header_ptr -> nx_ip_header_destination_ip);
                 NX_IPV6_ADDRESS_CHANGE_ENDIAN(ipv6_header_ptr -> nx_ip_header_source_ip);
 
@@ -4530,7 +4530,7 @@ struct nx_bsd_sockaddr_in6
     while(iovlen)
     {
         /* Copy the packet data into the supplied buffer.  */
-        status =  nx_packet_data_extract_offset(packet_ptr, offset + bytes_copied, (VOID*)((UINT)(iov -> iov_base) + buffer_used), (ULONG) (iov -> iov_len - buffer_used), &bytes_received);
+        status =  nx_packet_data_extract_offset(packet_ptr, offset + bytes_copied, (VOID*)((UINT)(iov -> iov_base) + buffer_used), (UINT32) (iov -> iov_len - buffer_used), &bytes_received);
 
         /* Check for an error.  */
         if (status)
@@ -4786,7 +4786,7 @@ NX_TCP_SOCKET       *tcp_socket_ptr;
 NX_UDP_SOCKET       *udp_socket_ptr;
 NX_PACKET           *packet_ptr;
 NX_PACKET           *next_packet_ptr;
-ULONG                timeout;
+UINT32                timeout;
 INT                  i;
 UINT                 counter;
 INT                  delete_socket;
@@ -5262,7 +5262,7 @@ NX_BSD_SOCKET   *bsd_socket_ptr;
         if ((f_options & O_NONBLOCK) == 0)
         {
             /* Disable the socket for non blocking. */
-            bsd_socket_ptr -> nx_bsd_socket_option_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
+            bsd_socket_ptr -> nx_bsd_socket_option_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
         }
         else
         {
@@ -5402,7 +5402,7 @@ NX_INTERFACE        *nx_interface;
             {
 
                 /* Extract the number of bytes on the TCP receive queue. */
-                status = nx_tcp_socket_bytes_available(tcp_socket_ptr, (ULONG *)result);
+                status = nx_tcp_socket_bytes_available(tcp_socket_ptr, (UINT32 *)result);
 
                 if (status != NX_SUCCESS)
                 {
@@ -5448,7 +5448,7 @@ NX_INTERFACE        *nx_interface;
             {
 
                 /* Disable the socket for non blocking. */
-                bsd_socket_ptr -> nx_bsd_socket_option_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
+                bsd_socket_ptr -> nx_bsd_socket_option_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
 
                 /* Update the file descriptor with the non blocking bit. */
                 bsd_socket_ptr -> nx_bsd_file_descriptor_flags  &= ~O_NONBLOCK;
@@ -5630,7 +5630,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  bsd_number_convert(UINT number, CHAR *string, ULONG buffer_len, UINT base)
+UINT  bsd_number_convert(UINT number, CHAR *string, UINT32 buffer_len, UINT base)
 {
 
 UINT    j;
@@ -5728,12 +5728,12 @@ UINT    size;
 /**************************************************************************/
 INT nx_bsd_inet_aton(const CHAR *address_buffer_ptr, struct nx_bsd_in_addr *addr)
 {
-ULONG value;
+UINT32 value;
 INT   base = 10, ip_address_index;
 UCHAR tempchar;
 const UCHAR *buffer_ptr;
 UINT  ip_address_number[4];  /* Four discreet numbers in IP address representation. */
-UINT *ip_number_ptr;         /* IP address as equivalent ULONG value. */
+UINT *ip_number_ptr;         /* IP address as equivalent UINT32 value. */
 UINT  dot_flag;
 
     /* Set local variables. */
@@ -5798,7 +5798,7 @@ UINT  dot_flag;
 
                 /* Convert the tempchar character to a number.  Multiply the existing
                    number by the base (8 or 10) and this digit to the sum. */
-                value = (value * (ULONG)base) + (ULONG)(tempchar - '0');
+                value = (value * (UINT32)base) + (UINT32)(tempchar - '0');
 
                 /* Advance the IP address pointer to the next character. */
                 buffer_ptr++;
@@ -5820,7 +5820,7 @@ UINT  dot_flag;
 
                     /* Convert the hex character to a hex digit, multiply the existing word by shifting the bits,
                        and add this hex digit to the sum. */
-                    value = (value << 4) + (ULONG)(tempchar + 10 - c);
+                    value = (value << 4) + (UINT32)(tempchar + 10 - c);
 
                     buffer_ptr++;
 
@@ -6064,7 +6064,7 @@ struct          nx_bsd_sock_keepalive   *so_keepalive;
 struct          nx_bsd_sock_reuseaddr   *so_reuseaddr;
 struct          nx_bsd_timeval          *so_rcvtimeval;
 struct          nx_bsd_sock_winsize     *soc_window_size;
-ULONG                                   ticks;
+UINT32                                   ticks;
 
 
     /* Check for valid socket ID/descriptor. */
@@ -6182,7 +6182,7 @@ ULONG                                   ticks;
                bsd_socket_ptr -> nx_bsd_socket_error_code = 0;
 
                /* Clear the error flag.  The application is expected to close the socket at this point.*/
-               bsd_socket_ptr -> nx_bsd_socket_status_flags = bsd_socket_ptr -> nx_bsd_socket_status_flags & (ULONG)(~NX_BSD_SOCKET_ERROR);
+               bsd_socket_ptr -> nx_bsd_socket_status_flags = bsd_socket_ptr -> nx_bsd_socket_status_flags & (UINT32)(~NX_BSD_SOCKET_ERROR);
            }
            else
                so_errno -> error = 0;
@@ -6382,8 +6382,8 @@ INT  nx_bsd_setsockopt(INT sockID, INT option_level, INT option_name, const VOID
 {
 UINT                    reuse_enabled;
 NX_BSD_SOCKET           *bsd_socket_ptr;
-ULONG                   window_size;
-ULONG                   timer_ticks;
+UINT32                   window_size;
+UINT32                   timer_ticks;
 struct nx_bsd_timeval   *time_val;
 #if defined(NX_ENABLE_IP_RAW_PACKET_FILTER) || !defined(NX_DISABLE_IPV4)
 INT             i;
@@ -6397,8 +6397,8 @@ UINT            status;
 #if defined(NX_BSD_RAW_SUPPORT) && defined(NX_ENABLE_VLAN)
 struct nx_bsd_packet_mreq
                *pkt_mreq;
-ULONG           physical_addr_msw;
-ULONG           physical_addr_lsw;
+UINT32           physical_addr_msw;
+UINT32           physical_addr_lsw;
 #endif
 
 
@@ -6573,7 +6573,7 @@ ULONG           physical_addr_lsw;
             time_val =  (struct nx_bsd_timeval *)option_value;
 
             /* Calculate ticks for the ThreadX Timer.  */
-            timer_ticks = (ULONG)(time_val -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK  + (ULONG)(time_val -> tv_sec) * NX_IP_PERIODIC_RATE;
+            timer_ticks = (UINT32)(time_val -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK  + (UINT32)(time_val -> tv_sec) * NX_IP_PERIODIC_RATE;
 
             bsd_socket_ptr -> nx_bsd_option_send_timeout = timer_ticks;
 
@@ -6584,7 +6584,7 @@ ULONG           physical_addr_lsw;
             time_val =  (struct nx_bsd_timeval *)option_value;
 
             /* Calculate ticks for the ThreadX Timer.  */
-            timer_ticks = (ULONG)(time_val -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK  + (ULONG)(time_val -> tv_sec) * NX_IP_PERIODIC_RATE;
+            timer_ticks = (UINT32)(time_val -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK  + (UINT32)(time_val -> tv_sec) * NX_IP_PERIODIC_RATE;
 
             bsd_socket_ptr -> nx_bsd_option_receive_timeout = timer_ticks;
 
@@ -6605,7 +6605,7 @@ ULONG           physical_addr_lsw;
             }
 
 
-            window_size = (ULONG)(((struct nx_bsd_sock_winsize *)option_value) -> winsize);
+            window_size = (UINT32)(((struct nx_bsd_sock_winsize *)option_value) -> winsize);
 
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
 
@@ -6632,7 +6632,7 @@ ULONG           physical_addr_lsw;
             if(reuse_enabled)
                 bsd_socket_ptr -> nx_bsd_socket_option_flags |= NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR;
             else
-                bsd_socket_ptr -> nx_bsd_socket_option_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR);
+                bsd_socket_ptr -> nx_bsd_socket_option_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR);
 
         break;
 
@@ -6781,7 +6781,7 @@ ULONG           physical_addr_lsw;
                 else
                 {
 
-                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_RX_NO_HDR);
+                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_RX_NO_HDR);
                 }
             }
             else
@@ -6820,7 +6820,7 @@ ULONG           physical_addr_lsw;
                 {
 
                     /* No, clear the flag for no header. */
-                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_TX_HDR_INCLUDE);
+                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_TX_HDR_INCLUDE);
                 }
             }
             else
@@ -6978,7 +6978,7 @@ ULONG           physical_addr_lsw;
                 {
 
                     /* No, clear the flag bit indicating IP task will append the IP header. */
-                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_TX_HDR_INCLUDE);
+                    bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_TX_HDR_INCLUDE);
                 }
             }
             else
@@ -7610,7 +7610,7 @@ nx_bsd_fd_set           exceptfds_found;
 INT                     readfds_left;
 INT                     writefds_left;
 INT                     exceptfds_left;
-ULONG                   ticks;
+UINT32                   ticks;
 UINT                    original_threshold;
 TX_THREAD               *current_thread_ptr;
 INT                     ret;
@@ -7677,7 +7677,7 @@ INT                     ret;
     {
 
         /* Calculate ticks for the ThreadX Timer.  */
-        ticks = (ULONG)(timeout -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK + (ULONG)(timeout -> tv_sec) * NX_IP_PERIODIC_RATE;
+        ticks = (UINT32)(timeout -> tv_usec)/NX_MICROSECOND_PER_CPU_TICK + (UINT32)(timeout -> tv_sec) * NX_IP_PERIODIC_RATE;
     }
     else
     {
@@ -7957,7 +7957,7 @@ INT                     ret;
     /* Release the protection mutex.  */
     tx_mutex_put(nx_bsd_protection_ptr);
 
-    status =  tx_event_flags_get(&nx_bsd_events, NX_BSD_SELECT_EVENT, TX_OR_CLEAR, (ULONG *) &suspend_request, ticks);
+    status =  tx_event_flags_get(&nx_bsd_events, NX_BSD_SELECT_EVENT, TX_OR_CLEAR, (UINT32 *) &suspend_request, ticks);
 
     /* Restore original preemption threshold.  */
     tx_thread_preemption_change(current_thread_ptr, original_threshold, &original_threshold);
@@ -8152,7 +8152,7 @@ UINT                    master_socket_index;
     nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_status_flags |=  NX_BSD_SOCKET_CONNECTION_REQUEST;
 
     /* Reset the listen-enabled flag. */
-    nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_LISTEN);
+    nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_LISTEN);
 
     /* Mark the socket is bound. */
     nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_status_flags |= NX_BSD_SOCKET_BOUND;
@@ -8162,14 +8162,14 @@ UINT                    master_socket_index;
     if(nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_family == AF_INET)
     {
         /* IPv4 case */
-        nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_local_bind_interface = (ULONG)socket_ptr -> nx_tcp_socket_connect_interface;
+        nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_local_bind_interface = (UINT32)socket_ptr -> nx_tcp_socket_connect_interface;
     }
 #endif /* NX_DISABLE_IPV4 */
 #ifdef FEATURE_NX_IPV6
     if(nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_family == AF_INET6)
     {
         /* IPv6 */
-        nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_local_bind_interface = (ULONG)socket_ptr -> nx_tcp_socket_ipv6_addr;
+        nx_bsd_socket_array[bsd_socket_index].nx_bsd_socket_local_bind_interface = (UINT32)socket_ptr -> nx_tcp_socket_ipv6_addr;
     }
 #endif
     /* Determine if the BSD socket is server socket. */
@@ -8272,7 +8272,7 @@ UINT                    status;
     {
 
         /* Yes, clear the INPROGRESS flag. */
-        bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
+        bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_CONNECTION_INPROGRESS);
 
         /* If this is secondary server socket, there is no need to wake up the select call.  */
         if(bsd_socket_ptr -> nx_bsd_socket_status_flags & NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET)
@@ -8284,7 +8284,7 @@ UINT                    status;
             {
 
                 /* Turn off the disconnection_request flag. */
-                bsd_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_DISCONNECTION_REQUEST);
+                bsd_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_DISCONNECTION_REQUEST);
 
                 nx_tcp_server_socket_unaccept(bsd_socket_ptr -> nx_bsd_socket_tcp_socket);
 
@@ -8474,11 +8474,11 @@ UINT    index;
             fd =  fd % 32;
 
             /* Is the bit already set?  */
-            if ((fdset -> fd_array[index] & (((ULONG) 1) << fd)) == 0)
+            if ((fdset -> fd_array[index] & (((UINT32) 1) << fd)) == 0)
             {
 
                 /* No, set the bit.  */
-                fdset -> fd_array[index] = fdset -> fd_array[index] | (((ULONG) 1) << fd);
+                fdset -> fd_array[index] = fdset -> fd_array[index] | (((UINT32) 1) << fd);
 
                 /* Increment the counter.  */
                 fdset -> fd_count++;
@@ -8543,11 +8543,11 @@ UINT    index;
             fd =  fd % 32;
 
             /* Determine if the bit is set.  */
-            if (fdset -> fd_array[index] & (((ULONG) 1) << fd))
+            if (fdset -> fd_array[index] & (((UINT32) 1) << fd))
             {
 
                 /* Yes, clear the bit.  */
-                fdset -> fd_array[index] = fdset -> fd_array[index] & ~(((ULONG) 1) << fd);
+                fdset -> fd_array[index] = fdset -> fd_array[index] & ~(((UINT32) 1) << fd);
 
                 /* Decrement the counter.  */
                 fdset -> fd_count--;
@@ -8614,7 +8614,7 @@ UINT    index;
             fd =  fd % 32;
 
             /* Finally, see if the bit is set.  */
-            if (fdset -> fd_array[index] & (((ULONG) 1) << fd))
+            if (fdset -> fd_array[index] & (((UINT32) 1) << fd))
             {
 
                 /* Yes, return true!  */
@@ -8717,7 +8717,7 @@ INT     i;
 /*    NetX Duo                                                            */
 /*                                                                        */
 /**************************************************************************/
-static UINT  nx_bsd_raw_packet_filter(NX_IP *ip_ptr, ULONG protocol, NX_PACKET *packet_ptr)
+static UINT  nx_bsd_raw_packet_filter(NX_IP *ip_ptr, UINT32 protocol, NX_PACKET *packet_ptr)
 {
 
 UINT index;
@@ -9165,17 +9165,17 @@ VOID  nx_bsd_socket_timed_wait_callback(NX_TCP_SOCKET *tcp_socket_ptr)
 /*                                                                        */
 /**************************************************************************/
 #ifdef NX_BSD_INCLUDE_DATA_EXTRACT_OFFSET
-UINT  nx_packet_data_extract_offset(NX_PACKET *packet_ptr, ULONG offset, VOID *buffer_start, ULONG buffer_length, ULONG *bytes_copied)
+UINT  nx_packet_data_extract_offset(NX_PACKET *packet_ptr, UINT32 offset, VOID *buffer_start, UINT32 buffer_length, UINT32 *bytes_copied)
 {
 
-ULONG       remaining_bytes;
+UINT32       remaining_bytes;
 UCHAR       *source_ptr;
 UCHAR       *destination_ptr;
-ULONG       offset_bytes;
+UINT32       offset_bytes;
 #ifndef NX_DISABLE_PACKET_CHAIN
-ULONG       packet_fragment_length;
+UINT32       packet_fragment_length;
 #endif
-ULONG       bytes_to_copy;
+UINT32       bytes_to_copy;
 NX_PACKET   *working_packet_ptr;
 
     working_packet_ptr =  packet_ptr;
@@ -9369,12 +9369,12 @@ UINT nx_bsd_socket_set_inherited_settings(UINT master_sock_id, UINT secondary_so
     if(nx_bsd_socket_array[master_sock_id].nx_bsd_socket_option_flags & NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING)
         nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags |= NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING;
     else
-        nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
+        nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_OPTION_NON_BLOCKING);
 
     if(nx_bsd_socket_array[master_sock_id].nx_bsd_socket_option_flags & NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR)
         nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags |= NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR;
     else
-        nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags &= (ULONG)(~NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR);
+        nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_option_flags &= (UINT32)(~NX_BSD_SOCKET_ENABLE_OPTION_REUSEADDR);
 
 #ifdef NX_ENABLE_TCP_WINDOW_SCALING
     nx_bsd_socket_array[secondary_sock_id].nx_bsd_socket_tcp_socket -> nx_tcp_socket_rx_window_maximum =
@@ -9747,8 +9747,8 @@ static VOID nx_bsd_select_wakeup(UINT sock_id, UINT fd_sets)
 {
 TX_INTERRUPT_SAVE_AREA
 TX_THREAD               *suspended_thread;
-ULONG                   suspended_count;
-ULONG                   original_suspended_count;
+UINT32                   suspended_count;
+UINT32                   original_suspended_count;
 NX_BSD_SOCKET_SUSPEND   *suspend_info;
 INT                     bsd_sock_id;
 
@@ -9991,7 +9991,7 @@ static VOID nx_bsd_udp_packet_received(INT sockID, NX_PACKET *packet_ptr)
 {
 
 NX_BSD_SOCKET *bsd_ptr;
-ULONG          addr_family;
+UINT32          addr_family;
 NX_BSD_SOCKET *exact_match = NX_NULL;
 NX_BSD_SOCKET *receiver_match = NX_NULL;
 NX_BSD_SOCKET *wildcard_match = NX_NULL;
@@ -10037,8 +10037,8 @@ NX_INTERFACE   *interface_ptr;
             {
                 wildcard_match = bsd_ptr;
             }
-            else if(((ULONG)(interface_ptr) == bsd_ptr -> nx_bsd_socket_local_bind_interface) ||
-                    ((ULONG)(packet_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr) == bsd_ptr -> nx_bsd_socket_local_bind_interface))
+            else if(((UINT32)(interface_ptr) == bsd_ptr -> nx_bsd_socket_local_bind_interface) ||
+                    ((UINT32)(packet_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr) == bsd_ptr -> nx_bsd_socket_local_bind_interface))
             {
 
                 receiver_match = bsd_ptr;
@@ -10209,7 +10209,7 @@ static UINT  nx_bsd_tcp_syn_received_notify(NX_TCP_SOCKET *socket_ptr, NX_PACKET
 UINT            bsd_socket_index;
 INT             i;
 INT             sockID_find;
-ULONG           addr_family;
+UINT32           addr_family;
 INT             search_index;
 INT             receiver_match = NX_BSD_MAX_SOCKETS;
 INT             wildcard_match = NX_BSD_MAX_SOCKETS;
@@ -10273,8 +10273,8 @@ NX_INTERFACE   *interface_ptr;
 
                 wildcard_match = search_index;
             }
-            else if(((ULONG)(interface_ptr) == bsd_socket_ptr -> nx_bsd_socket_local_bind_interface) ||
-                    ((ULONG)(packet_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr) == bsd_socket_ptr -> nx_bsd_socket_local_bind_interface))
+            else if(((UINT32)(interface_ptr) == bsd_socket_ptr -> nx_bsd_socket_local_bind_interface) ||
+                    ((UINT32)(packet_ptr -> nx_packet_address.nx_packet_ipv6_address_ptr) == bsd_socket_ptr -> nx_bsd_socket_local_bind_interface))
             {
 
                 receiver_match = search_index;
@@ -10392,7 +10392,7 @@ INT                 secondary_sockID = NX_BSD_MAX_SOCKETS;
             (master_socket_ptr -> nx_bsd_socket_union_id).nx_bsd_socket_secondary_socket_id =
               nx_bsd_socket_array[i].nx_bsd_socket_union_id.nx_bsd_socket_secondary_socket_id;
             master_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_ENABLE_LISTEN;
-            master_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
+            master_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
             master_socket_ptr -> nx_bsd_socket_tcp_socket -> nx_tcp_socket_client_type =  NX_FALSE;
             master_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_SERVER_MASTER_SOCKET;
 
@@ -10486,7 +10486,7 @@ INT                 secondary_sockID = NX_BSD_MAX_SOCKETS;
 
     /* Now mark this as a master server socket listening to client connections.  */
     master_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_ENABLE_LISTEN;
-    master_socket_ptr -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
+    master_socket_ptr -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET);
     master_socket_ptr -> nx_bsd_socket_tcp_socket -> nx_tcp_socket_client_type =  NX_FALSE;
     master_socket_ptr -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_SERVER_MASTER_SOCKET;
 
@@ -10495,7 +10495,7 @@ INT                 secondary_sockID = NX_BSD_MAX_SOCKETS;
     (master_socket_ptr -> nx_bsd_socket_union_id).nx_bsd_socket_secondary_socket_id = secondary_sockID;
 
     /* Mark the secondary server socket as assigned to this master server socket.   */
-    bsd_secondary_socket -> nx_bsd_socket_status_flags &= (ULONG)(~NX_BSD_SOCKET_ACCEPTING);
+    bsd_secondary_socket -> nx_bsd_socket_status_flags &= (UINT32)(~NX_BSD_SOCKET_ACCEPTING);
     bsd_secondary_socket -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_SERVER_SECONDARY_SOCKET;
     bsd_secondary_socket -> nx_bsd_socket_status_flags |= NX_BSD_SOCKET_ENABLE_LISTEN;
     bsd_secondary_socket -> nx_bsd_socket_local_port              =  (USHORT)local_port;
@@ -10668,21 +10668,21 @@ UINT                         ret;
 /*    nx_bsd_send_internal                                                */
 /*                                                                        */
 /**************************************************************************/
-static INT   nx_bsd_find_interface_by_source_addr(UINT addr_family, ULONG* ip_addr)
+static INT   nx_bsd_find_interface_by_source_addr(UINT addr_family, UINT32* ip_addr)
 {
 INT i;
 #ifndef NX_DISABLE_IPV4
-ULONG ipv4_addr;
+UINT32 ipv4_addr;
 #endif /* NX_DISABLE_IPV4 */
 #ifdef FEATURE_NX_IPV6
-ULONG ipv6_addr[4];
+UINT32 ipv6_addr[4];
 #endif
 
 #ifndef NX_DISABLE_IPV4
     if(addr_family == AF_INET)
     {
         ipv4_addr = *ip_addr;
-        NX_CHANGE_ULONG_ENDIAN(ipv4_addr);
+        NX_CHANGE_UINT32_ENDIAN(ipv4_addr);
 
         for(i = 0; i < NX_MAX_IP_INTERFACES; i++)
         {
@@ -10768,8 +10768,8 @@ TX_INTERRUPT_SAVE_AREA
 NX_IP_DRIVER            driver_request;
 NX_IPV4_HEADER         *ip_header_ptr;
 #ifndef NX_DISABLE_IP_TX_CHECKSUM
-ULONG                   checksum;
-ULONG                   val;
+UINT32                   checksum;
+UINT32                   val;
 #endif
 UINT                    index;
 NX_ARP                 *arp_ptr;
@@ -10777,10 +10777,10 @@ NX_PACKET              *last_packet;
 NX_PACKET              *remove_packet;
 UINT                    queued_count;
 NX_PACKET              *packet_copy;
-ULONG                   network_mask;
-ULONG                   network;
+UINT32                   network_mask;
+UINT32                   network;
 NX_IP *                 ip_ptr;
-ULONG                   destination_ip;
+UINT32                   destination_ip;
 
     ip_ptr = nx_bsd_default_ip;
 #ifndef NX_DISABLE_IP_INFO
@@ -10796,7 +10796,7 @@ ULONG                   destination_ip;
     destination_ip = ip_header_ptr -> nx_ip_header_destination_ip;
 
     /* Swap the destination address to host byte order.*/
-    NX_CHANGE_ULONG_ENDIAN(destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(destination_ip);
 
 #ifndef NX_DISABLE_IP_TX_CHECKSUM
     checksum = _nx_ip_checksum_compute(packet_ptr, NX_IP_VERSION_V4,
@@ -10805,11 +10805,11 @@ ULONG                   destination_ip;
                                        /* IPv4 header checksum does not use src/dest addresses */
                                        NULL, NULL);
 
-    val = (ULONG)(~checksum);
+    val = (UINT32)(~checksum);
     val = val & NX_LOWER_16_MASK;
 
     /* Convert to network byte order. */
-    NX_CHANGE_ULONG_ENDIAN(val);
+    NX_CHANGE_UINT32_ENDIAN(val);
 
     /* Now store the checksum in the IP header.  */
     ip_header_ptr -> nx_ip_header_word_2 =  ip_header_ptr -> nx_ip_header_word_2 | val;
@@ -11650,11 +11650,11 @@ ULONG                   destination_ip;
 /*    nx_bsd_send_internal                                                */
 /*                                                                        */
 /**************************************************************************/
-static VOID _nxd_bsd_ipv6_packet_send(NX_PACKET *packet_ptr, ULONG *src_addr, ULONG *dest_addr)
+static VOID _nxd_bsd_ipv6_packet_send(NX_PACKET *packet_ptr, UINT32 *src_addr, UINT32 *dest_addr)
 {
 
 UINT            status;
-ULONG           address_type;
+UINT32           address_type;
 NX_IP_DRIVER    driver_request;
 NX_PACKET      *remove_packet;
 NX_PACKET      *packet_copy;
@@ -11839,7 +11839,7 @@ NX_IP          *ip_ptr;
 
         /* Obtain MAC address */
         ND_CACHE_ENTRY *NDCacheEntry = NX_NULL;
-        ULONG next_hop_address[4];
+        UINT32 next_hop_address[4];
 
         SET_UNSPECIFIED_ADDRESS(next_hop_address);
 
@@ -11930,9 +11930,9 @@ NX_IP          *ip_ptr;
             driver_request.nx_ip_driver_ptr                  = ip_ptr;
             driver_request.nx_ip_driver_command              = NX_LINK_PACKET_SEND;
             driver_request.nx_ip_driver_packet               = packet_ptr;
-            driver_request.nx_ip_driver_physical_address_msw = (ULONG)((mac_addr[0] << 8) | mac_addr[1]);
+            driver_request.nx_ip_driver_physical_address_msw = (UINT32)((mac_addr[0] << 8) | mac_addr[1]);
             driver_request.nx_ip_driver_physical_address_lsw =
-                (ULONG)((mac_addr[2] << 24) | (mac_addr[3] << 16) | (mac_addr[4] << 8) | mac_addr[5]);
+                (UINT32)((mac_addr[2] << 24) | (mac_addr[3] << 16) | (mac_addr[4] << 8) | mac_addr[5]);
             driver_request.nx_ip_driver_interface            = if_ptr;
 
 #ifndef NX_DISABLE_FRAGMENTATION
@@ -12157,12 +12157,12 @@ NX_IP          *ip_ptr;
 static VOID  _nxd_bsd_swap_ipv6_extension_headers(NX_PACKET *packet_ptr, UCHAR header_type)
 {
 UCHAR                           *scan_ptr;
-ULONG                           remaining_bytes;
-ULONG                           header_length = 40;
+UINT32                           remaining_bytes;
+UINT32                           header_length = 40;
 NX_IPV6_HEADER_OPTION           *option;
 
 
-    remaining_bytes = (ULONG)packet_ptr -> nx_packet_prepend_ptr - (ULONG)packet_ptr -> nx_packet_ip_header;
+    remaining_bytes = (UINT32)packet_ptr -> nx_packet_prepend_ptr - (UINT32)packet_ptr -> nx_packet_ip_header;
 
     scan_ptr = packet_ptr -> nx_packet_ip_header;
 
@@ -12198,9 +12198,9 @@ NX_IPV6_HEADER_OPTION           *option;
         header_type = option -> nx_ipv6_header_option_next_header;
 
         if(header_type == NX_PROTOCOL_NEXT_HEADER_AUTHENTICATION)
-            header_length = (ULONG)((option -> nx_ipv6_header_option_ext_length << 2) + 2);
+            header_length = (UINT32)((option -> nx_ipv6_header_option_ext_length << 2) + 2);
         else
-            header_length = (ULONG)((option -> nx_ipv6_header_option_ext_length + 1) << 3);
+            header_length = (UINT32)((option -> nx_ipv6_header_option_ext_length + 1) << 3);
 
 
         remaining_bytes -= header_length;
@@ -12258,8 +12258,8 @@ UINT                if_index;
 struct nx_bsd_sockaddr_ll
                     *destAddr_ll;
 #if 0
-ULONG               src_mac_msw;
-ULONG               src_mac_lsw;
+UINT32               src_mac_msw;
+UINT32               src_mac_lsw;
 #endif
 NX_IP_DRIVER        driver_request;
 UINT                status;
@@ -12363,7 +12363,7 @@ NX_PACKET          *packet_ptr = NX_NULL;
 
 
     /* Now copy the data into the NetX packet.  */
-    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (ULONG)msgLength, nx_bsd_default_packet_pool, NX_NO_WAIT);
+    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (UINT32)msgLength, nx_bsd_default_packet_pool, NX_NO_WAIT);
 
     /* Was the data copy successful?  */
     if (status != NX_SUCCESS)
@@ -12645,7 +12645,7 @@ NX_PACKET          *packet_ptr = NX_NULL;
     packet_ptr -> nx_packet_ip_interface = &nx_bsd_default_ip -> nx_ip_interface[if_index];
 
     /* Now copy the data into the NetX packet.  */
-    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (ULONG)msgLength, nx_bsd_default_packet_pool, NX_NO_WAIT);
+    status =  nx_packet_data_append(packet_ptr, (VOID *) msg, (UINT32)msgLength, nx_bsd_default_packet_pool, NX_NO_WAIT);
 
     /* Was the data copy successful?  */
     if (status != NX_SUCCESS)
@@ -12744,7 +12744,7 @@ NX_BSD_SOCKET *bsd_ptr;
         if((nx_bsd_socket_array[i].nx_bsd_socket_status_flags & NX_BSD_SOCKET_IN_USE) &&
                 (nx_bsd_socket_array[i].nx_bsd_socket_family == AF_PACKET) &&
                 ((nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == NX_BSD_LOCAL_IF_INADDR_ANY) ||
-                 (nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == (ULONG)(packet_ptr -> nx_packet_ip_interface))))
+                 (nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == (UINT32)(packet_ptr -> nx_packet_ip_interface))))
         {
             sockid = i;
         }
@@ -12838,7 +12838,7 @@ NX_BSD_SOCKET *bsd_ptr;
 /*                                                                        */
 /**************************************************************************/
 static UINT _nx_bsd_ethernet_receive_notify(NX_IP *ip_ptr, UINT interface_index, NX_PACKET *packet_ptr,
-                                            ULONG physical_address_msw, ULONG physical_address_lsw,
+                                            UINT32 physical_address_msw, UINT32 physical_address_lsw,
                                             UINT packet_type, UINT header_size, VOID *context,
                                             struct NX_LINK_TIME_STRUCT *time_ptr)
 {
@@ -12853,7 +12853,7 @@ NX_BSD_SOCKET *bsd_ptr;
         if((nx_bsd_socket_array[i].nx_bsd_socket_status_flags & NX_BSD_SOCKET_IN_USE) &&
                 (nx_bsd_socket_array[i].nx_bsd_socket_family == AF_PACKET) &&
                 ((nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == NX_BSD_LOCAL_IF_INADDR_ANY) ||
-                 (nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == (ULONG)(packet_ptr -> nx_packet_ip_interface))))
+                 (nx_bsd_socket_array[i].nx_bsd_socket_local_bind_interface == (UINT32)(packet_ptr -> nx_packet_ip_interface))))
         {
             sockid = i;
         }
@@ -12969,7 +12969,7 @@ UCHAR   *colon_location;
 UCHAR   *dst_cur_ptr;
 /* A pointer to the end of the destination memory. */
 UCHAR   *dst_end_ptr;
-ULONG   *dst_long_ptr;
+UINT32   *dst_long_ptr;
 
 const CHAR    *ipv4_addr_start = src;
 UINT    n, i;
@@ -12982,7 +12982,7 @@ struct  nx_bsd_in_addr ipv4_addr;
         if(nx_bsd_inet_aton(src, &ipv4_addr))
         {
             /* Copy the IPv4 address to the destination. */
-            *((ULONG *)dst) = ipv4_addr.s_addr;
+            *((UINT32 *)dst) = ipv4_addr.s_addr;
             return 1;
         }
         return 0;
@@ -13093,10 +13093,10 @@ struct  nx_bsd_in_addr ipv4_addr;
 
                     /* Make sure the result is in network byte order. */
                     ipv4_addr.s_addr = ntohl(ipv4_addr.s_addr);
-                    NX_CHANGE_ULONG_ENDIAN(ipv4_addr.s_addr);
+                    NX_CHANGE_UINT32_ENDIAN(ipv4_addr.s_addr);
 
                     /* Store the value to the dst memory. */
-                    *(ULONG *)dst_cur_ptr = ipv4_addr.s_addr;
+                    *(UINT32 *)dst_cur_ptr = ipv4_addr.s_addr;
 
                     dst_cur_ptr += 4;
                     digit_counter = 0;
@@ -13154,13 +13154,13 @@ struct  nx_bsd_in_addr ipv4_addr;
         if(dst_cur_ptr != (dst_end_ptr + 1))
             return 0;
 
-        dst_long_ptr = (ULONG *)dst;
+        dst_long_ptr = (UINT32 *)dst;
 
         /* First convert it to host byte order. */
-        NX_CHANGE_ULONG_ENDIAN(dst_long_ptr[0]);
-        NX_CHANGE_ULONG_ENDIAN(dst_long_ptr[1]);
-        NX_CHANGE_ULONG_ENDIAN(dst_long_ptr[2]);
-        NX_CHANGE_ULONG_ENDIAN(dst_long_ptr[3]);
+        NX_CHANGE_UINT32_ENDIAN(dst_long_ptr[0]);
+        NX_CHANGE_UINT32_ENDIAN(dst_long_ptr[1]);
+        NX_CHANGE_UINT32_ENDIAN(dst_long_ptr[2]);
+        NX_CHANGE_UINT32_ENDIAN(dst_long_ptr[3]);
 
         /* Convert it to network byte order by BSD macros. */
         dst_long_ptr[0] = htonl(dst_long_ptr[0]);
@@ -13238,14 +13238,14 @@ UINT   rt_size;
     else if(af == AF_INET6)
     {
     USHORT temp[8];
-        temp[0] = (USHORT)(ntohl(*((ULONG *)src)) >> 16);
-        temp[1] = (USHORT)(ntohl(*((ULONG *)src)) & 0xFFFF);
-        temp[2] = (USHORT)(ntohl(*(((ULONG *)src) + 1)) >> 16);
-        temp[3] = (USHORT)(ntohl(*(((ULONG *)src) + 1)) & 0xFFFF);
-        temp[4] = (USHORT)(ntohl(*(((ULONG *)src) + 2)) >> 16);
-        temp[5] = (USHORT)(ntohl(*(((ULONG *)src) + 2)) & 0xFFFF);
-        temp[6] = (USHORT)(ntohl(*(((ULONG *)src) + 3)) >> 16);
-        temp[7] = (USHORT)(ntohl(*(((ULONG *)src) + 3)) & 0xFFFF);
+        temp[0] = (USHORT)(ntohl(*((UINT32 *)src)) >> 16);
+        temp[1] = (USHORT)(ntohl(*((UINT32 *)src)) & 0xFFFF);
+        temp[2] = (USHORT)(ntohl(*(((UINT32 *)src) + 1)) >> 16);
+        temp[3] = (USHORT)(ntohl(*(((UINT32 *)src) + 1)) & 0xFFFF);
+        temp[4] = (USHORT)(ntohl(*(((UINT32 *)src) + 2)) >> 16);
+        temp[5] = (USHORT)(ntohl(*(((UINT32 *)src) + 2)) & 0xFFFF);
+        temp[6] = (USHORT)(ntohl(*(((UINT32 *)src) + 3)) >> 16);
+        temp[7] = (USHORT)(ntohl(*(((UINT32 *)src) + 3)) & 0xFFFF);
 
         /* Initialization. */
         shorthand_index = -1;
@@ -13318,7 +13318,7 @@ UINT   rt_size;
                 if(i == shorthand_index)
                 {
                     /* Check if there is enough memory to store a character. */
-                    if((size - (ULONG)index) < 1)
+                    if((size - (UINT32)index) < 1)
                         return NX_NULL;
 
                     dst[index++] = ':';
@@ -13329,7 +13329,7 @@ UINT   rt_size;
            if(i != 0)
            {
                 /* Check if there is enough memory to store a character. */
-                if((size - (ULONG)index) < 1)
+                if((size - (UINT32)index) < 1)
                     return NX_NULL;
 
                 dst[index++] = ':';
@@ -13341,7 +13341,7 @@ UINT   rt_size;
               (shorthand_len == 5 && temp[5] == 0xffff)))  /* IPv4-compatible IPv6 address ----->  ::ffff:1.2.3.4 */
            {
                /* Convert ipv4 address to string.  12 == 16 - 4*/
-               rt_size = (UINT)inet_ntoa_internal((UCHAR*)src + 12, &dst[index], size - (ULONG)index);
+               rt_size = (UINT)inet_ntoa_internal((UCHAR*)src + 12, &dst[index], size - (UINT32)index);
 
                /* Check the return size, 0 means error. */
                if(rt_size)
@@ -13351,7 +13351,7 @@ UINT   rt_size;
            }
 
            /* Convert hex number to string */
-           rt_size = bsd_number_convert(temp[i], &dst[index], size - (ULONG)index, 16);
+           rt_size = bsd_number_convert(temp[i], &dst[index], size - (UINT32)index, 16);
            if(!rt_size)
                return NX_NULL;
 
@@ -13364,7 +13364,7 @@ UINT   rt_size;
         if((shorthand_index != -1) && (shorthand_index + shorthand_len == 8))
         {
             /* Check if there is enough memory to store a character. */
-            if((size - (ULONG)index) < 1)
+            if((size - (UINT32)index) < 1)
                 return NX_NULL;
 
             dst[index++] = ':';
@@ -13372,7 +13372,7 @@ UINT   rt_size;
         }
 
         /* Check if there is enough memory to store a character. */
-        if((size - (ULONG)index) < 1)
+        if((size - (UINT32)index) < 1)
             return NX_NULL;
 
         dst[index] = '\0';
@@ -13425,15 +13425,15 @@ UINT   rt_size;
 /*                                                                        */
 /**************************************************************************/
 
-static INT inet_ntoa_internal(const VOID *src, CHAR *dst, ULONG dst_size)
+static INT inet_ntoa_internal(const VOID *src, CHAR *dst, UINT32 dst_size)
 {
-ULONG temp;
+UINT32 temp;
 UINT size;
 UINT index = 0;
 
 
     /* Set a local pointer to move up the buffer. */
-    temp = ntohl(*((ULONG *)src));
+    temp = ntohl(*((UINT32 *)src));
 
     memset(dst, 0, dst_size);
 
@@ -13764,7 +13764,7 @@ static struct nx_bsd_addrinfo default_hints = {0, AF_UNSPEC, 0, 0, 0, NX_NULL, N
                 if((hints -> ai_family != AF_INET) && (hints -> ai_family != AF_UNSPEC))
                     return EAI_ADDRFAMILY;
 
-                NX_CHANGE_ULONG_ENDIAN(nx_bsd_ipv4_addr_buffer[0]);
+                NX_CHANGE_UINT32_ENDIAN(nx_bsd_ipv4_addr_buffer[0]);
                 ipv4_addr_count = 1;
             }
         }
@@ -13781,10 +13781,10 @@ static struct nx_bsd_addrinfo default_hints = {0, AF_UNSPEC, 0, 0, 0, NX_NULL, N
                 if((hints -> ai_family != AF_INET6) && (hints -> ai_family != AF_UNSPEC))
                     return EAI_ADDRFAMILY;
 
-                NX_CHANGE_ULONG_ENDIAN(nx_bsd_ipv6_addr_buffer[0]);
-                NX_CHANGE_ULONG_ENDIAN(nx_bsd_ipv6_addr_buffer[1]);
-                NX_CHANGE_ULONG_ENDIAN(nx_bsd_ipv6_addr_buffer[2]);
-                NX_CHANGE_ULONG_ENDIAN(nx_bsd_ipv6_addr_buffer[3]);
+                NX_CHANGE_UINT32_ENDIAN(nx_bsd_ipv6_addr_buffer[0]);
+                NX_CHANGE_UINT32_ENDIAN(nx_bsd_ipv6_addr_buffer[1]);
+                NX_CHANGE_UINT32_ENDIAN(nx_bsd_ipv6_addr_buffer[2]);
+                NX_CHANGE_UINT32_ENDIAN(nx_bsd_ipv6_addr_buffer[3]);
                 ipv6_addr_count = 1;
             }
         }
@@ -14005,7 +14005,7 @@ static struct nx_bsd_addrinfo default_hints = {0, AF_UNSPEC, 0, 0, 0, NX_NULL, N
             ((struct nx_bsd_sockaddr_in*)sockaddr_ptr) -> sin_port   = (USHORT)port;
             ((struct nx_bsd_sockaddr_in*)sockaddr_ptr) -> sin_addr.s_addr = nx_bsd_ipv4_addr_buffer[i];
 
-            NX_CHANGE_ULONG_ENDIAN(((struct nx_bsd_sockaddr_in*)sockaddr_ptr) -> sin_addr.s_addr);
+            NX_CHANGE_UINT32_ENDIAN(((struct nx_bsd_sockaddr_in*)sockaddr_ptr) -> sin_addr.s_addr);
         }
         else
         {
@@ -14015,10 +14015,10 @@ static struct nx_bsd_addrinfo default_hints = {0, AF_UNSPEC, 0, 0, 0, NX_NULL, N
             ((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_port   = (USHORT)port;
             memcpy(&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr), &nx_bsd_ipv6_addr_buffer[(i - ipv4_addr_count)*4], 16); /* Use case of memcpy is verified. */
 
-            NX_CHANGE_ULONG_ENDIAN(*(ULONG*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[0]));
-            NX_CHANGE_ULONG_ENDIAN(*(ULONG*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[1]));
-            NX_CHANGE_ULONG_ENDIAN(*(ULONG*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[2]));
-            NX_CHANGE_ULONG_ENDIAN(*(ULONG*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[3]));
+            NX_CHANGE_UINT32_ENDIAN(*(UINT32*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[0]));
+            NX_CHANGE_UINT32_ENDIAN(*(UINT32*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[1]));
+            NX_CHANGE_UINT32_ENDIAN(*(UINT32*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[2]));
+            NX_CHANGE_UINT32_ENDIAN(*(UINT32*)&(((struct nx_bsd_sockaddr_in6*)sockaddr_ptr) -> sin6_addr.s6_addr32[3]));
 
         }
 
@@ -14483,7 +14483,7 @@ const CHAR  *rt_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, ULONG serv_list_len)
+VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, UINT32 serv_list_len)
 {
     _nx_bsd_serv_list_ptr = serv_list_ptr;
     _nx_bsd_serv_list_len = serv_list_len;
@@ -14510,7 +14510,7 @@ VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, ULONG se
 /*                                                                        */
 /*  OUTPUT                                                                */
 /*                                                                        */
-/*    ULONG                                String length                  */
+/*    UINT32                                String length                  */
 /*                                                                        */
 /*  CALLS                                                                 */
 /*                                                                        */
@@ -14521,7 +14521,7 @@ VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, ULONG se
 /*    NetX Duo BSD Layer Source Code                                      */
 /*                                                                        */
 /**************************************************************************/
-static ULONG _nx_bsd_string_length(CHAR * string)
+static UINT32 _nx_bsd_string_length(CHAR * string)
 {
 int length = 0;
 
@@ -14531,7 +14531,7 @@ int length = 0;
         string++;
     }
 
-    return((ULONG)length);
+    return((UINT32)length);
 
 }
 
@@ -14637,7 +14637,7 @@ static VOID  _nx_bsd_fast_periodic_timer_entry(ULONG id)
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT  nx_bsd_poll(struct nx_bsd_pollfd *fds, ULONG nfds, INT timeout)
+INT  nx_bsd_poll(struct nx_bsd_pollfd *fds, UINT32 nfds, INT timeout)
 {
 nx_bsd_fd_set           read_fds;
 nx_bsd_fd_set           write_fds;
@@ -14646,7 +14646,7 @@ struct nx_bsd_timeval   stime;
 struct nx_bsd_timeval   *ptime;
 INT                     n_ready_fds;
 INT                     max_fd;
-ULONG                   i;
+UINT32                   i;
 struct nx_bsd_pollfd    *poll_fd;
 
     /* Check input parameter.  */

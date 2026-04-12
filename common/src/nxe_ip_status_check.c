@@ -69,7 +69,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_status_check(NX_IP *ip_ptr, ULONG needed_status, ULONG *actual_status, ULONG wait_option)
+UINT  _nxe_ip_status_check(NX_IP *ip_ptr, UINT32 needed_status, UINT32 *actual_status, UINT32 wait_option)
 {
 
 UINT status;

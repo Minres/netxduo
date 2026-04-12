@@ -62,7 +62,7 @@
 /*                                                                        */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_ipv6_find_max_prefix_length(ULONG *addr1, ULONG *addr2, UINT max_length)
+UINT _nxd_ipv6_find_max_prefix_length(UINT32 *addr1, UINT32 *addr2, UINT max_length)
 {
 UINT length = 0;
 UINT i, j, bit, time;

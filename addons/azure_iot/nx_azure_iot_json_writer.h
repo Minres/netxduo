@@ -37,8 +37,8 @@ typedef struct NX_AZURE_IOT_JSON_WRITER_STRUCT
     NX_PACKET *packet_ptr;
     az_json_writer json_writer;
     UINT wait_option;
-    ULONG nx_tail_packet_offset;
-    ULONG nx_packet_init_length;
+    UINT32 nx_tail_packet_offset;
+    UINT32 nx_packet_init_length;
 } NX_AZURE_IOT_JSON_WRITER;
 
 /**

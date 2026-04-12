@@ -81,16 +81,16 @@ TX_INTERRUPT_SAVE_AREA
 NX_TCP_HEADER *search_header_ptr = NX_NULL;
 NX_PACKET     *search_ptr;
 NX_PACKET     *previous_ptr;
-ULONG          header_length;
-ULONG          search_sequence;
-ULONG          temp;
-ULONG          packet_release_count;
-ULONG          ending_packet_sequence;
-ULONG          starting_tx_sequence;
-ULONG          ending_tx_sequence;
-ULONG          ending_rx_sequence;
-ULONG          acked_bytes;
-ULONG          tcp_payload_length;
+UINT32          header_length;
+UINT32          search_sequence;
+UINT32          temp;
+UINT32          packet_release_count;
+UINT32          ending_packet_sequence;
+UINT32          starting_tx_sequence;
+UINT32          ending_tx_sequence;
+UINT32          ending_rx_sequence;
+UINT32          acked_bytes;
+UINT32          tcp_payload_length;
 UINT           wrapped_flag = NX_FALSE;
 
 
@@ -142,7 +142,7 @@ UINT           wrapped_flag = NX_FALSE;
 
             /* Determine the size of the TCP header.  */
             temp =  search_header_ptr -> nx_tcp_header_word_3;
-            header_length =  (temp >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+            header_length =  (temp >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
             /* Determine the sequence number in the TCP header.  */
             search_sequence =  search_header_ptr -> nx_tcp_sequence_number;
@@ -150,7 +150,7 @@ UINT           wrapped_flag = NX_FALSE;
             /* Calculate the payload length of TCP. */
             tcp_payload_length = (search_ptr -> nx_packet_length -
                                   (header_length +
-                                   (ULONG)((ALIGN_TYPE)search_header_ptr -
+                                   (UINT32)((ALIGN_TYPE)search_header_ptr -
                                            (ALIGN_TYPE)search_ptr -> nx_packet_prepend_ptr)));
 
             /* Calculate the ending packet sequence.  */
@@ -187,7 +187,7 @@ UINT           wrapped_flag = NX_FALSE;
 #endif
 
         /* First, determine if incoming ACK matches our transmit sequence.  */
-        /*lint -e{923} suppress cast of pointer to ULONG.  */
+        /*lint -e{923} suppress cast of pointer to UINT32.  */
         if (tcp_header_ptr -> nx_tcp_acknowledgment_number == ending_tx_sequence)
         {
 
@@ -216,7 +216,7 @@ UINT           wrapped_flag = NX_FALSE;
 
             /* Determine if there is a packet on the transmit queue... and determine if the packet has been
                transmitted.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             if ((search_ptr) && (search_ptr -> nx_packet_queue_next == ((NX_PACKET *)NX_DRIVER_TX_DONE)))
             {
 
@@ -284,7 +284,7 @@ UINT           wrapped_flag = NX_FALSE;
             {
 
                 /* Determine if the packet has been transmitted.  */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 if (search_ptr -> nx_packet_queue_next != ((NX_PACKET *)NX_DRIVER_TX_DONE))
                 {
 
@@ -302,17 +302,17 @@ UINT           wrapped_flag = NX_FALSE;
 
                 /* Determine the size of the TCP header.  */
                 temp =  search_header_ptr -> nx_tcp_header_word_3;
-                NX_CHANGE_ULONG_ENDIAN(temp);
-                header_length =  (temp >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+                NX_CHANGE_UINT32_ENDIAN(temp);
+                header_length =  (temp >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
                 /* Determine the sequence number in the TCP header.  */
                 search_sequence =  search_header_ptr -> nx_tcp_sequence_number;
-                NX_CHANGE_ULONG_ENDIAN(search_sequence);
+                NX_CHANGE_UINT32_ENDIAN(search_sequence);
 
                 /* Calculate the payload length of TCP. */
                 tcp_payload_length = (search_ptr -> nx_packet_length -
                                       (header_length +
-                                       (ULONG)((ALIGN_TYPE)search_header_ptr -
+                                       (UINT32)((ALIGN_TYPE)search_header_ptr -
                                                (ALIGN_TYPE)search_ptr -> nx_packet_prepend_ptr)));
 
                 /* Calculate the ending packet sequence.  */
@@ -397,7 +397,7 @@ UINT           wrapped_flag = NX_FALSE;
                 search_ptr =  search_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
 
                 /* Determine if we are at the end of the TCP queue.  */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 if (search_ptr == ((NX_PACKET *)NX_PACKET_ENQUEUED))
                 {
 
@@ -645,7 +645,7 @@ UINT           wrapped_flag = NX_FALSE;
             TX_DISABLE
 
             /* Set the packet to allocated to indicate it is no longer part of the TCP queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             previous_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  ((NX_PACKET *)NX_PACKET_ALLOCATED);
 
             /* Has the packet been transmitted? This is only pertinent if a retransmit of
@@ -653,7 +653,7 @@ UINT           wrapped_flag = NX_FALSE;
                in an ARP queue or in a driver queue waiting for transmission so we can't
                release it directly at this point.  The driver or the ARP processing will
                release it when finished.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             if (previous_ptr -> nx_packet_queue_next ==  ((NX_PACKET *)NX_DRIVER_TX_DONE))
             {
 
@@ -667,8 +667,8 @@ UINT           wrapped_flag = NX_FALSE;
                 search_header_ptr = (NX_TCP_HEADER *)previous_ptr -> nx_packet_prepend_ptr;
 
                 temp = search_header_ptr -> nx_tcp_header_word_3;
-                NX_CHANGE_ULONG_ENDIAN(temp);
-                header_length = (temp >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+                NX_CHANGE_UINT32_ENDIAN(temp);
+                header_length = (temp >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
                 if (socket_ptr -> nx_tcp_socket_tx_outstanding_bytes > (previous_ptr -> nx_packet_length - header_length))
                 {
                     socket_ptr -> nx_tcp_socket_tx_outstanding_bytes -= previous_ptr -> nx_packet_length - header_length;
@@ -689,11 +689,11 @@ UINT           wrapped_flag = NX_FALSE;
                                                        previous_ptr -> nx_packet_ip_header_length);
 
                 temp = search_header_ptr -> nx_tcp_header_word_3;
-                NX_CHANGE_ULONG_ENDIAN(temp);
-                header_length = (temp >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+                NX_CHANGE_UINT32_ENDIAN(temp);
+                header_length = (temp >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
                 tcp_payload_length = (previous_ptr -> nx_packet_length -
                                       (header_length +
-                                       (ULONG)((ALIGN_TYPE)search_header_ptr -
+                                       (UINT32)((ALIGN_TYPE)search_header_ptr -
                                                (ALIGN_TYPE)(previous_ptr -> nx_packet_prepend_ptr))));
                 if (socket_ptr -> nx_tcp_socket_tx_outstanding_bytes > tcp_payload_length)
                 {

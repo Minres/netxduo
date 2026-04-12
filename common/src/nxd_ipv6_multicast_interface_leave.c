@@ -97,7 +97,7 @@ NX_INTERFACE *nx_interface;
             {
 
                 /* Clear the group join value.  */
-                memset(ip_ptr -> nx_ipv6_multicast_entry[i].nx_ip_mld_join_list, 0, 4 * sizeof(ULONG));
+                memset(ip_ptr -> nx_ipv6_multicast_entry[i].nx_ip_mld_join_list, 0, 4 * sizeof(UINT32));
 
                 /* Decrement the MLD groups joined count.  */
                 ip_ptr -> nx_ipv6_multicast_groups_joined--;

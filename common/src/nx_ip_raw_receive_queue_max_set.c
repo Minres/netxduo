@@ -63,7 +63,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_raw_receive_queue_max_set(NX_IP *ip_ptr, ULONG queue_max)
+UINT  _nx_ip_raw_receive_queue_max_set(NX_IP *ip_ptr, UINT32 queue_max)
 {
 
     /* Obtain the IP mutex.  */

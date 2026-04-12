@@ -66,7 +66,7 @@
 /*    _nxd_ipv6_address_delete                                            */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_ipv6_multicast_leave(NX_IP *ip_ptr, ULONG *multicast_addr, NX_INTERFACE *nx_interface)
+UINT _nx_ipv6_multicast_leave(NX_IP *ip_ptr, UINT32 *multicast_addr, NX_INTERFACE *nx_interface)
 {
 
 NX_IP_DRIVER driver_request;

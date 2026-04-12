@@ -105,8 +105,8 @@ UINT _nx_secure_tls_ecc_generate_keys(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciph
                                       NX_SECURE_TLS_ECC *tls_ecc_curves, NX_SECURE_TLS_KEY_MATERIAL *tls_key_material,
                                       NX_SECURE_TLS_CREDENTIALS *tls_credentials, UINT ecc_named_curve, USHORT sign_key,
                                       UCHAR *public_key, UINT *public_key_size, NX_SECURE_TLS_ECDHE_HANDSHAKE_DATA *ecc_data,
-                                      VOID *public_cipher_metadata, ULONG public_cipher_metadata_size,
-                                      VOID *public_auth_metadata, ULONG public_auth_metadata_size)
+                                      VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size,
+                                      VOID *public_auth_metadata, UINT32 public_auth_metadata_size)
 {
 UINT                       length;
 UINT                       output_size;

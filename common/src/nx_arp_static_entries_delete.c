@@ -69,8 +69,8 @@ UINT  _nx_arp_static_entries_delete(NX_IP *ip_ptr)
 #ifndef NX_DISABLE_IPV4
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
-ULONG                  deleted_count =  0;
+UINT32                  trace_timestamp;
+UINT32                  deleted_count =  0;
 #endif
 
 

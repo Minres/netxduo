@@ -71,8 +71,8 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_dynamic_entry_set(NX_IP *ip_ptr, ULONG ip_address,
-                                ULONG physical_msw, ULONG physical_lsw)
+UINT  _nx_arp_dynamic_entry_set(NX_IP *ip_ptr, UINT32 ip_address,
+                                UINT32 physical_msw, UINT32 physical_lsw)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -82,7 +82,7 @@ NX_ARP       *arp_list_head;
 UINT          index;
 UINT          status;
 NX_INTERFACE *nx_interface = NX_NULL;
-ULONG         next_hop_address;
+UINT32         next_hop_address;
 
     /* If trace is enabled, insert this event into the trace buffer.  */
     NX_TRACE_IN_LINE_INSERT(NX_TRACE_ARP_DYNAMIC_ENTRY_SET, ip_ptr, ip_address, physical_msw, physical_lsw, NX_TRACE_ARP_EVENTS, 0, 0);

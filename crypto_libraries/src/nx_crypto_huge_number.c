@@ -2481,7 +2481,7 @@ NX_CRYPTO_HUGE_NUMBER *operand, *temp_result, *temp_swap;
     val = e -> nx_crypto_huge_number_data + (exp_size - 1);
 
     /* Loop through the bits of the exponent. For each bit set, multiply the result by the running square. */
-    for (; (ULONG)val >= (ULONG)(e -> nx_crypto_huge_number_data); val--)
+    for (; (UINT32)val >= (UINT32)(e -> nx_crypto_huge_number_data); val--)
     {
         /* Current byte in the exponent determines whether we multiply or not. */
         cur_block = *val;

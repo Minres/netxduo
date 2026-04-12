@@ -565,7 +565,7 @@ UINT _nx_rtp_sender_port_get(NX_RTP_SENDER *rtp_sender, UINT *rtp_port, UINT *rt
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_create(NX_RTP_SENDER *rtp_sender, NX_RTP_SESSION *session, ULONG payload_type,
+UINT _nxe_rtp_sender_session_create(NX_RTP_SENDER *rtp_sender, NX_RTP_SESSION *session, UINT32 payload_type,
                                     UINT interface_index, NXD_ADDRESS *receiver_ip_address,
                                     UINT receiver_rtp_port_number, UINT receiver_rtcp_port_number)
 {
@@ -640,7 +640,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_create(NX_RTP_SENDER *rtp_sender, NX_RTP_SESSION *session, ULONG payload_type,
+UINT _nx_rtp_sender_session_create(NX_RTP_SENDER *rtp_sender, NX_RTP_SESSION *session, UINT32 payload_type,
                                    UINT interface_index, NXD_ADDRESS *receiver_ip_address,
                                    UINT receiver_rtp_port_number, UINT receiver_rtcp_port_number)
 {
@@ -697,7 +697,7 @@ UINT _nx_rtp_sender_session_create(NX_RTP_SENDER *rtp_sender, NX_RTP_SESSION *se
     session -> nx_rtp_session_payload_type = (UCHAR)(payload_type);
 
     /* Generate random values for the ssrc and sequence number. */
-    session -> nx_rtp_session_ssrc = (ULONG)NX_RAND();
+    session -> nx_rtp_session_ssrc = (UINT32)NX_RAND();
     session -> nx_rtp_session_sequence_number = (USHORT)NX_RAND();
 
     /* Record the rtp sender pointer in the session. */
@@ -1054,7 +1054,7 @@ UINT _nx_rtp_sender_rtcp_sdes_callback_set(NX_RTP_SENDER *rtp_sender, UINT (*rtc
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_packet_allocate(NX_RTP_SESSION *session, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT _nxe_rtp_sender_session_packet_allocate(NX_RTP_SESSION *session, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT status;
@@ -1107,7 +1107,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_packet_allocate(NX_RTP_SESSION *session, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT _nx_rtp_sender_session_packet_allocate(NX_RTP_SESSION *session, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT status;
@@ -1160,7 +1160,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_packet_send(NX_RTP_SESSION *session, NX_PACKET *packet_ptr, ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nxe_rtp_sender_session_packet_send(NX_RTP_SESSION *session, NX_PACKET *packet_ptr, UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT status;
@@ -1227,7 +1227,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_packet_send(NX_RTP_SESSION *session, NX_PACKET *packet_ptr, ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nx_rtp_sender_session_packet_send(NX_RTP_SESSION *session, NX_PACKET *packet_ptr, UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT           status;
@@ -1236,10 +1236,10 @@ NX_PACKET     *send_packet;
 NX_PACKET     *data_packet = packet_ptr;
 UCHAR         *data_ptr = data_packet -> nx_packet_prepend_ptr;
 UINT           sample_factor = session -> nx_rtp_session_sample_factor;
-ULONG          fragment_size = session -> nx_rtp_session_max_packet_size;
-ULONG          remaining_bytes = packet_ptr -> nx_packet_length;
-ULONG          payload_data_length;
-ULONG          copy_size;
+UINT32          fragment_size = session -> nx_rtp_session_max_packet_size;
+UINT32          remaining_bytes = packet_ptr -> nx_packet_length;
+UINT32          payload_data_length;
+UINT32          copy_size;
 UINT           fragmentation = NX_FALSE;
 
 
@@ -1278,7 +1278,7 @@ UINT           fragmentation = NX_FALSE;
             {
 
                 /* Compute how many data bytes to copy in the current packet. */
-                copy_size = (ULONG)(data_packet -> nx_packet_append_ptr - data_ptr);
+                copy_size = (UINT32)(data_packet -> nx_packet_append_ptr - data_ptr);
                 if ((send_packet -> nx_packet_length + copy_size) > fragment_size)
                 {
 
@@ -1366,11 +1366,11 @@ UINT           fragmentation = NX_FALSE;
 
         /* Fill the timestamp passed as an argument from the user, convert it from host byte order to network byte order. */
         rtp_header_ptr -> nx_rtp_header_timestamp = timestamp;
-        NX_CHANGE_ULONG_ENDIAN(rtp_header_ptr -> nx_rtp_header_timestamp);
+        NX_CHANGE_UINT32_ENDIAN(rtp_header_ptr -> nx_rtp_header_timestamp);
 
         /* Fill the ssrc from the session context, convert it from host byte order to network byte order. */
         rtp_header_ptr -> nx_rtp_header_ssrc = session -> nx_rtp_session_ssrc;
-        NX_CHANGE_ULONG_ENDIAN(rtp_header_ptr -> nx_rtp_header_ssrc);
+        NX_CHANGE_UINT32_ENDIAN(rtp_header_ptr -> nx_rtp_header_ssrc);
 
         /* Store timestamps for rtcp send report. */
         session -> nx_rtp_session_rtp_timestamp = timestamp;
@@ -1672,7 +1672,7 @@ UINT _nx_rtp_sender_session_sample_factor_set(NX_RTP_SESSION *session, UINT fact
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_ssrc_get(NX_RTP_SESSION *session, ULONG *ssrc)
+UINT _nxe_rtp_sender_session_ssrc_get(NX_RTP_SESSION *session, UINT32 *ssrc)
 {
 
 UINT status;
@@ -1723,7 +1723,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_ssrc_get(NX_RTP_SESSION *session, ULONG *ssrc)
+UINT _nx_rtp_sender_session_ssrc_get(NX_RTP_SESSION *session, UINT32 *ssrc)
 {
 
     /* Assign return value with the current ssrc of the session */
@@ -2155,7 +2155,7 @@ UCHAR          *end;
     {
         NX_CHANGE_USHORT_ENDIAN(header -> nx_rtcp_length);
 
-        next = (NX_RTCP_HEADER *)((ULONG *)header + header -> nx_rtcp_length + 1);
+        next = (NX_RTCP_HEADER *)((UINT32 *)header + header -> nx_rtcp_length + 1);
 
         /* RTP version field must equal 2. */
         if (((header -> nx_rtcp_byte0 & NX_RTCP_VERSION_MASK) != NX_RTCP_VERSION_VALUE) || ((UCHAR *)next > end))
@@ -2250,7 +2250,7 @@ NX_RTP_SESSION         *session;
         rtcp_rr = (NX_RTCP_RR *)header;
 
         /* Take care of endian-ness. */
-        NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_ssrc);
+        NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_ssrc);
 
         /* Obtain the mutex. */
         status = tx_mutex_get(&(rtp_sender -> nx_rtp_sender_protection), TX_NO_WAIT);
@@ -2262,12 +2262,12 @@ NX_RTP_SESSION         *session;
 
         if (_nx_rtp_sender_session_find(rtp_sender, rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_ssrc, &session) == NX_SUCCESS)
         {
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_ssrc);
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_loss);
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_extended_max);
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_jitter);
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_last_sr);
-            NX_CHANGE_ULONG_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_delay);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_ssrc);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_loss);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_extended_max);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_jitter);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_last_sr);
+            NX_CHANGE_UINT32_ENDIAN(rtcp_rr -> nx_rtcp_rr_report.nx_rtcp_report_delay);
 
             /* Copy the values out for the callback function. */
             report.receiver_ssrc = rtcp_rr -> nx_rtcp_rr_ssrc;
@@ -2344,13 +2344,13 @@ INT                 count;
     chunk = (NX_RTCP_SDES_CHUNK *)((UCHAR *)header + sizeof(NX_RTCP_HEADER));
     count = (header -> nx_rtcp_byte0 & NX_RTCP_COUNT_MASK);
 
-    end = (UCHAR *)((ULONG *)header + header -> nx_rtcp_length + 1);
+    end = (UCHAR *)((UINT32 *)header + header -> nx_rtcp_length + 1);
 
     while (((UCHAR *)chunk + sizeof(NX_RTCP_SDES_CHUNK) <= end) && (count-- > 0))
     {
         item = &chunk -> nx_rtcp_sdes_item[0];
 
-        NX_CHANGE_ULONG_ENDIAN(chunk -> nx_rtcp_sdes_ssrc);
+        NX_CHANGE_UINT32_ENDIAN(chunk -> nx_rtcp_sdes_ssrc);
 
         while (((UCHAR *)item + sizeof(NX_RTCP_SDES_ITEM) <= end) && item -> nx_rtcp_sdes_type)
         {
@@ -2433,7 +2433,7 @@ NX_RTCP_SR rtcp_sr;
     /* Pack SR packet. */
     rtcp_sr.nx_rtcp_sr_header.nx_rtcp_byte0 = (NX_RTP_VERSION << 6);                   /* Version 2 */
     rtcp_sr.nx_rtcp_sr_header.nx_rtcp_packet_type = NX_RTCP_TYPE_SR;
-    rtcp_sr.nx_rtcp_sr_header.nx_rtcp_length = sizeof(NX_RTCP_SR) / sizeof(ULONG) - 1; /* RTCP SR size. */
+    rtcp_sr.nx_rtcp_sr_header.nx_rtcp_length = sizeof(NX_RTCP_SR) / sizeof(UINT32) - 1; /* RTCP SR size. */
     rtcp_sr.nx_rtcp_sr_ssrc = session -> nx_rtp_session_ssrc;
     rtcp_sr.nx_rtcp_sr_ntp_timestamp_msw = session -> nx_rtp_session_ntp_timestamp_msw;
     rtcp_sr.nx_rtcp_sr_ntp_timestamp_lsw = session -> nx_rtp_session_ntp_timestamp_lsw;
@@ -2443,12 +2443,12 @@ NX_RTCP_SR rtcp_sr;
 
     /* Take care of endian-ness. */
     NX_CHANGE_USHORT_ENDIAN(rtcp_sr.nx_rtcp_sr_header.nx_rtcp_length);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_ssrc);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_ntp_timestamp_msw);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_ntp_timestamp_lsw);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_timestamp);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_packet_count);
-    NX_CHANGE_ULONG_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_octet_count);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_ssrc);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_ntp_timestamp_msw);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_ntp_timestamp_lsw);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_timestamp);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_packet_count);
+    NX_CHANGE_UINT32_ENDIAN(rtcp_sr.nx_rtcp_sr_rtp_octet_count);
 
     /* Append SR packet.  */
     nx_packet_data_append(packet_ptr, &rtcp_sr, sizeof(rtcp_sr), session -> nx_rtp_sender -> nx_rtp_sender_packet_pool_ptr, NX_RTP_SENDER_PACKET_TIMEOUT);
@@ -2498,7 +2498,7 @@ NX_RTCP_HEADER     header;
 NX_RTCP_SDES_CHUNK sdes_chunk;
 NX_PACKET_POOL    *packet_pool = session -> nx_rtp_sender -> nx_rtp_sender_packet_pool_ptr;
 NX_RTP_SENDER     *sender = session -> nx_rtp_sender;
-ULONG              pad = 0;
+UINT32              pad = 0;
 UCHAR              pad_value[] = {0, 0, 0};
 UINT               length;
 
@@ -2538,7 +2538,7 @@ SDES item format for CNAME:
     /* Pack SDES packet header. */
     header.nx_rtcp_byte0 = (NX_RTP_VERSION << 6) | 1; /* Sender Desc with 1 item */
     header.nx_rtcp_packet_type = NX_RTCP_TYPE_SDES;
-    header.nx_rtcp_length = (USHORT)(((length + pad) / sizeof(ULONG)) - 1);
+    header.nx_rtcp_length = (USHORT)(((length + pad) / sizeof(UINT32)) - 1);
 
     NX_CHANGE_USHORT_ENDIAN(header.nx_rtcp_length);
 
@@ -2554,7 +2554,7 @@ SDES item format for CNAME:
     sdes_chunk.nx_rtcp_sdes_item[0].nx_rtcp_sdes_type = NX_RTCP_SDES_TYPE_CNAME;
     sdes_chunk.nx_rtcp_sdes_item[0].nx_rtcp_sdes_length = sender -> nx_rtp_sender_cname_length;
 
-    NX_CHANGE_ULONG_ENDIAN(sdes_chunk.nx_rtcp_sdes_ssrc);
+    NX_CHANGE_UINT32_ENDIAN(sdes_chunk.nx_rtcp_sdes_ssrc);
 
     /* Append 4 bytes ssrc + 1 byte item type + 1 byte data length. */
     status = nx_packet_data_append(packet_ptr, &sdes_chunk, 6, packet_pool, NX_RTP_SENDER_PACKET_TIMEOUT);
@@ -2774,8 +2774,8 @@ NX_RTP_SENDER *rtp_sender;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_jpeg_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                       ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nxe_rtp_sender_session_jpeg_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                       UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT status;
@@ -2847,8 +2847,8 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_jpeg_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                      ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nx_rtp_sender_session_jpeg_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                      UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT       status;
@@ -2860,13 +2860,13 @@ USHORT     section_length;
 UCHAR      type = 255; /* type field for main jpeg header. */
 UCHAR      marker_code; /* jpeg marker code to indicate different sections. */
 USHORT     width = 0, height = 0; /* resolution information for main jpeg header. */
-ULONG      q_table_num = 0;
-ULONG      q_overall_table_num = 0;
+UINT32      q_table_num = 0;
+UINT32      q_overall_table_num = 0;
 UCHAR     *q_table_ptr[NX_RTP_SENDER_JPEG_QUANTIZATION_TABLE_MAX_NUM];
-ULONG      data_payload_length = 0;
-ULONG      transferred_data_size = 0;
-ULONG      single_frame_length;
-ULONG      copy_length;
+UINT32      data_payload_length = 0;
+UINT32      transferred_data_size = 0;
+UINT32      single_frame_length;
+UINT32      copy_length;
 UINT       temp_rtp_marker = NX_FALSE;
 NX_PACKET *send_packet = NX_NULL;
 
@@ -3045,13 +3045,13 @@ NX_PACKET *send_packet = NX_NULL;
                 /* Check if EOI has been found. */
                 if (data_ptr < data_end_ptr)
                 {
-                    data_payload_length = (ULONG)(data_end_ptr - data_ptr);
+                    data_payload_length = (UINT32)(data_end_ptr - data_ptr);
                 }
                 else /* data_ptr == data_end_ptr */
                 {
 
                     /* If EOI has not been found, consider all remaining data are scan data. */
-                    data_payload_length = frame_data_size - (ULONG)(data_ptr - frame_data);
+                    data_payload_length = frame_data_size - (UINT32)(data_ptr - frame_data);
                 }
 
                 /* When SOS found, the while loop will also be jumped out. */
@@ -3291,8 +3291,8 @@ NX_PACKET *send_packet = NX_NULL;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_h264_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                       ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nxe_rtp_sender_session_h264_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                       UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT status;
@@ -3368,15 +3368,15 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_h264_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                      ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nx_rtp_sender_session_h264_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                      UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT       status;
 UINT       i;
-ULONG      nal_unit_size;
-ULONG      max_packet_length;
-ULONG      send_packet_length;
+UINT32      nal_unit_size;
+UINT32      max_packet_length;
+UINT32      send_packet_length;
 UCHAR     *frame_end;
 UCHAR     *nal_unit_start;
 UCHAR     *data_ptr = frame_data;
@@ -3384,8 +3384,8 @@ UINT       send_marker = NX_FALSE;
 UINT       temp_marker = NX_FALSE;
 UCHAR      nal_unit_type;
 UCHAR      fu_a_header[2];
-ULONG      packet_num;
-ULONG      last_packet_size;
+UINT32      packet_num;
+UINT32      last_packet_size;
 NX_PACKET *send_packet = NX_NULL;
 
 
@@ -3450,7 +3450,7 @@ NX_PACKET *send_packet = NX_NULL;
                 {
 
                     /* Jump out if 4 bytes header of next frame/slice found. */
-                    nal_unit_size = (ULONG)(data_ptr - nal_unit_start + 1);
+                    nal_unit_size = (UINT32)(data_ptr - nal_unit_start + 1);
                     data_ptr += 4;
                     break;
                 }
@@ -3458,7 +3458,7 @@ NX_PACKET *send_packet = NX_NULL;
                 {
 
                     /* Jump out if 3 bytes header of next frame/slice found. */
-                    nal_unit_size = (ULONG)(data_ptr - nal_unit_start + 1);
+                    nal_unit_size = (UINT32)(data_ptr - nal_unit_start + 1);
                     data_ptr += 3;
                     break;
                 }
@@ -3469,7 +3469,7 @@ NX_PACKET *send_packet = NX_NULL;
             {
 
                 /* Compute nal unit size and move data pointer to the end. */
-                nal_unit_size = (ULONG)(frame_end - nal_unit_start + 1);
+                nal_unit_size = (UINT32)(frame_end - nal_unit_start + 1);
                 data_ptr = frame_end;
 
                 /* Set the send marker and jump out. */
@@ -3701,8 +3701,8 @@ NX_PACKET *send_packet = NX_NULL;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_rtp_sender_session_aac_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                      ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nxe_rtp_sender_session_aac_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                      UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT status;
@@ -3773,14 +3773,14 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_rtp_sender_session_aac_send(NX_RTP_SESSION *session, UCHAR *frame_data, ULONG frame_data_size,
-                                     ULONG timestamp, ULONG ntp_msw, ULONG ntp_lsw, UINT marker)
+UINT _nx_rtp_sender_session_aac_send(NX_RTP_SESSION *session, UCHAR *frame_data, UINT32 frame_data_size,
+                                     UINT32 timestamp, UINT32 ntp_msw, UINT32 ntp_lsw, UINT marker)
 {
 
 UINT       status;
 UCHAR      au_header[4] = {0x00, 0x10, 0x00, 0x00}; /* First 2 bytes represent au header length, with default 16 bits. */
-ULONG      send_packet_length;
-ULONG      max_packet_length = session -> nx_rtp_session_max_packet_size - sizeof(au_header);
+UINT32      send_packet_length;
+UINT32      max_packet_length = session -> nx_rtp_session_max_packet_size - sizeof(au_header);
 NX_PACKET *send_packet = NX_NULL;
 UCHAR     *data_ptr;
 UINT       temp_marker;

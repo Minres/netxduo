@@ -102,7 +102,7 @@ VOID                      *handler = NX_NULL;
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 UINT handshake_hash_length = 0;
 CHAR *metadata;
-ULONG metadata_size;
+UINT32 metadata_size;
 const CHAR server_context[] = "TLS 1.3, server CertificateVerify\0"; /* Includes 0-byte separator. */
 const CHAR client_context[] = "TLS 1.3, client CertificateVerify\0"; /* Includes 0-byte separator. */
 #endif
@@ -495,7 +495,7 @@ NX_CRYPTO_EXTENDED_OUTPUT  extended_output;
         /* If using RSA, the length is equal to the key size. */
         data_size = local_certificate -> nx_secure_x509_public_key.rsa_public_key.nx_secure_rsa_public_modulus_length;
 
-        if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < (4u + data_size))
+        if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < (4u + data_size))
         {
 #ifdef NX_SECURE_KEY_CLEAR
             NX_SECURE_MEMSET(handshake_hash, 0, sizeof(handshake_hash));
@@ -838,7 +838,7 @@ NX_CRYPTO_EXTENDED_OUTPUT  extended_output;
         /* Generate the signature and put it in the packet. */
         extended_output.nx_crypto_extended_output_data = &current_buffer[length + 2];
         extended_output.nx_crypto_extended_output_length_in_byte =
-            (ULONG)send_packet -> nx_packet_data_end - (ULONG)&current_buffer[length + 2];
+            (UINT32)send_packet -> nx_packet_data_end - (UINT32)&current_buffer[length + 2];
         extended_output.nx_crypto_extended_output_actual_size = 0;
         status = public_cipher_method -> nx_crypto_operation(NX_CRYPTO_AUTHENTICATE, handler,
                                                              (NX_CRYPTO_METHOD*)public_cipher_method,

@@ -72,14 +72,14 @@
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_ip_driver_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG destination_ip, ULONG fragment, ULONG next_hop_address)
+VOID  _nx_ip_driver_packet_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 destination_ip, UINT32 fragment, UINT32 next_hop_address)
 {
 
 TX_INTERRUPT_SAVE_AREA
 NX_IP_DRIVER driver_request;
 UINT         index;
-ULONG        network_mask;
-ULONG        network;
+UINT32        network_mask;
+UINT32        network;
 UCHAR        loopback = NX_FALSE;
 NX_ARP      *arp_ptr;
 NX_PACKET   *last_packet;
@@ -436,7 +436,7 @@ UINT         queued_count;
             ip_ptr -> nx_ip_total_packets_sent++;
 
             /* Increment the IP bytes sent count.  */
-            ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+            ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 #endif
 
 #ifdef NX_IPSEC_ENABLE
@@ -504,7 +504,7 @@ UINT         queued_count;
         ip_ptr -> nx_ip_total_packets_sent++;
 
         /* Increment the IP bytes sent count.  */
-        ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+        ip_ptr -> nx_ip_total_bytes_sent +=  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 #endif
 
         /* If trace is enabled, insert this event into the trace buffer.  */

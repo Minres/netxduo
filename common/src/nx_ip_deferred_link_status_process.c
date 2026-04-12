@@ -73,7 +73,7 @@ VOID _nx_ip_deferred_link_status_process(NX_IP *ip_ptr)
 
 UINT         i;
 NX_IP_DRIVER driver_request;
-ULONG        link_up;
+UINT32        link_up;
 
     if (ip_ptr -> nx_ip_link_status_change_callback == NX_NULL)
     {

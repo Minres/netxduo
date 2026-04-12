@@ -67,7 +67,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_socket_mss_set(NX_TCP_SOCKET *socket_ptr, ULONG mss)
+UINT  _nxe_tcp_socket_mss_set(NX_TCP_SOCKET *socket_ptr, UINT32 mss)
 {
 
 UINT status;

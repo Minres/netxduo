@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_mss_set(NX_TCP_SOCKET *socket_ptr, ULONG mss)
+UINT  _nx_tcp_socket_mss_set(NX_TCP_SOCKET *socket_ptr, UINT32 mss)
 {
 
 NX_IP *ip_ptr;

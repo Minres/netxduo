@@ -82,13 +82,13 @@ NX_PACKET      *before_last_packet;
 NX_PACKET      *last_packet;
 #endif /* NX_DISABLE_PACKET_CHAIN */
 NX_IPV4_HEADER *ip_header_ptr;
-ULONG          *word_ptr;
-ULONG           ip_header_length;
-ULONG           protocol;
-ULONG           delta;
-ULONG           val;
-ULONG           pkt_length;
-ULONG           checksum;
+UINT32          *word_ptr;
+UINT32           ip_header_length;
+UINT32           protocol;
+UINT32           delta;
+UINT32           val;
+UINT32           pkt_length;
+UINT32           checksum;
 NX_INTERFACE   *if_ptr;
 NX_UDP_HEADER  *udp_header_ptr;
 UINT            dest_port;
@@ -133,7 +133,7 @@ UINT            packet_consumed;
     val = ip_header_ptr -> nx_ip_header_word_0;
 
     /* Convert to host byte order. */
-    NX_CHANGE_ULONG_ENDIAN(val);
+    NX_CHANGE_UINT32_ENDIAN(val);
 
     /* Obtain packet length. */
     pkt_length = val & NX_LOWER_16_MASK;
@@ -195,7 +195,7 @@ UINT            packet_consumed;
 
             /* Determine if the amount to adjust is less than the payload in the last packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
+            if (((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr)) > delta)
             {
 
                 /* Yes, simply adjust the append pointer of the last packet in the chain.  */
@@ -209,7 +209,7 @@ UINT            packet_consumed;
             {
 
                 /* Adjust the delta by the amount in the last packet.  */
-                delta =  delta - ((ULONG)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
+                delta =  delta - ((UINT32)(last_packet -> nx_packet_append_ptr - last_packet -> nx_packet_prepend_ptr));
 
                 /* Find the packet before the last packet.  */
                 before_last_packet =  packet_ptr;
@@ -335,11 +335,11 @@ UINT            packet_consumed;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the IP header.  */
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
 
 #ifdef NX_ENABLE_SOURCE_ADDRESS_CHECK
     /* Check whether source address is valid. */
@@ -396,14 +396,14 @@ UINT            packet_consumed;
         }
 
         /* Setup a pointer to the last option word.  */
-        word_ptr = ((ULONG *)((VOID *)ip_header_ptr)) + ip_header_length - 1;
+        word_ptr = ((UINT32 *)((VOID *)ip_header_ptr)) + ip_header_length - 1;
 
         /* Remove the option words prior to handling the IP header.  */
         *word_ptr-- = ip_header_ptr -> nx_ip_header_destination_ip;
         *word_ptr-- = ip_header_ptr -> nx_ip_header_source_ip;
         *word_ptr-- = ip_header_ptr -> nx_ip_header_word_2;
         *word_ptr-- = ip_header_ptr -> nx_ip_header_word_1;
-        *word_ptr = (ULONG)(((ip_header_ptr -> nx_ip_header_word_0) & (~NX_IP_LENGTH_MASK)) | NX_IP_VERSION);
+        *word_ptr = (UINT32)(((ip_header_ptr -> nx_ip_header_word_0) & (~NX_IP_LENGTH_MASK)) | NX_IP_VERSION);
 
         /* Update the ip_header_ptr and the packet and the packet prepend pointer, ip header pointer and length.  */
         /*lint -e{929} -e{740} -e{826} suppress cast from pointer to pointer, since it is necessary  */
@@ -412,7 +412,7 @@ UINT            packet_consumed;
         /*lint -e{928} suppress cast from pointer to pointer, since it is necessary  */
         packet_ptr -> nx_packet_prepend_ptr = (UCHAR *)word_ptr;
         packet_ptr -> nx_packet_ip_header = packet_ptr -> nx_packet_prepend_ptr;
-        packet_ptr -> nx_packet_length = packet_ptr -> nx_packet_length - ((ip_header_length -  NX_IP_NORMAL_LENGTH) * (ULONG)sizeof(ULONG));
+        packet_ptr -> nx_packet_length = packet_ptr -> nx_packet_length - ((ip_header_length -  NX_IP_NORMAL_LENGTH) * (UINT32)sizeof(UINT32));
     }
 
     /* Check if this IP interface has a NAT forwarding service.  If so, let NAT get the
@@ -578,7 +578,7 @@ UINT            packet_consumed;
 
                 /* Check packet length with more fragment bit. If not multiple of 8 bytes...  */
                 if ((ip_header_ptr -> nx_ip_header_word_1 & NX_IP_MORE_FRAGMENT) &&
-                    (((pkt_length  - (ULONG)sizeof(NX_IPV4_HEADER))  & 0x7) != 0))
+                    (((pkt_length  - (UINT32)sizeof(NX_IPV4_HEADER))  & 0x7) != 0))
                 {
 
                     /* Invalid length.  Drop the packet.  */
@@ -652,7 +652,7 @@ UINT            packet_consumed;
         packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
 
         /* Adjust the length.  */
-        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 
 #ifndef NX_DISABLE_IP_INFO
 
@@ -685,7 +685,7 @@ UINT            packet_consumed;
             packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
 
             /* Adjust the length.  */
-            packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+            packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 
             /* GHSA-c9pq-93jp-w649:
                Validate that the packet contains at least the UDP header. */
@@ -713,14 +713,14 @@ UINT            packet_consumed;
 
             /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
                swap the endian of the UDP header.  */
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
 
             /* Pickup the destination UDP port.  */
             dest_port =  (UINT)(udp_header_ptr -> nx_udp_header_word_0 & NX_LOWER_16_MASK);
 
             /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
                swap the endian of the UDP header.  */
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
 
             /* Check if this packet is DHCP message.  */
             if (dest_port == 68)

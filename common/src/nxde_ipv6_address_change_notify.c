@@ -70,7 +70,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_ipv6_address_change_notify(NX_IP *ip_ptr, VOID (*ip_address_change_notify)(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT address_index, ULONG *ip_address))
+UINT  _nxde_ipv6_address_change_notify(NX_IP *ip_ptr, VOID (*ip_address_change_notify)(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT address_index, UINT32 *ip_address))
 {
 #if defined(NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY) && defined(FEATURE_NX_IPV6)
 UINT status;

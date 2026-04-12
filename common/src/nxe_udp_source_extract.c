@@ -66,7 +66,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_udp_source_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *port)
+UINT  _nxe_udp_source_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *port)
 {
 
 #ifndef NX_DISABLE_IPV4

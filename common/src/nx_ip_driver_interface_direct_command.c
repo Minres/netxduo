@@ -66,14 +66,14 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_driver_interface_direct_command(NX_IP *ip_ptr, UINT command, UINT interface_index, ULONG *return_value_ptr)
+UINT  _nx_ip_driver_interface_direct_command(NX_IP *ip_ptr, UINT command, UINT interface_index, UINT32 *return_value_ptr)
 {
 
 NX_IP_DRIVER           driver_request;
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 

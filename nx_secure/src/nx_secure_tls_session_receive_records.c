@@ -71,13 +71,13 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_secure_tls_session_receive_records(NX_SECURE_TLS_SESSION *tls_session,
-                                             NX_PACKET **packet_ptr_ptr, ULONG wait_option)
+                                             NX_PACKET **packet_ptr_ptr, UINT32 wait_option)
 {
 UINT           status;
 NX_PACKET     *packet_ptr;
 NX_TCP_SOCKET *tcp_socket;
-ULONG          bytes_processed = 0;
-ULONG          packet_fragment_length;
+UINT32          bytes_processed = 0;
+UINT32          packet_fragment_length;
 NX_PACKET     *send_packet = NX_NULL;
 UINT           error_number;
 UINT           alert_number;
@@ -150,7 +150,7 @@ UCHAR          handshake_finished = NX_FALSE;
         previous_packet = NX_NULL;
         while (current_packet)
         {
-            packet_fragment_length = (ULONG)(current_packet -> nx_packet_append_ptr) - (ULONG)(current_packet -> nx_packet_prepend_ptr);
+            packet_fragment_length = (UINT32)(current_packet -> nx_packet_append_ptr) - (UINT32)(current_packet -> nx_packet_prepend_ptr);
 
             /* Determine if all data in the current fragment have been processed. */
             if (packet_fragment_length <= bytes_processed)

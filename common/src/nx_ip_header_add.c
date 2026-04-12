@@ -74,16 +74,16 @@
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_header_add(NX_IP *ip_ptr, NX_PACKET *packet_ptr, ULONG source_ip, ULONG destination_ip,
-                        ULONG type_of_service, ULONG time_to_live,  ULONG protocol, ULONG fragment)
+UINT  _nx_ip_header_add(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT32 source_ip, UINT32 destination_ip,
+                        UINT32 type_of_service, UINT32 time_to_live,  UINT32 protocol, UINT32 fragment)
 {
-ULONG           router_alert = 0;
+UINT32           router_alert = 0;
 NX_IPV4_HEADER *ip_header_ptr;
-ULONG           checksum;
+UINT32           checksum;
 #if defined(NX_DISABLE_IP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
 UINT            compute_checksum = 1;
 #endif /* defined(NX_DISABLE_IP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
-ULONG           val;
+UINT32           val;
 
 #ifdef NX_ENABLE_IP_ID_RANDOMIZATION
     NX_PARAMETER_NOT_USED(ip_ptr);
@@ -101,7 +101,7 @@ ULONG           val;
     packet_ptr -> nx_packet_prepend_ptr =  (packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_IPV4_HEADER)) - router_alert;
 
     /* Increase the packet length.  */
-    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_IPV4_HEADER) + router_alert;
+    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_IPV4_HEADER) + router_alert;
 
     /* Assert prepend pointer is no less than data start pointer.  */
     /*lint -e{946} suppress pointer subtraction, since it is necessary. */
@@ -131,7 +131,7 @@ ULONG           val;
     {
 
         /* Build the first 32-bit word of the IP header.  */
-        ip_header_ptr -> nx_ip_header_word_0 =  (ULONG)((NX_IP_VERSION_V4 << 28) |
+        ip_header_ptr -> nx_ip_header_word_0 =  (UINT32)((NX_IP_VERSION_V4 << 28) |
                                                         (NX_IP_HEADER_LENGTH_ENCODE_6 << 24) |
                                                         type_of_service |
                                                         (0xFFFF & packet_ptr -> nx_packet_length));
@@ -146,7 +146,7 @@ ULONG           val;
 
     /* Build the second 32-bit word of the IP header.  */
 #ifdef NX_ENABLE_IP_ID_RANDOMIZATION
-    ip_header_ptr -> nx_ip_header_word_1 =  (((ULONG)NX_RAND()) << NX_SHIFT_BY_16) | fragment;
+    ip_header_ptr -> nx_ip_header_word_1 =  (((UINT32)NX_RAND()) << NX_SHIFT_BY_16) | fragment;
 #else
     ip_header_ptr -> nx_ip_header_word_1 =  (ip_ptr -> nx_ip_packet_id++ << NX_SHIFT_BY_16) | fragment;
 #endif /* NX_ENABLE_IP_ID_RANDOMIZATION */
@@ -166,7 +166,7 @@ ULONG           val;
 
         /* Append Router Alert Option. */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        *((ULONG *)(packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER))) = (NX_IP_OPTION_COPY_FLAG |
+        *((UINT32 *)(packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER))) = (NX_IP_OPTION_COPY_FLAG |
                                                                                       NX_IP_OPTION_CLASS |
                                                                                       NX_IP_OPTION_ROUTER_ALERT_NUMBER |
                                                                                       NX_IP_OPTION_ROUTER_ALERT_LENGTH |
@@ -176,17 +176,17 @@ ULONG           val;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the IP header.  */
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
 #ifndef NX_DISABLE_IGMPV2
     if (router_alert)
     {
 
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        NX_CHANGE_ULONG_ENDIAN(*((ULONG *)(packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER))));
+        NX_CHANGE_UINT32_ENDIAN(*((UINT32 *)(packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER))));
     }
 #endif
 
@@ -221,11 +221,11 @@ ULONG           val;
                                            /* IPv4 header checksum does not use src/dest addresses */
                                            NULL, NULL);
 
-        val = (ULONG)(~checksum);
+        val = (UINT32)(~checksum);
         val = val & NX_LOWER_16_MASK;
 
         /* Convert to network byte order. */
-        NX_CHANGE_ULONG_ENDIAN(val);
+        NX_CHANGE_UINT32_ENDIAN(val);
 
         /* Now store the checksum in the IP header.  */
         ip_header_ptr -> nx_ip_header_word_2 =  ip_header_ptr -> nx_ip_header_word_2 | val;

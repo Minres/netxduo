@@ -63,11 +63,11 @@
 /*                                                                        */
 /**************************************************************************/
 
-UINT _nx_secure_dtls_session_sliding_window_check(NX_SECURE_DTLS_SESSION *dtls_session, ULONG *sequence_number)
+UINT _nx_secure_dtls_session_sliding_window_check(NX_SECURE_DTLS_SESSION *dtls_session, UINT32 *sequence_number)
 {
-ULONG window;
-ULONG delta;
-ULONG mask;
+UINT32 window;
+UINT32 delta;
+UINT32 mask;
 NX_SECURE_TLS_SESSION *tls_session;
 
     /* Extract TLS session for sequence numbers and window from DTLS session. */

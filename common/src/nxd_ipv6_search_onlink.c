@@ -63,7 +63,7 @@
 /*                                           layer to remote host         */
 /*                                                                        */
 /**************************************************************************/
-INT _nxd_ipv6_search_onlink(NX_IP *ip_ptr, ULONG *dest_addr)
+INT _nxd_ipv6_search_onlink(NX_IP *ip_ptr, UINT32 *dest_addr)
 {
 
 UINT                  addr_index;

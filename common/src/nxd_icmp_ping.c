@@ -70,8 +70,8 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_icmp_ping(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, ULONG data_size,
-                     NX_PACKET **response_ptr, ULONG wait_option)
+UINT  _nxd_icmp_ping(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, CHAR *data_ptr, UINT32 data_size,
+                     NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 UINT status = NX_NOT_SUPPORTED;

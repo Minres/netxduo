@@ -77,7 +77,7 @@ VOID  _nx_icmpv4_process_echo_reply(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 TX_INTERRUPT_SAVE_AREA
 
 TX_THREAD      *thread_ptr;
-ULONG           suspended;
+UINT32           suspended;
 USHORT          sequence_num;
 NX_ICMPV4_ECHO *echo_ptr;
 
@@ -170,7 +170,7 @@ NX_ICMPV4_ECHO *echo_ptr;
 
             /* Adjust this packet to remove the ICMP header that is still in front of
                the response message.  */
-            packet_ptr -> nx_packet_length      = packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_ICMPV4_ECHO);
+            packet_ptr -> nx_packet_length      = packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_ICMPV4_ECHO);
             packet_ptr -> nx_packet_prepend_ptr = packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_ICMPV4_ECHO);
 
             /* Return this block pointer to the suspended thread waiting for

@@ -84,7 +84,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_tcp_socket_create(NX_IP *ip_ptr, NX_TCP_SOCKET *socket_ptr, CHAR *name,
-                             ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG window_size,
+                             UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 window_size,
                              VOID (*tcp_urgent_data_callback)(NX_TCP_SOCKET *socket_ptr),
                              VOID (*tcp_disconnect_callback)(NX_TCP_SOCKET *socket_ptr),
                              UINT tcp_socket_size)
@@ -92,7 +92,7 @@ UINT  _nxe_tcp_socket_create(NX_IP *ip_ptr, NX_TCP_SOCKET *socket_ptr, CHAR *nam
 
 UINT           status;
 NX_TCP_SOCKET *created_socket;
-ULONG          created_count;
+UINT32          created_count;
 
 
     /* Check for invalid input pointers.  */
@@ -156,7 +156,7 @@ ULONG          created_count;
     }
 
     /* Check for valid time to live option.  */
-    if (((ULONG)time_to_live) > NX_IP_TIME_TO_LIVE_MASK)
+    if (((UINT32)time_to_live) > NX_IP_TIME_TO_LIVE_MASK)
     {
         return(NX_OPTION_ERROR);
     }

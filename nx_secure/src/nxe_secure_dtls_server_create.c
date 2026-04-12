@@ -67,10 +67,10 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, ULONG timeout,
+UINT _nxe_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, UINT32 timeout,
                                     VOID *session_buffer, UINT session_buffer_size,
                                     const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                    VOID *crypto_metadata_buffer, ULONG crypto_metadata_size,
+                                    VOID *crypto_metadata_buffer, UINT32 crypto_metadata_size,
                                     UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                     UINT (*connect_notify)(NX_SECURE_DTLS_SESSION *dtls_session, NXD_ADDRESS *ip_address, UINT port),
                                     UINT (*receive_notify)(NX_SECURE_DTLS_SESSION *dtls_session))
@@ -82,7 +82,7 @@ UINT num_sessions;
 NX_SECURE_DTLS_SESSION *current_session;
 NX_SECURE_DTLS_SESSION *created_dtls_session;
 NX_SECURE_DTLS_SERVER *created_dtls_server;
-ULONG created_count;
+UINT32 created_count;
 
 
     /* Figure out number of sessions. */

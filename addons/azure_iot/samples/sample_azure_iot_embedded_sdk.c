@@ -25,7 +25,7 @@ static NX_SECURE_X509_CERT root_ca_cert;
 static NX_SECURE_X509_CERT root_ca_cert_2;
 static NX_SECURE_X509_CERT root_ca_cert_3;
 static UCHAR nx_azure_iot_tls_metadata_buffer[NX_AZURE_IOT_TLS_METADATA_BUFFER_SIZE];
-static ULONG nx_azure_iot_thread_stack[NX_AZURE_IOT_STACK_SIZE / sizeof(ULONG)];
+static UINT32 nx_azure_iot_thread_stack[NX_AZURE_IOT_STACK_SIZE / sizeof(UINT32)];
 
 /* Define the prototypes for AZ IoT.  */
 static NX_AZURE_IOT                                 nx_azure_iot;
@@ -73,12 +73,12 @@ static UCHAR sample_iothub_device_id[SAMPLE_MAX_BUFFER];
 /* Define sample threads.  */
 #ifndef DISABLE_TELEMETRY_SAMPLE
 static TX_THREAD sample_telemetry_thread;
-static ULONG sample_telemetry_thread_stack[SAMPLE_STACK_SIZE / sizeof(ULONG)];
+static UINT32 sample_telemetry_thread_stack[SAMPLE_STACK_SIZE / sizeof(UINT32)];
 #endif /* DISABLE_TELEMETRY_SAMPLE */
 
 #ifndef DISABLE_C2D_SAMPLE
 static TX_THREAD sample_c2d_thread;
-static ULONG sample_c2d_thread_stack[SAMPLE_STACK_SIZE / sizeof(ULONG)];
+static UINT32 sample_c2d_thread_stack[SAMPLE_STACK_SIZE / sizeof(UINT32)];
 #endif /* DISABLE_C2D_SAMPLE */
 
 #if !defined(DISABLE_TELEMETRY_SAMPLE) || !defined(DISABLE_C2D_SAMPLE)
@@ -90,16 +90,16 @@ static const CHAR *sample_properties[MAX_PROPERTY_COUNT][2] = {{"propertyA", "va
 #ifndef DISABLE_DIRECT_METHOD_SAMPLE
 static CHAR method_response_payload[] = "{\"status\": \"OK\"}";
 static TX_THREAD sample_direct_method_thread;
-static ULONG sample_direct_method_thread_stack[SAMPLE_STACK_SIZE / sizeof(ULONG)];
+static UINT32 sample_direct_method_thread_stack[SAMPLE_STACK_SIZE / sizeof(UINT32)];
 #endif /* DISABLE_DIRECT_METHOD_SAMPLE */
 
 #ifndef DISABLE_DEVICE_TWIN_SAMPLE
 static CHAR fixed_reported_properties[] = "{\"sample_report\": \"OK\"}";
 static TX_THREAD sample_device_twin_thread;
-static ULONG sample_device_twin_thread_stack[SAMPLE_STACK_SIZE / sizeof(ULONG)];
+static UINT32 sample_device_twin_thread_stack[SAMPLE_STACK_SIZE / sizeof(UINT32)];
 #endif /* DISABLE_DEVICE_TWIN_SAMPLE */
 
-void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(ULONG *unix_time));
+void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(UINT32 *unix_time));
 #ifdef ENABLE_DPS_SAMPLE
 static UINT sample_dps_entry(UCHAR **iothub_hostname, UINT *iothub_hostname_length,
                              UCHAR **iothub_device_id, UINT *iothub_device_id_length);
@@ -283,7 +283,7 @@ static void log_callback(az_log_classification classification, UCHAR *msg, UINT 
     }
 }
 
-void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(ULONG *unix_time))
+void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(UINT32 *unix_time))
 {
 UINT status = 0;
 UINT loop = NX_TRUE;
@@ -669,7 +669,7 @@ NX_PACKET *packet_ptr;
 UINT status = 0;
 UINT response_status;
 UINT request_id;
-ULONG reported_property_version;
+UINT32 reported_property_version;
 
     NX_PARAMETER_NOT_USED(parameter);
 

@@ -71,7 +71,7 @@ az_result core_result;
 UINT nx_azure_iot_hub_client_reported_properties_status_begin(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                               NX_AZURE_IOT_JSON_WRITER *writer_ptr,
                                                               const UCHAR *property_name_ptr, UINT property_name_length,
-                                                              UINT status_code, ULONG version,
+                                                              UINT status_code, UINT32 version,
                                                               const UCHAR *description_ptr, UINT description_length)
 {
 az_span property_name;
@@ -128,7 +128,7 @@ az_result core_result;
 
 UINT nx_azure_iot_hub_client_properties_version_get(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                     NX_AZURE_IOT_JSON_READER *reader_ptr,
-                                                    UINT message_type, ULONG *version_ptr)
+                                                    UINT message_type, UINT32 *version_ptr)
 {
 az_result core_result;
 az_iot_hub_client_properties_message_type core_message_type;
@@ -277,7 +277,7 @@ VOID nx_azure_iot_hub_client_properties_component_process(NX_AZURE_IOT_HUB_CLIEN
 {
 
 UINT status;
-ULONG version;
+UINT32 version;
 NX_AZURE_IOT_JSON_READER reader_ptr;
 const UCHAR *component_name_ptr = NX_NULL;
 USHORT component_name_length = 0;
@@ -304,7 +304,7 @@ UCHAR *prepend_ptr = NX_NULL;
     {
 
         /* Recover the prepend pointer since other functions will retreive the topic again.  */
-        packet_ptr -> nx_packet_length += (ULONG)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
+        packet_ptr -> nx_packet_length += (UINT32)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
         packet_ptr -> nx_packet_prepend_ptr = prepend_ptr;
         return;
     }
@@ -316,7 +316,7 @@ UCHAR *prepend_ptr = NX_NULL;
     {
 
         /* Recover the prepend pointer since other functions will retreive the topic again.  */
-        packet_ptr -> nx_packet_length += (ULONG)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
+        packet_ptr -> nx_packet_length += (UINT32)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
         packet_ptr -> nx_packet_prepend_ptr = prepend_ptr;
         return;
     }
@@ -326,7 +326,7 @@ UCHAR *prepend_ptr = NX_NULL;
     {
 
         /* Recover the prepend pointer since other functions will retreive the topic again.  */
-        packet_ptr -> nx_packet_length += (ULONG)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
+        packet_ptr -> nx_packet_length += (UINT32)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
         packet_ptr -> nx_packet_prepend_ptr = prepend_ptr;
         return;
     }
@@ -349,7 +349,7 @@ UCHAR *prepend_ptr = NX_NULL;
             {
 
                 /* Recover the prepend pointer since other functions will retreive the topic again.  */
-                packet_ptr -> nx_packet_length += (ULONG)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
+                packet_ptr -> nx_packet_length += (UINT32)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
                 packet_ptr -> nx_packet_prepend_ptr = prepend_ptr;
                 return;
             }
@@ -372,7 +372,7 @@ UCHAR *prepend_ptr = NX_NULL;
     }
 
     /* Recover the prepend pointer since other functions will retreive the topic again.  */
-    packet_ptr -> nx_packet_length += (ULONG)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
+    packet_ptr -> nx_packet_length += (UINT32)(packet_ptr -> nx_packet_prepend_ptr - prepend_ptr);
     packet_ptr -> nx_packet_prepend_ptr = prepend_ptr;
 
     return;

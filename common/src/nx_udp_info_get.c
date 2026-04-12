@@ -75,10 +75,10 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_info_get(NX_IP *ip_ptr, ULONG *udp_packets_sent, ULONG *udp_bytes_sent,
-                       ULONG *udp_packets_received, ULONG *udp_bytes_received,
-                       ULONG *udp_invalid_packets, ULONG *udp_receive_packets_dropped,
-                       ULONG *udp_checksum_errors)
+UINT  _nx_udp_info_get(NX_IP *ip_ptr, UINT32 *udp_packets_sent, UINT32 *udp_bytes_sent,
+                       UINT32 *udp_packets_received, UINT32 *udp_bytes_received,
+                       UINT32 *udp_invalid_packets, UINT32 *udp_receive_packets_dropped,
+                       UINT32 *udp_checksum_errors)
 {
 
 TX_INTERRUPT_SAVE_AREA

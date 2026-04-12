@@ -85,7 +85,7 @@ NXD_ADDRESS ip_address;
 UINT remote_port;
 UINT local_port;
 UINT status;
-ULONG packet_type;
+UINT32 packet_type;
 NX_PACKET *packet_ptr;
 UCHAR *send_data;
 NX_PACKET *temp_packet_ptr;
@@ -207,7 +207,7 @@ NX_SECURE_DTLS_SESSION *dtls_session;
                 return;
             }
 
-            if (((ULONG)(packet_ptr -> nx_packet_data_end) - (ULONG)(packet_ptr -> nx_packet_append_ptr)) < 15)
+            if (((UINT32)(packet_ptr -> nx_packet_data_end) - (UINT32)(packet_ptr -> nx_packet_append_ptr)) < 15)
             {
 
                 /* Packet buffer too small. */

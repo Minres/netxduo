@@ -45,7 +45,7 @@
 /* Necessary for threadx thread state macros. */
 extern  TX_THREAD   *_tx_thread_current_ptr; 
 extern  TX_THREAD    _tx_timer_thread; 
-extern  volatile ULONG _tx_thread_system_state;
+extern  volatile UINT32 _tx_thread_system_state;
 
 #define         NX_SMTP_BUFFER_SIZE           512
 static CHAR     _nx_smtp_buffer[NX_SMTP_BUFFER_SIZE]; 
@@ -81,11 +81,11 @@ static UINT _nx_smtp_rsp_auth(NX_SMTP_CLIENT *client_ptr);
 static UINT _nx_smtp_cmd_auth_challenge(NX_SMTP_CLIENT *client_ptr);
 static UINT _nx_smtp_rsp_auth_challenge(NX_SMTP_CLIENT *client_ptr);
 static UINT _nx_smtp_rsp_hello_command(NX_SMTP_CLIENT* client_ptr);
-static UINT _nx_smtp_utility_read_server_code(NX_SMTP_CLIENT *client_ptr, ULONG timeout, UINT  receive_all_lines);
-static UINT _nx_smtp_utility_send_to_server(NX_SMTP_CLIENT *client_ptr, CHAR *buffer_ptr, UINT buffer_length, ULONG timeout);
+static UINT _nx_smtp_utility_read_server_code(NX_SMTP_CLIENT *client_ptr, UINT32 timeout, UINT  receive_all_lines);
+static UINT _nx_smtp_utility_send_to_server(NX_SMTP_CLIENT *client_ptr, CHAR *buffer_ptr, UINT buffer_length, UINT32 timeout);
 static UINT _nx_smtp_utility_authentication_challenge(NX_SMTP_CLIENT *client_ptr, UCHAR *buffer_ptr, UINT length);  
 static UINT _nx_smtp_client_process(NX_SMTP_CLIENT *client_ptr);
-static UINT _nx_smtp_utility_send_header_to_server(NX_SMTP_CLIENT *client_ptr, ULONG timeout) ;
+static UINT _nx_smtp_utility_send_header_to_server(NX_SMTP_CLIENT *client_ptr, UINT32 timeout) ;
 static VOID _nx_smtp_utility_parse_server_services(NX_SMTP_CLIENT *client_ptr);
 static UINT _nx_smtp_parse_250_response(UCHAR *buffer_ptr, UINT buffer_length, UINT *is_last_code);
 static UINT _nx_smtp_parse_response(NX_SMTP_CLIENT *client_ptr, UCHAR *buffer, UINT arguement_index, 
@@ -2514,8 +2514,8 @@ UINT  _nx_smtp_cmd_message(NX_SMTP_CLIENT *client_ptr)
 {
 
 UINT                        status;
-ULONG                       data_left_to_transmit;
-ULONG                       packet_payload;
+UINT32                       data_left_to_transmit;
+UINT32                       packet_payload;
 CHAR                        *data_to_send;
 NX_PACKET_POOL              *pool_ptr;
 NX_SMTP_CLIENT_MAIL         *mail_ptr;
@@ -2861,7 +2861,7 @@ UINT    status;
 UINT  _nx_smtp_cmd_rset(NX_SMTP_CLIENT *client_ptr)
 {
 
-ULONG    timeout;
+UINT32    timeout;
 UINT     status;
 UINT     index;
 
@@ -3150,7 +3150,7 @@ UINT              first_digit_server_reply;
 /*                                            commands in the session     */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_smtp_utility_read_server_code(NX_SMTP_CLIENT *client_ptr, ULONG timeout, UINT  receive_all_lines)     
+UINT  _nx_smtp_utility_read_server_code(NX_SMTP_CLIENT *client_ptr, UINT32 timeout, UINT  receive_all_lines)     
 {
 
 UINT         status; 
@@ -3281,7 +3281,7 @@ UINT         buffer_length;
 /*   Session SMTP command services   Send SMTP commands to server         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_smtp_utility_send_to_server(NX_SMTP_CLIENT *client_ptr, CHAR *buffer_ptr, UINT buffer_length, ULONG timeout) 
+UINT  _nx_smtp_utility_send_to_server(NX_SMTP_CLIENT *client_ptr, CHAR *buffer_ptr, UINT buffer_length, UINT32 timeout) 
 {
 
 UINT            status;
@@ -3399,7 +3399,7 @@ UINT            packet_type;
 /*   Session SMTP command services   Send SMTP commands to server         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_smtp_utility_send_header_to_server(NX_SMTP_CLIENT *client_ptr, ULONG timeout) 
+UINT  _nx_smtp_utility_send_header_to_server(NX_SMTP_CLIENT *client_ptr, UINT32 timeout) 
 {
 
 UINT                 status;
@@ -3680,7 +3680,7 @@ UINT   plain_option = NX_FALSE;
 UINT   login_option = NX_FALSE;
 UCHAR  *work_ptr; 
 UCHAR  *temp_ptr;
-ULONG  length, new_length;
+UINT32  length, new_length;
 UINT   i;
 UINT   found = NX_FALSE;
   
@@ -3737,7 +3737,7 @@ UINT   found = NX_FALSE;
     temp_ptr = work_ptr;
 
     found = NX_FALSE;
-    new_length = length - (ULONG)(temp_ptr - client_ptr -> nx_smtp_server_packet -> nx_packet_prepend_ptr);
+    new_length = length - (UINT32)(temp_ptr - client_ptr -> nx_smtp_server_packet -> nx_packet_prepend_ptr);
 
     /* Check length. */
     if (new_length < 5)

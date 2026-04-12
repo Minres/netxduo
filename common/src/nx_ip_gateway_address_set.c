@@ -70,7 +70,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_gateway_address_set(NX_IP *ip_ptr, ULONG ip_address)
+UINT  _nx_ip_gateway_address_set(NX_IP *ip_ptr, UINT32 ip_address)
 {
 
 #ifndef NX_DISABLE_IPV4

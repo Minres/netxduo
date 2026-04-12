@@ -540,7 +540,7 @@ NX_CRYPTO_METHOD                     *crypto_method;
                                                       crypto_method,
                                                       NX_NULL, 0,
                                                       &packet_buffer[2], /* Skip extension length. */
-                                                      (ULONG)(*extension_length - 2),
+                                                      (UINT32)(*extension_length - 2),
                                                       NX_NULL, NX_NULL, 0,
                                                       tls_session -> nx_secure_public_auth_metadata_area,
                                                       tls_session -> nx_secure_public_auth_metadata_size,
@@ -597,7 +597,7 @@ static UINT _nx_secure_tls_proc_serverhello_sec_reneg_extension(NX_SECURE_TLS_SE
                                                                 UCHAR *packet_buffer,
                                                                 USHORT *extension_length, UINT message_length)
 {
-ULONG  offset;
+UINT32  offset;
 UCHAR  renegotiated_connection_length;
 USHORT parsed_length;
 INT    compare_value;
@@ -765,7 +765,7 @@ static UINT _nx_secure_tls_proc_serverhello_keyshare_extension(NX_SECURE_TLS_SES
 {
 UINT status;
 UINT i;
-ULONG  offset;
+UINT32  offset;
 USHORT key_group;
 USHORT key_length;
 NX_SECURE_TLS_ECDHE_HANDSHAKE_DATA *ecc_key_data;
@@ -804,7 +804,7 @@ NX_SECURE_TLS_ECC *ecc_info;
     ecc_info = &(tls_session -> nx_secure_tls_ecc);
 
     /* Check the key group. */
-    key_group = (USHORT)((ULONG)key_group | NX_CRYPTO_EC_MASK);
+    key_group = (USHORT)((UINT32)key_group | NX_CRYPTO_EC_MASK);
 
 
     /* Loop through all supported ECC curves in this session. */
@@ -987,7 +987,7 @@ static UINT _nx_secure_tls_proc_serverhello_supported_versions_extension(NX_SECU
                                                                          USHORT *supported_version,
                                                                          USHORT *extension_length, UINT message_length)
 {
-ULONG  offset;
+UINT32  offset;
 
     NX_PARAMETER_NOT_USED(tls_session);
 

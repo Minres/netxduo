@@ -65,7 +65,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /**************************************************************************/
 #ifndef NX_SECURE_TLS_DISABLE_SECURE_RENEGOTIATION
 UINT _nxe_secure_tls_session_renegotiate_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                      ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *session))
+                                                      UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *session))
 {
 UINT status;
 

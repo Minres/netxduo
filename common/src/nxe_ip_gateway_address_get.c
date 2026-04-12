@@ -67,7 +67,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_gateway_address_get(NX_IP *ip_ptr, ULONG *ip_address)
+UINT  _nxe_ip_gateway_address_get(NX_IP *ip_ptr, UINT32 *ip_address)
 {
 
 #ifndef NX_DISABLE_IPV4

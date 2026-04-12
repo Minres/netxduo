@@ -71,7 +71,7 @@
 /*    This function cannot be called from ISR.                            */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxde_ipv6_default_router_get(NX_IP *ip_ptr, UINT interface_index, NXD_ADDRESS *router_addr, ULONG *router_lifetime, ULONG *prefix_length)
+UINT  _nxde_ipv6_default_router_get(NX_IP *ip_ptr, UINT interface_index, NXD_ADDRESS *router_addr, UINT32 *router_lifetime, UINT32 *prefix_length)
 {
 #ifdef FEATURE_NX_IPV6
 

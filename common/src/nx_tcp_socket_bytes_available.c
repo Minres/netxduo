@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_bytes_available(NX_TCP_SOCKET *socket_ptr, ULONG *bytes_available)
+UINT  _nx_tcp_socket_bytes_available(NX_TCP_SOCKET *socket_ptr, UINT32 *bytes_available)
 {
 NX_IP         *ip_ptr;
 NX_PACKET     *packet_ptr;
@@ -109,7 +109,7 @@ INT            done = 0;
        number of bytes in the rx queue that are available to the applciation. */
     do
     {
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         if (packet_ptr -> nx_packet_queue_next == ((NX_PACKET *)NX_PACKET_READY))
         {
 
@@ -118,7 +118,7 @@ INT            done = 0;
             header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
             /* Calculate the header size for this packet.  */
-            header_length = (UINT)((header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * sizeof(ULONG));
+            header_length = (UINT)((header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * sizeof(UINT32));
 
             data_size = (UINT)(packet_ptr -> nx_packet_length - header_length);
             *bytes_available += data_size;

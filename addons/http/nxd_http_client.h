@@ -153,14 +153,14 @@ extern   "C" {
 
 typedef struct NX_HTTP_CLIENT_STRUCT
 {
-    ULONG           nx_http_client_id;                              /* HTTP Server ID                       */
+    UINT32           nx_http_client_id;                              /* HTTP Server ID                       */
     CHAR           *nx_http_client_name;                            /* Name of this HTTP Client             */
     UINT            nx_http_client_state;                           /* Current state of HTTP Client         */
     UINT            nx_http_client_connect_port;                    /* Client port to connect to the server */
     NX_IP          *nx_http_client_ip_ptr;                          /* Pointer to associated IP structure   */
     NX_PACKET_POOL *nx_http_client_packet_pool_ptr;                 /* Pointer to HTTP Client packet pool   */
-    ULONG           nx_http_client_total_transfer_bytes;            /* Total number of bytes to transfer    */
-    ULONG           nx_http_client_actual_bytes_transferred;        /* Number of bytes actually transferred */
+    UINT32           nx_http_client_total_transfer_bytes;            /* Total number of bytes to transfer    */
+    UINT32           nx_http_client_actual_bytes_transferred;        /* Number of bytes actually transferred */
     NX_PACKET      *nx_http_client_first_packet;                    /* Pointer to first packet with data    */
     NX_TCP_SOCKET   nx_http_client_socket;                          /* HTTP Client TCP socket               */
 #ifdef  NX_HTTP_DIGEST_ENABLE
@@ -220,53 +220,53 @@ typedef struct NX_HTTP_CLIENT_STRUCT
 /* Define the prototypes accessible to the application software.  */
 
 #ifdef NX_DISABLE_ERROR_CHECKING
-UINT        _nx_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size);
+UINT        _nx_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size);
 #else
-UINT        _nxe_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size, UINT http_client_size);
+UINT        _nxe_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size, UINT http_client_size);
 #endif  /* NX_DISABLE_ERROR_CHECKING */
 UINT        nx_http_client_delete(NX_HTTP_CLIENT *client_ptr);
-UINT        nx_http_client_get_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        nx_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        nx_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        nx_http_client_put_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        nx_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
-UINT        nx_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT        nx_http_client_get_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        nx_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        nx_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        nx_http_client_put_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        nx_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
+UINT        nx_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
 UINT        nx_http_client_set_connect_port(NX_HTTP_CLIENT *client_ptr, UINT port);
-UINT        nxd_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        nxd_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        nxd_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        nxd_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
+UINT        nxd_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        nxd_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        nxd_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        nxd_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
 
 #else
 
 /* HTTP source code is being compiled, do not perform any API mapping.  */
 
-UINT        _nxe_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size, UINT http_client_size);
-UINT        _nx_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size);
+UINT        _nxe_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size, UINT http_client_size);
+UINT        _nx_http_client_create(NX_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size);
 UINT        _nxe_http_client_delete(NX_HTTP_CLIENT *client_ptr);
 UINT        _nx_http_client_delete(NX_HTTP_CLIENT *client_ptr);
-UINT        _nxe_http_client_get_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nx_http_client_get_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxe_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        _nx_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        _nxe_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nx_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT        _nxe_http_client_put_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        _nx_http_client_put_start(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        _nxe_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
-UINT        _nx_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, ULONG ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
-UINT        _nxe_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT        _nx_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
+UINT        _nxe_http_client_get_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nx_http_client_get_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxe_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        _nx_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        _nxe_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nx_http_client_get_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT        _nxe_http_client_put_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nx_http_client_put_start(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nxe_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nx_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, UINT32 ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nxe_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT        _nx_http_client_put_packet(NX_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
 UINT        _nxe_http_client_set_connect_port(NX_HTTP_CLIENT *client_ptr, UINT port);
 UINT        _nx_http_client_set_connect_port(NX_HTTP_CLIENT *client_ptr, UINT port);
-UINT        _nxde_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxd_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, ULONG wait_option);
-UINT        _nxde_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        _nxd_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG wait_option);
-UINT        _nxde_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        _nxd_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option);
-UINT        _nxde_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
-UINT        _nxd_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, ULONG total_bytes, ULONG wait_option);
+UINT        _nxde_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxd_http_client_get_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *input_ptr, UINT input_size, CHAR *username, CHAR *password, UINT32 wait_option);
+UINT        _nxde_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        _nxd_http_client_get_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *input_ptr, UINT input_size, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 wait_option);
+UINT        _nxde_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nxd_http_client_put_start(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nxde_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
+UINT        _nxd_http_client_put_start_extended(NX_HTTP_CLIENT *client_ptr, NXD_ADDRESS *ip_address, CHAR *resource, UINT resource_length, CHAR *username, UINT username_length, CHAR *password, UINT password_length, UINT32 total_bytes, UINT32 wait_option);
 
 /* Define internal HTTP functions.  */
 

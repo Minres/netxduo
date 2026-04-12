@@ -67,10 +67,10 @@
 /*    _nx_tcp_server_socket_relisten        Socket relisten processing    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_mss_option_get(UCHAR *option_ptr, ULONG option_area_size, ULONG *mss)
+UINT  _nx_tcp_mss_option_get(UCHAR *option_ptr, UINT32 option_area_size, UINT32 *mss)
 {
 
-ULONG option_length;
+UINT32 option_length;
 
     /* Initialize the value.  */
     *mss = 0;
@@ -95,10 +95,10 @@ ULONG option_length;
             }
 
             /* Build the mss size.  */
-            *mss = (ULONG)*option_ptr++;
+            *mss = (UINT32)*option_ptr++;
 
             /* Get the LSB of the MSS.  */
-            *mss = (*mss << 8) | (ULONG)*option_ptr;
+            *mss = (*mss << 8) | (UINT32)*option_ptr;
 
             /* Finished, get out of the loop!  */
             break;
@@ -125,7 +125,7 @@ ULONG option_length;
         {
 
             /* Derive the option length.  */
-            option_length =  ((ULONG)*option_ptr);
+            option_length =  ((UINT32)*option_ptr);
 
             /* Return when option length is invalid. */
             if (option_length == 0)

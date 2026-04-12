@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_entry_delete(NX_IP *ip_ptr, ULONG ip_address)
+UINT  _nx_arp_entry_delete(NX_IP *ip_ptr, UINT32 ip_address)
 {
 
 #ifndef NX_DISABLE_IPV4

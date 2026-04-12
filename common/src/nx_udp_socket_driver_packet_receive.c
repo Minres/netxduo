@@ -97,7 +97,7 @@ NX_UDP_HEADER  *udp_header_ptr;
     packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_UDP_HEADER);
 
     /* Increase the packet length.  */
-    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_UDP_HEADER);
+    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_UDP_HEADER);
 
     /* Setup the UDP header pointer.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
@@ -105,15 +105,15 @@ NX_UDP_HEADER  *udp_header_ptr;
 
     /* Build the first 32-bit word of the UDP header.  */
     udp_header_ptr -> nx_udp_header_word_0 =
-        ((ULONG)remote_port << NX_SHIFT_BY_16) | (ULONG)socket_ptr -> nx_udp_socket_port;
+        ((UINT32)remote_port << NX_SHIFT_BY_16) | (UINT32)socket_ptr -> nx_udp_socket_port;
 
     /* Build the second 32-bit word of the UDP header.  */
     udp_header_ptr -> nx_udp_header_word_1 =  (packet_ptr -> nx_packet_length << NX_SHIFT_BY_16);
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
     swap the endian of the UDP header.  */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
 #ifndef NX_DISABLE_IPV4
     if (remote_ip -> nxd_ip_version == NX_IP_VERSION_V4)

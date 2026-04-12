@@ -73,8 +73,8 @@
 /*    nx_ipv6_send_packet                   Send specified IPv6 packet    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_icmpv6_dest_table_find(NX_IP *ip_ptr, ULONG *destination_address, NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr,
-                                ULONG path_mtu, ULONG mtu_timeout)
+UINT _nx_icmpv6_dest_table_find(NX_IP *ip_ptr, UINT32 *destination_address, NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr,
+                                UINT32 path_mtu, UINT32 mtu_timeout)
 {
 
 UINT i, table_size;

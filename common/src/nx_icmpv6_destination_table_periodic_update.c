@@ -115,7 +115,7 @@ UINT i, table_size;
             else
             {
 
-                ip_ptr -> nx_ipv6_destination_table[i].nx_ipv6_destination_entry_MTU_timer_tick -= (ULONG)NX_IP_PERIODIC_RATE;
+                ip_ptr -> nx_ipv6_destination_table[i].nx_ipv6_destination_entry_MTU_timer_tick -= (UINT32)NX_IP_PERIODIC_RATE;
             }
         }
     }

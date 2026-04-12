@@ -78,10 +78,10 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_info_get(NX_IP *ip_ptr, ULONG *arp_requests_sent, ULONG *arp_requests_received,
-                       ULONG *arp_responses_sent, ULONG *arp_responses_received,
-                       ULONG *arp_dynamic_entries, ULONG *arp_static_entries,
-                       ULONG *arp_aged_entries, ULONG *arp_invalid_messages)
+UINT  _nx_arp_info_get(NX_IP *ip_ptr, UINT32 *arp_requests_sent, UINT32 *arp_requests_received,
+                       UINT32 *arp_responses_sent, UINT32 *arp_responses_received,
+                       UINT32 *arp_dynamic_entries, UINT32 *arp_static_entries,
+                       UINT32 *arp_aged_entries, UINT32 *arp_invalid_messages)
 {
 
 #ifndef NX_DISABLE_IPV4

@@ -73,17 +73,17 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_interface_status_check(NX_IP *ip_ptr, UINT interface_index, ULONG needed_status,
-                                    ULONG *actual_status, ULONG wait_option)
+UINT  _nx_ip_interface_status_check(NX_IP *ip_ptr, UINT interface_index, UINT32 needed_status,
+                                    UINT32 *actual_status, UINT32 wait_option)
 {
 
-ULONG                  current_status;
+UINT32                  current_status;
 NX_IP_DRIVER           driver_request;
-ULONG                  return_value;
+UINT32                  return_value;
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 

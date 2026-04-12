@@ -67,7 +67,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_secure_dtls_session_receive(NX_SECURE_DTLS_SESSION *dtls_session,
-                                      NX_PACKET **packet_ptr_ptr, ULONG wait_option)
+                                      NX_PACKET **packet_ptr_ptr, UINT32 wait_option)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT status;

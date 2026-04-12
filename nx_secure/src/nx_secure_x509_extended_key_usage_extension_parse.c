@@ -67,11 +67,11 @@ UINT _nx_secure_x509_extended_key_usage_extension_parse(NX_SECURE_X509_CERT *cer
 {
 USHORT                   tlv_type;
 USHORT                   tlv_type_class;
-ULONG                    tlv_length;
+UINT32                    tlv_length;
 const UCHAR             *tlv_data;
 const UCHAR             *current_buffer;
-ULONG                    length;
-ULONG                    header_length;
+UINT32                    length;
+UINT32                    header_length;
 UINT                     status;
 UINT                     usage_oid;
 NX_SECURE_X509_EXTENSION key_usage_extension;

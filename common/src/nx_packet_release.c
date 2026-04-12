@@ -85,7 +85,7 @@ NX_PACKET      *next_packet;    /* Working block pointer   */
 #endif /* NX_DISABLE_PACKET_CHAIN */
 
         /* Check to see if the packet is releasable.  */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         if (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED))
         {
 
@@ -180,7 +180,7 @@ NX_PACKET      *next_packet;    /* Working block pointer   */
             packet_ptr -> nx_packet_interface_capability_flag = 0;
 #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
             /* Set the TCP queue to the value that indicates it has been allocated.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ALLOCATED;
 
 #ifdef FEATURE_NX_IPV6
@@ -220,7 +220,7 @@ NX_PACKET      *next_packet;    /* Working block pointer   */
             /* No thread is suspended for a memory block.  */
 
             /* Mark the packet as free.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_FREE;
 
             /* Put the packet back in the available list.  */

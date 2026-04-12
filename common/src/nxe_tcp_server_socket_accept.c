@@ -68,7 +68,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_server_socket_accept(NX_TCP_SOCKET *socket_ptr, ULONG wait_option)
+UINT  _nxe_tcp_server_socket_accept(NX_TCP_SOCKET *socket_ptr, UINT32 wait_option)
 {
 
 UINT status;

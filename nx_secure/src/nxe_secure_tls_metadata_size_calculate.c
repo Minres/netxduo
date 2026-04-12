@@ -65,7 +65,7 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_secure_tls_metadata_size_calculate(const NX_SECURE_TLS_CRYPTO *cipher_table,
-                                             ULONG *metadata_size)
+                                             UINT32 *metadata_size)
 {
 UINT status;
 

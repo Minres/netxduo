@@ -84,7 +84,7 @@ typedef struct
 
     NX_CRYPTO_METHOD     *nx_crypto_ecjpake_hash_method;
     VOID                 *nx_crypto_ecjpake_hash_metadata;
-    ULONG                 nx_crypto_ecjpake_hash_metadata_size;
+    UINT32                 nx_crypto_ecjpake_hash_metadata_size;
 
     UCHAR                *nx_crypto_ecjpake_psk;
     UINT                  nx_crypto_ecjpake_psk_length;
@@ -97,13 +97,13 @@ VOID _nx_crypto_ecjpake_init(NX_CRYPTO_ECJPAKE *ecjpake,
                              NX_CRYPTO_EC *curve,
                              NX_CRYPTO_METHOD *hash_method,
                              VOID *hash_metadata,
-                             ULONG hash_metadata_size,
+                             UINT32 hash_metadata_size,
                              HN_UBASE **scratch_pptr);
 
 UINT _nx_crypto_ecjpake_hello_generate(NX_CRYPTO_ECJPAKE *ecjpake,
                                        CHAR *id, UINT id_len,
-                                       UCHAR *output, ULONG output_length,
-                                       ULONG *actual_size,
+                                       UCHAR *output, UINT32 output_length,
+                                       UINT32 *actual_size,
                                        HN_UBASE *scratch);
 
 UINT _nx_crypto_ecjpake_hello_process(NX_CRYPTO_ECJPAKE *ecjpake,
@@ -115,8 +115,8 @@ UINT _nx_crypto_ecjpake_key_exchange_generate(NX_CRYPTO_ECJPAKE *ecjpake,
                                               UCHAR *shared_secret,
                                               UINT shared_secret_len,
                                               CHAR *id, UINT id_len,
-                                              UCHAR *output, ULONG output_length,
-                                              ULONG *actual_size,
+                                              UCHAR *output, UINT32 output_length,
+                                              UINT32 *actual_size,
                                               HN_UBASE *scratch);
 
 UINT _nx_crypto_ecjpake_key_exchange_process(NX_CRYPTO_ECJPAKE *ecjpake,
@@ -192,7 +192,7 @@ UINT _nx_crypto_method_ecjpake_init(struct NX_CRYPTO_METHOD_STRUCT *method,
                                     UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                     VOID **handle,
                                     VOID *crypto_metadata,
-                                    ULONG crypto_metadata_size);
+                                    UINT32 crypto_metadata_size);
 
 UINT _nx_crypto_method_ecjpake_cleanup(VOID *crypto_metadata);
 
@@ -200,10 +200,10 @@ UINT _nx_crypto_method_ecjpake_operation(UINT op,
                                          VOID *handle,
                                          struct NX_CRYPTO_METHOD_STRUCT *method,
                                          UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
-                                         UCHAR *input, ULONG input_length_in_byte,
+                                         UCHAR *input, UINT32 input_length_in_byte,
                                          UCHAR *iv_ptr,
-                                         UCHAR *output, ULONG output_length_in_byte,
-                                         VOID *crypto_metadata, ULONG crypto_metadata_size,
+                                         UCHAR *output, UINT32 output_length_in_byte,
+                                         VOID *crypto_metadata, UINT32 crypto_metadata_size,
                                          VOID *packet_ptr,
                                          VOID (*nx_crypto_hw_process_callback)(VOID *, UINT));
 #ifdef __cplusplus

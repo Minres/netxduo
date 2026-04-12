@@ -69,10 +69,10 @@ UINT _nx_secure_x509_ec_private_key_parse(const UCHAR *buffer, UINT length,
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
-ULONG        seq_length;
+UINT32        tlv_length;
+UINT32        seq_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 USHORT       version;
 
@@ -93,7 +93,7 @@ USHORT       version;
     /*   -- specifiedCurve  SpecifiedECDomain                                  */
 
     /*  Parse a TLV block and get information to continue parsing. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -110,7 +110,7 @@ USHORT       version;
     length = tlv_length;
 
     /* First item in the EC key sequence is a version field. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -139,7 +139,7 @@ USHORT       version;
 
 
     /* Parse our next field, the private key. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -166,7 +166,7 @@ USHORT       version;
     tlv_data = &tlv_data[tlv_length];
 
     /* Parse our next field, the EC parameter. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(tlv_data, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)

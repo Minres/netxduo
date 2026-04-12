@@ -239,12 +239,12 @@ typedef struct NX_TFTP_CLIENT_REQUEST_STRUCT
     USHORT          nx_tftp_client_request_block_number;            /* Block number of file transfer        */ 
     USHORT          nx_tftp_client_request_reserved;                /* Reserved for future use              */ 
     UINT            nx_tftp_client_request_open_type;               /* Open type of client request          */
-    ULONG           nx_tftp_client_request_remaining_bytes;         /* Remaining bytes to send              */ 
+    UINT32           nx_tftp_client_request_remaining_bytes;         /* Remaining bytes to send              */ 
     UINT            nx_tftp_client_request_exact_fit;               /* Exact fit flag                       */ 
-    ULONG           nx_tftp_client_request_last_activity_time;      /* Time of last activity                */ 
+    UINT32           nx_tftp_client_request_last_activity_time;      /* Time of last activity                */ 
     FX_FILE         nx_tftp_client_request_file;                    /* File control block                   */ 
-    ULONG           nx_tftp_client_file_size;                       /* Size of file in bytes                */ 
-    ULONG           nx_tftp_client_previous_write_size;             /* Size of data in last data packet     */ 
+    UINT32           nx_tftp_client_file_size;                       /* Size of file in bytes                */ 
+    UINT32           nx_tftp_client_previous_write_size;             /* Size of data in last data packet     */ 
 #ifdef NX_TFTP_SERVER_RETRANSMIT_ENABLE
     UINT            nx_tftp_client_retransmit_timeout;              /* Time between retransmits from server */ 
     UINT            nx_tftp_client_retransmit_retries;              /* Number of retries on current data,ACK*/
@@ -258,22 +258,22 @@ typedef struct NX_TFTP_CLIENT_REQUEST_STRUCT
 
 typedef struct NX_TFTP_SERVER_STRUCT 
 {
-    ULONG           nx_tftp_server_id;                              /* TFTP Server ID                       */
+    UINT32           nx_tftp_server_id;                              /* TFTP Server ID                       */
     CHAR           *nx_tftp_server_name;                            /* Name of this TFTP client             */
     NX_IP          *nx_tftp_server_ip_ptr;                          /* Pointer to associated IP structure   */ 
     NX_PACKET_POOL *nx_tftp_server_packet_pool_ptr;                 /* Pointer to TFTP server packet pool   */ 
     FX_MEDIA       *nx_tftp_server_media_ptr;                       /* Pointer to media control block       */ 
-    ULONG           nx_tftp_server_open_for_write_requests;         /* Number of open for write requests    */ 
-    ULONG           nx_tftp_server_open_for_read_requests;          /* Number of open for read requests     */ 
-    ULONG           nx_tftp_server_acks_received;                   /* Number of ACKs received              */ 
-    ULONG           nx_tftp_server_data_blocks_received;            /* Number of data blocks received       */ 
-    ULONG           nx_tftp_server_errors_received;                 /* Number of errors received            */ 
-    ULONG           nx_tftp_server_total_bytes_sent;                /* Number of total bytes sent           */ 
-    ULONG           nx_tftp_server_total_bytes_received;            /* Number of total bytes received       */ 
-    ULONG           nx_tftp_server_unknown_commands;                /* Number of unknown commands received  */ 
-    ULONG           nx_tftp_server_allocation_errors;               /* Number of allocation errors          */ 
-    ULONG           nx_tftp_server_clients_exceeded_errors;         /* Number of maximum clients errors     */ 
-    ULONG           nx_tftp_server_unknown_clients_errors;          /* Number of unknown clients errors     */ 
+    UINT32           nx_tftp_server_open_for_write_requests;         /* Number of open for write requests    */ 
+    UINT32           nx_tftp_server_open_for_read_requests;          /* Number of open for read requests     */ 
+    UINT32           nx_tftp_server_acks_received;                   /* Number of ACKs received              */ 
+    UINT32           nx_tftp_server_data_blocks_received;            /* Number of data blocks received       */ 
+    UINT32           nx_tftp_server_errors_received;                 /* Number of errors received            */ 
+    UINT32           nx_tftp_server_total_bytes_sent;                /* Number of total bytes sent           */ 
+    UINT32           nx_tftp_server_total_bytes_received;            /* Number of total bytes received       */ 
+    UINT32           nx_tftp_server_unknown_commands;                /* Number of unknown commands received  */ 
+    UINT32           nx_tftp_server_allocation_errors;               /* Number of allocation errors          */ 
+    UINT32           nx_tftp_server_clients_exceeded_errors;         /* Number of maximum clients errors     */ 
+    UINT32           nx_tftp_server_unknown_clients_errors;          /* Number of unknown clients errors     */ 
     UINT            nx_tftp_server_error_code;                      /* Last error code received             */ 
     CHAR            nx_tftp_server_error_string[NX_TFTP_ERROR_STRING_MAX + 1];
     NX_TFTP_CLIENT_REQUEST                                          /* TFTP client request array            */ 
@@ -333,7 +333,7 @@ typedef struct NX_TFTP_SERVER_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
                                                               
-UINT        nxd_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr);
+UINT        nxd_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr);
 UINT        nxd_tftp_server_delete(NX_TFTP_SERVER *tftp_server_ptr);
 UINT        nxd_tftp_server_start(NX_TFTP_SERVER *tftp_server_ptr);
 UINT        nxd_tftp_server_stop(NX_TFTP_SERVER *tftp_server_ptr);
@@ -342,8 +342,8 @@ UINT        nxd_tftp_server_stop(NX_TFTP_SERVER *tftp_server_ptr);
 
 /* TFTP source code is being compiled, do not perform any API mapping.  */
                                                          
-UINT        _nxde_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr);
-UINT        _nxd_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr);
+UINT        _nxde_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr);
+UINT        _nxd_tftp_server_create(NX_TFTP_SERVER *tftp_server_ptr, CHAR *tftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr);
 UINT        _nxde_tftp_server_delete(NX_TFTP_SERVER *tftp_server_ptr);
 UINT        _nxd_tftp_server_delete(NX_TFTP_SERVER *tftp_server_ptr);
 UINT        _nxde_tftp_server_start(NX_TFTP_SERVER *tftp_server_ptr);

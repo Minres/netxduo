@@ -77,9 +77,9 @@
 UINT _nx_secure_generate_server_key_exchange(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, USHORT protocol_version, UCHAR tls_1_3,
                                              NX_SECURE_TLS_CRYPTO *tls_crypto_table, NX_SECURE_TLS_HANDSHAKE_HASH *tls_handshake_hash,
                                              NX_SECURE_TLS_KEY_MATERIAL *tls_key_material, NX_SECURE_TLS_CREDENTIALS *tls_credentials,
-                                             UCHAR *data_buffer, ULONG buffer_length, ULONG *output_size,
-                                             VOID *public_cipher_metadata, ULONG public_cipher_metadata_size,
-                                             VOID *public_auth_metadata, ULONG public_auth_metadata_size, VOID *tls_ecc_curves)
+                                             UCHAR *data_buffer, UINT32 buffer_length, UINT32 *output_size,
+                                             VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size,
+                                             VOID *public_auth_metadata, UINT32 public_auth_metadata_size, VOID *tls_ecc_curves)
 {
 UINT                                length;
 

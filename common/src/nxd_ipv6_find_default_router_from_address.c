@@ -69,7 +69,7 @@
 /*    This function cannot be called from ISR.                            */
 /*                                                                        */
 /**************************************************************************/
-NX_IPV6_DEFAULT_ROUTER_ENTRY *_nxd_ipv6_find_default_router_from_address(NX_IP *ip_ptr, ULONG *router_address)
+NX_IPV6_DEFAULT_ROUTER_ENTRY *_nxd_ipv6_find_default_router_from_address(NX_IP *ip_ptr, UINT32 *router_address)
 {
 
 INT                           i;

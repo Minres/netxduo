@@ -76,15 +76,15 @@ VOID  _nx_icmpv4_process_echo_request(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 {
 
 NX_ICMPV4_HEADER *header_ptr;
-ULONG             checksum;
-ULONG             old_m;
+UINT32             checksum;
+UINT32             old_m;
 #if defined(NX_DISABLE_ICMPV4_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
-ULONG             compute_checksum = 1;
+UINT32             compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV4_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
 NX_IPV4_HEADER   *ipv4_header;
-ULONG             next_hop_address = NX_NULL;
+UINT32             next_hop_address = NX_NULL;
 #ifdef NX_IPSEC_ENABLE
-ULONG             data_offset;
+UINT32             data_offset;
 VOID             *sa = NX_NULL;
 NXD_ADDRESS       src_addr;
 NXD_ADDRESS       dest_addr;
@@ -138,7 +138,7 @@ UINT              ret;
         {
 
             /* Yes; make sure the outgoing packet has enough space for IPsec header info. */
-            if ((ULONG)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) <
+            if ((UINT32)(packet_ptr -> nx_packet_prepend_ptr - packet_ptr -> nx_packet_data_start) <
                 (NX_IPv4_PACKET + data_offset))
             {
 
@@ -206,7 +206,7 @@ UINT              ret;
         checksum = header_ptr -> nx_icmpv4_header_checksum;
 
         /* Get the old type(m). */
-        old_m = (ULONG)(NX_ICMP_ECHO_REQUEST_TYPE << 8);
+        old_m = (UINT32)(NX_ICMP_ECHO_REQUEST_TYPE << 8);
 
         /* Update the checksum, get the new checksum(HC'). */
         /* The m' is value of echo reply type. It is zero so can be ignored. */

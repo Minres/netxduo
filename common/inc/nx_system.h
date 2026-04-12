@@ -137,11 +137,11 @@ VOID _nx_system_initialize(VOID);
    is 256, the value in the bits 31-24 of _nx_system_build_options_3 is 0xFF, which is 255
    decimal.  */
 
-SYSTEM_DECLARE  ULONG       _nx_system_build_options_1;
-SYSTEM_DECLARE  ULONG       _nx_system_build_options_2;
-SYSTEM_DECLARE  ULONG       _nx_system_build_options_3;
-SYSTEM_DECLARE  ULONG       _nx_system_build_options_4;
-SYSTEM_DECLARE  ULONG       _nx_system_build_options_5;
+SYSTEM_DECLARE  UINT32       _nx_system_build_options_1;
+SYSTEM_DECLARE  UINT32       _nx_system_build_options_2;
+SYSTEM_DECLARE  UINT32       _nx_system_build_options_3;
+SYSTEM_DECLARE  UINT32       _nx_system_build_options_4;
+SYSTEM_DECLARE  UINT32       _nx_system_build_options_5;
 
 
 #endif

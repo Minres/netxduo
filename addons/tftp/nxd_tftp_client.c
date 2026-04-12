@@ -669,7 +669,7 @@ UINT        status;
             return(status);
         }
 
-        if (4u > ((ULONG)(packet_ptr -> nx_packet_data_end) - (ULONG)(packet_ptr -> nx_packet_append_ptr)))
+        if (4u > ((UINT32)(packet_ptr -> nx_packet_data_end) - (UINT32)(packet_ptr -> nx_packet_append_ptr)))
         {
             /* Return the unsent packet to the packet pool. */
             nx_packet_release(packet_ptr);
@@ -770,7 +770,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, ULONG server_ip_address, UINT open_type, ULONG wait_option)
+UINT  _nxe_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, UINT32 server_ip_address, UINT open_type, UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -846,7 +846,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, ULONG server_ip_address, UINT open_type, ULONG wait_option)
+UINT  _nx_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, UINT32 server_ip_address, UINT open_type, UINT32 wait_option)
 {
 #ifndef NX_DISABLE_IPV4
 UINT        status;
@@ -919,7 +919,7 @@ NXD_ADDRESS server_address;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxde_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT ip_type)
+UINT  _nxde_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT ip_type)
 {
 
 UINT    status;
@@ -997,7 +997,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT ip_type)
+UINT  _nxd_tftp_client_file_open(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT ip_type)
 {
 
 UINT        status;
@@ -1057,7 +1057,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_tftp_client_file_open_internal(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, ULONG wait_option, UINT  ip_type)
+UINT  _nx_tftp_client_file_open_internal(NX_TFTP_CLIENT *tftp_client_ptr, CHAR *file_name, NXD_ADDRESS *server_ip_address, UINT open_type, UINT32 wait_option, UINT  ip_type)
 
 {
 
@@ -1160,7 +1160,7 @@ UINT        matching = NX_FALSE;
 
     /* Now place the file name in the buffer.  */
     i = 0;
-    while (file_name[i] && (ULONG)(packet_ptr -> nx_packet_data_end - buffer_ptr) > 7u)
+    while (file_name[i] && (UINT32)(packet_ptr -> nx_packet_data_end - buffer_ptr) > 7u)
     {
 
         /* Store character of file name into request.  */
@@ -1183,7 +1183,7 @@ UINT        matching = NX_FALSE;
 
     /* Adjust the packet length and the append pointer.  */
     packet_ptr -> nx_packet_append_ptr =  buffer_ptr;
-    packet_ptr -> nx_packet_length =  (ULONG)(buffer_ptr - packet_ptr -> nx_packet_prepend_ptr);
+    packet_ptr -> nx_packet_length =  (UINT32)(buffer_ptr - packet_ptr -> nx_packet_prepend_ptr);
 
     /* Now send the open request to the TFTP server.  */
     status =  nxd_udp_socket_send(&(tftp_client_ptr -> nx_tftp_client_socket), packet_ptr, 
@@ -1398,7 +1398,7 @@ UINT        matching = NX_FALSE;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxde_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxde_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UINT    status;
@@ -1472,7 +1472,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxd_tftp_client_file_read(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UCHAR       *buffer_ptr;
@@ -1664,7 +1664,7 @@ UCHAR       resend_ACK_packet = NX_FALSE;
             return(status);
         }
 
-        if (4u > ((ULONG)(ack_packet -> nx_packet_data_end) - (ULONG)(ack_packet -> nx_packet_append_ptr)))
+        if (4u > ((UINT32)(ack_packet -> nx_packet_data_end) - (UINT32)(ack_packet -> nx_packet_append_ptr)))
         {
             nx_packet_release(*packet_ptr); 
 
@@ -1844,7 +1844,7 @@ UCHAR       resend_ACK_packet = NX_FALSE;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxde_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxde_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UINT    status;
@@ -1912,12 +1912,12 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxd_tftp_client_file_write(NX_TFTP_CLIENT *tftp_client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UCHAR       *buffer_ptr;
 UINT        status;
-ULONG       length;
+UINT32       length;
 NXD_ADDRESS ip_address;
 UINT        port;
 UINT        matching = NX_FALSE;
@@ -2166,7 +2166,7 @@ UINT        matching = NX_FALSE;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxde_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxde_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UINT    status;
@@ -2231,7 +2231,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, ULONG wait_option, UINT ip_type)
+UINT  _nxd_tftp_client_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_PACKET **packet_ptr, UINT32 wait_option, UINT ip_type)
 {
 
 UINT    status;

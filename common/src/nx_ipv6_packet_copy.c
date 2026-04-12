@@ -78,7 +78,7 @@ UINT _nx_ipv6_packet_copy(NX_PACKET *source_pkt_head, NX_PACKET *dest_pkt_head, 
 UINT       bytes_remaining;
 NX_PACKET *source_pkt, *dest_pkt;
 UINT       bytes_to_copy;
-ULONG     *source_ptr, *dest_ptr;
+UINT32     *source_ptr, *dest_ptr;
 UCHAR     *source_byte, *dest_byte;
 UINT       flag;
 
@@ -135,12 +135,12 @@ UINT       flag;
 
         /* Adjust packet pointers. */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        dest_ptr = (ULONG *)dest_pkt -> nx_packet_append_ptr;
+        dest_ptr = (UINT32 *)dest_pkt -> nx_packet_append_ptr;
         dest_pkt -> nx_packet_append_ptr += bytes_to_copy;
         dest_pkt -> nx_packet_length -= bytes_to_copy;
 
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        source_ptr = (ULONG *)source_pkt -> nx_packet_prepend_ptr;
+        source_ptr = (UINT32 *)source_pkt -> nx_packet_prepend_ptr;
         source_pkt -> nx_packet_prepend_ptr += bytes_to_copy;
 
         while (bytes_to_copy)

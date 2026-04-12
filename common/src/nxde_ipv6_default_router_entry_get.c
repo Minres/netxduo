@@ -78,8 +78,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxde_ipv6_default_router_entry_get(NX_IP *ip_ptr, UINT interface_index, UINT entry_index,
-                                          NXD_ADDRESS *router_addr, ULONG *router_lifetime,
-                                          ULONG *prefix_length, ULONG *configuration_method)
+                                          NXD_ADDRESS *router_addr, UINT32 *router_lifetime,
+                                          UINT32 *prefix_length, UINT32 *configuration_method)
 {
 #ifdef FEATURE_NX_IPV6
 

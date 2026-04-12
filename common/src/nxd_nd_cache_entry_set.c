@@ -72,7 +72,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_nd_cache_entry_set(NX_IP *ip_ptr, ULONG *dest_ip, UINT interface_index, CHAR *mac)
+UINT _nxd_nd_cache_entry_set(NX_IP *ip_ptr, UINT32 *dest_ip, UINT interface_index, CHAR *mac)
 {
 #ifdef FEATURE_NX_IPV6
 

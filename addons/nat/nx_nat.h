@@ -183,15 +183,15 @@ typedef struct NX_NAT_TRANSLATION_ENTRY_STRUCT
                       |----------------|
     */
     struct NX_NAT_TRANSLATION_ENTRY_STRUCT  *next_entry_ptr;                /* Pointer to the next translation entry in table */
-    ULONG                                   peer_ip_address;                /* IP address of an external host sending/receiving packets through NAT. */
-    ULONG                                   local_ip_address;               /* IP address of the local (private) host. */ 
+    UINT32                                   peer_ip_address;                /* IP address of an external host sending/receiving packets through NAT. */
+    UINT32                                   local_ip_address;               /* IP address of the local (private) host. */ 
     USHORT                                  peer_port;                      /* Source port of an external host sending/receiving packets through NAT. */ 
     USHORT                                  external_port;                  /* The external port of local (private) host. */
     USHORT                                  local_port;                     /* Port of the local (private) host. */  
     UCHAR                                   translation_type;               /* Translation type (static or dynamic).  */   
     UCHAR                                   protocol;                       /* Packet's network sub protocol (TCP, UDP etc). */
-    ULONG                                   response_timeout;               /* Expiration timeout for the entry.     */      
-    ULONG                                   response_timestamp;             /* The last timestamp for entry used. */
+    UINT32                                   response_timeout;               /* Expiration timeout for the entry.     */      
+    UINT32                                   response_timestamp;             /* The last timestamp for entry used. */
 } NX_NAT_TRANSLATION_ENTRY;
        
 
@@ -199,14 +199,14 @@ typedef struct NX_NAT_TRANSLATION_ENTRY_STRUCT
 typedef struct NX_NAT_DEVICE_STRUCT
 {          
        
-    ULONG                                  nx_nat_id;                           /* NAT Server thread ID  */   
+    UINT32                                  nx_nat_id;                           /* NAT Server thread ID  */   
     NX_IP                                  *nx_nat_ip_ptr;                      /* IP instance for NAT's network. */     
     UCHAR                                  nx_nat_global_interface_index;       /* NAT's global network.  */
     UCHAR                                  reserved[3];                         /* Reserved.            */
 #ifndef NX_DISABLE_NAT_INFO
-    ULONG                                  forwarded_packets_received;          /* Total number of packets received by NAT. */
-    ULONG                                  forwarded_packets_dropped;           /* Total number of packets which cannot be forwarded. */
-    ULONG                                  forwarded_packets_sent;              /* Total number of packets sent by NAT. */        
+    UINT32                                  forwarded_packets_received;          /* Total number of packets received by NAT. */
+    UINT32                                  forwarded_packets_dropped;           /* Total number of packets which cannot be forwarded. */
+    UINT32                                  forwarded_packets_sent;              /* Total number of packets sent by NAT. */        
 #endif                                                                                                                                           
     NX_NAT_TRANSLATION_ENTRY               *nx_nat_dynamic_available_entry_head;/* Define the head pointer of available dynamic entries list.   */
     NX_NAT_TRANSLATION_ENTRY               *nx_nat_dynamic_active_entry_head;   /* Define the head pointer of active dynamic entries list.      */ 
@@ -262,7 +262,7 @@ UINT    nx_nat_delete(NX_NAT_DEVICE *nat_ptr);
 UINT    nx_nat_enable(NX_NAT_DEVICE *nat_ptr);
 UINT    nx_nat_disable(NX_NAT_DEVICE *nat_ptr);
 UINT    nx_nat_cache_notify_set(NX_NAT_DEVICE *nat_ptr, VOID (*cache_full_notify_cb)(NX_NAT_DEVICE *nat_ptr));  
-UINT    nx_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, ULONG local_ip_address, UINT external_port, USHORT local_port, UCHAR protocol);
+UINT    nx_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UINT32 local_ip_address, UINT external_port, USHORT local_port, UCHAR protocol);
 UINT    nx_nat_inbound_entry_delete(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *delete_entry_ptr);
                                                                                                           
 #else     /* NX_NAT_SOURCE_CODE */
@@ -279,8 +279,8 @@ UINT    _nx_nat_disable(NX_NAT_DEVICE *nat_ptr);
 UINT    _nxe_nat_disable(NX_NAT_DEVICE *nat_ptr);
 UINT    _nx_nat_cache_notify_set(NX_NAT_DEVICE *nat_ptr, VOID (*cache_full_notify_cb)(NX_NAT_DEVICE *nat_ptr));  
 UINT    _nxe_nat_cache_notify_set(NX_NAT_DEVICE *nat_ptr, VOID (*cache_full_notify_cb)(NX_NAT_DEVICE *nat_ptr));
-UINT    _nx_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, ULONG local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol);
-UINT    _nxe_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, ULONG local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol);
+UINT    _nx_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UINT32 local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol);
+UINT    _nxe_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UINT32 local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol);
 UINT    _nx_nat_inbound_entry_delete(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *delete_entry_ptr);
 UINT    _nxe_nat_inbound_entry_delete(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *delete_entry_ptr);
 #endif              

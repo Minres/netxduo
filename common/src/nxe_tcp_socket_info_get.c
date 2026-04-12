@@ -89,12 +89,12 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_tcp_socket_info_get(NX_TCP_SOCKET *socket_ptr, ULONG *tcp_packets_sent, ULONG *tcp_bytes_sent,
-                               ULONG *tcp_packets_received, ULONG *tcp_bytes_received,
-                               ULONG *tcp_retransmit_packets, ULONG *tcp_packets_queued,
-                               ULONG *tcp_checksum_errors, ULONG *tcp_socket_state,
-                               ULONG *tcp_transmit_queue_depth, ULONG *tcp_transmit_window,
-                               ULONG *tcp_receive_window)
+UINT  _nxe_tcp_socket_info_get(NX_TCP_SOCKET *socket_ptr, UINT32 *tcp_packets_sent, UINT32 *tcp_bytes_sent,
+                               UINT32 *tcp_packets_received, UINT32 *tcp_bytes_received,
+                               UINT32 *tcp_retransmit_packets, UINT32 *tcp_packets_queued,
+                               UINT32 *tcp_checksum_errors, UINT32 *tcp_socket_state,
+                               UINT32 *tcp_transmit_queue_depth, UINT32 *tcp_transmit_window,
+                               UINT32 *tcp_receive_window)
 {
 
 UINT status;

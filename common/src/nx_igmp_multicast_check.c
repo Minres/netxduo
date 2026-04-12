@@ -67,7 +67,7 @@
 /*    _nx_ipv4_packet_receive               Raw IP packet receive         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_igmp_multicast_check(NX_IP *ip_ptr, ULONG group, NX_INTERFACE *nx_interface)
+UINT  _nx_igmp_multicast_check(NX_IP *ip_ptr, UINT32 group, NX_INTERFACE *nx_interface)
 {
 
 UINT i;

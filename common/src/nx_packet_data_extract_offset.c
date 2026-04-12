@@ -72,17 +72,17 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_data_extract_offset(NX_PACKET *packet_ptr, ULONG offset, VOID *buffer_start, ULONG buffer_length, ULONG *bytes_copied)
+UINT  _nx_packet_data_extract_offset(NX_PACKET *packet_ptr, UINT32 offset, VOID *buffer_start, UINT32 buffer_length, UINT32 *bytes_copied)
 {
 
-ULONG      remaining_bytes;
+UINT32      remaining_bytes;
 UCHAR     *source_ptr;
 UCHAR     *destination_ptr;
-ULONG      offset_bytes;
+UINT32      offset_bytes;
 #ifndef NX_DISABLE_PACKET_CHAIN
-ULONG      packet_fragment_length;
+UINT32      packet_fragment_length;
 #endif /* NX_DISABLE_PACKET_CHAIN */
-ULONG      bytes_to_copy;
+UINT32      bytes_to_copy;
 NX_PACKET *working_packet_ptr;
 
 
@@ -115,7 +115,7 @@ NX_PACKET *working_packet_ptr;
     {
 
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        packet_fragment_length =  (ULONG)((working_packet_ptr -> nx_packet_append_ptr - working_packet_ptr -> nx_packet_prepend_ptr));
+        packet_fragment_length =  (UINT32)((working_packet_ptr -> nx_packet_append_ptr - working_packet_ptr -> nx_packet_prepend_ptr));
 
         /* Determine if we are at the offset location fragment in the packet chain  */
         if (packet_fragment_length > offset_bytes)
@@ -171,7 +171,7 @@ NX_PACKET *working_packet_ptr;
 
         /* Calculate bytes to copy.  */
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        bytes_to_copy = (ULONG)(working_packet_ptr -> nx_packet_append_ptr - source_ptr);
+        bytes_to_copy = (UINT32)(working_packet_ptr -> nx_packet_append_ptr - source_ptr);
         if (remaining_bytes < bytes_to_copy)
         {
             bytes_to_copy = remaining_bytes;

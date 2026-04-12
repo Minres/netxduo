@@ -171,8 +171,8 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_sha1_initialize(NX_CRYPTO_SHA1 *context, UINT al
 NX_CRYPTO_KEEP UINT  _nx_crypto_sha1_update(NX_CRYPTO_SHA1 *context, UCHAR *input_ptr, UINT input_length)
 {
 
-ULONG current_bytes;
-ULONG needed_fill_bytes;
+UINT32 current_bytes;
+UINT32 needed_fill_bytes;
 
 
     /* Determine if the context is non-null.  */
@@ -295,8 +295,8 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_sha1_digest_calculate(NX_CRYPTO_SHA1 *context, U
 {
 
 UCHAR bit_count_string[8];
-ULONG current_byte_count;
-ULONG padding_bytes;
+UINT32 current_byte_count;
+UINT32 padding_bytes;
 
     NX_CRYPTO_PARAMETER_NOT_USED(algorithm);
 
@@ -390,10 +390,10 @@ ULONG padding_bytes;
 NX_CRYPTO_KEEP VOID  _nx_crypto_sha1_process_buffer(NX_CRYPTO_SHA1 *context, UCHAR buffer[64])
 {
 
-ULONG *w;
+UINT32 *w;
 UINT   t;
-ULONG  temp;
-ULONG  a, b, c, d, e;
+UINT32  temp;
+UINT32  a, b, c, d, e;
 
 
     /* Setup pointers to the word array.  */
@@ -405,7 +405,7 @@ ULONG  a, b, c, d, e;
     {
 
         /* Setup each entry.  */
-        w[t] =  (((ULONG)buffer[t * 4]) << 24) | (((ULONG)buffer[(t * 4) + 1]) << 16) | (((ULONG)buffer[(t * 4) + 2]) << 8) | ((ULONG)buffer[(t * 4) + 3]);
+        w[t] =  (((UINT32)buffer[t * 4]) << 24) | (((UINT32)buffer[(t * 4) + 1]) << 16) | (((UINT32)buffer[(t * 4) + 2]) << 8) | ((UINT32)buffer[(t * 4) + 3]);
     }
 
     /* Setup the remaining entries of the word array.  */
@@ -530,7 +530,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha1_init(struct  NX_CRYPTO_METHOD_STRUCT
                                                  UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                  VOID  **handle,
                                                  VOID  *crypto_metadata,
-                                                 ULONG crypto_metadata_size)
+                                                 UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_PARAMETER_NOT_USED(key);
@@ -552,7 +552,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha1_init(struct  NX_CRYPTO_METHOD_STRUCT
         return(NX_CRYPTO_PTR_ERROR);
 #endif
     }
-    else if (((((ULONG)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_SHA1)))
+    else if (((((UINT32)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_SHA1)))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -665,12 +665,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha1_operation(UINT op,      /* Encrypt, 
                                                       UCHAR *key,
                                                       NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                       UCHAR *input,
-                                                      ULONG input_length_in_byte,
+                                                      UINT32 input_length_in_byte,
                                                       UCHAR *iv_ptr,
                                                       UCHAR *output,
-                                                      ULONG output_length_in_byte,
+                                                      UINT32 output_length_in_byte,
                                                       VOID *crypto_metadata,
-                                                      ULONG crypto_metadata_size,
+                                                      UINT32 crypto_metadata_size,
                                                       VOID *packet_ptr,
                                                       VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -704,7 +704,7 @@ NX_CRYPTO_SHA1  metadata;
         return(NX_CRYPTO_PTR_ERROR);
 #endif
     }
-    else if (((((ULONG)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_SHA1)))
+    else if (((((UINT32)crypto_metadata) & 0x3) != 0) || (crypto_metadata_size < sizeof(NX_CRYPTO_SHA1)))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

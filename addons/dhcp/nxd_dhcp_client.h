@@ -381,18 +381,18 @@ extern   "C" {
 typedef struct NX_DHCP_CLIENT_RECORD_STRUCT 
 {
     UCHAR           nx_dhcp_state;              /* The current state of the DHCP Client                     */
-    ULONG           nx_dhcp_ip_address;         /* Server assigned IP Address                               */ 
-    ULONG           nx_dhcp_network_mask;       /* Server assigned network mask                             */  
-    ULONG           nx_dhcp_gateway_address;    /* Server assigned gateway address                          */  
+    UINT32           nx_dhcp_ip_address;         /* Server assigned IP Address                               */ 
+    UINT32           nx_dhcp_network_mask;       /* Server assigned network mask                             */  
+    UINT32           nx_dhcp_gateway_address;    /* Server assigned gateway address                          */  
     UINT            nx_dhcp_interface_index;    /* Index of DHCP Client network interface                   */  
-    ULONG           nx_dhcp_timeout;            /* The current value of any timeout, in seconds             */
-    ULONG           nx_dhcp_server_ip;          /* The server IP Address                                    */
-    ULONG           nx_dhcp_lease_remain_time;  /* Time remaining before lease expires                      */
-    ULONG           nx_dhcp_lease_time;         /* The current Lease Time in seconds                        */
-    ULONG           nx_dhcp_renewal_time;       /* Renewal Time in seconds                                  */
-    ULONG           nx_dhcp_rebind_time;        /* Rebind Time in seconds                                   */
-    ULONG           nx_dhcp_renewal_remain_time;/* Time remaining to renew (before rebinding necessary)     */
-    ULONG           nx_dhcp_rebind_remain_time; /* Time remaining to rebind (before lease expires)          */
+    UINT32           nx_dhcp_timeout;            /* The current value of any timeout, in seconds             */
+    UINT32           nx_dhcp_server_ip;          /* The server IP Address                                    */
+    UINT32           nx_dhcp_lease_remain_time;  /* Time remaining before lease expires                      */
+    UINT32           nx_dhcp_lease_time;         /* The current Lease Time in seconds                        */
+    UINT32           nx_dhcp_renewal_time;       /* Renewal Time in seconds                                  */
+    UINT32           nx_dhcp_rebind_time;        /* Rebind Time in seconds                                   */
+    UINT32           nx_dhcp_renewal_remain_time;/* Time remaining to renew (before rebinding necessary)     */
+    UINT32           nx_dhcp_rebind_remain_time; /* Time remaining to rebind (before lease expires)          */
 } NX_DHCP_CLIENT_RECORD;
 #endif /* NX_DHCP_CLIENT_RESTORE_STATE */
 
@@ -404,21 +404,21 @@ typedef struct NX_DHCP_INTERFACE_RECORD_STRUCT
     UCHAR           nx_dhcp_state;              /* The current state of the DHCP Client                     */
     UCHAR           nx_dhcp_user_option;        /* User option request                                      */
     UCHAR           reserved;                                                                               
-    ULONG           nx_dhcp_xid;                /* Unique transaction ID                                    */
-    ULONG           nx_dhcp_seconds;            /* Track number of seconds for a DHCP request process       */
-    ULONG           nx_dhcp_ip_address;         /* Server assigned IP Address                               */
-    ULONG           nx_dhcp_gateway_address;    /* Server assigned gateway address                          */
-    ULONG           nx_dhcp_server_ip;          /* The server IP Address                                    */
-    ULONG           nx_dhcp_network_mask;       /* Server assigned network mask                             */
+    UINT32           nx_dhcp_xid;                /* Unique transaction ID                                    */
+    UINT32           nx_dhcp_seconds;            /* Track number of seconds for a DHCP request process       */
+    UINT32           nx_dhcp_ip_address;         /* Server assigned IP Address                               */
+    UINT32           nx_dhcp_gateway_address;    /* Server assigned gateway address                          */
+    UINT32           nx_dhcp_server_ip;          /* The server IP Address                                    */
+    UINT32           nx_dhcp_network_mask;       /* Server assigned network mask                             */
     UINT            nx_dhcp_interface_index;    /* Index of DHCP Client network interface                   */
-    ULONG           nx_dhcp_timeout;            /* Count down timer for sending out DHCP message            */
-    ULONG           nx_dhcp_rtr_interval;       /* Interval between sending out another DHCP message        */
-    ULONG           nx_dhcp_lease_remain_time;  /* Time remaining before lease expires                      */
-    ULONG           nx_dhcp_lease_time;         /* The current Lease Time in seconds                        */
-    ULONG           nx_dhcp_renewal_time;       /* Renewal Time in seconds                                  */
-    ULONG           nx_dhcp_rebind_time;        /* Rebind Time in seconds                                   */
-    ULONG           nx_dhcp_renewal_remain_time;/* Time remaining to renew (before rebinding necessary)     */
-    ULONG           nx_dhcp_rebind_remain_time; /* Time remaining to rebind (before lease expires)          */
+    UINT32           nx_dhcp_timeout;            /* Count down timer for sending out DHCP message            */
+    UINT32           nx_dhcp_rtr_interval;       /* Interval between sending out another DHCP message        */
+    UINT32           nx_dhcp_lease_remain_time;  /* Time remaining before lease expires                      */
+    UINT32           nx_dhcp_lease_time;         /* The current Lease Time in seconds                        */
+    UINT32           nx_dhcp_renewal_time;       /* Renewal Time in seconds                                  */
+    UINT32           nx_dhcp_rebind_time;        /* Rebind Time in seconds                                   */
+    UINT32           nx_dhcp_renewal_remain_time;/* Time remaining to renew (before rebinding necessary)     */
+    UINT32           nx_dhcp_rebind_remain_time; /* Time remaining to rebind (before lease expires)          */
 #ifdef NX_DHCP_CLIENT_SEND_ARP_PROBE
     UINT            nx_dhcp_probe_count;        /* Number of ARP probes to send to prove IP address unique  */
 #endif
@@ -427,17 +427,17 @@ typedef struct NX_DHCP_INTERFACE_RECORD_STRUCT
     UCHAR           nx_dhcp_options_buffer[NX_DHCP_OPTIONS_BUFFER_SIZE];   
     UINT            nx_dhcp_options_size;       /* The total size of DHCP options.                          */ 
 
-    ULONG           nx_dhcp_internal_errors;    /* The number of internal DHCP errors encountered           */
-    ULONG           nx_dhcp_discoveries_sent;   /* The number of Discovery sent by the Client               */
-    ULONG           nx_dhcp_offers_received;    /* The number of Offers received by the Client              */
-    ULONG           nx_dhcp_requests_sent;      /* The number of Request attempts made by the Client        */
-    ULONG           nx_dhcp_acks_received;      /* The number of ACKs received by the Client                */
-    ULONG           nx_dhcp_nacks_received;     /* The number of NACKs received by the Client               */
-    ULONG           nx_dhcp_releases_sent;      /* The number of Releases sent by the Client                */
-    ULONG           nx_dhcp_declines_sent;      /* The number of Declines sent by the Client                */
-    ULONG           nx_dhcp_force_renewal_rec;  /* The number of Forced Renewal received by the Client      */
-    ULONG           nx_dhcp_informs_sent;       /* The number of Inform (option requests) sent by the Client*/
-    ULONG           nx_dhcp_inform_responses;   /* The number of Inform responses                           */
+    UINT32           nx_dhcp_internal_errors;    /* The number of internal DHCP errors encountered           */
+    UINT32           nx_dhcp_discoveries_sent;   /* The number of Discovery sent by the Client               */
+    UINT32           nx_dhcp_offers_received;    /* The number of Offers received by the Client              */
+    UINT32           nx_dhcp_requests_sent;      /* The number of Request attempts made by the Client        */
+    UINT32           nx_dhcp_acks_received;      /* The number of ACKs received by the Client                */
+    UINT32           nx_dhcp_nacks_received;     /* The number of NACKs received by the Client               */
+    UINT32           nx_dhcp_releases_sent;      /* The number of Releases sent by the Client                */
+    UINT32           nx_dhcp_declines_sent;      /* The number of Declines sent by the Client                */
+    UINT32           nx_dhcp_force_renewal_rec;  /* The number of Forced Renewal received by the Client      */
+    UINT32           nx_dhcp_informs_sent;       /* The number of Inform (option requests) sent by the Client*/
+    UINT32           nx_dhcp_inform_responses;   /* The number of Inform responses                           */
 
 } NX_DHCP_INTERFACE_RECORD;
 
@@ -447,7 +447,7 @@ typedef struct NX_DHCP_INTERFACE_RECORD_STRUCT
 typedef struct NX_DHCP_STRUCT 
 {
 
-    ULONG           nx_dhcp_id;                 /* DHCP Structure ID                                        */
+    UINT32           nx_dhcp_id;                 /* DHCP Structure ID                                        */
     CHAR           *nx_dhcp_name;               /* DHCP name supplied at create                             */ 
     NX_IP          *nx_dhcp_ip_ptr;             /* The associated IP pointer for this DHCP instance         */ 
 #ifndef NX_DHCP_CLIENT_USER_CREATE_PACKET_POOL
@@ -471,7 +471,7 @@ typedef struct NX_DHCP_STRUCT
                                                 /* User request parameter size                              */
 
 #ifdef NX_DHCP_CLIENT_SEND_MAX_DHCP_MESSAGE_OPTION
-    ULONG           nx_dhcp_max_dhcp_message_size;
+    UINT32           nx_dhcp_max_dhcp_message_size;
                                                 /* Maximum length DHCP message DHCP Client will accept     */
 #endif /* NX_DHCP_CLIENT_SEND_MAX_DHCP_MESSAGE_OPTION */
 
@@ -618,18 +618,18 @@ typedef struct NX_DHCP_STRUCT
 
 UINT        nx_dhcp_create(NX_DHCP *dhcp_ptr, NX_IP *ip_ptr, CHAR *name_ptr);
 UINT        nx_dhcp_packet_pool_set(NX_DHCP *dhcp_ptr, NX_PACKET_POOL *packet_pool_ptr);
-UINT        nx_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, ULONG client_ip_address, UINT skip_discover_message);
+UINT        nx_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, UINT32 client_ip_address, UINT skip_discover_message);
 UINT        nx_dhcp_delete(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_decline(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_force_renew(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_release(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_start(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_stop(NX_DHCP *dhcp_ptr);
-UINT        nx_dhcp_server_address_get(NX_DHCP *dhcp_ptr, ULONG *server_address);
+UINT        nx_dhcp_server_address_get(NX_DHCP *dhcp_ptr, UINT32 *server_address);
 UINT        nx_dhcp_state_change_notify(NX_DHCP *dhcp_ptr, VOID (*dhcp_state_change_notify)(NX_DHCP *dhcp_ptr, UCHAR new_state));
 UINT        nx_dhcp_user_option_request(NX_DHCP *dhcp_ptr, UINT option_code);
 UINT        nx_dhcp_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT request_option, UCHAR *destination_ptr, UINT *destination_size);
-ULONG       nx_dhcp_user_option_convert(UCHAR *source_ptr);
+UINT32       nx_dhcp_user_option_convert(UCHAR *source_ptr);
 UINT        nx_dhcp_user_option_add_callback_set(NX_DHCP *dhcp_ptr, UINT (*dhcp_user_option_add)(NX_DHCP *dhcp_ptr, UINT iface_index, UINT message_type, UCHAR *user_option_ptr, UINT *user_option_length));
 UINT        nx_dhcp_reinitialize(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_send_request(NX_DHCP *dhcp_ptr, UINT dhcp_message_type);
@@ -642,11 +642,11 @@ UINT        nx_dhcp_interface_decline(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        nx_dhcp_interface_force_renew(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        nx_dhcp_interface_release(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        nx_dhcp_interface_reinitialize(NX_DHCP *dhcp_ptr, UINT iface_index);
-UINT        nx_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG client_ip_address, UINT skip_discover_message);
+UINT        nx_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 client_ip_address, UINT skip_discover_message);
 UINT        nx_dhcp_interface_start(NX_DHCP *dhcp_ptr, UINT iface_index); 
 UINT        nx_dhcp_interface_stop(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        nx_dhcp_interface_send_request(NX_DHCP *dhcp_ptr, UINT iface_index, UINT dhcp_message_type);  
-UINT        nx_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG *server_address);
+UINT        nx_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 *server_address);
 UINT        nx_dhcp_interface_state_change_notify(NX_DHCP *dhcp_ptr, VOID (*dhcp_interface_state_change_notify)(NX_DHCP *dhcp_ptr, UINT iface_index, UCHAR new_state));
 UINT        nx_dhcp_interface_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT iface_index, UINT option_request, UCHAR *destination_ptr, UINT *destination_size);
 
@@ -654,11 +654,11 @@ UINT        nx_dhcp_interface_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT iface
 UINT        nx_dhcp_resume(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_suspend(NX_DHCP *dhcp_ptr);
 UINT        nx_dhcp_client_get_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr);               
-UINT        nx_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);           
-UINT        nx_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, ULONG time_elapsed);
+UINT        nx_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);           
+UINT        nx_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, UINT32 time_elapsed);
 UINT        nx_dhcp_client_interface_get_record(NX_DHCP *dhcp_ptr, UINT iface_index,  NX_DHCP_CLIENT_RECORD *record_ptr);               
-UINT        nx_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);           
-UINT        nx_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG time_elapsed);
+UINT        nx_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);           
+UINT        nx_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 time_elapsed);
 #endif /* NX_DHCP_CLIENT_RESTORE_STATE */
 
 #else
@@ -669,8 +669,8 @@ UINT        _nxe_dhcp_create(NX_DHCP *dhcp_ptr, NX_IP *ip_ptr, CHAR *name_ptr);
 UINT        _nx_dhcp_create(NX_DHCP *dhcp_ptr, NX_IP *ip_ptr, CHAR *name_ptr);
 UINT        _nxe_dhcp_packet_pool_set(NX_DHCP *dhcp_ptr, NX_PACKET_POOL *packet_pool_ptr);
 UINT        _nx_dhcp_packet_pool_set(NX_DHCP *dhcp_ptr, NX_PACKET_POOL *packet_pool_ptr);
-UINT        _nxe_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, ULONG client_ip_address, UINT skip_discover_message);
-UINT        _nx_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, ULONG client_ip_address, UINT skip_discover_message);
+UINT        _nxe_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, UINT32 client_ip_address, UINT skip_discover_message);
+UINT        _nx_dhcp_request_client_ip(NX_DHCP *dhcp_ptr, UINT32 client_ip_address, UINT skip_discover_message);
 UINT        _nxe_dhcp_delete(NX_DHCP *dhcp_ptr);
 UINT        _nx_dhcp_delete(NX_DHCP *dhcp_ptr);
 UINT        _nxe_dhcp_decline(NX_DHCP *dhcp_ptr);
@@ -683,16 +683,16 @@ UINT        _nxe_dhcp_start(NX_DHCP *dhcp_ptr);
 UINT        _nx_dhcp_start(NX_DHCP *dhcp_ptr);
 UINT        _nxe_dhcp_stop(NX_DHCP *dhcp_ptr);
 UINT        _nx_dhcp_stop(NX_DHCP *dhcp_ptr); 
-UINT        _nxe_dhcp_server_address_get(NX_DHCP *dhcp_ptr, ULONG *server_address);
-UINT        _nx_dhcp_server_address_get(NX_DHCP *dhcp_ptr, ULONG *server_address);
+UINT        _nxe_dhcp_server_address_get(NX_DHCP *dhcp_ptr, UINT32 *server_address);
+UINT        _nx_dhcp_server_address_get(NX_DHCP *dhcp_ptr, UINT32 *server_address);
 UINT        _nxe_dhcp_state_change_notify(NX_DHCP *dhcp_ptr,  VOID (*dhcp_state_change_notify)(NX_DHCP *dhcp_ptr, UCHAR new_state));
 UINT        _nx_dhcp_state_change_notify(NX_DHCP *dhcp_ptr, VOID (*dhcp_state_change_notify)(NX_DHCP *dhcp_ptr, UCHAR new_state));
 UINT        _nxe_dhcp_user_option_request(NX_DHCP *dhcp_ptr, UINT option_code);
 UINT        _nx_dhcp_user_option_request(NX_DHCP *dhcp_ptr, UINT option_code);
 UINT        _nxe_dhcp_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT request_option, UCHAR *destination_ptr, UINT *destination_size);
 UINT        _nx_dhcp_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT request_option, UCHAR *destination_ptr, UINT *destination_size); 
-ULONG       _nxe_dhcp_user_option_convert(UCHAR *source_ptr);
-ULONG       _nx_dhcp_user_option_convert(UCHAR *source_ptr);
+UINT32       _nxe_dhcp_user_option_convert(UCHAR *source_ptr);
+UINT32       _nx_dhcp_user_option_convert(UCHAR *source_ptr);
 UINT        _nxe_dhcp_reinitialize(NX_DHCP *dhcp_ptr);
 UINT        _nx_dhcp_reinitialize(NX_DHCP *dhcp_ptr);
 UINT        _nxe_dhcp_send_request(NX_DHCP *dhcp_ptr, UINT dhcp_message_type);
@@ -721,12 +721,12 @@ UINT        _nxe_dhcp_interface_start(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        _nx_dhcp_interface_start(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        _nxe_dhcp_interface_stop(NX_DHCP *dhcp_ptr, UINT iface_index);
 UINT        _nx_dhcp_interface_stop(NX_DHCP *dhcp_ptr, UINT iface_index);           
-UINT        _nxe_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG client_ip_address, UINT skip_discover_message);
-UINT        _nx_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG client_ip_address, UINT skip_discover_message); 
+UINT        _nxe_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 client_ip_address, UINT skip_discover_message);
+UINT        _nx_dhcp_interface_request_client_ip(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 client_ip_address, UINT skip_discover_message); 
 UINT        _nxe_dhcp_interface_send_request(NX_DHCP *dhcp_ptr, UINT iface_index, UINT dhcp_message_type);
 UINT        _nx_dhcp_interface_send_request(NX_DHCP *dhcp_ptr, UINT iface_index, UINT dhcp_message_type);
-UINT        _nxe_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG *server_address);
-UINT        _nx_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG *server_address); 
+UINT        _nxe_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 *server_address);
+UINT        _nx_dhcp_interface_server_address_get(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 *server_address); 
 UINT        _nxe_dhcp_interface_state_change_notify(NX_DHCP *dhcp_ptr,  VOID (*dhcp_interface_state_change_notify)(NX_DHCP *dhcp_ptr, UINT iface_index, UCHAR new_state));
 UINT        _nx_dhcp_interface_state_change_notify(NX_DHCP *dhcp_ptr, VOID (*dhcp_interface_state_change_notify)(NX_DHCP *dhcp_ptr, UINT iface_index, UCHAR new_state));
 UINT        _nxe_dhcp_interface_user_option_retrieve(NX_DHCP *dhcp_ptr, UINT iface_index, UINT option_request, UCHAR *destination_ptr, UINT *destination_size);
@@ -739,16 +739,16 @@ UINT        _nxe_dhcp_suspend(NX_DHCP *dhcp_ptr);
 UINT        _nx_dhcp_suspend(NX_DHCP *dhcp_ptr);
 UINT        _nxe_dhcp_client_get_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr);
 UINT        _nx_dhcp_client_get_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr);
-UINT        _nxe_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);
-UINT        _nx_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);
-UINT        _nxe_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, ULONG time_elapsed);
-UINT        _nx_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, ULONG time_elapsed);
+UINT        _nxe_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);
+UINT        _nx_dhcp_client_restore_record(NX_DHCP *dhcp_ptr, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);
+UINT        _nxe_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, UINT32 time_elapsed);
+UINT        _nx_dhcp_client_update_time_remaining(NX_DHCP *dhcp_ptr, UINT32 time_elapsed);
 UINT        _nxe_dhcp_client_interface_get_record(NX_DHCP *dhcp_ptr, UINT iface_index,  NX_DHCP_CLIENT_RECORD *record_ptr);
 UINT        _nx_dhcp_client_interface_get_record(NX_DHCP *dhcp_ptr, UINT iface_index,  NX_DHCP_CLIENT_RECORD *record_ptr);
-UINT        _nxe_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);
-UINT        _nx_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, ULONG time_elapsed);
-UINT        _nxe_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG time_elapsed);
-UINT        _nx_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, ULONG time_elapsed);
+UINT        _nxe_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);
+UINT        _nx_dhcp_client_interface_restore_record(NX_DHCP *dhcp_ptr, UINT iface_index, NX_DHCP_CLIENT_RECORD *record_ptr, UINT32 time_elapsed);
+UINT        _nxe_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 time_elapsed);
+UINT        _nx_dhcp_client_interface_update_time_remaining(NX_DHCP *dhcp_ptr, UINT iface_index, UINT32 time_elapsed);
 #endif /* NX_DHCP_CLIENT_RESTORE_STATE */ 
 
 #endif /* NX_DHCP_SOURCE_CODE */

@@ -64,7 +64,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, ULONG *bytes_available)
+UINT  _nx_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, UINT32 *bytes_available)
 {
 NX_IP     *ip_ptr;
 NX_PACKET *packet_ptr;
@@ -94,7 +94,7 @@ INT        count;
     for (count = 0; count < (INT)(socket_ptr -> nx_udp_socket_receive_count); count++)
     {
 
-        *bytes_available += (packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER));
+        *bytes_available += (packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER));
 
         /* Move on to the next packet. */
         packet_ptr = packet_ptr -> nx_packet_queue_next;

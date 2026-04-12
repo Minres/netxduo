@@ -70,8 +70,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_arp_static_entry_create(NX_IP *ip_ptr, ULONG ip_address,
-                                   ULONG physical_msw, ULONG physical_lsw)
+UINT  _nxe_arp_static_entry_create(NX_IP *ip_ptr, UINT32 ip_address,
+                                   UINT32 physical_msw, UINT32 physical_lsw)
 {
 
 #ifndef NX_DISABLE_IPV4

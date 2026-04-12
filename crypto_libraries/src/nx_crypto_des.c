@@ -26,7 +26,7 @@
 /* Define the eight S-box data structures used in the permutation. Keep them static,
    since there is no reason to have these symbols referenced outside this file. */
 
-static const ULONG sb1[64] =
+static const UINT32 sb1[64] =
 {
 
     0x01010400UL, 0x00000000UL, 0x00010000UL, 0x01010404UL, 0x01010004UL, 0x00010404UL, 0x00000004UL, 0x00010000UL,
@@ -39,7 +39,7 @@ static const ULONG sb1[64] =
     0x00000404UL, 0x01000400UL, 0x01000400UL, 0x00000000UL, 0x00010004UL, 0x00010400UL, 0x00000000UL, 0x01010004UL
 };
 
-static const ULONG sb2[64] =
+static const UINT32 sb2[64] =
 {
 
     0x80108020UL, 0x80008000UL, 0x00008000UL, 0x00108020UL, 0x00100000UL, 0x00000020UL, 0x80100020UL, 0x80008020UL,
@@ -52,7 +52,7 @@ static const ULONG sb2[64] =
     0x00108000UL, 0x00000000UL, 0x80008000UL, 0x00008020UL, 0x80000000UL, 0x80100020UL, 0x80108020UL, 0x00108000UL
 };
 
-static const ULONG sb3[64] =
+static const UINT32 sb3[64] =
 {
 
     0x00000208UL, 0x08020200UL, 0x00000000UL, 0x08020008UL, 0x08000200UL, 0x00000000UL, 0x00020208UL, 0x08000200UL,
@@ -65,7 +65,7 @@ static const ULONG sb3[64] =
     0x08020000UL, 0x08000208UL, 0x00000208UL, 0x08020000UL, 0x00020208UL, 0x00000008UL, 0x08020008UL, 0x00020200UL
 };
 
-static const ULONG sb4[64] =
+static const UINT32 sb4[64] =
 {
 
     0x00802001UL, 0x00002081UL, 0x00002081UL, 0x00000080UL, 0x00802080UL, 0x00800081UL, 0x00800001UL, 0x00002001UL,
@@ -78,7 +78,7 @@ static const ULONG sb4[64] =
     0x00002001UL, 0x00002080UL, 0x00800000UL, 0x00802001UL, 0x00000080UL, 0x00800000UL, 0x00002000UL, 0x00802080UL
 };
 
-static const ULONG sb5[64] =
+static const UINT32 sb5[64] =
 {
 
     0x00000100UL, 0x02080100UL, 0x02080000UL, 0x42000100UL, 0x00080000UL, 0x00000100UL, 0x40000000UL, 0x02080000UL,
@@ -91,7 +91,7 @@ static const ULONG sb5[64] =
     0x00080100UL, 0x02000100UL, 0x40000100UL, 0x00080000UL, 0x00000000UL, 0x40080000UL, 0x02080100UL, 0x40000100UL
 };
 
-static const ULONG sb6[64] =
+static const UINT32 sb6[64] =
 {
 
     0x20000010UL, 0x20400000UL, 0x00004000UL, 0x20404010UL, 0x20400000UL, 0x00000010UL, 0x20404010UL, 0x00400000UL,
@@ -104,7 +104,7 @@ static const ULONG sb6[64] =
     0x00004000UL, 0x00400010UL, 0x20004010UL, 0x00000000UL, 0x20404000UL, 0x20000000UL, 0x00400010UL, 0x20004010UL
 };
 
-static const ULONG sb7[64] =
+static const UINT32 sb7[64] =
 {
 
     0x00200000UL, 0x04200002UL, 0x04000802UL, 0x00000000UL, 0x00000800UL, 0x04000802UL, 0x00200802UL, 0x04200800UL,
@@ -117,7 +117,7 @@ static const ULONG sb7[64] =
     0x00000000UL, 0x00200802UL, 0x04200000UL, 0x00000800UL, 0x04000002UL, 0x04000800UL, 0x00000800UL, 0x00200002UL
 };
 
-static const ULONG sb8[64] =
+static const UINT32 sb8[64] =
 {
 
     0x10001040UL, 0x00001000UL, 0x00040000UL, 0x10041040UL, 0x10000000UL, 0x10001040UL, 0x00000040UL, 0x10000000UL,
@@ -133,7 +133,7 @@ static const ULONG sb8[64] =
 
 /* Define the left half bit swap table.  */
 
-static const ULONG left_half_bit_swap[16] =
+static const UINT32 left_half_bit_swap[16] =
 {
 
     0x00000000UL, 0x00000001UL, 0x00000100UL, 0x00000101UL,
@@ -144,7 +144,7 @@ static const ULONG left_half_bit_swap[16] =
 
 /* Define the right half bit swap table.  */
 
-static const ULONG right_half_bit_swap[16] =
+static const UINT32 right_half_bit_swap[16] =
 {
     0x00000000UL, 0x01000000UL, 0x00010000UL, 0x01010000UL,
     0x00000100UL, 0x01000100UL, 0x00010100UL, 0x01010100UL,
@@ -192,9 +192,9 @@ static const ULONG right_half_bit_swap[16] =
 NX_CRYPTO_KEEP UINT  _nx_crypto_des_key_set(NX_CRYPTO_DES *context, UCHAR key[8])
 {
 
-ULONG  left, right, temp;
-ULONG *encrypt_keys_ptr;
-ULONG *decrypt_keys_ptr;
+UINT32  left, right, temp;
+UINT32 *encrypt_keys_ptr;
+UINT32 *decrypt_keys_ptr;
 UINT   round;
 
 
@@ -204,9 +204,9 @@ UINT   round;
         return(NX_CRYPTO_PTR_ERROR);
     }
 
-    /* First, convert the 8-byte raw key into two ULONG halves, in an endian neutral fashion.  */
-    left =  (((ULONG)key[0]) << 24) | (((ULONG)key[1]) << 16) | (((ULONG)key[2]) << 8) | ((ULONG)key[3]);
-    right =  (((ULONG)key[4]) << 24) | (((ULONG)key[5]) << 16) | (((ULONG)key[6]) << 8) | ((ULONG)key[7]);
+    /* First, convert the 8-byte raw key into two UINT32 halves, in an endian neutral fashion.  */
+    left =  (((UINT32)key[0]) << 24) | (((UINT32)key[1]) << 16) | (((UINT32)key[2]) << 8) | ((UINT32)key[3]);
+    right =  (((UINT32)key[4]) << 24) | (((UINT32)key[5]) << 16) | (((UINT32)key[6]) << 8) | ((UINT32)key[7]);
 
     /* Perform permutation on the key halves.  */
     temp =  ((right >> 4) ^ left) & 0x0F0F0F0FUL;
@@ -438,17 +438,17 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_des_decrypt(NX_CRYPTO_DES *context, UCHAR source
 /*    _nx_crypto_des_decrypt                Perform DES mode decryption   */
 /*                                                                        */
 /**************************************************************************/
-NX_CRYPTO_KEEP VOID  _nx_crypto_des_process_block(UCHAR source[8], UCHAR destination[8], ULONG keys[32])
+NX_CRYPTO_KEEP VOID  _nx_crypto_des_process_block(UCHAR source[8], UCHAR destination[8], UINT32 keys[32])
 {
 
-ULONG  left, right, temp;
-ULONG *key_ptr;
+UINT32  left, right, temp;
+UINT32 *key_ptr;
 UINT   round;
 
 
-    /* First, convert the 8-byte source into two ULONG halves, in an endian neutral fashion.  */
-    left =  (((ULONG)source[0]) << 24) | (((ULONG)source[1]) << 16) | (((ULONG)source[2]) << 8) | ((ULONG)source[3]);
-    right =  (((ULONG)source[4]) << 24) | (((ULONG)source[5]) << 16) | (((ULONG)source[6]) << 8) | ((ULONG)source[7]);
+    /* First, convert the 8-byte source into two UINT32 halves, in an endian neutral fashion.  */
+    left =  (((UINT32)source[0]) << 24) | (((UINT32)source[1]) << 16) | (((UINT32)source[2]) << 8) | ((UINT32)source[3]);
+    right =  (((UINT32)source[4]) << 24) | (((UINT32)source[5]) << 16) | (((UINT32)source[6]) << 8) | ((UINT32)source[7]);
 
     /* Compute the initial permutation.  */
     temp =   ((left >> 4) ^ right) & 0x0F0F0F0FUL;
@@ -567,7 +567,7 @@ UINT   round;
 NX_CRYPTO_KEEP UINT  _nx_crypto_method_des_init(struct NX_CRYPTO_METHOD_STRUCT *method,
                                                 UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits, VOID **handle,
                                                 VOID *crypto_metadata,
-                                                ULONG crypto_metadata_size)
+                                                UINT32 crypto_metadata_size)
 {
 NX_CRYPTO_DES *des_context_ptr;
 
@@ -587,7 +587,7 @@ NX_CRYPTO_DES *des_context_ptr;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -702,12 +702,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_des_operation(UINT op,       /* Encrypt, 
                                                      UCHAR *key,
                                                      NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                      UCHAR *input,
-                                                     ULONG input_length_in_byte,
+                                                     UINT32 input_length_in_byte,
                                                      UCHAR *iv_ptr,
                                                      UCHAR *output,
-                                                     ULONG output_length_in_byte,
+                                                     UINT32 output_length_in_byte,
                                                      VOID *crypto_metadata,
-                                                     ULONG crypto_metadata_size,
+                                                     UINT32 crypto_metadata_size,
                                                      VOID *packet_ptr,
                                                      VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -735,7 +735,7 @@ NX_CRYPTO_DES *context;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

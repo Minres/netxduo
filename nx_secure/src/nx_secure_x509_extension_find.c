@@ -73,14 +73,14 @@ UINT _nx_secure_x509_extension_find(NX_SECURE_X509_CERT *certificate,
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
-ULONG        extensions_sequence_length;
-ULONG        seq_length;
+UINT32        tlv_length;
+UINT32        extensions_sequence_length;
+UINT32        seq_length;
 UINT         extension_oid = 0;
 USHORT       critical_flag;
 const UCHAR *tlv_data;
 const UCHAR *current_buffer;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 UINT         found_extension = NX_CRYPTO_FALSE;
 

@@ -65,16 +65,16 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_pool_create(NX_PACKET_POOL *pool_ptr, CHAR *name_ptr, ULONG payload_size,
-                             VOID *pool_start, ULONG pool_size)
+UINT  _nx_packet_pool_create(NX_PACKET_POOL *pool_ptr, CHAR *name_ptr, UINT32 payload_size,
+                             VOID *pool_start, UINT32 pool_size)
 {
 
 TX_INTERRUPT_SAVE_AREA
 
 NX_PACKET_POOL *tail_ptr;              /* Working packet pool pointer */
-ULONG           packets;               /* Number of packets in pool   */
-ULONG           original_payload_size; /* Original payload size       */
-ULONG           header_size;           /* Rounded header size         */
+UINT32           packets;               /* Number of packets in pool   */
+UINT32           original_payload_size; /* Original payload size       */
+UINT32           header_size;           /* Rounded header size         */
 CHAR           *packet_ptr;            /* Working packet pointer      */
 CHAR           *next_packet_ptr;       /* Next packet pointer         */
 CHAR           *end_of_pool;           /* End of pool area            */
@@ -86,30 +86,30 @@ VOID           *rounded_pool_start;    /* Rounded stating address     */
     original_payload_size =  payload_size;
 
     /* Align the starting address to four bytes. */
-    /*lint -e{923} suppress cast between ULONG and pointer.  */
+    /*lint -e{923} suppress cast between UINT32 and pointer.  */
     rounded_pool_start = (VOID *)((((ALIGN_TYPE)pool_start + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT);
 
     /* Round the pool size down to something that is evenly divisible by alignment.  */
-    /*lint -e{923} suppress cast between ULONG and pointer.  */
-    pool_size = (ULONG)(((pool_size - ((ALIGN_TYPE)rounded_pool_start - (ALIGN_TYPE)pool_start)) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT);
+    /*lint -e{923} suppress cast between UINT32 and pointer.  */
+    pool_size = (UINT32)(((pool_size - ((ALIGN_TYPE)rounded_pool_start - (ALIGN_TYPE)pool_start)) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT);
 
     /* Set the pool starting address. */
     pool_start = rounded_pool_start;
 
     /* Calculate the address of payload. */
-    /*lint -e{923} suppress cast between ULONG and pointer.  */
+    /*lint -e{923} suppress cast between UINT32 and pointer.  */
     payload_address = (CHAR *)((ALIGN_TYPE)rounded_pool_start + sizeof(NX_PACKET));
 
     /* Align the address of payload. */
-    /*lint -e{923} suppress cast between ULONG and pointer.  */
+    /*lint -e{923} suppress cast between UINT32 and pointer.  */
     payload_address = (CHAR *)((((ALIGN_TYPE)payload_address + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT);
 
     /* Calculate the header size. */
-    /*lint -e{923} suppress cast between ULONG and pointer.  */
-    header_size = (ULONG)((ALIGN_TYPE)payload_address - (ALIGN_TYPE)rounded_pool_start);
+    /*lint -e{923} suppress cast between UINT32 and pointer.  */
+    header_size = (UINT32)((ALIGN_TYPE)payload_address - (ALIGN_TYPE)rounded_pool_start);
 
     /* Round the packet size up to something that helps guarantee proper alignment for header and payload.  */
-    payload_size = (ULONG)(((header_size + payload_size + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT - header_size);
+    payload_size = (UINT32)(((header_size + payload_size + NX_PACKET_ALIGNMENT  - 1) / NX_PACKET_ALIGNMENT) * NX_PACKET_ALIGNMENT - header_size);
 
     /* Clear pool fields. */
     memset(pool_ptr, 0, sizeof(NX_PACKET_POOL));

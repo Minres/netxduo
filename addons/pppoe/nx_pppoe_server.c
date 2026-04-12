@@ -53,17 +53,17 @@ NX_PPPOE_SERVER  *_nx_pppoe_server_created_ptr = NX_NULL;
                                                   
 static VOID    _nx_pppoe_server_thread_entry(ULONG pppoe_server_ptr_value);  
 static VOID    _nx_pppoe_server_packet_receive(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr);
-static VOID    _nx_pppoe_server_discovery_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, ULONG client_mac_msw, ULONG client_mac_lsw, UINT is_broadcast);
-static VOID    _nx_pppoe_server_session_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, ULONG client_mac_msw, ULONG client_mac_lsw);
+static VOID    _nx_pppoe_server_discovery_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw, UINT is_broadcast);
+static VOID    _nx_pppoe_server_session_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw);
 static UINT    _nx_pppoe_server_discovery_send(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, UINT code);   
 static VOID    _nx_pppoe_server_packet_send(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, NX_PACKET *packet_ptr, UINT command); 
-static UINT    _nx_pppoe_server_tag_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, UINT code, UCHAR *tag_ptr, ULONG length);
-static ULONG   _nx_pppoe_server_data_get(UCHAR *data, UINT size);
-static VOID    _nx_pppoe_server_data_add(UCHAR *data, UINT size, ULONG value);
+static UINT    _nx_pppoe_server_tag_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, UINT code, UCHAR *tag_ptr, UINT32 length);
+static UINT32   _nx_pppoe_server_data_get(UCHAR *data, UINT size);
+static VOID    _nx_pppoe_server_data_add(UCHAR *data, UINT size, UINT32 value);
 static VOID    _nx_pppoe_server_string_add(UCHAR *dest, UCHAR *source, UINT size);
 static UINT    _nx_pppoe_server_tag_string_add(UCHAR *data_ptr, UINT tag_type, UINT tag_length,  UCHAR *tag_value_string, UINT *index);
-static UINT    _nx_pppoe_server_session_find(NX_PPPOE_SERVER *pppoe_server_ptr, ULONG client_mac_msw, ULONG client_mac_lsw, 
-                                             ULONG session_id, UINT *session_index, NX_PPPOE_CLIENT_SESSION **client_session_ptr);   
+static UINT    _nx_pppoe_server_session_find(NX_PPPOE_SERVER *pppoe_server_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw, 
+                                             UINT32 session_id, UINT *session_index, NX_PPPOE_CLIENT_SESSION **client_session_ptr);   
 static UINT    _nx_pppoe_server_session_cleanup(NX_PPPOE_CLIENT_SESSION *client_session_ptr);  
 
 #ifdef NX_PPPOE_SERVER_SESSION_CONTROL_ENABLE    
@@ -113,7 +113,7 @@ static UCHAR   *nx_pppoe_service_name[1];
 /**************************************************************************/
 UINT  _nxe_pppoe_server_create(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *name, NX_IP *ip_ptr, UINT interface_index,
                                VOID (*pppoe_link_driver)(struct NX_IP_DRIVER_STRUCT *), NX_PACKET_POOL *pool_ptr,
-                               VOID *stack_ptr, ULONG stack_size, UINT priority)
+                               VOID *stack_ptr, UINT32 stack_size, UINT priority)
 {   
 
 UINT    status;
@@ -199,7 +199,7 @@ UINT    status;
 /**************************************************************************/
 UINT  _nx_pppoe_server_create(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *name, NX_IP *ip_ptr, UINT interface_index,
                               VOID (*pppoe_link_driver)(struct NX_IP_DRIVER_STRUCT *), NX_PACKET_POOL *pool_ptr,
-                              VOID *stack_ptr, ULONG stack_size, UINT priority)
+                              VOID *stack_ptr, UINT32 stack_size, UINT priority)
 {
     
 TX_INTERRUPT_SAVE_AREA 
@@ -249,7 +249,7 @@ TX_INTERRUPT_SAVE_AREA
     tx_event_flags_create(&(pppoe_server_ptr -> nx_pppoe_events), "PPPoE Server EVENTS") ;
 
     /* Create the PPPoE processing thread.  */
-    tx_thread_create(&(pppoe_server_ptr -> nx_pppoe_thread), "PPPoE Server THREAD", _nx_pppoe_server_thread_entry, (ULONG) pppoe_server_ptr,  
+    tx_thread_create(&(pppoe_server_ptr -> nx_pppoe_thread), "PPPoE Server THREAD", _nx_pppoe_server_thread_entry, (UINT32) pppoe_server_ptr,  
                      stack_ptr, stack_size, priority, priority, NX_PPPOE_SERVER_THREAD_TIME_SLICE, TX_DONT_START);
 
     /* Otherwise, the PPPoE initialization was successful.  Place the
@@ -768,10 +768,10 @@ UINT  _nx_pppoe_server_disable(NX_PPPOE_SERVER *pppoe_server_ptr)
 /**************************************************************************/
 UINT  _nxe_pppoe_server_callback_notify_set(NX_PPPOE_SERVER *pppoe_server_ptr, 
                                             VOID (* pppoe_discover_initiation_notify)(UINT session_index), 
-                                            VOID (* pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data),
+                                            VOID (* pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data),
                                             VOID (* pppoe_discover_terminate_notify)(UINT session_index),
                                             VOID (* pppoe_discover_terminate_confirm)(UINT session_index),
-                                            VOID (* pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id),
+                                            VOID (* pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id),
                                             VOID (* pppoe_data_send_notify)(UINT session_index, UCHAR *data))
 {
 
@@ -841,10 +841,10 @@ UINT    status;
 /**************************************************************************/
 UINT  _nx_pppoe_server_callback_notify_set(NX_PPPOE_SERVER *pppoe_server_ptr, 
                                            VOID (* pppoe_discover_initiation_notify)(UINT session_index), 
-                                           VOID (* pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data),
+                                           VOID (* pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data),
                                            VOID (* pppoe_discover_terminate_notify)(UINT session_index),
                                            VOID (* pppoe_discover_terminate_confirm)(UINT session_index),
-                                           VOID (* pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id),
+                                           VOID (* pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id),
                                            VOID (* pppoe_data_send_notify)(UINT session_index, UCHAR *data))
 {
                   
@@ -1593,7 +1593,7 @@ UINT                        status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, ULONG *client_mac_msw, ULONG *client_mac_lsw, ULONG *session_id)
+UINT  _nxe_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UINT32 *client_mac_msw, UINT32 *client_mac_lsw, UINT32 *session_id)
 {
 
 UINT    status;
@@ -1651,7 +1651,7 @@ UINT    status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, ULONG *client_mac_msw, ULONG *client_mac_lsw, ULONG *session_id)
+UINT  _nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UINT32 *client_mac_msw, UINT32 *client_mac_lsw, UINT32 *session_id)
 {  
 
 
@@ -2064,10 +2064,10 @@ VOID  _nx_pppoe_server_packet_receive(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACK
 {
 
 UCHAR                      *ethernet_header_ptr; 
-ULONG                       server_mac_msw;
-ULONG                       server_mac_lsw;
-ULONG                       client_mac_msw;
-ULONG                       client_mac_lsw;
+UINT32                       server_mac_msw;
+UINT32                       server_mac_lsw;
+UINT32                       client_mac_msw;
+UINT32                       client_mac_lsw;
 UINT                        ethernet_type; 
 UINT                        is_broadcast = NX_FALSE;
 
@@ -2076,9 +2076,9 @@ UINT                        is_broadcast = NX_FALSE;
     ethernet_header_ptr = packet_ptr -> nx_packet_prepend_ptr - NX_PPPOE_SERVER_ETHER_HEADER_SIZE;
 
     /* Pickup the MSW and LSW of the destination MAC address.  */
-    server_mac_msw = (((ULONG) ethernet_header_ptr[0]) << 8)  | ((ULONG) ethernet_header_ptr[1]);
-    server_mac_lsw = (((ULONG) ethernet_header_ptr[2]) << 24) | (((ULONG) ethernet_header_ptr[3]) << 16) |
-                     (((ULONG) ethernet_header_ptr[4]) << 8)  | ((ULONG) ethernet_header_ptr[5]);
+    server_mac_msw = (((UINT32) ethernet_header_ptr[0]) << 8)  | ((UINT32) ethernet_header_ptr[1]);
+    server_mac_lsw = (((UINT32) ethernet_header_ptr[2]) << 24) | (((UINT32) ethernet_header_ptr[3]) << 16) |
+                     (((UINT32) ethernet_header_ptr[4]) << 8)  | ((UINT32) ethernet_header_ptr[5]);
 
     /* Check the server hardware (mac address) field is filled in. */
     if ((server_mac_msw == 0) && (server_mac_lsw == 0))
@@ -2094,9 +2094,9 @@ UINT                        is_broadcast = NX_FALSE;
         is_broadcast = NX_TRUE;
 
     /* Pickup the MSW and LSW of the source MAC address.  */
-    client_mac_msw = (((ULONG) ethernet_header_ptr[6]) << 8)  | ((ULONG) ethernet_header_ptr[7]);
-    client_mac_lsw = (((ULONG) ethernet_header_ptr[8]) << 24) | (((ULONG) ethernet_header_ptr[9]) << 16) |
-                     (((ULONG) ethernet_header_ptr[10]) << 8)  | ((ULONG) ethernet_header_ptr[11]);
+    client_mac_msw = (((UINT32) ethernet_header_ptr[6]) << 8)  | ((UINT32) ethernet_header_ptr[7]);
+    client_mac_lsw = (((UINT32) ethernet_header_ptr[8]) << 24) | (((UINT32) ethernet_header_ptr[9]) << 16) |
+                     (((UINT32) ethernet_header_ptr[10]) << 8)  | ((UINT32) ethernet_header_ptr[11]);
 
     /* Check the client hardware (mac address) field is filled in. */
     if ((client_mac_msw == 0) && (client_mac_lsw == 0))
@@ -2183,14 +2183,14 @@ UINT                        is_broadcast = NX_FALSE;
 /*    _nx_pppoe_server_packet_receive       Receive the PPPoE packet      */ 
 /*                                                                        */ 
 /**************************************************************************/
-VOID  _nx_pppoe_server_discovery_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, ULONG client_mac_msw, ULONG client_mac_lsw, UINT is_broadcast)
+VOID  _nx_pppoe_server_discovery_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw, UINT is_broadcast)
 {
 
 UCHAR                      *pppoe_header_ptr;
-ULONG                       ver_type;
-ULONG                       code;
-ULONG                       session_id;
-ULONG                       length;
+UINT32                       ver_type;
+UINT32                       code;
+UINT32                       session_id;
+UINT32                       length;
 UINT                        status;
 UCHAR                      *tag_ptr;
 UINT                        session_index = 0;
@@ -2429,14 +2429,14 @@ NX_PPPOE_CLIENT_SESSION    *client_session_ptr = NX_NULL;
 /*    _nx_pppoe_server_packet_receive       Receive the PPPoE packet      */
 /*                                                                        */ 
 /**************************************************************************/
-static VOID  _nx_pppoe_server_session_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, ULONG client_mac_msw, ULONG client_mac_lsw)
+static VOID  _nx_pppoe_server_session_packet_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PACKET *packet_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw)
 {
 
 UCHAR                      *pppoe_header_ptr;
-ULONG                       ver_type;
-ULONG                       code;
-ULONG                       session_id;
-ULONG                       length;        
+UINT32                       ver_type;
+UINT32                       code;
+UINT32                       session_id;
+UINT32                       length;        
 UINT                        status;
 UINT                        session_index = 0;
 NX_PPPOE_CLIENT_SESSION    *client_session_ptr = NX_NULL;
@@ -2982,11 +2982,11 @@ NX_IP_DRIVER                driver_request;
 /*                                          Process PPPoE Discovery packet*/  
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_pppoe_server_tag_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, UINT code, UCHAR *tag_ptr, ULONG length)
+static UINT  _nx_pppoe_server_tag_process(NX_PPPOE_SERVER *pppoe_server_ptr, NX_PPPOE_CLIENT_SESSION *client_session_ptr, UINT code, UCHAR *tag_ptr, UINT32 length)
 {
 
-ULONG           tag_type;
-ULONG           tag_length;
+UINT32           tag_type;
+UINT32           tag_length;
 UINT            tag_index = 0;
 UINT            tag_service_name_count = 0; 
 UINT            tag_service_name_valid = NX_FALSE;
@@ -3295,10 +3295,10 @@ UCHAR          *service_name_ptr;
 /*    _nx_pppoe_server_tag_process          Process PPPoE TAGs            */  
 /*                                                                        */ 
 /**************************************************************************/
-static ULONG  _nx_pppoe_server_data_get(UCHAR *data, UINT size)
+static UINT32  _nx_pppoe_server_data_get(UCHAR *data, UINT size)
 {
 
-ULONG   value = 0;
+UINT32   value = 0;
 
 
     /* Process the data retrieval request.  */
@@ -3349,7 +3349,7 @@ ULONG   value = 0;
 /*    _nx_pppoe_server_tag_string_add       Add PPPoE string TAG          */  
 /*                                                                        */ 
 /**************************************************************************/
-static VOID  _nx_pppoe_server_data_add(UCHAR *data, UINT size, ULONG value)
+static VOID  _nx_pppoe_server_data_add(UCHAR *data, UINT size, UINT32 value)
 {
 
     /* Make sure that data is left justified.  */
@@ -3532,8 +3532,8 @@ static UINT  _nx_pppoe_server_tag_string_add(UCHAR *data_ptr, UINT tag_type, UIN
 /*                                          Process PPPoE Session packet  */ 
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_pppoe_server_session_find(NX_PPPOE_SERVER *pppoe_server_ptr, ULONG client_mac_msw, ULONG client_mac_lsw, 
-                                           ULONG session_id, UINT *session_index, NX_PPPOE_CLIENT_SESSION **client_session_ptr)
+static UINT  _nx_pppoe_server_session_find(NX_PPPOE_SERVER *pppoe_server_ptr, UINT32 client_mac_msw, UINT32 client_mac_lsw, 
+                                           UINT32 session_id, UINT *session_index, NX_PPPOE_CLIENT_SESSION **client_session_ptr)
 {
 
 UINT                i;

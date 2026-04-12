@@ -23,7 +23,7 @@
 #include "nx_crypto_sha2.h"
 
 /* Constants used in the SHA-256 digest calculation. */
-const ULONG _sha2_round_constants[64] =
+const UINT32 _sha2_round_constants[64] =
 {
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
     0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
@@ -46,7 +46,7 @@ const ULONG _sha2_round_constants[64] =
 #define SMALL_SIGMA_0(x)           (RIGHT_SHIFT_CIRCULAR((x),  7) ^ RIGHT_SHIFT_CIRCULAR((x), 18) ^ ((x) >> 3))
 #define SMALL_SIGMA_1(x)           (RIGHT_SHIFT_CIRCULAR((x), 17) ^ RIGHT_SHIFT_CIRCULAR((x), 19) ^ ((x) >> 10))
 
-#define W0(t) ((((ULONG)buffer[(t) * 4]) << 24) | (((ULONG)buffer[((t) * 4) + 1]) << 16) | (((ULONG)buffer[((t) * 4) + 2]) << 8) | ((ULONG)buffer[((t) * 4) + 3]))
+#define W0(t) ((((UINT32)buffer[(t) * 4]) << 24) | (((UINT32)buffer[((t) * 4) + 1]) << 16) | (((UINT32)buffer[((t) * 4) + 2]) << 8) | ((UINT32)buffer[((t) * 4) + 3]))
 #define W16(t) (SMALL_SIGMA_1(w[(t) - 2]) + w[(t) - 7] + SMALL_SIGMA_0(w[(t) - 15]) + w[(t) - 16])
 
 /* Define the padding array.  This is used to pad the message such that its length is
@@ -171,8 +171,8 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_sha256_initialize(NX_CRYPTO_SHA256 *context, UIN
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_sha256_update(NX_CRYPTO_SHA256 *context, UCHAR *input_ptr, UINT input_length)
 {
-ULONG current_bytes;
-ULONG needed_fill_bytes;
+UINT32 current_bytes;
+UINT32 needed_fill_bytes;
 
     /* Determine if the context is non-null.  */
     if (context == NX_CRYPTO_NULL)
@@ -291,15 +291,15 @@ ULONG needed_fill_bytes;
 NX_CRYPTO_KEEP UINT _nx_crypto_sha256_digest_calculate(NX_CRYPTO_SHA256 *context, UCHAR *digest, UINT algorithm)
 {
 UINT bit_count_string[2];
-ULONG current_byte_count;
-ULONG padding_bytes;
+UINT32 current_byte_count;
+UINT32 padding_bytes;
 
 
     /* Move the lower portion of the bit count into the array.  */
     bit_count_string[0] = context -> nx_sha256_bit_count[1];
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(bit_count_string[0]);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(bit_count_string[0]);
     bit_count_string[1] = context -> nx_sha256_bit_count[0];
-    NX_CRYPTO_CHANGE_ULONG_ENDIAN(bit_count_string[1]);
+    NX_CRYPTO_CHANGE_UINT32_ENDIAN(bit_count_string[1]);
 
     /* Calculate the current byte count.  */
     current_byte_count =  (context -> nx_sha256_bit_count[0] >> 3) & 0x3F;
@@ -397,10 +397,10 @@ ULONG padding_bytes;
 /**************************************************************************/
 NX_CRYPTO_KEEP VOID _nx_crypto_sha256_process_buffer(NX_CRYPTO_SHA256 *context, UCHAR buffer[64])
 {
-ULONG *w;
+UINT32 *w;
 UINT   t;
-ULONG  temp1, temp2;
-ULONG  a, b, c, d, e, f, g, h;
+UINT32  temp1, temp2;
+UINT32  a, b, c, d, e, f, g, h;
 
 
     /* Setup pointers to the word array.  */
@@ -585,7 +585,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha256_init(struct  NX_CRYPTO_METHOD_STRU
                                                    UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                    VOID  **handle,
                                                    VOID  *crypto_metadata,
-                                                   ULONG crypto_metadata_size)
+                                                   UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_PARAMETER_NOT_USED(key);
@@ -600,7 +600,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha256_init(struct  NX_CRYPTO_METHOD_STRU
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -718,12 +718,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_sha256_operation(UINT op,      /* Encrypt
                                                         UCHAR *key,
                                                         NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                         UCHAR *input,
-                                                        ULONG input_length_in_byte,
+                                                        UINT32 input_length_in_byte,
                                                         UCHAR *iv_ptr,
                                                         UCHAR *output,
-                                                        ULONG output_length_in_byte,
+                                                        UINT32 output_length_in_byte,
                                                         VOID *crypto_metadata,
-                                                        ULONG crypto_metadata_size,
+                                                        UINT32 crypto_metadata_size,
                                                         VOID *packet_ptr,
                                                         VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -744,7 +744,7 @@ NX_CRYPTO_SHA256 *ctx;
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }

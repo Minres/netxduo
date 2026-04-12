@@ -69,7 +69,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_udp_socket_create(NX_IP *ip_ptr, NX_UDP_SOCKET *socket_ptr, CHAR *name,
-                            ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG queue_maximum)
+                            UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 queue_maximum)
 {
 TX_INTERRUPT_SAVE_AREA
 

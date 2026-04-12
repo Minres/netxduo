@@ -61,11 +61,11 @@ static UINT    _nx_nat_process_outbound_packet(NX_NAT_DEVICE *nat_ptr, NX_PACKET
 static UINT    _nx_nat_process_outbound_TCP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr);
 static UINT    _nx_nat_process_outbound_UDP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr);
 static UINT    _nx_nat_process_outbound_ICMP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr);
-static VOID    _nx_nat_ip_packet_send(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UCHAR packet_type, ULONG next_hop_address);  
-static UINT    _nx_nat_inbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, ULONG *next_hop_address);
-static UINT    _nx_nat_outbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, ULONG *next_hop_address);   
-static UINT    _nx_nat_entry_create(NX_NAT_DEVICE *nat_ptr, UCHAR protocol, ULONG local_ip_address, ULONG peer_ip_address, 
-                                    USHORT local_port, USHORT  external_port, USHORT  peer_port, ULONG response_timeout, NX_NAT_TRANSLATION_ENTRY **match_entry_ptr);
+static VOID    _nx_nat_ip_packet_send(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UCHAR packet_type, UINT32 next_hop_address);  
+static UINT    _nx_nat_inbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, UINT32 *next_hop_address);
+static UINT    _nx_nat_outbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, UINT32 *next_hop_address);   
+static UINT    _nx_nat_entry_create(NX_NAT_DEVICE *nat_ptr, UCHAR protocol, UINT32 local_ip_address, UINT32 peer_ip_address, 
+                                    USHORT local_port, USHORT  external_port, USHORT  peer_port, UINT32 response_timeout, NX_NAT_TRANSLATION_ENTRY **match_entry_ptr);
 static UINT    _nx_nat_entry_add(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr);  
 static VOID    _nx_nat_entry_find(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_to_match, NX_NAT_TRANSLATION_ENTRY **match_entry_ptr, UCHAR direction, UINT skip_static_entries); 
 static VOID    _nx_nat_entry_timeout_check(NX_NAT_DEVICE *nat_ptr);
@@ -705,7 +705,7 @@ UINT _nx_nat_cache_notify_set(NX_NAT_DEVICE *nat_ptr, VOID (*cache_full_notify_c
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr,   
-                                    ULONG local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol)
+                                    UINT32 local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol)
 {
 
 UINT  status;
@@ -778,7 +778,7 @@ UINT  status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_nat_inbound_entry_create(NX_NAT_DEVICE *nat_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr,   
-                                   ULONG local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol)
+                                   UINT32 local_ip_address, USHORT external_port, USHORT local_port, UCHAR protocol)
 {                    
 
 UINT                     bound;
@@ -1051,9 +1051,9 @@ static UINT  _nx_nat_process_packet(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UINT p
 
 UINT                            status;
 UINT                            protocol;
-ULONG                           header_size = sizeof(NX_IPV4_HEADER);
+UINT32                           header_size = sizeof(NX_IPV4_HEADER);
 UINT                            global_interface_index;
-ULONG                           next_hop_address;
+UINT32                           next_hop_address;
 NX_IPV4_HEADER                  *ip_header_ptr;
 NX_INTERFACE                    *interface_ptr;
                                                           
@@ -1367,11 +1367,11 @@ UINT                            status;
 UINT                            entry_found;
 USHORT                          old_port;
 USHORT                          new_port;
-ULONG                           old_address;
-ULONG                           new_address;
+UINT32                           old_address;
+UINT32                           new_address;
 USHORT                          checksum;
-ULONG                           compute_checksum; 
-ULONG                           next_hop_address;
+UINT32                           compute_checksum; 
+UINT32                           next_hop_address;
 NX_TCP_HEADER                   *tcp_header_ptr; 
 NX_NAT_TRANSLATION_ENTRY        *record_entry;
 
@@ -1387,11 +1387,11 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
     tcp_header_ptr =  (NX_TCP_HEADER *) (packet_ptr -> nx_packet_prepend_ptr);  
                  
     /* For little endian processors, adjust byte order for big endianness. */
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);      
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);      
 
     /* Find the inbound entry, set the packet private interface and next hop address.  */
     status = _nx_nat_inbound_entry_find(nat_ptr, packet_ptr, entry_ptr, &record_entry, &next_hop_address);
@@ -1431,8 +1431,8 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
 
             /* Replace the destination port with the local (source) port of the preceding outbound packet.   */
           
-            tcp_header_ptr -> nx_tcp_header_word_0 = ((ULONG)(tcp_header_ptr -> nx_tcp_header_word_0 & ~NX_LOWER_16_MASK)) |
-                                                      ((ULONG) record_entry -> local_port);
+            tcp_header_ptr -> nx_tcp_header_word_0 = ((UINT32)(tcp_header_ptr -> nx_tcp_header_word_0 & ~NX_LOWER_16_MASK)) |
+                                                      ((UINT32) record_entry -> local_port);
         }        
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
@@ -1470,7 +1470,7 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
             tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 & NX_LOWER_16_MASK;  
 
             /* Place the checksum into the first header word.  */
-            tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 | (ULONG)(checksum << NX_SHIFT_BY_16); 
+            tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 | (UINT32)(checksum << NX_SHIFT_BY_16); 
         }   
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
         else
@@ -1486,11 +1486,11 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
     }
 
     /* Swap endianness back before sending. */
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
 
     /* Check the entry found flag.  */
     if (entry_found == NX_FALSE)
@@ -1562,11 +1562,11 @@ UINT                            status;
 UINT                            entry_found;
 USHORT                          old_port;
 USHORT                          new_port;
-ULONG                           old_address;
-ULONG                           new_address;
+UINT32                           old_address;
+UINT32                           new_address;
 USHORT                          checksum;
-ULONG                           compute_checksum; 
-ULONG                           next_hop_address;
+UINT32                           compute_checksum; 
+UINT32                           next_hop_address;
 NX_UDP_HEADER                   *udp_header_ptr; 
 NX_NAT_TRANSLATION_ENTRY        *record_entry;
 
@@ -1582,8 +1582,8 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
     udp_header_ptr =  (NX_UDP_HEADER *) (packet_ptr -> nx_packet_prepend_ptr);
 
     /* For little endian processors, adjust byte order for big endianness. */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);                                                                                                                              
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);                                                                                                                              
 
     /* Find the inbound entry, set the packet private interface and next hop address.  */
     status = _nx_nat_inbound_entry_find(nat_ptr, packet_ptr, entry_ptr, &record_entry, &next_hop_address);
@@ -1623,8 +1623,8 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
 
             /* Translate the destination UDP port to the private host port.  If translation
                does not involve port number this will essentially be the original port number. */
-            udp_header_ptr -> nx_udp_header_word_0 =  ((ULONG) (udp_header_ptr -> nx_udp_header_word_0 & ~NX_LOWER_16_MASK)) |
-                                                       ((ULONG) record_entry -> local_port);
+            udp_header_ptr -> nx_udp_header_word_0 =  ((UINT32) (udp_header_ptr -> nx_udp_header_word_0 & ~NX_LOWER_16_MASK)) |
+                                                       ((UINT32) record_entry -> local_port);
         }                
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
@@ -1685,8 +1685,8 @@ NX_NAT_TRANSLATION_ENTRY        *record_entry;
 
     /* Swap UDP header byte order back to big endian before sending. For big endian processors,
        this will have no effect. */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);                                                    
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);                                                    
                           
     /* Check the packet consumed flag.  */
     if (entry_found == NX_FALSE)
@@ -1755,13 +1755,13 @@ static UINT  _nx_nat_process_inbound_ICMP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACK
 {
 UINT                        status;          
 UINT                        entry_found;
-ULONG                       sequence;
+UINT32                       sequence;
 UINT                        type;  
 USHORT                      old_port;
 USHORT                      new_port;
 USHORT                      checksum;
-ULONG                       compute_checksum;
-ULONG                       next_hop_address;  
+UINT32                       compute_checksum;
+UINT32                       next_hop_address;  
 NX_ICMP_HEADER              *icmp_header_ptr;  
 NX_NAT_TRANSLATION_ENTRY    *record_entry;
 
@@ -1777,8 +1777,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
     icmp_header_ptr = (NX_ICMP_HEADER *)(packet_ptr -> nx_packet_prepend_ptr);
 
     /* Adjust ICMP header byte order for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                                                                       
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                                                                       
     
     /* Extract the ICMP type and code. */
     type = icmp_header_ptr -> nx_icmp_header_word_0 >> 24;     
@@ -1839,7 +1839,7 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
             sequence = icmp_header_ptr -> nx_icmp_header_word_1 & NX_LOWER_16_MASK;
 
             /* Restore the local host ICMP Query ID from the 'source port' field in the NAT table entry. */
-            icmp_header_ptr -> nx_icmp_header_word_1 = (ULONG)(record_entry -> local_port << NX_SHIFT_BY_16) | sequence;    
+            icmp_header_ptr -> nx_icmp_header_word_1 = (UINT32)(record_entry -> local_port << NX_SHIFT_BY_16) | sequence;    
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
             if(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_capability_flag & NX_INTERFACE_CAPABILITY_ICMPV4_TX_CHECKSUM)
@@ -1882,8 +1882,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 
     /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped to match
        that of the data area.  */
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                                       
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                                       
     
     /* Check the packet consumed flag.  */
     if (entry_found == NX_FALSE)
@@ -2054,11 +2054,11 @@ static UINT  _nx_nat_process_outbound_TCP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACK
 UINT                        status;  
 USHORT                      old_port;
 USHORT                      new_port;
-ULONG                       old_address;
-ULONG                       new_address;
+UINT32                       old_address;
+UINT32                       new_address;
 USHORT                      checksum;
-ULONG                       compute_checksum; 
-ULONG                       next_hop_address;
+UINT32                       compute_checksum; 
+UINT32                       next_hop_address;
 NX_TCP_HEADER               *tcp_header_ptr;
 NX_NAT_TRANSLATION_ENTRY    *record_entry; 
 
@@ -2072,11 +2072,11 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
     tcp_header_ptr =  (NX_TCP_HEADER *) (packet_ptr -> nx_packet_prepend_ptr);
 
     /* Adjust byte order for endianness.  */      
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
              
     /* Find the outbound entry, set the packet global interface and next hop address.  */
     status = _nx_nat_outbound_entry_find(nat_ptr, packet_ptr, entry_ptr, &record_entry, &next_hop_address); 
@@ -2103,7 +2103,7 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 
         /* Yes, write to the upper bits of the TCP word. */
         tcp_header_ptr -> nx_tcp_header_word_0 = (tcp_header_ptr -> nx_tcp_header_word_0 & NX_LOWER_16_MASK) |
-                                                 (((ULONG) (record_entry -> external_port)) << NX_SHIFT_BY_16);         
+                                                 (((UINT32) (record_entry -> external_port)) << NX_SHIFT_BY_16);         
     }                      
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
@@ -2141,7 +2141,7 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
         tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 & NX_LOWER_16_MASK;  
 
         /* Place the checksum into the first header word.  */
-        tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 | (ULONG)(checksum << NX_SHIFT_BY_16); 
+        tcp_header_ptr -> nx_tcp_header_word_4 = tcp_header_ptr -> nx_tcp_header_word_4 | (UINT32)(checksum << NX_SHIFT_BY_16); 
     }   
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
     else
@@ -2156,11 +2156,11 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
 
     /* Swap byte order back to big endian before sending if little endian is specified. */
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
-    NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);       
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_sequence_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_acknowledgment_number);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_3);
+    NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);       
                                           
     /* Send the TCP packet onto the global host. */
     _nx_nat_ip_packet_send(nat_ptr,packet_ptr, record_entry, NX_NAT_OUTBOUND_PACKET, next_hop_address);   
@@ -2216,11 +2216,11 @@ static UINT  _nx_nat_process_outbound_UDP_packet(NX_NAT_DEVICE *nat_ptr, NX_PACK
 UINT                        status;
 USHORT                      old_port;
 USHORT                      new_port;
-ULONG                       old_address;
-ULONG                       new_address;
+UINT32                       old_address;
+UINT32                       new_address;
 USHORT                      checksum;
-ULONG                       compute_checksum; 
-ULONG                       next_hop_address;      
+UINT32                       compute_checksum; 
+UINT32                       next_hop_address;      
 NX_UDP_HEADER               *udp_header_ptr;   
 NX_NAT_TRANSLATION_ENTRY    *record_entry;   
 
@@ -2233,8 +2233,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
     udp_header_ptr =  (NX_UDP_HEADER *) (packet_ptr -> nx_packet_prepend_ptr);
 
     /* For little endian processors, swap byte order to little endian. */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);   
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);   
                  
     /* Find the outbound entry, set the packet global interface and next hop address.  */
     status = _nx_nat_outbound_entry_find(nat_ptr, packet_ptr, entry_ptr, &record_entry, &next_hop_address);  
@@ -2264,7 +2264,7 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 
         /* Yes, so replace local host UDP port with NAT global inside UDP port in the header.  */   
         udp_header_ptr -> nx_udp_header_word_0 = (udp_header_ptr -> nx_udp_header_word_0 & NX_LOWER_16_MASK) |
-                                                 (((ULONG) (record_entry -> external_port)) << NX_SHIFT_BY_16);   
+                                                 (((UINT32) (record_entry -> external_port)) << NX_SHIFT_BY_16);   
     }           
                     
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
@@ -2324,8 +2324,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 
     /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped to match
        that of the data area.  */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);   
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);   
                       
     /* Send the UDP packet onto the global host. */
     _nx_nat_ip_packet_send(nat_ptr, packet_ptr, record_entry, NX_NAT_OUTBOUND_PACKET, next_hop_address); 
@@ -2380,15 +2380,15 @@ static UINT  _nx_nat_process_outbound_ICMP_packet(NX_NAT_DEVICE *nat_ptr, NX_PAC
 {
 
 UINT               status;
-ULONG              sequence;
+UINT32              sequence;
 UINT               is_icmp_error_msg;
 NX_ICMP_HEADER     *icmp_header_ptr;
 UINT               type;    
 USHORT             old_port;
 USHORT             new_port;
 USHORT             checksum;
-ULONG              compute_checksum;  
-ULONG              next_hop_address;
+UINT32              compute_checksum;  
+UINT32              next_hop_address;
 NX_NAT_TRANSLATION_ENTRY    *record_entry; 
                                               
 
@@ -2401,8 +2401,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
     icmp_header_ptr =  (NX_ICMP_HEADER *)(packet_ptr -> nx_packet_prepend_ptr);
 
     /* Swap ENDian-ness for our ICMP header. We've only swapped the IP header data so far. */
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);
                                                                         
     /* Extract the ICMP type and code. */
     type = icmp_header_ptr -> nx_icmp_header_word_0 >> 24;
@@ -2455,7 +2455,7 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
         sequence =  icmp_header_ptr -> nx_icmp_header_word_1 & NX_LOWER_16_MASK;
 
         /* Set the ICMP Query ID in the ICMP header.  */
-        icmp_header_ptr -> nx_icmp_header_word_1 = (ULONG) (record_entry -> external_port << NX_SHIFT_BY_16) | sequence;     
+        icmp_header_ptr -> nx_icmp_header_word_1 = (UINT32) (record_entry -> external_port << NX_SHIFT_BY_16) | sequence;     
                                                                                                                   
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY    
         if(packet_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_capability_flag & NX_INTERFACE_CAPABILITY_ICMPV4_TX_CHECKSUM)
@@ -2497,8 +2497,8 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
                    
     /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped to match
        that of the data area.  */
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                             
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(icmp_header_ptr -> nx_icmp_header_word_1);                             
  
     /* Send the ICMP packet onto the global host. */
     _nx_nat_ip_packet_send(nat_ptr, packet_ptr, record_entry, NX_NAT_OUTBOUND_PACKET, next_hop_address); 
@@ -2558,17 +2558,17 @@ NX_NAT_TRANSLATION_ENTRY    *record_entry;
 /*   _nx_nat_process_inbound_ICMP_packet  Process outbound ICMP packet    */ 
 /*                                                                        */ 
 /**************************************************************************/
-static VOID  _nx_nat_ip_packet_send(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UCHAR packet_type, ULONG next_hop_address) 
+static VOID  _nx_nat_ip_packet_send(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, UCHAR packet_type, UINT32 next_hop_address) 
 {
 
-ULONG               fragment_bits;  
-ULONG               old_address;
-ULONG               new_address;
-ULONG               old_fragment;
-ULONG               new_fragment;
+UINT32               fragment_bits;  
+UINT32               old_address;
+UINT32               new_address;
+UINT32               old_fragment;
+UINT32               new_fragment;
 USHORT              checksum;
-ULONG               compute_checksum = 1;
-ULONG               destination_ip; 
+UINT32               compute_checksum = 1;
+UINT32               destination_ip; 
 UINT                status;
 NX_IPV4_HEADER      *ip_header_ptr; 
 
@@ -2661,11 +2661,11 @@ NX_IPV4_HEADER      *ip_header_ptr;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
     swap the endian of the IP header.  */
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
-    NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_2);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_source_ip);
+    NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_destination_ip);
 
     /* Check if the packet can fill physical header.  */
     status = _nx_packet_data_adjust(packet_ptr, NX_PHYSICAL_HEADER);
@@ -2740,11 +2740,11 @@ NX_IPV4_HEADER      *ip_header_ptr;
 /*                                                                        */ 
 /**************************************************************************/
 static UINT  _nx_nat_inbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, 
-                                        NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, ULONG *next_hop_address)
+                                        NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, UINT32 *next_hop_address)
 {
 
 UINT                            status;
-ULONG                           timeout;
+UINT32                           timeout;
 NX_NAT_TRANSLATION_ENTRY       *record_entry;
                    
 
@@ -2905,11 +2905,11 @@ NX_NAT_TRANSLATION_ENTRY       *record_entry;
 /*                                                                        */ 
 /**************************************************************************/
 static UINT  _nx_nat_outbound_entry_find(NX_NAT_DEVICE *nat_ptr, NX_PACKET *packet_ptr, NX_NAT_TRANSLATION_ENTRY *entry_ptr, 
-                                         NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, ULONG *next_hop_address)
+                                         NX_NAT_TRANSLATION_ENTRY **matched_entry_ptr, UINT32 *next_hop_address)
 {
                                 
 UINT                        status;
-ULONG                       timeout;
+UINT32                       timeout;
 NX_NAT_TRANSLATION_ENTRY   *record_entry; 
 
          
@@ -3044,9 +3044,9 @@ NX_NAT_TRANSLATION_ENTRY   *record_entry;
 /*                                                                        */ 
 /**************************************************************************/
 static UINT  _nx_nat_entry_create(NX_NAT_DEVICE *nat_ptr, UCHAR protocol, 
-                                  ULONG local_ip_address, ULONG peer_ip_address, 
+                                  UINT32 local_ip_address, UINT32 peer_ip_address, 
                                   USHORT local_port, USHORT  external_port, USHORT  peer_port,
-                                  ULONG response_timeout, NX_NAT_TRANSLATION_ENTRY **match_entry_ptr)
+                                  UINT32 response_timeout, NX_NAT_TRANSLATION_ENTRY **match_entry_ptr)
 {
 
 NX_NAT_TRANSLATION_ENTRY *insert_entry_ptr = NX_NULL;
@@ -3507,8 +3507,8 @@ NX_NAT_TRANSLATION_ENTRY    *previous_ptr;
 static VOID  _nx_nat_entry_timeout_check(NX_NAT_DEVICE *nat_ptr)
 {
                                     
-ULONG                       current_time; 
-ULONG                       elapsed_time;
+UINT32                       current_time; 
+UINT32                       elapsed_time;
 NX_NAT_TRANSLATION_ENTRY    *entry_ptr;  
 NX_NAT_TRANSLATION_ENTRY    *previous_ptr;   
 NX_NAT_TRANSLATION_ENTRY    *next_entry_ptr;

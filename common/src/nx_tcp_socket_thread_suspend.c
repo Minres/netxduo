@@ -73,7 +73,7 @@
 /*                                            processing                  */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_tcp_socket_thread_suspend(TX_THREAD **suspension_list_head, VOID (*suspend_cleanup)(TX_THREAD * NX_CLEANUP_PARAMETER), NX_TCP_SOCKET *socket_ptr, TX_MUTEX *mutex_ptr, ULONG wait_option)
+VOID  _nx_tcp_socket_thread_suspend(TX_THREAD **suspension_list_head, VOID (*suspend_cleanup)(TX_THREAD * NX_CLEANUP_PARAMETER), NX_TCP_SOCKET *socket_ptr, TX_MUTEX *mutex_ptr, UINT32 wait_option)
 {
 
 TX_INTERRUPT_SAVE_AREA

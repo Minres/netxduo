@@ -79,8 +79,8 @@
 /**************************************************************************/
 UINT  _nxd_nd_cache_hardware_address_find(NX_IP *ip_ptr,
                                           NXD_ADDRESS *ip_address,
-                                          ULONG *physical_msw,
-                                          ULONG *physical_lsw,
+                                          UINT32 *physical_msw,
+                                          UINT32 *physical_lsw,
                                           UINT *interface_index)
 {
 #ifdef FEATURE_NX_IPV6
@@ -102,9 +102,9 @@ ND_CACHE_ENTRY *entry;
 
     /* Construct the MAC address. */
     /*lint -e{644} suppress variable might not be initialized, since "entry" was initialized when the return value of _nx_nd_cache_find_entry is NX_SUCCESS. */
-    *physical_msw = ((ULONG)entry -> nx_nd_cache_mac_addr[0]) << 8 | (ULONG)entry -> nx_nd_cache_mac_addr[1];
-    *physical_lsw = ((ULONG)entry -> nx_nd_cache_mac_addr[2]) << 24 | ((ULONG)entry -> nx_nd_cache_mac_addr[3]) << 16 |
-        ((ULONG)entry -> nx_nd_cache_mac_addr[4]) << 8 | (ULONG)entry -> nx_nd_cache_mac_addr[5];
+    *physical_msw = ((UINT32)entry -> nx_nd_cache_mac_addr[0]) << 8 | (UINT32)entry -> nx_nd_cache_mac_addr[1];
+    *physical_lsw = ((UINT32)entry -> nx_nd_cache_mac_addr[2]) << 24 | ((UINT32)entry -> nx_nd_cache_mac_addr[3]) << 16 |
+        ((UINT32)entry -> nx_nd_cache_mac_addr[4]) << 8 | (UINT32)entry -> nx_nd_cache_mac_addr[5];
 
     /* Get the interface_index.  */
     *interface_index = (entry -> nx_nd_cache_interface_ptr -> nx_interface_index);

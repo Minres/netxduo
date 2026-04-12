@@ -66,7 +66,7 @@
 /*    Internal function.                                                  */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxd_ipv6_interface_find(NX_IP *ip_ptr, ULONG *dest_address,
+UINT _nxd_ipv6_interface_find(NX_IP *ip_ptr, UINT32 *dest_address,
                               NXD_IPV6_ADDRESS **ipv6_addr, NX_INTERFACE *if_ptr)
 {
 
@@ -75,7 +75,7 @@ NXD_IPV6_ADDRESS             *ipv6_address;
 NX_IPV6_DEFAULT_ROUTER_ENTRY *rt_entry;
 UINT                          start_index;
 UINT                          end_index;
-ULONG                         address_type = IPv6_Address_Type(dest_address);
+UINT32                         address_type = IPv6_Address_Type(dest_address);
 
     /* ipv6_addr must not be NULL. */
     NX_ASSERT(ipv6_addr != NX_NULL);

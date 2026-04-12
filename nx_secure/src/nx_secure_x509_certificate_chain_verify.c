@@ -65,7 +65,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_x509_certificate_chain_verify(NX_SECURE_X509_CERTIFICATE_STORE *store,
-                                              NX_SECURE_X509_CERT *certificate, ULONG current_time)
+                                              NX_SECURE_X509_CERT *certificate, UINT32 current_time)
 {
 UINT                 status;
 NX_SECURE_X509_CERT *current_certificate;

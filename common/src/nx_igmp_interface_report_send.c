@@ -79,14 +79,14 @@
 /*                                            transmission to all routers */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_igmp_interface_report_send(NX_IP *ip_ptr, ULONG group_address, UINT interface_index, UINT is_joining)
+UINT  _nx_igmp_interface_report_send(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index, UINT is_joining)
 {
 
 NX_INTERFACE   *nx_interface;
 UINT            router_alert = 0;
 UINT            status;
-ULONG           checksum;
-ULONG           temp;
+UINT32           checksum;
+UINT32           temp;
 NX_PACKET      *packet_ptr;
 NX_IGMP_HEADER *header_ptr;
 
@@ -108,11 +108,11 @@ NX_IGMP_HEADER *header_ptr;
     /* Allocate a packet to place the IGMP host response message in.  */
 #ifdef NX_ENABLE_DUAL_PACKET_POOL
     /* Allocate from auxiliary packet pool first. */
-    status = _nx_packet_allocate(ip_ptr -> nx_ip_auxiliary_packet_pool, &packet_ptr, (ULONG)(NX_IGMP_PACKET + router_alert + NX_IGMP_HEADER_SIZE), TX_NO_WAIT);
+    status = _nx_packet_allocate(ip_ptr -> nx_ip_auxiliary_packet_pool, &packet_ptr, (UINT32)(NX_IGMP_PACKET + router_alert + NX_IGMP_HEADER_SIZE), TX_NO_WAIT);
     if ((status != NX_SUCCESS) && (ip_ptr -> nx_ip_auxiliary_packet_pool != ip_ptr -> nx_ip_default_packet_pool))
 #endif /* NX_ENABLE_DUAL_PACKET_POOL */
     {
-        status = _nx_packet_allocate(ip_ptr -> nx_ip_default_packet_pool, &packet_ptr, (ULONG)(NX_IGMP_PACKET + router_alert + NX_IGMP_HEADER_SIZE), TX_NO_WAIT);
+        status = _nx_packet_allocate(ip_ptr -> nx_ip_default_packet_pool, &packet_ptr, (UINT32)(NX_IGMP_PACKET + router_alert + NX_IGMP_HEADER_SIZE), TX_NO_WAIT);
     }
 
     if (status)
@@ -167,7 +167,7 @@ NX_IGMP_HEADER *header_ptr;
 
         /* Yes; Set the header fields with the max response time
            zero and the version/type 0x12. */
-        header_ptr -> nx_igmp_header_word_0 =  (ULONG)(NX_IGMP_VERSION | NX_IGMP_HOST_RESPONSE_TYPE);
+        header_ptr -> nx_igmp_header_word_0 =  (UINT32)(NX_IGMP_VERSION | NX_IGMP_HOST_RESPONSE_TYPE);
         header_ptr -> nx_igmp_header_word_1 =  group_address;
 #ifndef NX_DISABLE_IGMPV2
     }
@@ -179,11 +179,11 @@ NX_IGMP_HEADER *header_ptr;
         if (is_joining)
         {
 
-            header_ptr -> nx_igmp_header_word_0 =  (ULONG)(NX_IGMP_HOST_V2_JOIN_TYPE);
+            header_ptr -> nx_igmp_header_word_0 =  (UINT32)(NX_IGMP_HOST_V2_JOIN_TYPE);
         }
         else
         {
-            header_ptr -> nx_igmp_header_word_0 =  (ULONG)(NX_IGMP_HOST_V2_LEAVE_TYPE);
+            header_ptr -> nx_igmp_header_word_0 =  (UINT32)(NX_IGMP_HOST_V2_LEAVE_TYPE);
         }
 
         header_ptr -> nx_igmp_header_word_1 =  group_address;
@@ -224,8 +224,8 @@ NX_IGMP_HEADER *header_ptr;
     packet_ptr -> nx_packet_ip_version = NX_IP_VERSION_V4;
 
     /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped.  */
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_igmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_igmp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_igmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_igmp_header_word_1);
 
     /* Send the IGMP response packet out!  */
     if (is_joining == NX_TRUE)

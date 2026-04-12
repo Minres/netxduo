@@ -86,10 +86,10 @@
 /*    _nxd_icmp_source_ping                                               */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_icmp_interface_ping(NX_IP *ip_ptr, ULONG ip_address,
-                              NX_INTERFACE *interface_ptr, ULONG next_hop_address,
-                              CHAR *data_ptr, ULONG data_size,
-                              NX_PACKET **response_ptr, ULONG wait_option)
+UINT  _nx_icmp_interface_ping(NX_IP *ip_ptr, UINT32 ip_address,
+                              NX_INTERFACE *interface_ptr, UINT32 next_hop_address,
+                              CHAR *data_ptr, UINT32 data_size,
+                              NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 TX_INTERRUPT_SAVE_AREA
@@ -97,13 +97,13 @@ TX_INTERRUPT_SAVE_AREA
 UINT            status;
 NX_PACKET      *request_ptr;
 NX_ICMP_HEADER *header_ptr;
-ULONG           checksum;
+UINT32           checksum;
 #if defined(NX_DISABLE_ICMPV4_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE)
-ULONG           compute_checksum = 1;
+UINT32           compute_checksum = 1;
 #endif /* defined(NX_DISABLE_ICMPV4_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
-ULONG           sequence;
+UINT32           sequence;
 TX_THREAD      *thread_ptr;
-ULONG           data_offset;
+UINT32           data_offset;
 
 #ifdef NX_IPSEC_ENABLE
 VOID           *sa = NX_NULL;
@@ -161,7 +161,7 @@ UINT            ret = 0;
     /* Allocate a packet to place the ICMP echo request message in.  */
     /*lint -e{845} suppress argument to operator '+' is certain to be 0, since "data_offset" can be non-zero when NX_IPSEC_ENABLE is defined. */
     status =  _nx_packet_allocate(ip_ptr -> nx_ip_default_packet_pool, &request_ptr,
-                                  (ULONG)(NX_IPv4_ICMP_PACKET + data_offset + NX_ICMP_HEADER_SIZE), wait_option);
+                                  (UINT32)(NX_IPv4_ICMP_PACKET + data_offset + NX_ICMP_HEADER_SIZE), wait_option);
     if (status)
     {
 
@@ -201,11 +201,11 @@ UINT            ret = 0;
 #endif
 
     /* If trace is enabled, insert this event into the trace buffer.  */
-    NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_ICMP_SEND, ip_ptr, ip_address, request_ptr, (((ULONG)NX_ICMP_ECHO_REQUEST_TYPE) << 24), NX_TRACE_INTERNAL_EVENTS, 0, 0);
+    NX_TRACE_IN_LINE_INSERT(NX_TRACE_INTERNAL_ICMP_SEND, ip_ptr, ip_address, request_ptr, (((UINT32)NX_ICMP_ECHO_REQUEST_TYPE) << 24), NX_TRACE_INTERNAL_EVENTS, 0, 0);
 
     /* Calculate the ICMP echo request message size and store it in the
        packet header.  */
-    request_ptr -> nx_packet_length += (ULONG)NX_ICMP_HEADER_SIZE;
+    request_ptr -> nx_packet_length += (UINT32)NX_ICMP_HEADER_SIZE;
 
     /* Adjust the nx_packet_prepend_ptr for ICMP header. */
     request_ptr -> nx_packet_prepend_ptr -= NX_ICMP_HEADER_SIZE;
@@ -218,14 +218,14 @@ UINT            ret = 0;
 
     /* Write the ICMP type into the message.  Use the lower 16-bits of the IP address for
        the ICMP identifier.  */
-    header_ptr -> nx_icmp_header_word_0 =  (ULONG)(NX_ICMP_ECHO_REQUEST_TYPE << 24);
+    header_ptr -> nx_icmp_header_word_0 =  (UINT32)(NX_ICMP_ECHO_REQUEST_TYPE << 24);
     sequence =                             (ip_ptr -> nx_ip_icmp_sequence++ & NX_LOWER_16_MASK);
-    header_ptr -> nx_icmp_header_word_1 =  (ULONG)(request_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_address << 16) | sequence;
+    header_ptr -> nx_icmp_header_word_1 =  (UINT32)(request_ptr -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_address << 16) | sequence;
 
     /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped to match
        that of the data area.  */
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_icmp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_icmp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_icmp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_icmp_header_word_1);
 
 #ifdef NX_DISABLE_ICMPV4_TX_CHECKSUM
     compute_checksum = 0;
@@ -258,14 +258,14 @@ UINT            ret = 0;
 
         /* If NX_LITTLE_ENDIAN is defined, the headers need to be swapped back so
            we can place the checksum in the ICMP header.  */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_icmp_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_icmp_header_word_0);
 
         /* Place the checksum into the first header word.  */
         header_ptr -> nx_icmp_header_word_0 =  header_ptr -> nx_icmp_header_word_0 | (~checksum & NX_LOWER_16_MASK);
 
         /* If NX_LITTLE_ENDIAN is defined, the first header word needs to be swapped
            back.  */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_icmp_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_icmp_header_word_0);
     }
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
     else

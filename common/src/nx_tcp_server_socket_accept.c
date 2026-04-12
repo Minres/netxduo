@@ -68,7 +68,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_server_socket_accept(NX_TCP_SOCKET *socket_ptr, ULONG wait_option)
+UINT  _nx_tcp_server_socket_accept(NX_TCP_SOCKET *socket_ptr, UINT32 wait_option)
 {
 
 NX_IP *ip_ptr;
@@ -105,12 +105,12 @@ NX_IP *ip_ptr;
         /* Setup the initial sequence number.  */
         if (socket_ptr -> nx_tcp_socket_tx_sequence == 0)
         {
-            socket_ptr -> nx_tcp_socket_tx_sequence =  (((ULONG)NX_RAND()) << NX_SHIFT_BY_16) & 0xFFFFFFFF;
-            socket_ptr -> nx_tcp_socket_tx_sequence |= (ULONG)NX_RAND();
+            socket_ptr -> nx_tcp_socket_tx_sequence =  (((UINT32)NX_RAND()) << NX_SHIFT_BY_16) & 0xFFFFFFFF;
+            socket_ptr -> nx_tcp_socket_tx_sequence |= (UINT32)NX_RAND();
         }
         else
         {
-            socket_ptr -> nx_tcp_socket_tx_sequence =  socket_ptr -> nx_tcp_socket_tx_sequence + ((ULONG)(((ULONG)0x10000))) + ((ULONG)NX_RAND());
+            socket_ptr -> nx_tcp_socket_tx_sequence =  socket_ptr -> nx_tcp_socket_tx_sequence + ((UINT32)(((UINT32)0x10000))) + ((UINT32)NX_RAND());
         }
 
         /* Ensure the rx window size logic is reset.  */

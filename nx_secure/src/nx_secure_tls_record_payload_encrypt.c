@@ -25,7 +25,7 @@
 #include "nx_secure_tls.h"
 
 static UINT _nx_secure_tls_record_data_encrypt_init(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet,
-                                                    ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                                    UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                                     UCHAR record_type, UINT *data_offset,
                                                     const NX_CRYPTO_METHOD *session_cipher_method);
 
@@ -69,7 +69,7 @@ UCHAR _nx_secure_tls_record_block_buffer[NX_SECURE_TLS_MAX_CIPHER_BLOCK_SIZE];
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_record_payload_encrypt(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet,
-                                           ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                           UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                            UCHAR record_type)
 {
 UINT                                  status;
@@ -78,10 +78,10 @@ const NX_CRYPTO_METHOD               *session_cipher_method;
 UINT                                  block_size;
 USHORT                                iv_size;
 NX_PACKET                            *current_packet;
-ULONG                                 current_length;
-ULONG                                 rounded_length;
-ULONG                                 copy_length;
-ULONG                                 remainder_length;
+UINT32                                 current_length;
+UINT32                                 rounded_length;
+UINT32                                 copy_length;
+UINT32                                 remainder_length;
 UINT                                  data_offset = 0;
 VOID                                 *handler = NX_NULL;
 VOID                                 *crypto_method_metadata;
@@ -147,7 +147,7 @@ UCHAR                                *icv_ptr = NX_NULL;
     {
 
         /* Get our current packet length. Use the data_offset from any previous iterations. */
-        current_length = (ULONG)(current_packet -> nx_packet_append_ptr -
+        current_length = (UINT32)(current_packet -> nx_packet_append_ptr -
                                  current_packet -> nx_packet_prepend_ptr) - data_offset;
 
         /* See if there are more packets in the chain. */
@@ -200,7 +200,7 @@ UCHAR                                *icv_ptr = NX_NULL;
             }
             else
             {
-                remainder_length = (ULONG)((current_length % block_size));
+                remainder_length = (UINT32)((current_length % block_size));
             }
             rounded_length = current_length - remainder_length;
 
@@ -244,11 +244,11 @@ UCHAR                                *icv_ptr = NX_NULL;
                 NX_SECURE_MEMCPY(&_nx_secure_tls_record_block_buffer[0], /*  lgtm[cpp/banned-api-usage-required-any] */
                                  &current_packet -> nx_packet_prepend_ptr[rounded_length + data_offset],
                                  remainder_length); /* Use case of memcpy is verified. */
-                copy_length = (ULONG)(current_packet -> nx_packet_next -> nx_packet_append_ptr -
+                copy_length = (UINT32)(current_packet -> nx_packet_next -> nx_packet_append_ptr -
                                       current_packet -> nx_packet_next -> nx_packet_prepend_ptr);
-                if (copy_length > (ULONG)(block_size - remainder_length))
+                if (copy_length > (UINT32)(block_size - remainder_length))
                 {
-                    copy_length = (ULONG)(block_size - remainder_length);
+                    copy_length = (UINT32)(block_size - remainder_length);
                 }
                 NX_SECURE_MEMCPY(&_nx_secure_tls_record_block_buffer[remainder_length], /* lgtm[cpp/banned-api-usage-required-any] */
                                  current_packet -> nx_packet_next -> nx_packet_prepend_ptr,
@@ -395,7 +395,7 @@ UCHAR                                *icv_ptr = NX_NULL;
 /*                                                                        */
 /**************************************************************************/
 static UINT _nx_secure_tls_record_data_encrypt_init(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *send_packet,
-                                                    ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                                    UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                                     UCHAR record_type, UINT *data_offset,
                                                     const NX_CRYPTO_METHOD *session_cipher_method)
 {
@@ -615,7 +615,7 @@ UINT                                  message_length;
            in the record. */
         if (tls_session -> nx_secure_tls_protocol_version != NX_SECURE_TLS_VERSION_TLS_1_0)
         {
-            if (iv_size > ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_prepend_ptr)))
+            if (iv_size > ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_prepend_ptr)))
             {
 
                 /* Packet buffer too small. */

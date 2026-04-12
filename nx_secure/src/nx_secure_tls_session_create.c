@@ -69,7 +69,7 @@
 UINT _nx_secure_tls_session_create(NX_SECURE_TLS_SESSION *session_ptr,
                                    const NX_SECURE_TLS_CRYPTO *crypto_table,
                                    VOID *metadata_buffer,
-                                   ULONG metadata_size)
+                                   UINT32 metadata_size)
 {
     UINT                            status;
 

@@ -89,15 +89,15 @@ VOID  _nx_tcp_socket_packet_process(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet
 UINT          packet_queued =  NX_FALSE;
 NX_TCP_HEADER tcp_header_copy;
 VOID          (*urgent_callback)(NX_TCP_SOCKET *socket_ptr);
-ULONG         header_length;
-ULONG         packet_data_length;
-ULONG         packet_sequence;
-ULONG         rx_sequence;
-ULONG         rx_window;
+UINT32         header_length;
+UINT32         packet_data_length;
+UINT32         packet_sequence;
+UINT32         rx_sequence;
+UINT32         rx_window;
 UINT          outside_of_window;
-ULONG         mss = 0;
+UINT32         mss = 0;
 #ifdef NX_ENABLE_TCPIP_OFFLOAD
-ULONG         tcpip_offload; 
+UINT32         tcpip_offload; 
 
     tcpip_offload = socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_capability_flag &
                     NX_INTERFACE_CAPABILITY_TCPIP_OFFLOAD;
@@ -113,7 +113,7 @@ ULONG         tcpip_offload;
     tcp_header_copy =  *((NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr);
 
     /* Get the size of the TCP header.  */
-    header_length =  (tcp_header_copy.nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+    header_length =  (tcp_header_copy.nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
     /* Process the segment if socket state is equal or greater than NX_TCP_SYN_RECEIVED. According to RFC 793, Section 3.9, Page 69.  */
     if ((socket_ptr -> nx_tcp_socket_state >= NX_TCP_SYN_RECEIVED)
@@ -288,7 +288,7 @@ ULONG         tcpip_offload;
         /* There are one or more option words.  */
         /* The illegal option length is validated during MSS option get function. */
         if (!_nx_tcp_mss_option_get((packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_TCP_HEADER)),
-                                    header_length - (ULONG)sizeof(NX_TCP_HEADER), &mss))
+                                    header_length - (UINT32)sizeof(NX_TCP_HEADER), &mss))
         {
 
             /* TCP MUST be prepared to handle an illegal option length (e.g., zero) without crashing;

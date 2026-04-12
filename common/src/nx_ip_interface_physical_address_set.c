@@ -66,7 +66,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_ip_interface_physical_address_set(NX_IP *ip_ptr, UINT interface_index,
-                                            ULONG physical_msw, ULONG physical_lsw, UINT update_driver)
+                                            UINT32 physical_msw, UINT32 physical_lsw, UINT update_driver)
 {
 NX_INTERFACE *if_ptr = &(ip_ptr -> nx_ip_interface[interface_index]);
 NX_IP_DRIVER  driver_request;

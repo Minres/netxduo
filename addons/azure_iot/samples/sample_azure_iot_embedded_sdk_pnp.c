@@ -27,15 +27,15 @@
 #endif /* SAMPLE_WAIT_OPTION */
 
 /* Define sample events.  */
-#define SAMPLE_ALL_EVENTS                                               ((ULONG)0xFFFFFFFF)
-#define SAMPLE_CONNECTED_EVENT                                          ((ULONG)0x00000001)
-#define SAMPLE_DISCONNECT_EVENT                                         ((ULONG)0x00000002)
-#define SAMPLE_PERIODIC_EVENT                                           ((ULONG)0x00000004)
-#define SAMPLE_TELEMETRY_SEND_EVENT                                     ((ULONG)0x00000008)
-#define SAMPLE_COMMAND_RECEIVE_EVENT                                    ((ULONG)0x00000010)
-#define SAMPLE_PROPERTIES_RECEIVE_EVENT                                 ((ULONG)0x00000020)
-#define SAMPLE_WRITABLE_PROPERTIES_RECEIVE_EVENT                        ((ULONG)0x00000040)
-#define SAMPLE_REPORTED_PROPERTIES_SEND_EVENT                           ((ULONG)0x00000080)
+#define SAMPLE_ALL_EVENTS                                               ((UINT32)0xFFFFFFFF)
+#define SAMPLE_CONNECTED_EVENT                                          ((UINT32)0x00000001)
+#define SAMPLE_DISCONNECT_EVENT                                         ((UINT32)0x00000002)
+#define SAMPLE_PERIODIC_EVENT                                           ((UINT32)0x00000004)
+#define SAMPLE_TELEMETRY_SEND_EVENT                                     ((UINT32)0x00000008)
+#define SAMPLE_COMMAND_RECEIVE_EVENT                                    ((UINT32)0x00000010)
+#define SAMPLE_PROPERTIES_RECEIVE_EVENT                                 ((UINT32)0x00000020)
+#define SAMPLE_WRITABLE_PROPERTIES_RECEIVE_EVENT                        ((UINT32)0x00000040)
+#define SAMPLE_REPORTED_PROPERTIES_SEND_EVENT                           ((UINT32)0x00000080)
 
 #define SAMPLE_DEAFULT_START_TEMP_CELSIUS                               (22)
 #define DOUBLE_DECIMAL_PLACE_DIGITS                                     (2)
@@ -67,7 +67,7 @@ static SAMPLE_CLIENT                                client;
 #define prov_client client.prov_client
 #endif /* ENABLE_DPS_SAMPLE */
 
-void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(ULONG *unix_time));
+void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(UINT32 *unix_time));
 
 #ifdef ENABLE_DPS_SAMPLE
 static UINT sample_dps_entry(NX_AZURE_IOT_PROVISIONING_CLIENT *prov_client_ptr,
@@ -80,7 +80,7 @@ static NX_SECURE_X509_CERT root_ca_cert;
 static NX_SECURE_X509_CERT root_ca_cert_2;
 static NX_SECURE_X509_CERT root_ca_cert_3;
 static UCHAR nx_azure_iot_tls_metadata_buffer[NX_AZURE_IOT_TLS_METADATA_BUFFER_SIZE];
-static ULONG nx_azure_iot_thread_stack[NX_AZURE_IOT_STACK_SIZE / sizeof(ULONG)];
+static UINT32 nx_azure_iot_thread_stack[NX_AZURE_IOT_STACK_SIZE / sizeof(UINT32)];
 
 /* Using X509 certificate authenticate to connect to IoT Hub,
    set the device certificate as your device.  */
@@ -104,7 +104,7 @@ static NX_AZURE_IOT nx_azure_iot;
 static TX_EVENT_FLAGS_GROUP sample_events;
 static TX_TIMER sample_timer;
 static volatile UINT sample_connection_status = NX_AZURE_IOT_NOT_INITIALIZED;
-static volatile ULONG sample_periodic_counter = 0;
+static volatile UINT32 sample_periodic_counter = 0;
 
 /* Telemetry.  */
 static const CHAR telemetry_name[] = "temperature";
@@ -146,7 +146,7 @@ extern VOID sample_adu_start(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr);
 
 /* Send writable properties response as reported property.  */
 static VOID sample_send_target_temperature_report(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr, double current_device_temp_value,
-                                                  UINT status, ULONG version, UCHAR *description_ptr,
+                                                  UINT status, UINT32 version, UCHAR *description_ptr,
                                                   UINT description_len)
 {
 NX_AZURE_IOT_JSON_WRITER json_writer;
@@ -199,7 +199,7 @@ UINT request_id;
 /* Parses writable properties document.  */
 static UINT sample_parse_writable_temp_property(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                 NX_AZURE_IOT_JSON_READER *json_reader_ptr,
-                                                UINT message_type, ULONG version)
+                                                UINT message_type, UINT32 version)
 {
 double parsed_value;
 UINT status;
@@ -614,7 +614,7 @@ static void sample_writable_properties_receive_action(NX_AZURE_IOT_HUB_CLIENT *h
 UINT status = 0;
 NX_PACKET *packet_ptr;
 NX_AZURE_IOT_JSON_READER json_reader;
-ULONG properties_version;
+UINT32 properties_version;
 
     if (sample_connection_status != NX_SUCCESS)
     {
@@ -673,7 +673,7 @@ UINT response_status;
 UINT request_id;
 NX_AZURE_IOT_JSON_WRITER json_writer;
 NX_PACKET *packet_ptr;
-ULONG reported_property_version;
+UINT32 reported_property_version;
 
     if (sample_connection_status != NX_SUCCESS)
     {
@@ -737,7 +737,7 @@ static void sample_properties_receive_action(NX_AZURE_IOT_HUB_CLIENT *hub_client
 UINT status = 0;
 NX_PACKET *packet_ptr;
 NX_AZURE_IOT_JSON_READER json_reader;
-ULONG writable_properties_version;
+UINT32 writable_properties_version;
 
     if (sample_connection_status != NX_SUCCESS)
     {
@@ -998,11 +998,11 @@ static void log_callback(az_log_classification classification, UCHAR *msg, UINT 
     }
 }
 
-void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(ULONG *unix_time))
+void sample_entry(NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, VOID *dns_ptr, UINT (*unix_time_callback)(UINT32 *unix_time))
 {
 UINT status = 0;
 UINT loop = NX_TRUE;
-ULONG app_events;
+UINT32 app_events;
 
     nx_azure_iot_log_init(log_callback);
 

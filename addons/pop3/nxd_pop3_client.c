@@ -100,7 +100,7 @@
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, 
-                              NX_PACKET_POOL *packet_pool_ptr, ULONG server_ip_address, ULONG server_port, CHAR *client_name, 
+                              NX_PACKET_POOL *packet_pool_ptr, UINT32 server_ip_address, UINT32 server_port, CHAR *client_name, 
                               CHAR *client_password)
 {
 
@@ -189,7 +189,7 @@ UINT status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, 
-                              NX_PACKET_POOL *packet_pool_ptr, ULONG server_ip_address, ULONG server_port, CHAR *client_name, 
+                              NX_PACKET_POOL *packet_pool_ptr, UINT32 server_ip_address, UINT32 server_port, CHAR *client_name, 
                               CHAR *client_password)
 {
 
@@ -266,7 +266,7 @@ NXD_ADDRESS server_address;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxde_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, 
-                              NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_ip_address, ULONG server_port, CHAR *client_name, 
+                              NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_ip_address, UINT32 server_port, CHAR *client_name, 
                               CHAR *client_password)
 {
 
@@ -345,7 +345,7 @@ UINT status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxd_pop3_client_create(NX_POP3_CLIENT *client_ptr, UINT APOP_authentication, NX_IP *ip_ptr, 
-                              NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_ip_address, ULONG server_port, CHAR *client_name, 
+                              NX_PACKET_POOL *packet_pool_ptr, NXD_ADDRESS *server_ip_address, UINT32 server_port, CHAR *client_name, 
                               CHAR *client_password)
 
 {
@@ -550,7 +550,7 @@ UINT  _nx_pop3_client_delete(NX_POP3_CLIENT *client_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, ULONG *maildrop_total_size)
+UINT _nxe_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, UINT32 *maildrop_total_size)
 {
 
 UINT status;
@@ -610,7 +610,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, ULONG *maildrop_total_size)
+UINT _nx_pop3_client_mail_items_get(NX_POP3_CLIENT *client_ptr, UINT *number_mail_items, UINT32 *maildrop_total_size)
 {
 
 UINT         status;
@@ -789,7 +789,7 @@ UINT         packet_type;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *size)
+UINT _nxe_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *size)
 {
 
 UINT status;
@@ -860,7 +860,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *size)
+UINT _nx_pop3_client_mail_item_size_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *size)
 {
 
 NX_PACKET *packet_ptr, *recv_packet_ptr; 
@@ -1054,7 +1054,7 @@ UINT      packet_type;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *item_size)
+UINT _nxe_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *item_size)
 {
 
 UINT status;
@@ -1121,7 +1121,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, ULONG *item_size)
+UINT _nx_pop3_client_mail_item_get(NX_POP3_CLIENT *client_ptr, UINT mail_item, UINT32 *item_size)
 {
 
 UINT         status;
@@ -1266,7 +1266,7 @@ UINT         packet_type;
             *item_size = strtoul(argument, NULL, 10);
         }
 
-        while (((ULONG)buffer < ((ULONG)recv_packet_ptr -> nx_packet_append_ptr - 1)) &&
+        while (((UINT32)buffer < ((UINT32)recv_packet_ptr -> nx_packet_append_ptr - 1)) &&
                ((*buffer != 0x0D) || (*(buffer + 1) != 0x0A)))
         {
             buffer++;
@@ -1282,7 +1282,7 @@ UINT         packet_type;
         {
             client_ptr -> nx_pop3_client_message_ptr = recv_packet_ptr;
             recv_packet_ptr -> nx_packet_length -=
-                (ULONG)buffer - (ULONG)recv_packet_ptr -> nx_packet_prepend_ptr;
+                (UINT32)buffer - (UINT32)recv_packet_ptr -> nx_packet_prepend_ptr;
             recv_packet_ptr -> nx_packet_prepend_ptr = (UCHAR *)buffer;
         }
 
@@ -1336,7 +1336,7 @@ UINT         packet_type;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, ULONG *bytes_retrieved, UINT *final_packet)
+UINT _nxe_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, UINT32 *bytes_retrieved, UINT *final_packet)
 {
 
 UINT status;
@@ -1400,7 +1400,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, ULONG *bytes_retrieved, UINT *final_packet)
+UINT _nx_pop3_client_mail_item_message_get(NX_POP3_CLIENT *client_ptr, NX_PACKET **recv_packet_ptr, UINT32 *bytes_retrieved, UINT *final_packet)
 {
 UINT    status;
 UINT    index; 
@@ -2451,7 +2451,7 @@ UINT    size;
 /*    _nx_pop3_client_user_pass          Send User Pass in clear text     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxd_pop3_client_connect(NX_POP3_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, ULONG server_port)
+UINT _nxd_pop3_client_connect(NX_POP3_CLIENT *client_ptr, NXD_ADDRESS *server_ip_address, UINT32 server_port)
 {
 
 UINT status;

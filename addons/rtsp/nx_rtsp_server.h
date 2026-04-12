@@ -214,7 +214,7 @@ typedef struct NX_RTSP_TRANSPORT_STRUCT
 
     USHORT      multicast_ttl;     /* TTL for multicast.  */
 
-    ULONG       rtp_ssrc;          /* RTP SSRC.  */
+    UINT32       rtp_ssrc;          /* RTP SSRC.  */
 
     USHORT      client_rtp_port;   /* Client RTP port.  */
 
@@ -252,7 +252,7 @@ typedef struct NX_RTSP_CLIENT_REQUEST_STRUCT
     UCHAR            *nx_rtsp_client_request_range_ptr;              /* Range field, needed for holding the PLAY and PAUSE method.  */
     UINT              nx_rtsp_client_request_range_length;           /* Range field length.  */
 
-    ULONG             nx_rtsp_client_request_session_id;             /* Session id for request method.  */
+    UINT32             nx_rtsp_client_request_session_id;             /* Session id for request method.  */
 
     UINT              nx_rtsp_client_request_response_code;          /* Response status code.  */
 
@@ -270,9 +270,9 @@ typedef struct NX_RTSP_CLIENT_STRUCT
 
     NX_TCP_SOCKET                 nx_rtsp_client_socket;                   /* The socket for incoming request.  */
 
-    ULONG                         nx_rtsp_client_request_activity_timeout; /* Timeout for Client activity.  */
+    UINT32                         nx_rtsp_client_request_activity_timeout; /* Timeout for Client activity.  */
 
-    ULONG                         nx_rtsp_client_session_id;               /* Session ID, assigned by RTSP, in host byte order.  */
+    UINT32                         nx_rtsp_client_session_id;               /* Session ID, assigned by RTSP, in host byte order.  */
 
     struct NX_RTSP_SERVER_STRUCT *nx_rtsp_client_server_ptr;               /* Pointer to the RTSP Server.  */
 
@@ -305,13 +305,13 @@ typedef struct NX_RTSP_SERVER_METHOD_CALLBACKS_STRUCT
 
     UINT (*nx_rtsp_server_method_pause_callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length);
 
-    UINT (*nx_rtsp_server_method_set_parameter_callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length);
+    UINT (*nx_rtsp_server_method_set_parameter_callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length);
 } NX_RTSP_SERVER_METHOD_CALLBACKS;
 
 /* Define the Server structure.  */
 typedef struct NX_RTSP_SERVER_STRUCT
 {
-    ULONG                    nx_rtsp_server_id;                 /* The ID of RTSP Server.  */
+    UINT32                    nx_rtsp_server_id;                 /* The ID of RTSP Server.  */
 
     CHAR                    *nx_rtsp_server_name;               /* The name of RTSP Server.  */
 
@@ -334,9 +334,9 @@ typedef struct NX_RTSP_SERVER_STRUCT
     NX_PACKET_POOL          *nx_rtsp_server_packet_pool;        /* Packet Pool for packet allocation.  */
 
     /* Infos recorded in RTSP Server procedures.  */
-    ULONG                    nx_rtsp_server_allocation_errors;
-    ULONG                    nx_rtsp_server_relisten_errors;
-    ULONG                    nx_rtsp_server_disconnection_requests;
+    UINT32                    nx_rtsp_server_allocation_errors;
+    UINT32                    nx_rtsp_server_relisten_errors;
+    UINT32                    nx_rtsp_server_disconnection_requests;
     UINT                     nx_rtsp_server_connected_client_count;
 
     /* Data structure for all the Clients connected to the RTSP Server.  */
@@ -420,10 +420,10 @@ UINT nx_rtsp_server_pause_callback_set(NX_RTSP_SERVER * rtsp_server,
                                        UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *range_ptr, UINT range_length));
 
 UINT nx_rtsp_server_set_parameter_callback_set(NX_RTSP_SERVER * rtsp_server,
-                                               UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length));
+                                               UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length));
 
 UINT nx_rtsp_server_create(NX_RTSP_SERVER *rtsp_server_ptr, CHAR *server_name, UINT server_name_length,
-                           NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, ULONG stack_size, UINT priority, UINT server_port,
+                           NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, UINT32 stack_size, UINT priority, UINT server_port,
                            UINT (*disconnect_callback)(NX_RTSP_CLIENT *rtsp_client_ptr));
 
 UINT nx_rtsp_server_delete(NX_RTSP_SERVER *rtsp_server);
@@ -477,15 +477,15 @@ UINT _nxe_rtsp_server_pause_callback_set(NX_RTSP_SERVER * rtsp_server,
 
 
 UINT _nx_rtsp_server_set_parameter_callback_set(NX_RTSP_SERVER * rtsp_server,
-                                                UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length));
+                                                UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length));
 UINT _nxe_rtsp_server_set_parameter_callback_set(NX_RTSP_SERVER * rtsp_server,
-                                                 UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length));
+                                                 UINT (*)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length));
 
 UINT _nx_rtsp_server_create(NX_RTSP_SERVER *rtsp_server_ptr, CHAR *server_name, UINT server_name_length,
-                            NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, ULONG stack_size, UINT priority, UINT server_port,
+                            NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, UINT32 stack_size, UINT priority, UINT server_port,
                             UINT (*disconnect_callback)(NX_RTSP_CLIENT *rtsp_client_ptr));
 UINT _nxe_rtsp_server_create(NX_RTSP_SERVER *rtsp_server_ptr, CHAR *server_name, UINT server_name_length,
-                             NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, ULONG stack_size, UINT priority, UINT server_port,
+                             NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool, VOID *stack_ptr, UINT32 stack_size, UINT priority, UINT server_port,
                              UINT (*disconnect_callback)(NX_RTSP_CLIENT *rtsp_client_ptr));
 
 UINT _nx_rtsp_server_delete(NX_RTSP_SERVER *rtsp_server);

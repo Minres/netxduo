@@ -153,14 +153,14 @@ extern   "C" {
 #define NX_PPPOE_SERVER_TAG_TYPE_GENERIC_ERROR              0x0203   
                                                                    
 /* Define the PPPoE Error flags.  */
-#define NX_PPPOE_SERVER_ERROR_SERVICE_NAME                  ((ULONG) 0x00000001)    /* Service Name Error.              */
-#define NX_PPPOE_SERVER_ERROR_AC_SYSTEM                     ((ULONG) 0x00000002)    /* AC-System Error                  */ 
-#define NX_PPPOE_SERVER_ERROR_GENERIC                       ((ULONG) 0x00000004)    /* Generic Error                    */
+#define NX_PPPOE_SERVER_ERROR_SERVICE_NAME                  ((UINT32) 0x00000001)    /* Service Name Error.              */
+#define NX_PPPOE_SERVER_ERROR_AC_SYSTEM                     ((UINT32) 0x00000002)    /* AC-System Error                  */ 
+#define NX_PPPOE_SERVER_ERROR_GENERIC                       ((UINT32) 0x00000004)    /* Generic Error                    */
 
 /* Define event flags for PPPoE thread control.  */
-#define NX_PPPOE_SERVER_ALL_EVENTS                          ((ULONG) 0xFFFFFFFF)    /* All event flags                      */
-#define NX_PPPOE_SERVER_PACKET_RECEIVE_EVENT                ((ULONG) 0x00000001)    /* PPPoE Server receive packet event    */
-#define NX_PPPOE_SERVER_SESSION_RECEIVE_EVENT               ((ULONG) 0x00000002)    /* PPPoE Session receive packet event   */
+#define NX_PPPOE_SERVER_ALL_EVENTS                          ((UINT32) 0xFFFFFFFF)    /* All event flags                      */
+#define NX_PPPOE_SERVER_PACKET_RECEIVE_EVENT                ((UINT32) 0x00000001)    /* PPPoE Server receive packet event    */
+#define NX_PPPOE_SERVER_SESSION_RECEIVE_EVENT               ((UINT32) 0x00000002)    /* PPPoE Session receive packet event   */
 
 /* Define error codes from PPPoE Server operation.  */
 #define NX_PPPOE_SERVER_SUCCESS                             0x00    /* Success                                           */
@@ -186,8 +186,8 @@ typedef struct NX_PPPOE_CLIENT_SESSION_STRUCT
 
     USHORT          nx_pppoe_valid;
     USHORT          nx_pppoe_session_id;
-    ULONG           nx_pppoe_physical_address_msw;
-    ULONG           nx_pppoe_physical_address_lsw;
+    UINT32           nx_pppoe_physical_address_msw;
+    UINT32           nx_pppoe_physical_address_lsw;
     UCHAR          *nx_pppoe_service_name;
 #ifdef NX_PPPOE_SERVER_SESSION_CONTROL_ENABLE
     UINT            nx_pppoe_service_name_length;
@@ -210,7 +210,7 @@ typedef struct NX_PPPOE_CLIENT_SESSION_STRUCT
 typedef struct NX_PPPOE_SERVER_STRUCT 
 {
 
-    ULONG                       nx_pppoe_id;
+    UINT32                       nx_pppoe_id;
     UINT                        nx_pppoe_enabled;
     UCHAR                      *nx_pppoe_name;  
     UINT                        nx_pppoe_name_length;
@@ -231,10 +231,10 @@ typedef struct NX_PPPOE_SERVER_STRUCT
 
     /* Define the callback nofiy function.  */
     VOID                      (*nx_pppoe_discover_initiation_notify)(UINT session_index);
-    VOID                      (*nx_pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data);
+    VOID                      (*nx_pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data);
     VOID                      (*nx_pppoe_discover_terminate_notify)(UINT session_index);    
     VOID                      (*nx_pppoe_discover_terminate_confirm)(UINT session_index);
-    VOID                      (*nx_pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id); 
+    VOID                      (*nx_pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id); 
     VOID                      (*nx_pppoe_data_send_notify)(UINT session_index, UCHAR *data);
     
     /* Define the Link Driver entry point.  */
@@ -290,33 +290,33 @@ typedef struct NX_PPPOE_SERVER_STRUCT
 
 UINT    nx_pppoe_server_create(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *name, NX_IP *ip_ptr, UINT interface_index,
                                VOID (*pppoe_link_driver)(struct NX_IP_DRIVER_STRUCT *), NX_PACKET_POOL *pool_ptr,
-                               VOID *stack_ptr, ULONG stack_size, UINT priority);
+                               VOID *stack_ptr, UINT32 stack_size, UINT priority);
 UINT    nx_pppoe_server_delete(NX_PPPOE_SERVER *pppoe_server_ptr);  
 UINT    nx_pppoe_server_enable(NX_PPPOE_SERVER *pppoe_server_ptr);
 UINT    nx_pppoe_server_disable(NX_PPPOE_SERVER *pppoe_server_ptr);     
 UINT    nx_pppoe_server_callback_notify_set(NX_PPPOE_SERVER *pppoe_server_ptr, 
                                             VOID (* pppoe_discover_initiation_notify)(UINT session_index), 
-                                            VOID (* pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data),
+                                            VOID (* pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data),
                                             VOID (* pppoe_discover_terminate_notify)(UINT session_index),
                                             VOID (* pppoe_discover_terminate_confirm)(UINT session_index),
-                                            VOID (* pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id),
+                                            VOID (* pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id),
                                             VOID (* pppoe_data_send_notify)(UINT session_index, UCHAR *data));
 UINT    nx_pppoe_server_ac_name_set(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *ac_name, UINT ac_name_length);
 UINT    nx_pppoe_server_service_name_set(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR **service_name, UINT service_name_count);
 UINT    nx_pppoe_server_session_send(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UCHAR *data_ptr, UINT data_length);
 UINT    nx_pppoe_server_session_packet_send(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, NX_PACKET *packet_ptr);
 UINT    nx_pppoe_server_session_terminate(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index); 
-UINT    nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, ULONG *client_mac_msw, ULONG *client_mac_lsw, ULONG *session_id);
+UINT    nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UINT32 *client_mac_msw, UINT32 *client_mac_lsw, UINT32 *session_id);
 VOID    _nx_pppoe_server_packet_deferred_receive(NX_PACKET *packet_ptr);
 
 #else
                                                             
 UINT    _nxe_pppoe_server_create(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *name, NX_IP *ip_ptr, UINT interface_index,
                                  VOID (*pppoe_link_driver)(struct NX_IP_DRIVER_STRUCT *), NX_PACKET_POOL *pool_ptr,
-                                 VOID *stack_ptr, ULONG stack_size, UINT priority);
+                                 VOID *stack_ptr, UINT32 stack_size, UINT priority);
 UINT    _nx_pppoe_server_create(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *name, NX_IP *ip_ptr, UINT interface_index,
                                 VOID (*pppoe_link_driver)(struct NX_IP_DRIVER_STRUCT *), NX_PACKET_POOL *pool_ptr,
-                                VOID *stack_ptr, ULONG stack_size, UINT priority); 
+                                VOID *stack_ptr, UINT32 stack_size, UINT priority); 
 UINT    _nxe_pppoe_server_delete(NX_PPPOE_SERVER *pppoe_server_ptr);
 UINT    _nx_pppoe_server_delete(NX_PPPOE_SERVER *pppoe_server_ptr);   
 UINT    _nxe_pppoe_server_enable(NX_PPPOE_SERVER *pppoe_server_ptr); 
@@ -325,17 +325,17 @@ UINT    _nxe_pppoe_server_disable(NX_PPPOE_SERVER *pppoe_server_ptr);
 UINT    _nx_pppoe_server_disable(NX_PPPOE_SERVER *pppoe_server_ptr);              
 UINT    _nxe_pppoe_server_callback_notify_set(NX_PPPOE_SERVER *pppoe_server_ptr, 
                                               VOID (* pppoe_discover_initiation_notify)(UINT session_index), 
-                                              VOID (* pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data),
+                                              VOID (* pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data),
                                               VOID (* pppoe_discover_terminate_notify)(UINT session_index),
                                               VOID (* pppoe_discover_terminate_confirm)(UINT session_index),
-                                              VOID (* pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id),
+                                              VOID (* pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id),
                                               VOID (* pppoe_data_send_notify)(UINT session_index, UCHAR *data));
 UINT    _nx_pppoe_server_callback_notify_set(NX_PPPOE_SERVER *pppoe_server_ptr, 
                                              VOID (* pppoe_discover_initiation_notify)(UINT session_index), 
-                                             VOID (* pppoe_discover_request_notify)(UINT session_index, ULONG length, UCHAR *data),
+                                             VOID (* pppoe_discover_request_notify)(UINT session_index, UINT32 length, UCHAR *data),
                                              VOID (* pppoe_discover_terminate_notify)(UINT session_index),
                                              VOID (* pppoe_discover_terminate_confirm)(UINT session_index),
-                                             VOID (* pppoe_data_receive_notify)(UINT session_index, ULONG length, UCHAR *data, UINT packet_id),
+                                             VOID (* pppoe_data_receive_notify)(UINT session_index, UINT32 length, UCHAR *data, UINT packet_id),
                                              VOID (* pppoe_data_send_notify)(UINT session_index, UCHAR *data));
 UINT    _nxe_pppoe_server_ac_name_set(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *ac_name, UINT ac_name_length);
 UINT    _nx_pppoe_server_ac_name_set(NX_PPPOE_SERVER *pppoe_server_ptr, UCHAR *ac_name, UINT ac_name_length);                                             
@@ -347,8 +347,8 @@ UINT    _nxe_pppoe_server_session_packet_send(NX_PPPOE_SERVER *pppoe_server_ptr,
 UINT    _nx_pppoe_server_session_packet_send(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, NX_PACKET *packet_ptr);
 UINT    _nxe_pppoe_server_session_terminate(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index);
 UINT    _nx_pppoe_server_session_terminate(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index);
-UINT    _nxe_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, ULONG *client_mac_msw, ULONG *client_mac_lsw, ULONG *session_id);
-UINT    _nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, ULONG *client_mac_msw, ULONG *client_mac_lsw, ULONG *session_id);
+UINT    _nxe_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UINT32 *client_mac_msw, UINT32 *client_mac_lsw, UINT32 *session_id);
+UINT    _nx_pppoe_server_session_get(NX_PPPOE_SERVER *pppoe_server_ptr, UINT session_index, UINT32 *client_mac_msw, UINT32 *client_mac_lsw, UINT32 *session_id);
 VOID    _nx_pppoe_server_packet_deferred_receive(NX_PACKET *packet_ptr);
 
 #endif /* NX_PPPOE_SERVER_SOURCE_CODE */

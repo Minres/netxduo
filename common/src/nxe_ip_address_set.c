@@ -67,7 +67,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_address_set(NX_IP *ip_ptr, ULONG ip_address, ULONG network_mask)
+UINT  _nxe_ip_address_set(NX_IP *ip_ptr, UINT32 ip_address, UINT32 network_mask)
 {
 
 #ifndef NX_DISABLE_IPV4

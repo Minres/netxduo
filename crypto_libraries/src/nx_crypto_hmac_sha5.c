@@ -66,7 +66,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_hmac_sha512_init(struct  NX_CRYPTO_METHOD
                                                         UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                         VOID  **handle,
                                                         VOID  *crypto_metadata,
-                                                        ULONG crypto_metadata_size)
+                                                        UINT32 crypto_metadata_size)
 {
 
     NX_CRYPTO_PARAMETER_NOT_USED(key_size_in_bits);
@@ -80,7 +80,7 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_hmac_sha512_init(struct  NX_CRYPTO_METHOD
     }
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((((ULONG)crypto_metadata) & 0x3) != 0)
+    if((((UINT32)crypto_metadata) & 0x3) != 0)
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -198,12 +198,12 @@ NX_CRYPTO_KEEP UINT  _nx_crypto_method_hmac_sha512_operation(UINT op,      /* En
                                                              UCHAR *key,
                                                              NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                                              UCHAR *input,
-                                                             ULONG input_length_in_byte,
+                                                             UINT32 input_length_in_byte,
                                                              UCHAR *iv_ptr,
                                                              UCHAR *output,
-                                                             ULONG output_length_in_byte,
+                                                             UINT32 output_length_in_byte,
                                                              VOID *crypto_metadata,
-                                                             ULONG crypto_metadata_size,
+                                                             UINT32 crypto_metadata_size,
                                                              VOID *packet_ptr,
                                                              VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status))
 {
@@ -221,7 +221,7 @@ UINT                    icv_full_length;
     NX_CRYPTO_STATE_CHECK
 
     /* Verify the metadata address is 4-byte aligned. */
-    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((ULONG)crypto_metadata) & 0x3) != 0))
+    if((method == NX_CRYPTO_NULL) || (crypto_metadata == NX_CRYPTO_NULL) || ((((UINT32)crypto_metadata) & 0x3) != 0))
     {
         return(NX_CRYPTO_PTR_ERROR);
     }
@@ -289,7 +289,7 @@ UINT                    icv_full_length;
 
     case NX_CRYPTO_HASH_CALCULATE:
         _nx_crypto_hmac_digest_calculate(hmac_metadata, output,
-                                         (output_length_in_byte > (ULONG)((method -> nx_crypto_ICV_size_in_bits) >> 3) ?
+                                         (output_length_in_byte > (UINT32)((method -> nx_crypto_ICV_size_in_bits) >> 3) ?
                                          ((method -> nx_crypto_ICV_size_in_bits) >> 3) : output_length_in_byte));
         break;
 
@@ -300,7 +300,7 @@ UINT                    icv_full_length;
         }
 
         _nx_crypto_hmac(hmac_metadata, input, input_length_in_byte, key, (key_size_in_bits >> 3), output,
-                        (output_length_in_byte > (ULONG)((method -> nx_crypto_ICV_size_in_bits) >> 3) ?
+                        (output_length_in_byte > (UINT32)((method -> nx_crypto_ICV_size_in_bits) >> 3) ?
                         ((method -> nx_crypto_ICV_size_in_bits) >> 3) : output_length_in_byte));
         break;
     }

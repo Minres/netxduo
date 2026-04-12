@@ -81,13 +81,13 @@
 /*    This function cannot be called from an ISR.                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ipv6_prefix_list_add_entry(NX_IP *ip_ptr, ULONG *prefix,
-                                     ULONG prefix_length, ULONG valid_lifetime)
+UINT  _nx_ipv6_prefix_list_add_entry(NX_IP *ip_ptr, UINT32 *prefix,
+                                     UINT32 prefix_length, UINT32 valid_lifetime)
 {
 
 INT                   invalid_bits;
 INT                   i;
-ULONG                 invalid_mask;
+UINT32                 invalid_mask;
 NX_IPV6_PREFIX_ENTRY *new_entry;      /* Pointer to the new entry. */
 NX_IPV6_PREFIX_ENTRY *current;        /* Pointer to the location where the
                                          new entry is gonig to be inserted before it. */
@@ -193,7 +193,7 @@ NX_IPV6_PREFIX_ENTRY *prev = NX_NULL; /* Pointer to the location where the
         }
         if (invalid_bits < 32)
         {
-            invalid_mask = (ULONG)(~(((ULONG)1 << invalid_bits) - 1));
+            invalid_mask = (UINT32)(~(((UINT32)1 << invalid_bits) - 1));
         }
         else
         {

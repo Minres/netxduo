@@ -84,7 +84,7 @@ VOID _nx_ipv6_fragment_process(struct NX_IP_DRIVER_STRUCT *driver_req_ptr, UINT 
 NX_PACKET                      *first_fragment, *source_packet, *previous_packet;
 UCHAR                          *fragmentable_ptr, *last_header_location;
 UINT                            packet_length, unfragmentable_size;
-ULONG                           packet_id;
+UINT32                           packet_id;
 NX_IP_DRIVER                    driver_request;
 NX_IP                          *ip_ptr;
 UCHAR                           next_header;
@@ -94,8 +94,8 @@ INT                             error = 0;
 NX_IPV6_HEADER_FRAGMENT_OPTION *fragment_option;
 INT                             last_fragment = 0;
 NX_IPV6_HEADER                 *ipv6_header;
-ULONG                           word_1;
-ULONG                           val;
+UINT32                           word_1;
+UINT32                           val;
 NX_PACKET_POOL                 *pool_ptr;
 
 
@@ -118,13 +118,13 @@ NX_PACKET_POOL                 *pool_ptr;
     /* Source_packet points a packet (or a chain of packets) that already has IP header
        constructed.  The prepend pointer should point to the IPv6 header. */
 #ifdef NX_ENABLE_IP_ID_RANDOMIZATION
-    packet_id = (ULONG)NX_RAND();
+    packet_id = (UINT32)NX_RAND();
 #else
     packet_id = ip_ptr -> nx_ip_packet_id++;
 #endif /* NX_ENABLE_IP_ID_RANDOMIZATION */
 
     /* Byte swap packet_id */
-    NX_CHANGE_ULONG_ENDIAN(packet_id);
+    NX_CHANGE_UINT32_ENDIAN(packet_id);
 
     /* Pickup the source packet pointer.  */
     source_packet = driver_req_ptr -> nx_ip_driver_packet;
@@ -215,7 +215,7 @@ NX_PACKET_POOL                 *pool_ptr;
            portion back.   This is the size of each fragment, excluding the last fragment.
          */
         fragment_size = (mtu - unfragmentable_size) & 0xFFF8;
-        fragment_size -= (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+        fragment_size -= (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
 
         if (fragment_size >= packet_length)
         {
@@ -317,7 +317,7 @@ NX_PACKET_POOL                 *pool_ptr;
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
         fragment_option = (NX_IPV6_HEADER_FRAGMENT_OPTION *)first_fragment -> nx_packet_last -> nx_packet_append_ptr;
         first_fragment -> nx_packet_append_ptr += sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
-        first_fragment -> nx_packet_length += (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+        first_fragment -> nx_packet_length += (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
 
         fragment_option -> nx_ipv6_header_fragment_option_reserved = 0;
         fragment_option -> nx_ipv6_header_fragment_option_next_header = next_header;
@@ -357,15 +357,15 @@ NX_PACKET_POOL                 *pool_ptr;
         val = ipv6_header -> nx_ip_header_word_1;
 
         /* Convert to host byte order. */
-        NX_CHANGE_ULONG_ENDIAN(val);
+        NX_CHANGE_UINT32_ENDIAN(val);
 
         val = val & 0x0000FFFF;
 
-        word_1 = (ULONG)(((fragment_size + unfragmentable_size - sizeof(NX_IPV6_HEADER)) + sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION)) << 16);
+        word_1 = (UINT32)(((fragment_size + unfragmentable_size - sizeof(NX_IPV6_HEADER)) + sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION)) << 16);
         word_1 = val | word_1;
 
         /* Convert to network byte order. */
-        NX_CHANGE_ULONG_ENDIAN(word_1);
+        NX_CHANGE_UINT32_ENDIAN(word_1);
 
         ipv6_header -> nx_ip_header_word_1 = word_1;
 
@@ -376,7 +376,7 @@ NX_PACKET_POOL                 *pool_ptr;
         /* This fragment is ready to be transmitted. */
         /* Send the packet to the associated driver for output.  */
         first_fragment -> nx_packet_length = unfragmentable_size + fragment_size;
-        first_fragment -> nx_packet_length += (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+        first_fragment -> nx_packet_length += (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
         driver_request.nx_ip_driver_packet =   first_fragment;
 
 #ifndef NX_DISABLE_IP_INFO
@@ -388,7 +388,7 @@ NX_PACKET_POOL                 *pool_ptr;
         ip_ptr -> nx_ip_total_packets_sent++;
 
         /* Increment the IP bytes sent count.  */
-        ip_ptr -> nx_ip_total_bytes_sent += first_fragment -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+        ip_ptr -> nx_ip_total_bytes_sent += first_fragment -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
 #endif /* !NX_DISABLE_IP_INFO */
 
         /* Add debug information. */

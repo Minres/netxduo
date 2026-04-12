@@ -679,9 +679,9 @@
 #define NX_PACKET_HEADER_PAD_SIZE   1
 */
 
-/* Defined, packet header and payload are aligned automatically by the value. The default value is sizeof(ULONG). */
+/* Defined, packet header and payload are aligned automatically by the value. The default value is sizeof(UINT32). */
 /*
-#define NX_PACKET_ALIGNMENT sizeof(ULONG)
+#define NX_PACKET_ALIGNMENT sizeof(UINT32)
 */
 
 /* If defined, the packet chain feature is removed. */

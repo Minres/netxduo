@@ -82,11 +82,11 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_info_get(NX_IP *ip_ptr, ULONG *ip_total_packets_sent, ULONG *ip_total_bytes_sent,
-                      ULONG *ip_total_packets_received, ULONG *ip_total_bytes_received,
-                      ULONG *ip_invalid_packets, ULONG *ip_receive_packets_dropped,
-                      ULONG *ip_receive_checksum_errors, ULONG *ip_send_packets_dropped,
-                      ULONG *ip_total_fragments_sent, ULONG *ip_total_fragments_received)
+UINT  _nx_ip_info_get(NX_IP *ip_ptr, UINT32 *ip_total_packets_sent, UINT32 *ip_total_bytes_sent,
+                      UINT32 *ip_total_packets_received, UINT32 *ip_total_bytes_received,
+                      UINT32 *ip_invalid_packets, UINT32 *ip_receive_packets_dropped,
+                      UINT32 *ip_receive_checksum_errors, UINT32 *ip_send_packets_dropped,
+                      UINT32 *ip_total_fragments_sent, UINT32 *ip_total_fragments_received)
 {
 
     /* If trace is enabled, insert this event into the trace buffer.  */

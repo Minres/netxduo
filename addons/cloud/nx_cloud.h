@@ -58,7 +58,7 @@ extern   "C" {
 
 
 /* Define CLOUD constants.  */
-#define NX_CLOUD_ID                                     ((ULONG)0x434C4F44)
+#define NX_CLOUD_ID                                     ((UINT32)0x434C4F44)
 
 
 /* API return values.  */
@@ -93,14 +93,14 @@ typedef struct NX_CLOUD_MODULE_STRUCT
 
     /* Define the module registered events including common events and module event
        that are processed in cloud helper thread.  */
-    ULONG                           nx_cloud_module_registered_events;
+    UINT32                           nx_cloud_module_registered_events;
 
     /* Define the actual current event flags in this module that are processed
        in module processing routine.  */
-    ULONG                           nx_cloud_module_own_events;
+    UINT32                           nx_cloud_module_own_events;
 
     /* Define the module processing routine.  */
-    VOID                          (*nx_cloud_module_process)(VOID *module_context, ULONG common_events, ULONG module_own_events);
+    VOID                          (*nx_cloud_module_process)(VOID *module_context, UINT32 common_events, UINT32 module_own_events);
 
     /* Define the context that is passed to module processing routine.  */
     VOID                           *nx_cloud_module_context;
@@ -117,7 +117,7 @@ typedef struct NX_CLOUD_STRUCT
 {
 
     /* Define the cloud ID.  */
-    ULONG                           nx_cloud_id;
+    UINT32                           nx_cloud_id;
 
     /* Define the cloud name.  */
     const CHAR                     *nx_cloud_name;
@@ -139,7 +139,7 @@ typedef struct NX_CLOUD_STRUCT
     NX_CLOUD_MODULE                *nx_cloud_modules_list_header;
 
     /* Define the number of created module instances.  */
-    ULONG                           nx_cloud_modules_count;
+    UINT32                           nx_cloud_modules_count;
 
 } NX_CLOUD;
 
@@ -180,34 +180,34 @@ typedef struct NX_CLOUD_STRUCT
 /* Define the prototypes accessible to the application software.  */
 
 /* Create/delete cloud helper thread.  */
-UINT nx_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, ULONG memory_size, UINT priority);
+UINT nx_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, UINT32 memory_size, UINT priority);
 UINT nx_cloud_delete(NX_CLOUD* cloud_ptr);
 
 /* Register/deregister module in cloud thread.  */
-UINT nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, ULONG module_event,
-                              VOID (*module_process)(VOID* module_context, ULONG common_events, ULONG module_own_events), VOID* module_context);
+UINT nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, UINT32 module_event,
+                              VOID (*module_process)(VOID* module_context, UINT32 common_events, UINT32 module_own_events), VOID* module_context);
 UINT nx_cloud_module_deregister(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr);
-UINT nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
-UINT nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
+UINT nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
+UINT nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
 
 #else
 
 /* Cloud source code is being compiled, do not perform any API mapping.  */
 
-UINT _nxe_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, ULONG memory_size, UINT priority);
-UINT _nx_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, ULONG memory_size, UINT priority);
+UINT _nxe_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, UINT32 memory_size, UINT priority);
+UINT _nx_cloud_create(NX_CLOUD* cloud_ptr, const CHAR* cloud_name, VOID* memory_ptr, UINT32 memory_size, UINT priority);
 UINT _nxe_cloud_delete(NX_CLOUD* cloud_ptr);
 UINT _nx_cloud_delete(NX_CLOUD* cloud_ptr);
-UINT _nxe_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, ULONG module_event,
-                                VOID(*module_process)(VOID* module_context, ULONG common_events, ULONG module_own_events), VOID* module_context);
-UINT _nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, ULONG module_event,
-                               VOID(*module_process)(VOID* module_context, ULONG common_events, ULONG module_own_events), VOID* module_context);
+UINT _nxe_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, UINT32 module_event,
+                                VOID(*module_process)(VOID* module_context, UINT32 common_events, UINT32 module_own_events), VOID* module_context);
+UINT _nx_cloud_module_register(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr, const CHAR* module_name, UINT32 module_event,
+                               VOID(*module_process)(VOID* module_context, UINT32 common_events, UINT32 module_own_events), VOID* module_context);
 UINT _nxe_cloud_module_deregister(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr);
 UINT _nx_cloud_module_deregister(NX_CLOUD* cloud_ptr, NX_CLOUD_MODULE* module_ptr);
-UINT _nxe_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
-UINT _nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
-UINT _nxe_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
-UINT _nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, ULONG module_own_event);
+UINT _nxe_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
+UINT _nx_cloud_module_event_set(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
+UINT _nxe_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
+UINT _nx_cloud_module_event_clear(NX_CLOUD_MODULE *cloud_module, UINT32 module_own_event);
 
 #endif
 

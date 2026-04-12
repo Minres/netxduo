@@ -133,7 +133,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_web_http_client_create(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size, UINT http_client_size)
+UINT  _nxe_web_http_client_create(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size, UINT http_client_size)
 {
 
 NX_PACKET   *packet_ptr;
@@ -199,7 +199,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_web_http_client_create(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, ULONG window_size)
+UINT  _nx_web_http_client_create(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr, UINT32 window_size)
 {
 
 UINT        status;
@@ -417,7 +417,7 @@ UINT  _nx_web_http_client_delete(NX_WEB_HTTP_CLIENT *client_ptr)
 /*                                                                        */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_content_type_header_add(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *resource, ULONG wait_option)
+UINT _nx_web_http_client_content_type_header_add(NX_WEB_HTTP_CLIENT *client_ptr, CHAR *resource, UINT32 wait_option)
 {
 UINT        j;
 CHAR        string1[20];
@@ -469,7 +469,7 @@ CHAR        string1[20];
 /*                                                                        */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_content_length_header_add(NX_WEB_HTTP_CLIENT *client_ptr, ULONG total_bytes, ULONG wait_option)
+UINT _nx_web_http_client_content_length_header_add(NX_WEB_HTTP_CLIENT *client_ptr, UINT32 total_bytes, UINT32 wait_option)
 {
 UINT        j;
 CHAR        string1[20];
@@ -523,7 +523,7 @@ CHAR        string1[20];
 /**************************************************************************/
 UINT  _nxe_web_http_client_get_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, 
                                      CHAR *resource, CHAR *host, CHAR *username, CHAR *password, 
-                                     ULONG wait_option)
+                                     UINT32 wait_option)
 {
 
 UINT    status; 
@@ -590,7 +590,7 @@ UINT    status;
 /**************************************************************************/
 UINT  _nx_web_http_client_get_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                     CHAR *resource, CHAR *host,
-                                    CHAR *username, CHAR *password, ULONG wait_option)
+                                    CHAR *username, CHAR *password, UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -670,7 +670,7 @@ UINT  _nxe_web_http_client_get_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NX
                                               UINT server_port, CHAR *resource, UINT resource_length,
                                               CHAR *host, UINT host_length, CHAR *username,
                                               UINT username_length, CHAR *password,
-                                              UINT password_length, ULONG wait_option)
+                                              UINT password_length, UINT32 wait_option)
 {
 
 UINT    status; 
@@ -750,7 +750,7 @@ UINT  _nx_web_http_client_get_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD
                                              UINT server_port, CHAR *resource, UINT resource_length,
                                              CHAR *host, UINT host_length, CHAR *username,
                                              UINT username_length, CHAR *password,
-                                             UINT password_length, ULONG wait_option)
+                                             UINT password_length, UINT32 wait_option)
 {
 
 UINT        status;
@@ -845,7 +845,7 @@ UINT        status;
 UINT  _nxe_web_http_client_get_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                             CHAR *host, CHAR *username, CHAR *password,
                                             UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                            ULONG wait_option)
+                                            UINT32 wait_option)
 {
 UINT status;
 
@@ -914,7 +914,7 @@ UINT status;
 UINT  _nx_web_http_client_get_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                            CHAR *host, CHAR *username, CHAR *password,
                                            UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                           ULONG wait_option)
+                                           UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -996,7 +996,7 @@ UINT _nxe_web_http_client_get_secure_start_extended(NX_WEB_HTTP_CLIENT *client_p
                                                     CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                     CHAR *username, UINT username_length, CHAR *password, UINT password_length,
                                                     UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                    ULONG wait_option)
+                                                    UINT32 wait_option)
 {
 UINT status;
 
@@ -1078,7 +1078,7 @@ UINT _nx_web_http_client_get_secure_start_extended(NX_WEB_HTTP_CLIENT *client_pt
                                                    CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                    CHAR *username, UINT username_length, CHAR *password, UINT password_length,
                                                    UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                   ULONG wait_option)
+                                                   UINT32 wait_option)
 {
 
 UINT        status;
@@ -1172,7 +1172,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_web_http_client_get_server_response(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_web_http_client_get_server_response(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 NX_PACKET   *head_packet_ptr;
@@ -1284,7 +1284,7 @@ NX_PACKET   *tmp_ptr;
 
                 /* Copy the contents of the current packet into the head packet.  */
                 status =  nx_packet_data_append(head_packet_ptr, (VOID *) tmp_ptr -> nx_packet_prepend_ptr,
-                                                (ULONG)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
+                                                (UINT32)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
                                                 client_ptr -> nx_web_http_client_packet_pool_ptr, wait_option);
 
                 /* Determine if an error occurred.  */
@@ -1352,7 +1352,7 @@ NX_PACKET   *tmp_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_web_http_client_response_body_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nxe_web_http_client_response_body_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT    status;
@@ -1418,7 +1418,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_web_http_client_response_body_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_pptr, ULONG wait_option)
+UINT  _nx_web_http_client_response_body_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_pptr, UINT32 wait_option)
 {
 
 UINT        status = NX_SUCCESS;
@@ -1706,7 +1706,7 @@ UINT        status_code = NX_SUCCESS;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_response_read(NX_WEB_HTTP_CLIENT *client_ptr, UCHAR *data, ULONG wait_option, 
+UINT _nx_web_http_client_response_read(NX_WEB_HTTP_CLIENT *client_ptr, UCHAR *data, UINT32 wait_option, 
                                        NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr)
 {
 UINT status;
@@ -1807,7 +1807,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_response_byte_expect(NX_WEB_HTTP_CLIENT *client_ptr, UCHAR data, ULONG wait_option, 
+UINT _nx_web_http_client_response_byte_expect(NX_WEB_HTTP_CLIENT *client_ptr, UCHAR data, UINT32 wait_option, 
                                               NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr)
 {
 UINT status;
@@ -1872,7 +1872,7 @@ UCHAR tmp;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_chunked_size_get(NX_WEB_HTTP_CLIENT *client_ptr, UINT *chunk_size, ULONG wait_option, 
+UINT _nx_web_http_client_chunked_size_get(NX_WEB_HTTP_CLIENT *client_ptr, UINT *chunk_size, UINT32 wait_option, 
                                           NX_PACKET **current_packet_pptr, UCHAR **current_data_pptr)
 {
 UINT status;
@@ -2009,7 +2009,7 @@ UINT  chunk_extension = 0;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_response_chunked_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_pptr, ULONG wait_option)
+UINT _nx_web_http_client_response_chunked_get(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_pptr, UINT32 wait_option)
 {
 UINT       status;
 UINT       chunk_size = 0, length = 0, temp_size = 0;
@@ -2397,7 +2397,7 @@ CHAR        crlf[2] = {13,10};
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_web_http_client_request_packet_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT more_data, ULONG wait_option)
+UINT _nxe_web_http_client_request_packet_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT more_data, UINT32 wait_option)
 {
 UINT        status;
 
@@ -2451,7 +2451,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_request_packet_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT more_data, ULONG wait_option)
+UINT _nx_web_http_client_request_packet_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT more_data, UINT32 wait_option)
 {
 UINT        status;
 CHAR        crlf[2] = {13,10};
@@ -2545,7 +2545,7 @@ UINT        length = packet_ptr -> nx_packet_length;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_web_http_client_put_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                     CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option)
+                                     CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option)
 {
 
 UINT    status; 
@@ -2618,7 +2618,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_web_http_client_put_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                    CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option)
+                                    CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -2698,8 +2698,8 @@ UINT  _nxe_web_http_client_put_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NX
                                               UINT server_port, CHAR *resource, UINT resource_length,
                                               CHAR *host, UINT host_length, CHAR *username,
                                               UINT username_length, CHAR *password,
-                                              UINT password_length, ULONG total_bytes,
-                                              ULONG wait_option)
+                                              UINT password_length, UINT32 total_bytes,
+                                              UINT32 wait_option)
 {
 
 UINT    status; 
@@ -2789,8 +2789,8 @@ UINT  _nx_web_http_client_put_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD
                                              UINT server_port, CHAR *resource, UINT resource_length,
                                              CHAR *host, UINT host_length, CHAR *username,
                                              UINT username_length, CHAR *password,
-                                             UINT password_length, ULONG total_bytes,
-                                             ULONG wait_option)
+                                             UINT password_length, UINT32 total_bytes,
+                                             UINT32 wait_option)
 {
 UINT        status;
 
@@ -2903,9 +2903,9 @@ UINT        status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_web_http_client_put_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                            CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes,
+                                            CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes,
                                             UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                            ULONG wait_option)
+                                            UINT32 wait_option)
 {
 UINT status;
 
@@ -2975,9 +2975,9 @@ UINT status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_web_http_client_put_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                           CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes,
+                                           CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes,
                                            UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                           ULONG wait_option)
+                                           UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -3060,9 +3060,9 @@ UINT temp_password_length = 0;
 UINT _nxe_web_http_client_put_secure_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                                     CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                     CHAR *username, UINT username_length, CHAR *password,
-                                                    UINT password_length, ULONG total_bytes,
+                                                    UINT password_length, UINT32 total_bytes,
                                                     UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                    ULONG wait_option)
+                                                    UINT32 wait_option)
 {
 UINT status;
 
@@ -3148,9 +3148,9 @@ UINT status;
 UINT _nx_web_http_client_put_secure_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                                    CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                    CHAR *username, UINT username_length, CHAR *password,
-                                                   UINT password_length, ULONG total_bytes,
+                                                   UINT password_length, UINT32 total_bytes,
                                                    UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                   ULONG wait_option)
+                                                   UINT32 wait_option)
 {
 UINT        status;
 
@@ -3263,7 +3263,7 @@ UINT        status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_web_http_client_post_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                      CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option)
+                                      CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option)
 {
 
 UINT    status;
@@ -3336,7 +3336,7 @@ UINT    status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_web_http_client_post_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                     CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes, ULONG wait_option)
+                                     CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes, UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -3417,8 +3417,8 @@ UINT  _nxe_web_http_client_post_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, N
                                                UINT server_port, CHAR *resource, UINT resource_length,
                                                CHAR *host, UINT host_length, CHAR *username,
                                                UINT username_length, CHAR *password,
-                                               UINT password_length, ULONG total_bytes,
-                                               ULONG wait_option)
+                                               UINT password_length, UINT32 total_bytes,
+                                               UINT32 wait_option)
 {
 
 UINT    status;
@@ -3508,8 +3508,8 @@ UINT  _nx_web_http_client_post_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NX
                                               UINT server_port, CHAR *resource, UINT resource_length,
                                               CHAR *host, UINT host_length, CHAR *username,
                                               UINT username_length, CHAR *password,
-                                              UINT password_length, ULONG total_bytes,
-                                              ULONG wait_option)
+                                              UINT password_length, UINT32 total_bytes,
+                                              UINT32 wait_option)
 {
 UINT        status;
 
@@ -3624,9 +3624,9 @@ UINT        status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_web_http_client_post_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                             CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes,
+                                             CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes,
                                              UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                             ULONG wait_option)
+                                             UINT32 wait_option)
 {
 UINT status;
 
@@ -3696,9 +3696,9 @@ UINT status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_web_http_client_post_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                            CHAR *host, CHAR *username, CHAR *password, ULONG total_bytes,
+                                            CHAR *host, CHAR *username, CHAR *password, UINT32 total_bytes,
                                             UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                            ULONG wait_option)
+                                            UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -3781,9 +3781,9 @@ UINT temp_password_length = 0;
 UINT _nxe_web_http_client_post_secure_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                                      CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                      CHAR *username, UINT username_length, CHAR *password,
-                                                     UINT password_length, ULONG total_bytes,
+                                                     UINT password_length, UINT32 total_bytes,
                                                      UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                     ULONG wait_option)
+                                                     UINT32 wait_option)
 {
 UINT status;
 
@@ -3868,9 +3868,9 @@ UINT status;
 UINT _nx_web_http_client_post_secure_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                                     CHAR *resource, UINT resource_length, CHAR *host, UINT host_length,
                                                     CHAR *username, UINT username_length, CHAR *password,
-                                                    UINT password_length, ULONG total_bytes,
+                                                    UINT password_length, UINT32 total_bytes,
                                                     UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                    ULONG wait_option)
+                                                    UINT32 wait_option)
 {
 UINT        status;
 
@@ -3981,7 +3981,7 @@ UINT        status;
 /**************************************************************************/
 UINT  _nxe_web_http_client_head_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                       CHAR *resource, CHAR *host, CHAR *username, CHAR *password,
-                                      ULONG wait_option)
+                                      UINT32 wait_option)
 {
 
 UINT    status;
@@ -4047,7 +4047,7 @@ UINT    status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_web_http_client_head_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                     CHAR *host, CHAR *username, CHAR *password, ULONG wait_option)
+                                     CHAR *host, CHAR *username, CHAR *password, UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -4127,7 +4127,7 @@ UINT  _nxe_web_http_client_head_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, N
                                                UINT server_port, CHAR *resource, UINT resource_length,
                                                CHAR *host, UINT host_length, CHAR *username,
                                                UINT username_length, CHAR *password,
-                                               UINT password_length, ULONG wait_option)
+                                               UINT password_length, UINT32 wait_option)
 {
 
 UINT    status;
@@ -4210,7 +4210,7 @@ UINT  _nx_web_http_client_head_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, NX
                                               UINT server_port, CHAR *resource, UINT resource_length,
                                               CHAR *host, UINT host_length, CHAR *username,
                                               UINT username_length, CHAR *password,
-                                              UINT password_length, ULONG wait_option)
+                                              UINT password_length, UINT32 wait_option)
 {
 UINT        status;
 
@@ -4306,7 +4306,7 @@ UINT        status;
 UINT  _nxe_web_http_client_head_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                              CHAR *host, CHAR *username, CHAR *password,
                                              UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                             ULONG wait_option)
+                                             UINT32 wait_option)
 {
 UINT status;
 
@@ -4376,7 +4376,7 @@ UINT status;
 UINT  _nx_web_http_client_head_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                             CHAR *host, CHAR *username, CHAR *password,
                                             UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                            ULONG wait_option)
+                                            UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -4460,7 +4460,7 @@ UINT _nxe_web_http_client_head_secure_start_extended(NX_WEB_HTTP_CLIENT *client_
                                                      CHAR *username, UINT username_length, CHAR *password,
                                                      UINT password_length,
                                                      UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                     ULONG wait_option)
+                                                     UINT32 wait_option)
 {
 UINT status;
 
@@ -4543,7 +4543,7 @@ UINT _nx_web_http_client_head_secure_start_extended(NX_WEB_HTTP_CLIENT *client_p
                                                     CHAR *username, UINT username_length, CHAR *password,
                                                     UINT password_length,
                                                     UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                    ULONG wait_option)
+                                                    UINT32 wait_option)
 {
 
 UINT        status;
@@ -4640,7 +4640,7 @@ UINT        status;
 /**************************************************************************/
 UINT  _nxe_web_http_client_delete_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                         CHAR *resource, CHAR *host, CHAR *username, CHAR *password,
-                                        ULONG wait_option)
+                                        UINT32 wait_option)
 {
 
 UINT    status;
@@ -4706,7 +4706,7 @@ UINT    status;
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_web_http_client_delete_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
-                                       CHAR *host, CHAR *username, CHAR *password, ULONG wait_option)
+                                       CHAR *host, CHAR *username, CHAR *password, UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -4786,7 +4786,7 @@ UINT  _nxe_web_http_client_delete_start_extended(NX_WEB_HTTP_CLIENT *client_ptr,
                                                  UINT server_port, CHAR *resource, UINT resource_length,
                                                  CHAR *host, UINT host_length, CHAR *username,
                                                  UINT username_length, CHAR *password,
-                                                 UINT password_length, ULONG wait_option)
+                                                 UINT password_length, UINT32 wait_option)
 {
 
 UINT    status;
@@ -4870,7 +4870,7 @@ UINT  _nx_web_http_client_delete_start_extended(NX_WEB_HTTP_CLIENT *client_ptr, 
                                                 UINT server_port, CHAR *resource, UINT resource_length,
                                                 CHAR *host, UINT host_length, CHAR *username,
                                                 UINT username_length, CHAR *password,
-                                                UINT password_length, ULONG wait_option)
+                                                UINT password_length, UINT32 wait_option)
 {
 
 UINT        status;
@@ -4967,7 +4967,7 @@ UINT        status;
 UINT  _nxe_web_http_client_delete_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                                CHAR *host, CHAR *username, CHAR *password,
                                                UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                               ULONG wait_option)
+                                               UINT32 wait_option)
 {
 UINT status;
 
@@ -5037,7 +5037,7 @@ UINT status;
 UINT  _nx_web_http_client_delete_secure_start(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, CHAR *resource,
                                               CHAR *host, CHAR *username, CHAR *password,
                                               UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                              ULONG wait_option)
+                                              UINT32 wait_option)
 {
 UINT temp_resource_length;
 UINT temp_host_length;
@@ -5121,7 +5121,7 @@ UINT _nxe_web_http_client_delete_secure_start_extended(NX_WEB_HTTP_CLIENT *clien
                                                        CHAR *username, UINT username_length, CHAR *password,
                                                        UINT password_length,
                                                        UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                       ULONG wait_option)
+                                                       UINT32 wait_option)
 {
 UINT status;
 
@@ -5204,7 +5204,7 @@ UINT _nx_web_http_client_delete_secure_start_extended(NX_WEB_HTTP_CLIENT *client
                                                       CHAR *username, UINT username_length, CHAR *password,
                                                       UINT password_length,
                                                       UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                                      ULONG wait_option)
+                                                      UINT32 wait_option)
 {
 
 UINT        status;
@@ -5296,7 +5296,7 @@ UINT        status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_web_http_client_put_packet(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nxe_web_http_client_put_packet(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT         status;
@@ -5388,7 +5388,7 @@ UINT         header_size;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_web_http_client_put_packet(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_web_http_client_put_packet(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 NX_PACKET   *response_packet_ptr;
@@ -5814,7 +5814,7 @@ UINT    found = NX_FALSE;
 /*    _nx_web_http_client_process_header_fields                           */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_web_http_client_memicmp(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length)
+UINT  _nx_web_http_client_memicmp(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length)
 {
 UCHAR   ch;
 
@@ -6163,7 +6163,7 @@ UINT    size;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_web_http_client_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, ULONG wait_option)
+UINT  _nxe_web_http_client_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, UINT32 wait_option)
 
 {
 UINT status;
@@ -6226,7 +6226,7 @@ UINT status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_web_http_client_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, ULONG wait_option)
+UINT  _nx_web_http_client_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port, UINT32 wait_option)
 
 {
 
@@ -6342,7 +6342,7 @@ UINT        status;
 /**************************************************************************/
 UINT  _nxe_web_http_client_secure_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                          UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                         ULONG wait_option)
+                                         UINT32 wait_option)
 {
 UINT        status;
 
@@ -6403,7 +6403,7 @@ UINT        status;
 /**************************************************************************/
 UINT  _nx_web_http_client_secure_connect(NX_WEB_HTTP_CLIENT *client_ptr, NXD_ADDRESS *server_ip, UINT server_port,
                                          UINT (*tls_setup)(NX_WEB_HTTP_CLIENT *client_ptr, NX_SECURE_TLS_SESSION *),
-                                         ULONG wait_option)
+                                         UINT32 wait_option)
 {
 UINT        status;
 
@@ -7229,7 +7229,7 @@ CHAR        crlf[2] = {13,10};
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_web_http_client_request_send(NX_WEB_HTTP_CLIENT *client_ptr, ULONG wait_option)
+UINT _nxe_web_http_client_request_send(NX_WEB_HTTP_CLIENT *client_ptr, UINT32 wait_option)
 {
 UINT        status;
 
@@ -7284,7 +7284,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_web_http_client_request_send(NX_WEB_HTTP_CLIENT *client_ptr, ULONG wait_option)
+UINT _nx_web_http_client_request_send(NX_WEB_HTTP_CLIENT *client_ptr, UINT32 wait_option)
 {
 UINT        status;
 NX_PACKET   *packet_ptr;
@@ -7632,7 +7632,7 @@ UINT _nx_web_http_client_response_header_callback_set(NX_WEB_HTTP_CLIENT *client
 /*    _nx_web_http_client_request_send                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_web_http_client_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_web_http_client_send(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 UINT        status;
@@ -7691,7 +7691,7 @@ UINT        status;
 /*                                                                        */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_web_http_client_receive(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_web_http_client_receive(NX_WEB_HTTP_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 
 UINT        status;

@@ -68,7 +68,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_udp_socket_source_send(NX_UDP_SOCKET *socket_ptr, NX_PACKET *packet_ptr,
-                                 ULONG ip_address, UINT port, UINT address_index)
+                                 UINT32 ip_address, UINT port, UINT address_index)
 {
 UINT   status;
 NX_IP *ip_ptr;

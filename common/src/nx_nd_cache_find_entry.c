@@ -72,7 +72,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_nd_cache_find_entry(NX_IP *ip_ptr,
-                             ULONG *dest_ip, ND_CACHE_ENTRY **nd_cache_entry)
+                             UINT32 *dest_ip, ND_CACHE_ENTRY **nd_cache_entry)
 {
 UINT i;
 UINT index;

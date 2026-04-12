@@ -100,8 +100,8 @@ extern   "C" {
 #define NX_SECURE_DTLS_MAX_COOKIE_LENGTH          255
 
 /* Event flag masks for DTLS retransmit thread. */
-#define NX_SECURE_DTLS_ALL_EVENTS                 ((ULONG)0xFFFFFFFF)   /* All event flags              */
-#define NX_SECURE_DTLS_PERIODIC_EVENT             ((ULONG)0x00000001)   /* Periodic event               */
+#define NX_SECURE_DTLS_ALL_EVENTS                 ((UINT32)0xFFFFFFFF)   /* All event flags              */
+#define NX_SECURE_DTLS_PERIODIC_EVENT             ((UINT32)0x00000001)   /* Periodic event               */
 
 /* Forward declaration for pointer in DTLS session structure. */
 struct NX_SECURE_DTLS_SERVER_STRUCT;
@@ -153,15 +153,15 @@ typedef struct NX_SECURE_DTLS_SESSION_STRUCT
     /* Define the DTLS sent queue. This queue is used to keep track of transmitted packets
        already sent. DTLS will keep packets in this queue until the response flight is
        received from the remote host, at which point the DTLS stack will release them.  */
-    ULONG      nx_secure_dtls_transmit_queue_maximum;
-    ULONG      nx_secure_dtls_transmit_sent_count;
+    UINT32      nx_secure_dtls_transmit_queue_maximum;
+    UINT32      nx_secure_dtls_transmit_sent_count;
     NX_PACKET *nx_secure_dtls_transmit_sent_head,
               *nx_secure_dtls_transmit_sent_tail;
 
     /* Create a timer that is used to control the retransmission of dropped datagrams
        during the DTLS handshake. */
-    ULONG nx_secure_dtls_handshake_timeout;
-    ULONG nx_secure_dtls_timeout_retries;
+    UINT32 nx_secure_dtls_handshake_timeout;
+    UINT32 nx_secure_dtls_timeout_retries;
 
     /* Pointer to parent DTLS server structure (for server sessions). */
     struct NX_SECURE_DTLS_SERVER_STRUCT *nx_secure_dtls_server_parent;
@@ -170,7 +170,7 @@ typedef struct NX_SECURE_DTLS_SESSION_STRUCT
     NX_PACKET *nx_secure_dtls_receive_queue_head;
 
     /* Bitfield used for sliding window checks. */
-    ULONG nx_secure_dtls_sliding_window;
+    UINT32 nx_secure_dtls_sliding_window;
 
     /* Pointer to the thread waiting for packet. */
     TX_THREAD *nx_secure_dtls_thread_suspended;
@@ -202,7 +202,7 @@ typedef struct NX_SECURE_DTLS_SERVER_STRUCT
     UINT                    nx_dtls_server_listen_port;
 
     /* Timeout value for the server. */
-    ULONG                   nx_dtls_server_timeout;
+    UINT32                   nx_dtls_server_timeout;
 
     /* Notification callbacks for DTLS connections. */
     UINT (*nx_secure_dtls_connect_notify)(struct NX_SECURE_DTLS_SESSION_STRUCT *dtls_session, NXD_ADDRESS *ip_address, UINT port);
@@ -215,7 +215,7 @@ typedef struct NX_SECURE_DTLS_SERVER_STRUCT
     UCHAR                   nx_dtls_server_reserved_field[2];
 
     /* Reserved for possible future use. */
-    ULONG                   nx_dtls_server_reserved;
+    UINT32                   nx_dtls_server_reserved;
 
     /* Define the link between other DTLS server structures created by the application.  */
     struct NX_SECURE_DTLS_SERVER_STRUCT
@@ -229,10 +229,10 @@ typedef struct NX_SECURE_DTLS_SERVER_STRUCT
 
 /* Define API functions. */
 VOID _nx_secure_dtls_initialize(VOID);
-UINT _nx_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, ULONG timeout,
+UINT _nx_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, UINT32 timeout,
                                    VOID *session_buffer, UINT session_buffer_size,
                                    const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                   VOID *crypto_metadata_buffer, ULONG crypto_metadata_size,
+                                   VOID *crypto_metadata_buffer, UINT32 crypto_metadata_size,
                                    UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                    UINT (*connect_notify)(NX_SECURE_DTLS_SESSION *dtls_session, NXD_ADDRESS *ip_address, UINT port),
                                    UINT (*receive_notify)(NX_SECURE_DTLS_SESSION *dtls_session));
@@ -245,15 +245,15 @@ UINT _nx_secure_dtls_server_start(NX_SECURE_DTLS_SERVER *server_ptr);
 
 UINT _nx_secure_dtls_session_create(NX_SECURE_DTLS_SESSION *session_ptr,
                                     const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                    VOID *metadata_buffer, ULONG metadata_size,
+                                    VOID *metadata_buffer, UINT32 metadata_size,
                                     UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                     UINT certs_number,
-                                    UCHAR *remote_certificate_buffer, ULONG remote_certificate_buffer_size);
+                                    UCHAR *remote_certificate_buffer, UINT32 remote_certificate_buffer_size);
 
 UINT _nx_secure_dtls_session_delete(NX_SECURE_DTLS_SESSION *dtls_session);
 UINT _nx_secure_dtls_session_end(NX_SECURE_DTLS_SESSION *dtls_session, UINT wait_option);
 UINT _nx_secure_dtls_session_receive(NX_SECURE_DTLS_SESSION *dtls_session,
-                                     NX_PACKET **packet_ptr_ptr, ULONG wait_option);
+                                     NX_PACKET **packet_ptr_ptr, UINT32 wait_option);
 UINT _nx_secure_dtls_session_reset(NX_SECURE_DTLS_SESSION *session_ptr);
 UINT _nx_secure_dtls_session_send(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
                                   NXD_ADDRESS *ip_address, UINT port);
@@ -261,7 +261,7 @@ UINT _nx_secure_dtls_server_session_send(NX_SECURE_DTLS_SESSION *dtls_session, N
 UINT _nx_secure_dtls_session_start(NX_SECURE_DTLS_SESSION *dtls_session, NX_UDP_SOCKET *udp_socket,
                                    UINT is_client, UINT wait_option);
 UINT _nx_secure_dtls_packet_allocate(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET_POOL *pool_ptr,
-                                     NX_PACKET **packet_ptr, ULONG wait_option);
+                                     NX_PACKET **packet_ptr, UINT32 wait_option);
 
 UINT _nx_secure_dtls_client_session_start(NX_SECURE_DTLS_SESSION *dtls_session, NX_UDP_SOCKET *udp_socket, NXD_ADDRESS *ip_address, UINT port, UINT wait_option);
 UINT _nx_secure_dtls_server_session_start(NX_SECURE_DTLS_SESSION *dtls_session, UINT wait_option);
@@ -290,7 +290,7 @@ UINT _nx_secure_dtls_server_psk_add(NX_SECURE_DTLS_SERVER *server_ptr, UCHAR *pr
                                     UINT hint_length);
 
 UINT _nx_secure_dtls_server_x509_client_verify_configure(NX_SECURE_DTLS_SERVER *server_ptr, UINT certs_per_session,
-                                                          UCHAR *certs_buffer, ULONG buffer_size);
+                                                          UCHAR *certs_buffer, UINT32 buffer_size);
 
 UINT _nx_secure_dtls_server_x509_client_verify_disable(NX_SECURE_DTLS_SERVER *server_ptr);
 
@@ -323,16 +323,16 @@ UINT _nx_secure_dtls_server_ecc_initialize(NX_SECURE_DTLS_SERVER *server_ptr,
 /* Error-checking shell API. */
 UINT _nxe_secure_dtls_session_create(NX_SECURE_DTLS_SESSION *session_ptr,
                                      const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                     VOID *metadata_buffer, ULONG metadata_size,
+                                     VOID *metadata_buffer, UINT32 metadata_size,
                                      UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                      UINT certs_number,
-                                     UCHAR *remote_certificate_buffer, ULONG remote_certificate_buffer_size);
+                                     UCHAR *remote_certificate_buffer, UINT32 remote_certificate_buffer_size);
 
 
 UINT _nxe_secure_dtls_session_delete(NX_SECURE_DTLS_SESSION *dtls_session);
 UINT _nxe_secure_dtls_session_end(NX_SECURE_DTLS_SESSION *dtls_session, UINT wait_option);
 UINT _nxe_secure_dtls_session_receive(NX_SECURE_DTLS_SESSION *dtls_session,
-                                      NX_PACKET **packet_ptr_ptr, ULONG wait_option);
+                                      NX_PACKET **packet_ptr_ptr, UINT32 wait_option);
 UINT _nxe_secure_dtls_session_reset(NX_SECURE_DTLS_SESSION *session_ptr);
 UINT _nxe_secure_dtls_session_send(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
                                    NXD_ADDRESS *ip_address, UINT port);
@@ -343,10 +343,10 @@ UINT _nxe_secure_dtls_session_start(NX_SECURE_DTLS_SESSION *dtls_session, NX_UDP
 UINT _nxe_secure_dtls_client_session_start(NX_SECURE_DTLS_SESSION *dtls_session, NX_UDP_SOCKET *udp_socket, NXD_ADDRESS *ip_address, UINT port, UINT wait_option);
 UINT _nxe_secure_dtls_server_session_start(NX_SECURE_DTLS_SESSION *dtls_session, UINT wait_option);
 
-UINT _nxe_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, ULONG timeout,
+UINT _nxe_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, UINT32 timeout,
                                     VOID *session_buffer, UINT session_buffer_size,
                                     const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                    VOID *crypto_metadata_buffer, ULONG crypto_metadata_size,
+                                    VOID *crypto_metadata_buffer, UINT32 crypto_metadata_size,
                                     UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                     UINT (*connect_notify)(NX_SECURE_DTLS_SESSION *dtls_session, NXD_ADDRESS *ip_address, UINT port),
                                     UINT (*receive_notify)(NX_SECURE_DTLS_SESSION *dtls_session));
@@ -382,7 +382,7 @@ UINT _nxe_secure_dtls_server_psk_add(NX_SECURE_DTLS_SERVER *server_ptr, UCHAR *p
 
 
 UINT _nxe_secure_dtls_server_x509_client_verify_configure(NX_SECURE_DTLS_SERVER *server_ptr, UINT certs_per_session,
-                                                          UCHAR *certs_buffer, ULONG buffer_size);
+                                                          UCHAR *certs_buffer, UINT32 buffer_size);
 
 UINT _nxe_secure_dtls_server_x509_client_verify_disable(NX_SECURE_DTLS_SERVER *server_ptr);
 
@@ -390,7 +390,7 @@ UINT _nxe_secure_dtls_session_client_info_get(NX_SECURE_DTLS_SESSION *dtls_sessi
                                               NXD_ADDRESS *client_ip_address, UINT *client_port, UINT *local_port);
 
 UINT _nxe_secure_dtls_packet_allocate(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET_POOL *pool_ptr,
-                                      NX_PACKET **packet_ptr, ULONG wait_option);
+                                      NX_PACKET **packet_ptr, UINT32 wait_option);
 
 UINT _nxe_secure_dtls_session_local_certificate_add(NX_SECURE_DTLS_SESSION *dtls_session,
                                                    NX_SECURE_X509_CERT *certificate, UINT cert_id);
@@ -424,15 +424,15 @@ VOID _nx_secure_dtls_receive_callback(NX_UDP_SOCKET *socket_ptr);
 
 UINT _nx_secure_dtls_allocate_handshake_packet(NX_SECURE_DTLS_SESSION *dtls_session,
                                                NX_PACKET_POOL *packet_pool, NX_PACKET **packet_ptr,
-                                               ULONG wait_option);
+                                               UINT32 wait_option);
 
 UINT _nx_secure_dtls_hash_record(NX_SECURE_DTLS_SESSION *dtls_session,
-                                 ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                 UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                  UCHAR *header, UINT header_length, UCHAR *data, UINT length,
                                  UCHAR *record_hash, UINT *hash_length, UCHAR *mac_secret);
 
 UINT _nx_secure_dtls_client_handshake(NX_SECURE_DTLS_SESSION *dtls_session, UCHAR *packet_buffer,
-                                      UINT data_length, ULONG wait_option);
+                                      UINT data_length, UINT32 wait_option);
 
 
 UINT _nx_secure_dtls_process_handshake_header(UCHAR *packet_buffer, USHORT *message_type,
@@ -442,14 +442,14 @@ UINT _nx_secure_dtls_process_handshake_header(UCHAR *packet_buffer, USHORT *mess
 
 
 UINT _nx_secure_dtls_process_header(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
-                                    ULONG record_offset, USHORT *message_type, UINT *length,
+                                    UINT32 record_offset, USHORT *message_type, UINT *length,
                                     UCHAR *header_data, USHORT *header_length);
 
-UINT _nx_secure_dtls_session_sliding_window_check(NX_SECURE_DTLS_SESSION *dtls_session, ULONG *sequence_number);
-UINT _nx_secure_dtls_session_sliding_window_update(NX_SECURE_DTLS_SESSION *dtls_session, ULONG *sequence_number);
+UINT _nx_secure_dtls_session_sliding_window_check(NX_SECURE_DTLS_SESSION *dtls_session, UINT32 *sequence_number);
+UINT _nx_secure_dtls_session_sliding_window_update(NX_SECURE_DTLS_SESSION *dtls_session, UINT32 *sequence_number);
 
 UINT _nx_secure_dtls_process_record(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *packet_ptr,
-                                    ULONG record_offset, ULONG *bytes_processed, ULONG wait_option);
+                                    UINT32 record_offset, UINT32 *bytes_processed, UINT32 wait_option);
 
 
 UINT _nx_secure_dtls_verify_mac(NX_SECURE_DTLS_SESSION *dtls_session, UCHAR *header_data,
@@ -457,14 +457,14 @@ UINT _nx_secure_dtls_verify_mac(NX_SECURE_DTLS_SESSION *dtls_session, UCHAR *hea
 
 UINT _nx_secure_dtls_send_handshake_record(NX_SECURE_DTLS_SESSION *dtls_session,
                                            NX_PACKET *send_packet, UCHAR handshake_type,
-                                           ULONG wait_option, UINT include_in_finished);
+                                           UINT32 wait_option, UINT include_in_finished);
 
 
 UINT _nx_secure_dtls_send_record(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *send_packet,
-                                 UCHAR record_type, ULONG wait_option);
+                                 UCHAR record_type, UINT32 wait_option);
 
 UINT _nx_secure_dtls_server_handshake(NX_SECURE_DTLS_SESSION *dtls_session, UCHAR *packet_buffer,
-                                      UINT data_length, ULONG wait_option);
+                                      UINT data_length, UINT32 wait_option);
 
 
 UINT _nx_secure_dtls_send_clienthello(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *send_packet);
@@ -500,9 +500,9 @@ UINT  nx_secure_dtls_session_cache_find(NX_SECURE_DTLS_SERVER *dtls_server, NX_S
 
 /* Define the head pointer of the created DTLS session and DTLS server list.  */
 DTLS_DECLARE  NX_SECURE_DTLS_SESSION *_nx_secure_dtls_created_ptr;
-DTLS_DECLARE  ULONG    _nx_secure_dtls_created_count;
+DTLS_DECLARE  UINT32    _nx_secure_dtls_created_count;
 DTLS_DECLARE  NX_SECURE_DTLS_SERVER *_nx_secure_dtls_server_created_ptr;
-DTLS_DECLARE  ULONG    _nx_secure_dtls_server_created_count;
+DTLS_DECLARE  UINT32    _nx_secure_dtls_server_created_count;
 
 #ifdef __cplusplus
 }

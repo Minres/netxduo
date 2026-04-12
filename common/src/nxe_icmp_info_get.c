@@ -81,9 +81,9 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_icmp_info_get(NX_IP *ip_ptr, ULONG *pings_sent, ULONG *ping_timeouts,
-                         ULONG *ping_threads_suspended, ULONG *ping_responses_received,
-                         ULONG *icmp_checksum_errors, ULONG *icmp_unhandled_messages)
+UINT  _nxe_icmp_info_get(NX_IP *ip_ptr, UINT32 *pings_sent, UINT32 *ping_timeouts,
+                         UINT32 *ping_threads_suspended, UINT32 *ping_responses_received,
+                         UINT32 *icmp_checksum_errors, UINT32 *icmp_unhandled_messages)
 {
 
 UINT status;

@@ -71,9 +71,9 @@ static UCHAR _received_hash[NX_SECURE_TLS_MAX_HASH_SIZE];
 /*    _nx_secure_tls_verify_mac             Verify record MAC checksum    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_secure_verify_mac(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, UCHAR *mac_secret, ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
-                           UCHAR *header_data, USHORT header_length, NX_PACKET *packet_ptr, ULONG offset, UINT *length,
-                           VOID *hash_mac_metadata, ULONG hash_mac_metadata_size)
+UINT _nx_secure_verify_mac(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, UCHAR *mac_secret, UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                           UCHAR *header_data, USHORT header_length, NX_PACKET *packet_ptr, UINT32 offset, UINT *length,
+                           VOID *hash_mac_metadata, UINT32 hash_mac_metadata_size)
 {
 
 USHORT hash_size;
@@ -81,7 +81,7 @@ INT    compare_result;
 USHORT data_length;
 UINT   hash_length;
 UCHAR  header[6];
-ULONG  bytes_copied;
+UINT32  bytes_copied;
 
 
 

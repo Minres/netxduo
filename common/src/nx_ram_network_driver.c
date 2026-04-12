@@ -59,8 +59,8 @@
 /* For the simulated ethernet driver, physical addresses are allocated starting
    at the preset value and then incremented before the next allocation.  */
 
-ULONG   simulated_address_msw =  0x0011;
-ULONG   simulated_address_lsw =  0x22334456;
+UINT32   simulated_address_msw =  0x0011;
+UINT32   simulated_address_lsw =  0x22334456;
 
 
 /* Define driver prototypes.  */
@@ -73,8 +73,8 @@ void    _nx_ram_network_driver_receive(NX_IP *ip_ptr, NX_PACKET *packet_ptr, UIN
 #define NX_RAM_DRIVER_MAX_MCAST_ADDRESSES 3
 typedef struct MAC_ADDRESS_STRUCT
 {
-    ULONG nx_mac_address_msw;
-    ULONG nx_mac_address_lsw;
+    UINT32 nx_mac_address_msw;
+    UINT32 nx_mac_address_lsw;
 } MAC_ADDRESS;
 
 
@@ -150,7 +150,7 @@ NX_INTERFACE *interface_ptr;
 UINT          interface_index;
 USHORT        ether_type;
 #ifndef NX_ENABLE_VLAN
-ULONG        *ethernet_frame_ptr;
+UINT32        *ethernet_frame_ptr;
 #endif /* NX_ENABLE_VLAN */
 
     /* Setup the IP pointer from the driver request.  */
@@ -393,7 +393,7 @@ ULONG        *ethernet_frame_ptr;
         /* Setup the ethernet frame pointer to build the ethernet frame.  Backup another 2
            bytes to get 32-bit word alignment.  */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-        ethernet_frame_ptr =  (ULONG *)(packet_ptr -> nx_packet_prepend_ptr - 2);
+        ethernet_frame_ptr =  (UINT32 *)(packet_ptr -> nx_packet_prepend_ptr - 2);
 
         /* Build the ethernet frame.  */
         *ethernet_frame_ptr     =  driver_req_ptr -> nx_ip_driver_physical_address_msw;
@@ -403,10 +403,10 @@ ULONG        *ethernet_frame_ptr;
         *(ethernet_frame_ptr + 3) =  (interface_ptr -> nx_interface_physical_address_lsw << 16) | ether_type;
 
         /* Endian swapping if NX_LITTLE_ENDIAN is defined.  */
-        NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr));
-        NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr + 1));
-        NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr + 2));
-        NX_CHANGE_ULONG_ENDIAN(*(ethernet_frame_ptr + 3));
+        NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr));
+        NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr + 1));
+        NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr + 2));
+        NX_CHANGE_UINT32_ENDIAN(*(ethernet_frame_ptr + 3));
 #endif /* NX_ENABLE_VLAN */
 
 #ifdef NX_DEBUG_PACKET
@@ -688,8 +688,8 @@ void  _nx_ram_network_driver_output(NX_PACKET *packet_ptr, UINT interface_instan
 
 NX_IP     *next_ip;
 NX_PACKET *packet_copy;
-ULONG      destination_address_msw;
-ULONG      destination_address_lsw;
+UINT32      destination_address_msw;
+UINT32      destination_address_lsw;
 UINT       old_threshold = 0;
 UINT       i;
 UINT       mcast_index;
@@ -729,12 +729,12 @@ UINT   j;
 #endif
 
     /* Pickup the destination IP address from the packet_ptr.  */
-    destination_address_msw =  (ULONG)*(packet_ptr -> nx_packet_prepend_ptr);
-    destination_address_msw =  (destination_address_msw << 8) | (ULONG)*(packet_ptr -> nx_packet_prepend_ptr + 1);
-    destination_address_lsw =  (ULONG)*(packet_ptr -> nx_packet_prepend_ptr + 2);
-    destination_address_lsw =  (destination_address_lsw << 8) | (ULONG)*(packet_ptr -> nx_packet_prepend_ptr + 3);
-    destination_address_lsw =  (destination_address_lsw << 8) | (ULONG)*(packet_ptr -> nx_packet_prepend_ptr + 4);
-    destination_address_lsw =  (destination_address_lsw << 8) | (ULONG)*(packet_ptr -> nx_packet_prepend_ptr + 5);
+    destination_address_msw =  (UINT32)*(packet_ptr -> nx_packet_prepend_ptr);
+    destination_address_msw =  (destination_address_msw << 8) | (UINT32)*(packet_ptr -> nx_packet_prepend_ptr + 1);
+    destination_address_lsw =  (UINT32)*(packet_ptr -> nx_packet_prepend_ptr + 2);
+    destination_address_lsw =  (destination_address_lsw << 8) | (UINT32)*(packet_ptr -> nx_packet_prepend_ptr + 3);
+    destination_address_lsw =  (destination_address_lsw << 8) | (UINT32)*(packet_ptr -> nx_packet_prepend_ptr + 4);
+    destination_address_lsw =  (destination_address_lsw << 8) | (UINT32)*(packet_ptr -> nx_packet_prepend_ptr + 5);
 
 
     /* Disable preemption.  */
@@ -760,10 +760,10 @@ UINT   j;
 
         /* If the destination MAC address is broadcast or the destination matches the interface MAC,
            accept the packet. */
-        if (((destination_address_msw == ((ULONG)0x0000FFFF)) && (destination_address_lsw == ((ULONG)0xFFFFFFFF))) ||   /* Broadcast match */
+        if (((destination_address_msw == ((UINT32)0x0000FFFF)) && (destination_address_lsw == ((UINT32)0xFFFFFFFF))) ||   /* Broadcast match */
             ((destination_address_msw == nx_ram_driver[i].nx_ram_driver_mac_address.nx_mac_address_msw) &&
              (destination_address_lsw == nx_ram_driver[i].nx_ram_driver_mac_address.nx_mac_address_lsw)) ||
-            (destination_address_msw == ((ULONG)0x00003333)) ||
+            (destination_address_msw == ((UINT32)0x00003333)) ||
             ((destination_address_msw == 0) && (destination_address_lsw == 0)))
         {
 

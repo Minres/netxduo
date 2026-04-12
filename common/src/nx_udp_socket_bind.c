@@ -66,7 +66,7 @@
 /*    _nx_udp_socket_bind                                                 */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_udp_socket_driver_bind(NX_UDP_SOCKET *socket_ptr, UINT port, ULONG wait_option)
+static UINT _nx_udp_socket_driver_bind(NX_UDP_SOCKET *socket_ptr, UINT port, UINT32 wait_option)
 {
 UINT          status = NX_SUCCESS;
 UINT          i;
@@ -168,7 +168,7 @@ NX_IP        *ip_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, ULONG wait_option)
+UINT  _nx_udp_socket_bind(NX_UDP_SOCKET *socket_ptr, UINT  port, UINT32 wait_option)
 {
 
 TX_INTERRUPT_SAVE_AREA
@@ -211,7 +211,7 @@ UINT           status = NX_SUCCESS;
     {
 
         /* Call the find routine to allocate a UDP port.  */
-        port = NX_SEARCH_PORT_START + (UINT)(((ULONG)NX_RAND()) % ((NX_MAX_PORT + 1) - NX_SEARCH_PORT_START));
+        port = NX_SEARCH_PORT_START + (UINT)(((UINT32)NX_RAND()) % ((NX_MAX_PORT + 1) - NX_SEARCH_PORT_START));
         if (_nx_udp_free_port_find(ip_ptr, port, &port) != NX_SUCCESS)
         {
 

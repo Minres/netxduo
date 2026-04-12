@@ -80,9 +80,9 @@
 /*                                                                        */
 /**************************************************************************/
 
-UINT _nx_icmpv6_dest_table_add(NX_IP *ip_ptr, ULONG *destination_address,
-                               NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr, ULONG *next_hop,
-                               ULONG path_mtu, ULONG mtu_timeout, NXD_IPV6_ADDRESS *ipv6_address)
+UINT _nx_icmpv6_dest_table_add(NX_IP *ip_ptr, UINT32 *destination_address,
+                               NX_IPV6_DESTINATION_ENTRY **dest_entry_ptr, UINT32 *next_hop,
+                               UINT32 path_mtu, UINT32 mtu_timeout, NXD_IPV6_ADDRESS *ipv6_address)
 {
 
 UINT i, table_size;

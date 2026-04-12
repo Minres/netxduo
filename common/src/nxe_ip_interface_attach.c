@@ -70,7 +70,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxe_ip_interface_attach(NX_IP *ip_ptr, CHAR *interface_name, ULONG ip_address, ULONG network_mask, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *))
+UINT _nxe_ip_interface_attach(NX_IP *ip_ptr, CHAR *interface_name, UINT32 ip_address, UINT32 network_mask, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *))
 {
 
 UINT status;

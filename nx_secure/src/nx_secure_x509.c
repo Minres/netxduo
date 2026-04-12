@@ -24,30 +24,30 @@
 
 #include "nx_secure_x509.h"
 
-static UINT _nx_secure_x509_parse_cert_data(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_cert_data(const UCHAR *buffer, UINT32 length,
                                             UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_version(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_version(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                           NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_serial_num(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_serial_num(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_signature_algorithm(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_signature_algorithm(const UCHAR *buffer, UINT32 length,
                                                       UINT *bytes_processed,
                                                       NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_issuer(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_issuer(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                          NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_validity(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_validity(const UCHAR *buffer, UINT32 length,
                                            UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_subject(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_subject(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                           NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_public_key(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_public_key(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_unique_ids(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_unique_ids(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_extensions(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_extensions(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_parse_signature_data(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_signature_data(const UCHAR *buffer, UINT32 length,
                                                  UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
-static UINT _nx_secure_x509_extract_oid_data(const UCHAR *buffer, UINT oid, UINT oid_param, ULONG length,
+static UINT _nx_secure_x509_extract_oid_data(const UCHAR *buffer, UINT oid, UINT oid_param, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert);
 
 /**************************************************************************/
@@ -101,10 +101,10 @@ UINT _nx_secure_x509_certificate_parse(const UCHAR *buffer, UINT length, UINT *b
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /* X509 Certificate structure:
@@ -163,7 +163,7 @@ UINT         status;
     }
 
     /*  Parse a TLV block and get information to continue parsing. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -270,15 +270,15 @@ UINT         status;
 /*    _nx_secure_x509_parse_public_key      Parse public key in           */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_extract_oid_data(const UCHAR *buffer, UINT oid, UINT oid_param, ULONG length,
+static UINT _nx_secure_x509_extract_oid_data(const UCHAR *buffer, UINT oid, UINT oid_param, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 const UCHAR *sequence_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
 NX_SECURE_EC_PUBLIC_KEY *ec_pubkey;
@@ -455,16 +455,16 @@ NX_SECURE_EC_PUBLIC_KEY *ec_pubkey;
 /*    _nx_secure_x509_certificate_parse     Extract public key data       */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_cert_data(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_cert_data(const UCHAR *buffer, UINT32 length,
                                             UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 UINT         cur_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  Parse a TLV block and get information to continue parsing. */
@@ -653,14 +653,14 @@ UINT         status;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_version(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_version(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                           NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     NX_CRYPTO_PARAMETER_NOT_USED(cert);
@@ -735,14 +735,14 @@ UINT         status;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_serial_num(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_serial_num(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     NX_CRYPTO_PARAMETER_NOT_USED(cert);
@@ -814,16 +814,16 @@ UINT         status;
 /*    _nx_secure_x509_certificate_parse     Extract public key data       */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_signature_algorithm(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_signature_algorithm(const UCHAR *buffer, UINT32 length,
                                                       UINT *bytes_processed,
                                                       NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 UINT         oid;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 UCHAR        oid_found = NX_CRYPTO_FALSE;
 
@@ -931,15 +931,15 @@ UCHAR        oid_found = NX_CRYPTO_FALSE;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_issuer(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_issuer(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                          NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  First, parse the sequence. */
@@ -1006,14 +1006,14 @@ UINT         status;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_validity(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_validity(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                            NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 const UCHAR *current_buffer;
 
@@ -1121,15 +1121,15 @@ const UCHAR *current_buffer;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_subject(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_parse_subject(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                           NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  First, parse the sequence. */
@@ -1198,17 +1198,17 @@ UINT         status;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_public_key(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_public_key(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes = 0;
 const UCHAR *tlv_data;
 const UCHAR *bitstring_ptr;
-ULONG        bitstring_len;
-ULONG        header_length;
+UINT32        bitstring_len;
+UINT32        header_length;
 UINT         oid;
 UINT         oid_parameter;
 UINT         status;
@@ -1374,14 +1374,14 @@ UINT         status;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_unique_ids(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_unique_ids(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 const UCHAR *current_buffer;
 UINT         processed_id;
@@ -1512,15 +1512,15 @@ UINT         processed_id;
 /*    _nx_secure_x509_parse_cert_data       Parse certificate             */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_extensions(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_extensions(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 const UCHAR *current_buffer;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /* Extract any extension information present in the certificate buffer and populate the certificate structure.
@@ -1625,14 +1625,14 @@ UINT         status;
 /*    _nx_secure_x509_certificate_parse     Extract public key data       */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_parse_signature_data(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_parse_signature_data(const UCHAR *buffer, UINT32 length,
                                                  UINT *bytes_processed, NX_SECURE_X509_CERT *cert)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /* Extract the signature data, which is a hash of the certificate data which is then encrypted using the issuer's

@@ -26,7 +26,7 @@
 
 
 #ifndef NX_SECURE_X509_DISABLE_CRL
-static UINT _nx_secure_x509_crl_parse_entry(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_crl_parse_entry(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                             const UCHAR **serial_number, UINT *serial_number_length);
 #endif /* NX_SECURE_X509_DISABLE_CRL */
 
@@ -244,15 +244,15 @@ UINT                 serial_number_length;
 /*    _nx_secure_x509_crl_revocation_check  Check revocation in crl       */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_parse_entry(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_crl_parse_entry(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                             const UCHAR **serial_number, UINT *serial_number_length)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 const UCHAR *current_buffer;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
 

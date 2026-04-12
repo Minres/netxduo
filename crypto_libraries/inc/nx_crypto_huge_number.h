@@ -68,32 +68,32 @@ extern   "C" {
 #endif /* NX_CRYPTO_HUGE_NUMBER_BITS */
 
 #if (NX_CRYPTO_HUGE_NUMBER_BITS == 32)
-#ifndef ULONG64_DEFINED
-#define ULONG64_DEFINED
-#define ULONG64                       unsigned long long
+#ifndef UINT3264_DEFINED
+#define UINT3264_DEFINED
+#define UINT3264                       unsigned long long
 #define LONG64                        long long
 #endif
 #define HN_BASE                       LONG
 #define HN_BASE2                      LONG64
-#define HN_UBASE                      ULONG
-#define HN_UBASE2                     ULONG64
+#define HN_UBASE                      UINT32
+#define HN_UBASE2                     UINT3264
 #define HN_MASK                       0xFFFFFFFF
 #define HN_RADIX                      0x100000000
 #define HN_SHIFT                      (sizeof(HN_BASE) << 3)
 #define HN_SIZE_ROUND                 (sizeof(HN_BASE) - 1)
 #define HN_SIZE_SHIFT                 2
-#define HN_ULONG_TO_UBASE(v)          v
+#define HN_UINT32_TO_UBASE(v)          v
 #elif (NX_CRYPTO_HUGE_NUMBER_BITS == 16)
 #define HN_BASE                       SHORT
 #define HN_BASE2                      LONG
 #define HN_UBASE                      USHORT
-#define HN_UBASE2                     ULONG
+#define HN_UBASE2                     UINT32
 #define HN_MASK                       0xFFFF
 #define HN_RADIX                      0x10000
 #define HN_SHIFT                      (sizeof(HN_BASE) << 3)
 #define HN_SIZE_ROUND                 (sizeof(HN_BASE) - 1)
 #define HN_SIZE_SHIFT                 1
-#define HN_ULONG_TO_UBASE(v)          (v) & HN_MASK, (v) >> HN_SHIFT
+#define HN_UINT32_TO_UBASE(v)          (v) & HN_MASK, (v) >> HN_SHIFT
 #else
 #error "NX_CRYPTO_HUGE_NUMBER_BITS supports 16 and 32 only!"
 #endif

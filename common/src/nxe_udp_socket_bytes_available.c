@@ -68,7 +68,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, ULONG *bytes_available)
+UINT  _nxe_udp_socket_bytes_available(NX_UDP_SOCKET *socket_ptr, UINT32 *bytes_available)
 {
 
 UINT status;

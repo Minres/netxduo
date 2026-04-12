@@ -65,7 +65,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_remote_certificate_verify(NX_SECURE_X509_CERTIFICATE_STORE *store,
-                                          NX_SECURE_X509_CERT *certificate, ULONG current_time)
+                                          NX_SECURE_X509_CERT *certificate, UINT32 current_time)
 {
 UINT status;
 

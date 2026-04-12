@@ -89,7 +89,7 @@ UINT                 bytes_processed;
 UINT                 extensions_length;
 #endif
 UCHAR               *cert_buffer;
-ULONG                cert_buf_size;
+UINT32                cert_buf_size;
 
 
     /* Structure:

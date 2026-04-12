@@ -68,11 +68,11 @@
 /**************************************************************************/
 UINT _nx_secure_tls_send_handshake_record(NX_SECURE_TLS_SESSION *tls_session,
                                           NX_PACKET *send_packet, UCHAR handshake_type,
-                                          ULONG wait_option)
+                                          UINT32 wait_option)
 {
 UINT       status;
 UCHAR     *packet_buffer;
-ULONG      length;
+UINT32      length;
 NX_PACKET *current_packet;
 UINT       buffer_offset;
 
@@ -117,7 +117,7 @@ UINT       buffer_offset;
         do
         {
             /* Update the handshake hash with the data. */
-            length = (ULONG)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
+            length = (UINT32)(current_packet -> nx_packet_append_ptr - current_packet -> nx_packet_prepend_ptr);
 
             /* If using TLS 1.3 and no ciphersuite is chosen, we don't yet know what the handshake hash routine will be,
                so cache the message data to be hashed later. */

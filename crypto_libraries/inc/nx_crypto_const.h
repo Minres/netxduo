@@ -286,7 +286,7 @@ extern   "C" {
 #define NX_CRYPTO_ALIGN8(len)                    (((len) + 7) & ~7)
 
 /* Find the offset of a structure. */
-#define NX_CRYPTO_OFFSET(a, b)                   ((ULONG)(&(((a *)(0)) -> b)))
+#define NX_CRYPTO_OFFSET(a, b)                   ((UINT32)(&(((a *)(0)) -> b)))
 
 
 typedef UINT NX_CRYPTO_KEY_SIZE;

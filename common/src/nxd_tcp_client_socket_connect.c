@@ -76,7 +76,7 @@
 static UINT _nxd_tcp_client_socket_driver_connect(NX_TCP_SOCKET *socket_ptr,
                                                   NXD_ADDRESS *server_ip,
                                                   UINT server_port,
-                                                  ULONG wait_option)
+                                                  UINT32 wait_option)
 {
 UINT          status;
 NX_INTERFACE *interface_ptr;
@@ -104,14 +104,14 @@ NX_IP        *ip_ptr;
         if (server_ip -> nxd_ip_version == NX_IP_VERSION_V4)
         {
             socket_ptr -> nx_tcp_socket_mss =
-                (ULONG)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
+                (UINT32)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV4_HEADER)) - sizeof(NX_TCP_HEADER));
         }
 #endif /* !NX_DISABLE_IPV4  */
 #ifdef FEATURE_NX_IPV6
         if (server_ip -> nxd_ip_version == NX_IP_VERSION_V6)
         {
             socket_ptr -> nx_tcp_socket_mss =
-                (ULONG)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
+                (UINT32)((interface_ptr -> nx_interface_ip_mtu_size - sizeof(NX_IPV6_HEADER)) - sizeof(NX_TCP_HEADER));
         }
 #endif /* FEATURE_NX_IPV6 */
         socket_ptr -> nx_tcp_socket_connect_mss = socket_ptr -> nx_tcp_socket_mss;
@@ -225,7 +225,7 @@ NX_IP        *ip_ptr;
 UINT  _nxd_tcp_client_socket_connect(NX_TCP_SOCKET *socket_ptr,
                                      NXD_ADDRESS *server_ip,
                                      UINT server_port,
-                                     ULONG wait_option)
+                                     UINT32 wait_option)
 {
 
 UINT          ip_header_size = 0;
@@ -237,7 +237,7 @@ UINT          status;
 #endif /* FEATURE_NX_IPV6 */
 
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG         ip_address_log = 0;
+UINT32         ip_address_log = 0;
 #endif /* TX_ENABLE_EVENT_TRACE */
 
     /* Setup IP pointer.  */
@@ -410,12 +410,12 @@ ULONG         ip_address_log = 0;
     /* Setup the initial sequence number.  */
     if (socket_ptr -> nx_tcp_socket_tx_sequence == 0)
     {
-        socket_ptr -> nx_tcp_socket_tx_sequence =  (((ULONG)NX_RAND()) << NX_SHIFT_BY_16) & 0xFFFFFFFF;
-        socket_ptr -> nx_tcp_socket_tx_sequence |= (ULONG)NX_RAND();
+        socket_ptr -> nx_tcp_socket_tx_sequence =  (((UINT32)NX_RAND()) << NX_SHIFT_BY_16) & 0xFFFFFFFF;
+        socket_ptr -> nx_tcp_socket_tx_sequence |= (UINT32)NX_RAND();
     }
     else
     {
-        socket_ptr -> nx_tcp_socket_tx_sequence =  socket_ptr -> nx_tcp_socket_tx_sequence + ((ULONG)(((ULONG)0x10000))) + ((ULONG)NX_RAND());
+        socket_ptr -> nx_tcp_socket_tx_sequence =  socket_ptr -> nx_tcp_socket_tx_sequence + ((UINT32)(((UINT32)0x10000))) + ((UINT32)NX_RAND());
     }
 
     /* Ensure the rx window size logic is reset.  */

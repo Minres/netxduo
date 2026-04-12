@@ -73,8 +73,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_rarp_info_get(NX_IP *ip_ptr, ULONG *rarp_requests_sent, ULONG *rarp_responses_received,
-                         ULONG *rarp_invalid_messages)
+UINT  _nxe_rarp_info_get(NX_IP *ip_ptr, UINT32 *rarp_requests_sent, UINT32 *rarp_responses_received,
+                         UINT32 *rarp_invalid_messages)
 {
 
 #ifndef NX_DISABLE_IPV4

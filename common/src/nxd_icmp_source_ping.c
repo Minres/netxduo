@@ -76,13 +76,13 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxd_icmp_source_ping(NX_IP *ip_ptr, NXD_ADDRESS *ip_address, UINT address_index,
-                            CHAR *data_ptr, ULONG data_size,
-                            NX_PACKET **response_ptr, ULONG wait_option)
+                            CHAR *data_ptr, UINT32 data_size,
+                            NX_PACKET **response_ptr, UINT32 wait_option)
 {
 
 UINT          status = NX_NOT_SUPPORTED;
 #ifndef NX_DISABLE_IPV4
-ULONG         next_hop_address;
+UINT32         next_hop_address;
 NX_INTERFACE *interface_ptr;
 #endif /* !NX_DISABLE_IPV4  */
 

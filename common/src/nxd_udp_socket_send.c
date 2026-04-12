@@ -85,7 +85,7 @@ UINT            status;
 NX_IP          *ip_ptr;
 NX_INTERFACE   *interface_ptr = NX_NULL;
 UCHAR          *original_ptr = packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_UDP_HEADER);
-ULONG           original_length = packet_ptr -> nx_packet_length - sizeof(NX_UDP_HEADER);
+UINT32           original_length = packet_ptr -> nx_packet_length - sizeof(NX_UDP_HEADER);
 UINT            packet_reset = NX_FALSE;
 
     /* Set up the pointer to the associated IP instance.  */
@@ -269,9 +269,9 @@ TX_INTERRUPT_SAVE_AREA
 
 NX_IP         *ip_ptr;
 NX_UDP_HEADER *udp_header_ptr;
-ULONG         *ip_src_addr = NX_NULL, *ip_dest_addr = NX_NULL;
+UINT32         *ip_src_addr = NX_NULL, *ip_dest_addr = NX_NULL;
 #ifndef NX_DISABLE_IPV4
-ULONG          next_hop_address = 0;
+UINT32          next_hop_address = 0;
 #endif /* !NX_DISABLE_IPV4  */
 #if !defined(NX_DISABLE_IPV4) || (defined(FEATURE_NX_IPV6) && defined(NX_ENABLE_INTERFACE_CAPABILITY))
 NX_INTERFACE  *interface_ptr = NX_NULL;
@@ -286,7 +286,7 @@ NXD_ADDRESS    ip_src_address;
 
 #ifdef NX_IPSEC_ENABLE
 VOID          *sa = NX_NULL;
-ULONG          data_offset;
+UINT32          data_offset;
 NXD_ADDRESS    src_addr;
 UINT           ret;
 #endif /* NX_IPSEC_ENABLE */
@@ -488,7 +488,7 @@ UINT           compute_checksum = 1;
 #endif
 
     /* Increase the packet length.  */
-    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_UDP_HEADER);
+    packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_UDP_HEADER);
 
     /* Setup the UDP header pointer.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
@@ -496,7 +496,7 @@ UINT           compute_checksum = 1;
 
     /* Build the first 32-bit word of the UDP header.  */
     udp_header_ptr -> nx_udp_header_word_0 =
-        (((ULONG)socket_ptr -> nx_udp_socket_port) << NX_SHIFT_BY_16) | (ULONG)port;
+        (((UINT32)socket_ptr -> nx_udp_socket_port) << NX_SHIFT_BY_16) | (UINT32)port;
 
     /* Build the second 32-bit word of the UDP header.  */
     udp_header_ptr -> nx_udp_header_word_1 =  (packet_ptr -> nx_packet_length << NX_SHIFT_BY_16);
@@ -506,8 +506,8 @@ UINT           compute_checksum = 1;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
     swap the endian of the UDP header.  */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
     /* Determine if we need to compute the UDP checksum.
 
@@ -542,7 +542,7 @@ UINT           compute_checksum = 1;
 #endif /* defined(NX_DISABLE_UDP_TX_CHECKSUM) || defined(NX_ENABLE_INTERFACE_CAPABILITY) || defined(NX_IPSEC_ENABLE) */
         {
 
-        ULONG checksum;
+        UINT32 checksum;
 
             /* Yes, we need to compute the UDP checksum.  */
             checksum = _nx_ip_checksum_compute(packet_ptr,
@@ -559,11 +559,11 @@ UINT           compute_checksum = 1;
                 checksum = 0xFFFF;
             }
 
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
             udp_header_ptr -> nx_udp_header_word_1 = udp_header_ptr -> nx_udp_header_word_1 | checksum;
 
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
         }
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
         else

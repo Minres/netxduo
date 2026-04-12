@@ -122,8 +122,8 @@ NX_UDP_HEADER *udp_header_ptr;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the UDP header.  */
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
 #ifndef NX_DISABLE_RX_SIZE_CHECKING
 
@@ -182,8 +182,8 @@ NX_UDP_HEADER *udp_header_ptr;
         {
 
             /* Restore UDP header. */
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
             /* Send out ICMP error message if dest is not multicast. */
             NX_ICMPV4_SEND_DEST_UNREACHABLE(ip_ptr, packet_ptr, NX_ICMP_PORT_UNREACH_CODE);
@@ -201,12 +201,12 @@ NX_UDP_HEADER *udp_header_ptr;
             /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
             ip_header = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_header;
 
-            if ((ip_header -> nx_ip_header_destination_ip[0] & (ULONG)0xFF000000) != (ULONG)0xFF000000)
+            if ((ip_header -> nx_ip_header_destination_ip[0] & (UINT32)0xFF000000) != (UINT32)0xFF000000)
             {
 
                 /* Restore UDP header. */
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
                 /* Send out ICMP error message if dest is not multicast. */
                 NX_ICMPV6_SEND_DEST_UNREACHABLE(ip_ptr, packet_ptr, NX_ICMPV6_DEST_UNREACHABLE_CODE);
@@ -255,8 +255,8 @@ NX_UDP_HEADER *udp_header_ptr;
             socket_ptr -> nx_udp_socket_packets_received++;
 
             /* Increment the total UDP receive bytes.  */
-            ip_ptr -> nx_ip_udp_bytes_received +=          packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER);
-            socket_ptr -> nx_udp_socket_bytes_received +=  packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_UDP_HEADER);
+            ip_ptr -> nx_ip_udp_bytes_received +=          packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER);
+            socket_ptr -> nx_udp_socket_bytes_received +=  packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_UDP_HEADER);
 #endif
 
             /* If trace is enabled, insert this event into the trace buffer.  */
@@ -301,8 +301,8 @@ NX_UDP_HEADER *udp_header_ptr;
         {
 
             /* Restore UDP header. */
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-            NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+            NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
             /* Send out ICMP error message if dest is not multicast. */
             NX_ICMPV4_SEND_DEST_UNREACHABLE(ip_ptr, packet_ptr, NX_ICMP_PORT_UNREACH_CODE);
@@ -320,12 +320,12 @@ NX_UDP_HEADER *udp_header_ptr;
             ip_header = (NX_IPV6_HEADER *)packet_ptr -> nx_packet_ip_header;
 
             /* Send out ICMP error message if dest is not multicast. */
-            if ((ip_header -> nx_ip_header_destination_ip[0] & (ULONG)0xFF000000) != (ULONG)0xFF000000)
+            if ((ip_header -> nx_ip_header_destination_ip[0] & (UINT32)0xFF000000) != (UINT32)0xFF000000)
             {
 
                 /* Restore UDP header. */
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
                 NX_ICMPV6_SEND_DEST_UNREACHABLE(ip_ptr, packet_ptr, NX_ICMPV6_DEST_UNREACHABLE_CODE);
             }

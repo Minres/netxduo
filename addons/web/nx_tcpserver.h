@@ -88,13 +88,13 @@ typedef struct NX_TCP_SESSION_STRUCT
     NX_TCP_SOCKET           nx_tcp_session_socket;
 
     /* Expiration timeout for this socket. */
-    ULONG                   nx_tcp_session_expiration;
+    UINT32                   nx_tcp_session_expiration;
 
     /* Connection flag. */
     UINT                    nx_tcp_session_connected;
 
     /* Reserved value for passing data to/from individual sessions. */
-    ULONG                   nx_tcp_session_reserved;
+    UINT32                   nx_tcp_session_reserved;
 
 #ifdef NX_TCPSERVER_ENABLE_TLS
     /* Flag set to NX_TRUE if using TLS. */
@@ -117,13 +117,13 @@ typedef struct NX_TCPSERVER_STRUCT
     TX_THREAD               nx_tcpserver_thread;
     TX_TIMER                nx_tcpserver_timer;
     TX_EVENT_FLAGS_GROUP    nx_tcpserver_event_flags;
-    ULONG                   nx_tcpserver_timeout;
-    ULONG                   nx_tcpserver_accept_wait_option;
+    UINT32                   nx_tcpserver_timeout;
+    UINT32                   nx_tcpserver_accept_wait_option;
     VOID                  (*nx_tcpserver_new_connection)(struct NX_TCPSERVER_STRUCT *server_ptr, NX_TCP_SESSION *session_ptr);
     VOID                  (*nx_tcpserver_receive_data)(struct NX_TCPSERVER_STRUCT *server_ptr, NX_TCP_SESSION *session_ptr);
     VOID                  (*nx_tcpserver_connection_end)(struct NX_TCPSERVER_STRUCT *server_ptr, NX_TCP_SESSION *session_ptr);
     VOID                  (*nx_tcpserver_connection_timeout)(struct NX_TCPSERVER_STRUCT *server_ptr, NX_TCP_SESSION *session_ptr);
-    ULONG                   nx_tcpserver_reserved;
+    UINT32                   nx_tcpserver_reserved;
 } NX_TCPSERVER;
 
 
@@ -143,7 +143,7 @@ typedef struct NX_TCPSERVER_STRUCT
 
 #ifdef NX_TCPSERVER_ENABLE_TLS
 UINT nx_tcpserver_tls_setup(NX_TCPSERVER *server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                            VOID *metadata_buffer, ULONG metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
+                            VOID *metadata_buffer, UINT32 metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
                             NX_SECURE_X509_CERT *trusted_certificates[], UINT trusted_certs_num, NX_SECURE_X509_CERT *remote_certificates[], UINT remote_certs_num,
                             UCHAR *remote_certificate_buffer, UINT remote_cert_buffer_size);
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
@@ -154,13 +154,13 @@ UINT nx_tcpserver_tls_ecc_setup(NX_TCPSERVER *server_ptr,
 #endif
 
 UINT nx_tcpserver_create(NX_IP *ip_ptr, NX_TCPSERVER *server_ptr, CHAR *name, 
-                         ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG window_size,
+                         UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 window_size,
                          VOID (*new_connection)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                          VOID (*receive_data)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                          VOID (*connection_end)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                          VOID (*connection_timeout)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
-                         ULONG timeout, VOID *stack_ptr, UINT stack_size,
-                         VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, ULONG accept_wait_option);
+                         UINT32 timeout, VOID *stack_ptr, UINT stack_size,
+                         VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, UINT32 accept_wait_option);
 
 
 UINT nx_tcpserver_start(NX_TCPSERVER *server_ptr, UINT port, UINT listen_queue_size);
@@ -173,7 +173,7 @@ UINT nx_tcpserver_delete(NX_TCPSERVER *server_ptr);
 
 #ifdef NX_TCPSERVER_ENABLE_TLS
 UINT _nx_tcpserver_tls_setup(NX_TCPSERVER *server_ptr, const NX_SECURE_TLS_CRYPTO *crypto_table,
-                             VOID *metadata_buffer, ULONG metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
+                             VOID *metadata_buffer, UINT32 metadata_size, UCHAR* packet_buffer, UINT packet_buffer_size, NX_SECURE_X509_CERT *identity_certificate,
                              NX_SECURE_X509_CERT *trusted_certificates[], UINT trusted_certs_num, NX_SECURE_X509_CERT *remote_certificates[], UINT remote_certs_num,
                              UCHAR *remote_certificate_buffer, UINT remote_cert_buffer_size);
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
@@ -184,13 +184,13 @@ UINT _nx_tcpserver_tls_ecc_setup(NX_TCPSERVER *server_ptr,
 #endif
 
 UINT _nx_tcpserver_create(NX_IP *ip_ptr, NX_TCPSERVER *server_ptr, CHAR *name, 
-                          ULONG type_of_service, ULONG fragment, UINT time_to_live, ULONG window_size,
+                          UINT32 type_of_service, UINT32 fragment, UINT time_to_live, UINT32 window_size,
                           VOID (*new_connection)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*receive_data)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*connection_end)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
                           VOID (*connection_timeout)(NX_TCPSERVER *server_ptr, NX_TCP_SESSION *session_ptr),
-                          ULONG timeout, VOID *stack_ptr, UINT stack_size,
-                          VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, ULONG accept_wait_option);
+                          UINT32 timeout, VOID *stack_ptr, UINT stack_size,
+                          VOID *sessions_buffer, UINT buffer_size, UINT thread_priority, UINT32 accept_wait_option);
 
 
 UINT _nx_tcpserver_start(NX_TCPSERVER *server_ptr, UINT port, UINT listen_queue_size);

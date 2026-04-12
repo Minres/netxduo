@@ -26,7 +26,7 @@
                                                                             (d) -= (b); \
                                                                         }
 
-static VOID nx_azure_iot_adu_agent_event_process(VOID *adu_agent, ULONG common_events, ULONG module_own_events);
+static VOID nx_azure_iot_adu_agent_event_process(VOID *adu_agent, UINT32 common_events, UINT32 module_own_events);
 static VOID nx_azure_iot_adu_agent_timer_event_process(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr);
 static VOID nx_azure_iot_adu_agent_update_check_event_process(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr);
 static VOID nx_azure_iot_adu_agent_download_install_event_process(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr);
@@ -45,8 +45,8 @@ static UINT nx_azure_iot_adu_agent_service_update_manifest_process(NX_AZURE_IOT_
                                                                    UCHAR *update_manifest_content_buffer,
                                                                    UINT *update_manifest_content_buffer_size);
 static UINT nx_azure_iot_adu_agent_service_reported_properties_send(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr, 
-                                                                    UINT status_code, ULONG version, const CHAR *description,
-                                                                    ULONG wait_option);
+                                                                    UINT status_code, UINT32 version, const CHAR *description,
+                                                                    UINT32 wait_option);
 static UINT nx_azure_iot_adu_agent_reported_properties_startup_send(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr, UINT wait_option);
 static UINT nx_azure_iot_adu_agent_reported_properties_state_send(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr);
 static VOID nx_azure_iot_adu_agent_step_state_update(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr, UINT step_state);
@@ -72,15 +72,15 @@ static UINT nx_azure_iot_adu_agent_method_apply(NX_AZURE_IOT_ADU_AGENT *adu_agen
 static const NX_AZURE_IOT_ADU_AGENT_RSA_ROOT_KEY *nx_azure_iot_adu_agent_rsa_root_key_find(const UCHAR* kid, UINT kid_size);
 static UINT nx_azure_iot_adu_agent_sha256_calculate(NX_CRYPTO_METHOD *sha256_method,
                                                     UCHAR *metadata_ptr, UINT metadata_size,
-                                                    UCHAR *input_ptr, ULONG input_size,
-                                                    UCHAR *output_ptr, ULONG output_size);
+                                                    UCHAR *input_ptr, UINT32 input_size,
+                                                    UCHAR *output_ptr, UINT32 output_size);
 static UINT nx_azure_iot_adu_agent_rs256_verify(NX_AZURE_IOT_ADU_AGENT_CRYPTO *adu_agent_crypto,
-                                                UCHAR *input_ptr, ULONG input_size,
-                                                UCHAR *signature_ptr, ULONG signature_size,
-                                                UCHAR *n, ULONG n_size,
-                                                UCHAR *e, ULONG e_size,
+                                                UCHAR *input_ptr, UINT32 input_size,
+                                                UCHAR *signature_ptr, UINT32 signature_size,
+                                                UCHAR *n, UINT32 n_size,
+                                                UCHAR *e, UINT32 e_size,
                                                 UCHAR *buffer_ptr, UINT buffer_size);
-static UINT nx_azure_iot_adu_agent_file_url_parse(UCHAR *file_url, ULONG file_url_length, 
+static UINT nx_azure_iot_adu_agent_file_url_parse(UCHAR *file_url, UINT32 file_url_length, 
                                                   UCHAR *buffer_ptr, UINT buffer_size,
                                                   NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr);
 static void nx_azure_iot_adu_agent_dns_query(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr);
@@ -93,13 +93,13 @@ static void nx_azure_iot_adu_agent_http_establish_notify(NX_TCP_SOCKET *socket_p
 static void nx_azure_iot_adu_agent_http_receive_notify(NX_TCP_SOCKET *socket_ptr);
 static void nx_azure_iot_adu_agent_download_state_update(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr, UINT success);
 static UINT nx_azure_iot_adu_agent_component_properties_process(VOID *reader_ptr,
-                                                                ULONG version,
+                                                                UINT32 version,
                                                                 VOID *args);
 extern UINT nx_azure_iot_hub_client_component_add_internal(NX_AZURE_IOT_HUB_CLIENT *iothub_client_ptr,
                                                            const UCHAR *component_name_ptr,
                                                            USHORT component_name_length,
                                                            UINT (*callback_ptr)(VOID *json_reader_ptr,
-                                                                                ULONG version,
+                                                                                UINT32 version,
                                                                                 VOID *args),
                                                            VOID *callback_args);
 extern VOID nx_azure_iot_hub_client_properties_component_process(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
@@ -466,7 +466,7 @@ NX_AZURE_IOT_ADU_AGENT_DRIVER driver_request;
 #endif /* (NX_AZURE_IOT_ADU_AGENT_PROXY_UPDATE_COUNT >= 1) */
 
 static UINT nx_azure_iot_adu_agent_component_properties_process(VOID *reader_ptr,
-                                                                ULONG version,
+                                                                UINT32 version,
                                                                 VOID *args)
 {
 UINT status;
@@ -569,7 +569,7 @@ NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr = (NX_AZURE_IOT_ADU_AGENT *)args;
     return(NX_AZURE_IOT_SUCCESS);
 }
 
-static VOID nx_azure_iot_adu_agent_event_process(VOID *adu_agent, ULONG common_events, ULONG module_own_events)
+static VOID nx_azure_iot_adu_agent_event_process(VOID *adu_agent, UINT32 common_events, UINT32 module_own_events)
 {
 
 NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr = (NX_AZURE_IOT_ADU_AGENT *)adu_agent;
@@ -2048,7 +2048,7 @@ NX_AZURE_IOT_ADU_AGENT_DRIVER driver_request;
         driver_request.nx_azure_iot_adu_agent_driver_command = NX_AZURE_IOT_ADU_AGENT_DRIVER_UPDATE_CHECK;
         driver_request.nx_azure_iot_adu_agent_driver_installed_criteria = step -> installed_criteria;
         driver_request.nx_azure_iot_adu_agent_driver_installed_criteria_length = step -> installed_criteria_length;
-        driver_request.nx_azure_iot_adu_agent_driver_return_ptr = (ULONG *)is_installed;
+        driver_request.nx_azure_iot_adu_agent_driver_return_ptr = (UINT32 *)is_installed;
         driver_request.nx_azure_iot_adu_agent_driver_status = NX_AZURE_IOT_SUCCESS;
         (step -> device -> device_driver_entry)(&driver_request);
 
@@ -3624,8 +3624,8 @@ UINT update_id_length;
  * @param result Result to report (optional, can be NULL).
  */
 static UINT nx_azure_iot_adu_agent_service_reported_properties_send(NX_AZURE_IOT_ADU_AGENT *adu_agent_ptr,
-                                                                    UINT status_code, ULONG version, const CHAR *description,
-                                                                    ULONG wait_option)
+                                                                    UINT status_code, UINT32 version, const CHAR *description,
+                                                                    UINT32 wait_option)
 {
 NX_AZURE_IOT_HUB_CLIENT *iothub_client_ptr = adu_agent_ptr -> nx_azure_iot_hub_client_ptr;
 NX_AZURE_IOT_JSON_WRITER json_writer;
@@ -3787,8 +3787,8 @@ static const NX_AZURE_IOT_ADU_AGENT_RSA_ROOT_KEY *nx_azure_iot_adu_agent_rsa_roo
 /* SHA256. */
 static UINT nx_azure_iot_adu_agent_sha256_calculate(NX_CRYPTO_METHOD *sha256_method,
                                                     UCHAR *metadata_ptr, UINT metadata_size,
-                                                    UCHAR *input_ptr, ULONG input_size,
-                                                    UCHAR *output_ptr, ULONG output_size)
+                                                    UCHAR *input_ptr, UINT32 input_size,
+                                                    UCHAR *output_ptr, UINT32 output_size)
 {
 UINT status;
 
@@ -3876,10 +3876,10 @@ UINT status;
 
 /* RS256.  */
 static UINT nx_azure_iot_adu_agent_rs256_verify(NX_AZURE_IOT_ADU_AGENT_CRYPTO *adu_agent_crypto,
-                                                UCHAR *input_ptr, ULONG input_size,
-                                                UCHAR *signature_ptr, ULONG signature_size,
-                                                UCHAR *n, ULONG n_size,
-                                                UCHAR *e, ULONG e_size,
+                                                UCHAR *input_ptr, UINT32 input_size,
+                                                UCHAR *signature_ptr, UINT32 signature_size,
+                                                UCHAR *n, UINT32 n_size,
+                                                UCHAR *e, UINT32 e_size,
                                                 UCHAR *buffer_ptr, UINT buffer_size)
 {
 
@@ -3975,14 +3975,14 @@ UCHAR *sha_buffer = buffer_ptr + NX_AZURE_IOT_ADU_AGENT_RSA3072_SIZE;
     return(NX_TRUE);
 }
 
-static UINT nx_azure_iot_adu_agent_file_url_parse(UCHAR *file_url, ULONG file_url_length, 
+static UINT nx_azure_iot_adu_agent_file_url_parse(UCHAR *file_url, UINT32 file_url_length, 
                                                   UCHAR *buffer_ptr, UINT buffer_size,
                                                   NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr)
 {
 UINT    i;
 UINT    dot_count = 0;
 UINT    temp = 0;
-ULONG   ip_address = 0;
+UINT32   ip_address = 0;
 UCHAR   address_found = NX_FALSE;
 UCHAR   port_found = NX_FALSE;
 
@@ -4138,7 +4138,7 @@ NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr = &(adu_agent_ptr -> nx_azure_
     {
 
         /* Set the timeout.  */
-        downloader_ptr -> timeout = (ULONG)(NX_AZURE_IOT_ADU_AGENT_DNS_INITIAL_TIMEOUT << downloader_ptr -> dns_query_count);
+        downloader_ptr -> timeout = (UINT32)(NX_AZURE_IOT_ADU_AGENT_DNS_INITIAL_TIMEOUT << downloader_ptr -> dns_query_count);
     
         /* Update the query count.  */
         downloader_ptr -> dns_query_count++;
@@ -4199,7 +4199,7 @@ NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr = &(adu_agent_ptr -> nx_azure_
 
     /* Try to get the response.  */
     status = _nx_dns_response_get(downloader_ptr -> dns_ptr, downloader_ptr -> host,
-                                  (UCHAR *)&downloader_ptr -> address.nxd_ip_address.v4, sizeof(ULONG),
+                                  (UCHAR *)&downloader_ptr -> address.nxd_ip_address.v4, sizeof(UINT32),
                                   &record_count, NX_NO_WAIT);
 
     /* Check status.  */
@@ -4230,7 +4230,7 @@ UINT                status;
 NX_IP              *ip_ptr;
 NX_CRYPTO_METHOD   *sha256_method;
 UCHAR              *sha256_method_metadata;
-ULONG               sha256_method_metadata_size;
+UINT32               sha256_method_metadata_size;
 VOID               *handler;
 NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr = &(adu_agent_ptr -> nx_azure_iot_adu_agent_downloader);
 
@@ -4389,7 +4389,7 @@ NX_PACKET  *data_packet;
 UINT        data_size;
 NX_CRYPTO_METHOD *sha256_method = adu_agent_ptr -> nx_azure_iot_adu_agent_crypto.method_sha256;
 UCHAR      *sha256_method_metadata = adu_agent_ptr -> nx_azure_iot_adu_agent_crypto.method_sha256_metadata;;
-ULONG       sha256_method_metadata_size = NX_AZURE_IOT_ADU_AGENT_SHA256_METADATA_SIZE;
+UINT32       sha256_method_metadata_size = NX_AZURE_IOT_ADU_AGENT_SHA256_METADATA_SIZE;
 VOID       *handler = adu_agent_ptr -> nx_azure_iot_adu_agent_crypto.handler;
 UCHAR      *generated_hash;
 UCHAR      *decoded_hash;
@@ -4430,7 +4430,7 @@ NX_AZURE_IOT_ADU_AGENT_DOWNLOADER *downloader_ptr = &(adu_agent_ptr -> nx_azure_
                                                               NX_NULL,
                                                               0,
                                                               data_packet -> nx_packet_prepend_ptr,
-                                                              (ULONG)data_size,
+                                                              (UINT32)data_size,
                                                               NX_NULL,
                                                               NX_NULL,
                                                               0,

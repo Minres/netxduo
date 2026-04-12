@@ -79,7 +79,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_send_record(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *send_packet,
-                                 UCHAR record_type, ULONG wait_option)
+                                 UCHAR record_type, UINT32 wait_option)
 {
 UINT                   status;
 UINT                   message_length;
@@ -87,7 +87,7 @@ UCHAR                 *mac_secret;
 UCHAR                 *record_header;
 UCHAR                  record_hash[NX_SECURE_TLS_MAX_HASH_SIZE];
 UINT                   hash_length;
-ULONG                  length;
+UINT32                  length;
 USHORT                 iv_size;
 UCHAR                 *data;
 NX_SECURE_TLS_SESSION *tls_session;
@@ -202,7 +202,7 @@ UCHAR                  epoch_seq_num[8];
         _nx_secure_dtls_hash_record(dtls_session, tls_session -> nx_secure_tls_local_sequence_number, record_header,
                                     NX_SECURE_DTLS_RECORD_HEADER_SIZE, data, length, record_hash, &hash_length, mac_secret);
 
-        if ((hash_length > ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(&data[length]))) ||
+        if ((hash_length > ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(&data[length]))) ||
             (hash_length > sizeof(record_hash)))
         {
 
@@ -222,7 +222,7 @@ UCHAR                  epoch_seq_num[8];
 
         /* Finally, encrypt the entire record including the hash. Note that the length
          * can be changed by the encryption as IVs and padding may be added. */
-        _nx_secure_tls_record_payload_encrypt(tls_session, send_packet, (ULONG *)epoch_seq_num, record_type);
+        _nx_secure_tls_record_payload_encrypt(tls_session, send_packet, (UINT32 *)epoch_seq_num, record_type);
     }
 
     /* The encryption above may have changed the payload length, so get the length from

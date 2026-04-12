@@ -70,13 +70,13 @@
 /*    Internal NetX Duo Functions                                         */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_trace_event_insert(ULONG event_id, ULONG info_field_1, ULONG info_field_2, ULONG info_field_3, ULONG info_field_4, ULONG filter, TX_TRACE_BUFFER_ENTRY **current_event, ULONG *current_timestamp)
+VOID  _nx_trace_event_insert(UINT32 event_id, UINT32 info_field_1, UINT32 info_field_2, UINT32 info_field_3, UINT32 info_field_4, UINT32 filter, TX_TRACE_BUFFER_ENTRY **current_event, UINT32 *current_timestamp)
 {
 
 TX_INTERRUPT_SAVE_AREA
 
 TX_TRACE_BUFFER_ENTRY *event;
-ULONG                  timestamp;
+UINT32                  timestamp;
 
 
     /* Disable interrupts.  */

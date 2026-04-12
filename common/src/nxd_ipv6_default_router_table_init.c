@@ -68,7 +68,7 @@
 VOID _nxd_ipv6_default_router_table_init(NX_IP *ip_ptr)
 {
 
-ULONG i;
+UINT32 i;
 
     /* Initialize each entry in the default router table to null. */
     for (i = 0; i < NX_IPV6_DEFAULT_ROUTER_TABLE_SIZE; i++)

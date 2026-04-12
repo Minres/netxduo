@@ -178,12 +178,12 @@ UINT nx_secure_tls_local_certificate_find(NX_SECURE_TLS_SESSION *tls_session,
 UINT nx_secure_tls_local_certificate_remove(NX_SECURE_TLS_SESSION *tls_session, UCHAR *common_name,
                                             UINT common_name_length);
 UINT nx_secure_tls_metadata_size_calculate(const NX_SECURE_TLS_CRYPTO *cipher_table,
-                                           ULONG *metadata_size);
+                                           UINT32 *metadata_size);
 UINT nx_secure_tls_remote_certificate_allocate(NX_SECURE_TLS_SESSION *tls_session,
                                                NX_SECURE_X509_CERT *certificate,
                                                UCHAR *raw_certificate_buffer, UINT buffer_size);
 UINT nx_secure_tls_remote_certificate_buffer_allocate(NX_SECURE_TLS_SESSION *tls_session,
-                                                    UINT certs_number, VOID *certificate_buffer, ULONG buffer_size);
+                                                    UINT certs_number, VOID *certificate_buffer, UINT32 buffer_size);
 UINT nx_secure_tls_remote_certificate_free_all(NX_SECURE_TLS_SESSION *tls_session);
 UINT nx_secure_tls_server_certificate_add(NX_SECURE_TLS_SESSION *tls_session,
                                           NX_SECURE_X509_CERT *certificate, UINT cert_id);
@@ -193,39 +193,39 @@ UINT nx_secure_tls_server_certificate_remove(NX_SECURE_TLS_SESSION *tls_session,
 UINT  nx_secure_tls_session_alert_value_get(NX_SECURE_TLS_SESSION *tls_session,
                                             UINT *alert_level, UINT *alert_value);
 UINT nx_secure_tls_session_certificate_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                    ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *session,
+                                                    UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *session,
                                                                       NX_SECURE_X509_CERT *certificate));
 UINT nx_secure_tls_session_client_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                               ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
+                                               UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
                                                                  NX_SECURE_TLS_HELLO_EXTENSION *extensions,
                                                                  UINT num_extensions));
 UINT nx_secure_tls_session_client_verify_disable(NX_SECURE_TLS_SESSION *tls_session);
 UINT nx_secure_tls_session_client_verify_enable(NX_SECURE_TLS_SESSION *tls_session);
 UINT nx_secure_tls_session_x509_client_verify_configure(NX_SECURE_TLS_SESSION *tls_session, UINT certs_number,
-                                                          VOID *certificate_buffer, ULONG buffer_size);
+                                                          VOID *certificate_buffer, UINT32 buffer_size);
 
 UINT nx_secure_tls_session_create(NX_SECURE_TLS_SESSION *session_ptr,
                                   const NX_SECURE_TLS_CRYPTO *cipher_table,
                                   VOID *metadata_area,
-                                  ULONG metadata_size);
+                                  UINT32 metadata_size);
 UINT nx_secure_tls_session_delete(NX_SECURE_TLS_SESSION *tls_session);
 UINT nx_secure_tls_session_end(NX_SECURE_TLS_SESSION *tls_session, UINT wait_option);
 UINT nx_secure_tls_session_packet_buffer_set(NX_SECURE_TLS_SESSION *session_ptr,
-                                             UCHAR *buffer_ptr, ULONG buffer_size);
+                                             UCHAR *buffer_ptr, UINT32 buffer_size);
 UINT nx_secure_tls_session_packet_pool_set(NX_SECURE_TLS_SESSION *tls_session,
                                            NX_PACKET_POOL *packet_pool);
 UINT nx_secure_tls_session_protocol_version_override(NX_SECURE_TLS_SESSION *tls_session,
                                                      USHORT protocol_version);
 UINT nx_secure_tls_session_receive(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET **packet_ptr_ptr,
-                                   ULONG wait_option);
+                                   UINT32 wait_option);
 UINT nx_secure_tls_session_renegotiate(NX_SECURE_TLS_SESSION *tls_session, UINT wait_option);
 UINT nx_secure_tls_session_renegotiate_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                                    ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *session));
+                                                    UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *session));
 UINT nx_secure_tls_session_reset(NX_SECURE_TLS_SESSION *tls_session);
 UINT nx_secure_tls_session_send(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *packet_ptr,
-                                ULONG wait_option);
+                                UINT32 wait_option);
 UINT nx_secure_tls_session_server_callback_set(NX_SECURE_TLS_SESSION *tls_session,
-                                               ULONG (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
+                                               UINT32 (*func_ptr)(NX_SECURE_TLS_SESSION *tls_session,
                                                                  NX_SECURE_TLS_HELLO_EXTENSION *extensions,
                                                                  UINT num_extensions));
 UINT nx_secure_tls_session_sni_extension_parse(NX_SECURE_TLS_SESSION *tls_session,
@@ -236,13 +236,13 @@ UINT nx_secure_tls_session_sni_extension_set(NX_SECURE_TLS_SESSION *tls_session,
 UINT nx_secure_tls_session_start(NX_SECURE_TLS_SESSION *tls_session, NX_TCP_SOCKET *tcp_socket,
                                  UINT wait_option);
 UINT nx_secure_tls_session_time_function_set(NX_SECURE_TLS_SESSION *tls_session,
-                                             ULONG (*time_func_ptr)(VOID));
+                                             UINT32 (*time_func_ptr)(VOID));
 UINT nx_secure_tls_trusted_certificate_add(NX_SECURE_TLS_SESSION *tls_session,
                                            NX_SECURE_X509_CERT *certificate);
 UINT nx_secure_tls_trusted_certificate_remove(NX_SECURE_TLS_SESSION *tls_session, UCHAR *common_name,
                                               UINT common_name_length);
 UINT nx_secure_tls_packet_allocate(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET_POOL *pool_ptr,
-                                   NX_PACKET **packet_ptr, ULONG wait_option);
+                                   NX_PACKET **packet_ptr, UINT32 wait_option);
 #ifdef NX_SECURE_ENABLE_PSK_CIPHERSUITES
 UINT nx_secure_tls_psk_add(NX_SECURE_TLS_SESSION *tls_session, UCHAR *pre_shared_key, UINT psk_length,
                            UCHAR *psk_identity, UINT identity_length, UCHAR *hint, UINT hint_length);

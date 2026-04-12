@@ -70,7 +70,7 @@
 /**************************************************************************/
 UINT  _nxd_ipv6_default_router_add(NX_IP *ip_ptr,
                                    NXD_ADDRESS *router_addr,
-                                   ULONG router_lifetime,
+                                   UINT32 router_lifetime,
                                    UINT interface_index)
 {
 #ifdef FEATURE_NX_IPV6

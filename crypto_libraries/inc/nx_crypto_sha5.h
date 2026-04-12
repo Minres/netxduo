@@ -57,10 +57,10 @@ extern   "C" {
 
 #include "nx_crypto.h"
 
-#ifndef ULONG64_DEFINED
-#define ULONG64_DEFINED
-#define ULONG64                              unsigned long long
-#endif /* ULONG64 */
+#ifndef UINT3264_DEFINED
+#define UINT3264_DEFINED
+#define UINT3264                              unsigned long long
+#endif /* UINT3264 */
 
 
 #define NX_CRYPTO_SHA512_BLOCK_SIZE_IN_BYTES    128
@@ -75,8 +75,8 @@ extern   "C" {
 typedef struct NX_CRYPTO_SHA512_STRUCT
 {
 
-    ULONG64 nx_sha512_states[8];                        /* Contains each state (A,B,C,D,E,F,G,H).   */
-    ULONG64 nx_sha512_bit_count[2];                     /* Contains the 128-bit total bit            */
+    UINT3264 nx_sha512_states[8];                        /* Contains each state (A,B,C,D,E,F,G,H).   */
+    UINT3264 nx_sha512_bit_count[2];                     /* Contains the 128-bit total bit            */
                                                         /*   count, where index 0 holds the         */
                                                         /*   least significant bit count and        */
                                                         /*   index 1 contains the most              */
@@ -87,7 +87,7 @@ typedef struct NX_CRYPTO_SHA512_STRUCT
                                                         /*   where partial buffers are              */
                                                         /*   accumulated until a full block         */
                                                         /*   can be processed.                      */
-    ULONG64 nx_sha512_word_array[128];                  /* Working 64 word array.                   */
+    UINT3264 nx_sha512_word_array[128];                  /* Working 64 word array.                   */
 } NX_CRYPTO_SHA512;
 
 
@@ -100,7 +100,7 @@ UINT _nx_crypto_method_sha512_init(struct  NX_CRYPTO_METHOD_STRUCT *method,
                                    UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                    VOID  **handle,
                                    VOID  *crypto_metadata,
-                                   ULONG crypto_metadata_size);
+                                   UINT32 crypto_metadata_size);
 
 UINT _nx_crypto_method_sha512_cleanup(VOID *crypto_metadata);
 
@@ -108,10 +108,10 @@ UINT _nx_crypto_method_sha512_operation(UINT op,      /* Encrypt, Decrypt, Authe
                                         VOID *handle, /* Crypto handler */
                                         struct NX_CRYPTO_METHOD_STRUCT *method,
                                         UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
-                                        UCHAR *input, ULONG input_length_in_byte,
+                                        UCHAR *input, UINT32 input_length_in_byte,
                                         UCHAR *iv_ptr,
-                                        UCHAR *output, ULONG output_length_in_byte,
-                                        VOID *crypto_metadata, ULONG crypto_metadata_size,
+                                        UCHAR *output, UINT32 output_length_in_byte,
+                                        VOID *crypto_metadata, UINT32 crypto_metadata_size,
                                         VOID *packet_ptr,
                                         VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));
 

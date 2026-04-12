@@ -62,8 +62,8 @@ static UINT _nx_rtsp_server_response_send(NX_RTSP_SERVER *rtsp_server_ptr, NX_RT
 
 static VOID _nx_rtsp_server_disconnect(NX_RTSP_SERVER *rtsp_server_ptr, NX_RTSP_CLIENT *rtsp_client_ptr);
 
-static UINT _nx_rtsp_server_memicmp(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length);
-static UCHAR *_nx_rtsp_server_strstr(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length);
+static UINT _nx_rtsp_server_memicmp(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length);
+static UCHAR *_nx_rtsp_server_strstr(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length);
 
 /* Define macros.  */
 
@@ -168,7 +168,7 @@ const NX_RTSP_RESPONSE nx_rtsp_server_response_description_table[] =
 /**************************************************************************/
 UINT _nxe_rtsp_server_create(NX_RTSP_SERVER *rtsp_server_ptr, CHAR *server_name, UINT server_name_length,
                              NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool,
-                             VOID *stack_ptr, ULONG stack_size, UINT priority, UINT server_port,
+                             VOID *stack_ptr, UINT32 stack_size, UINT priority, UINT server_port,
                              UINT (*disconnect_callback)(NX_RTSP_CLIENT *rtsp_client_ptr))
 {
 UINT status;
@@ -237,7 +237,7 @@ UINT status;
 /**************************************************************************/
 UINT _nx_rtsp_server_create(NX_RTSP_SERVER *rtsp_server_ptr, CHAR *server_name, UINT server_name_length,
                             NX_IP *ip_ptr, NX_PACKET_POOL *rtsp_packet_pool,
-                            VOID *stack_ptr, ULONG stack_size, UINT priority, UINT server_port,
+                            VOID *stack_ptr, UINT32 stack_size, UINT priority, UINT server_port,
                             UINT (*disconnect_callback)(NX_RTSP_CLIENT *rtsp_client_ptr))
 {
 UINT status;
@@ -263,7 +263,7 @@ UINT status;
 
     /* Create the RTSP server thread and start the RTSP server.  */
     status = tx_thread_create(&(rtsp_server_ptr -> nx_rtsp_server_thread), server_name,
-                              _nx_rtsp_server_thread_entry, (ULONG)rtsp_server_ptr,
+                              _nx_rtsp_server_thread_entry, (UINT32)rtsp_server_ptr,
                               stack_ptr, stack_size, priority, priority,
                               NX_RTSP_SERVER_TIME_SLICE, TX_NO_ACTIVATE);
 
@@ -1896,7 +1896,7 @@ UINT _nx_rtsp_server_pause_callback_set(NX_RTSP_SERVER *rtsp_server_ptr,
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_rtsp_server_set_parameter_callback_set(NX_RTSP_SERVER *rtsp_server_ptr,
-                                                 UINT (*callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length))
+                                                 UINT (*callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length))
 {
 UINT       status;
 
@@ -1949,7 +1949,7 @@ UINT       status;
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_rtsp_server_set_parameter_callback_set(NX_RTSP_SERVER *rtsp_server_ptr,
-                                                UINT (*callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, ULONG parameter_length))
+                                                UINT (*callback)(NX_RTSP_CLIENT *rtsp_client_ptr, UCHAR *uri, UINT uri_length, UCHAR *parameter_ptr, UINT32 parameter_length))
 {
 
     /* Set callback for SET_PARAMETER method.  */
@@ -2259,7 +2259,7 @@ UINT       status = NX_SUCCESS;
 
             /* Copy the contents of the current packet into the head packet.  */
             status = nx_packet_data_append(head_packet_ptr, (VOID *) tmp_ptr -> nx_packet_prepend_ptr,
-                                            (ULONG)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
+                                            (UINT32)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
                                             rtsp_server_ptr -> nx_rtsp_server_packet_pool, NX_NO_WAIT);
 
 #ifndef NX_DISABLE_PACKET_CHAIN
@@ -2973,7 +2973,7 @@ NXD_ADDRESS *receiver_ip_address;
 /*    _nx_rtsp_server_strstr                                              */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_rtsp_server_memicmp(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length)
+static UINT _nx_rtsp_server_memicmp(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length)
 {
 UCHAR ch;
 
@@ -3042,7 +3042,7 @@ UCHAR ch;
 /*    _nx_rtsp_server_request_header_parse                                */
 /*                                                                        */
 /**************************************************************************/
-static UCHAR *_nx_rtsp_server_strstr(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length)
+static UCHAR *_nx_rtsp_server_strstr(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length)
 {
 UINT index = 0;
 
@@ -3178,12 +3178,12 @@ UINT  temp_length;
 /*                                                                        */
 /*  DESCRIPTION                                                           */
 /*                                                                        */
-/*    This function converts an ipv6 address from ULONG array format into */
+/*    This function converts an ipv6 address from UINT32 array format into */
 /*    standard ipv6 address string format.                                */
 /*                                                                        */
 /*  INPUT                                                                 */
 /*                                                                        */
-/*    ipv6_addr                            Pointer to ULONG array address */
+/*    ipv6_addr                            Pointer to UINT32 array address */
 /*    buffer                               Pointer to output string buffer*/
 /*    buffer_length                        Max length of output buffer    */
 /*    size                                 Real size of output buffer     */
@@ -3202,11 +3202,11 @@ UINT  temp_length;
 /*    _nx_rtsp_server_response_send                                       */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_rtsp_server_ipv6_address_to_string(ULONG *ipv6_addr, CHAR *buffer, UINT buffer_length, UINT *size)
+static UINT _nx_rtsp_server_ipv6_address_to_string(UINT32 *ipv6_addr, CHAR *buffer, UINT buffer_length, UINT *size)
 {
 UINT    i, j;
 UCHAR   c;
-ULONG   val;
+UINT32   val;
 CHAR   *cur_pos = buffer;
 
 
@@ -3218,14 +3218,14 @@ CHAR   *cur_pos = buffer;
         return(NX_SIZE_ERROR);
     }
 
-    /* Go through each 4 ULONG values in ipv6 address. */
+    /* Go through each 4 UINT32 values in ipv6 address. */
     for (i = 0; i < 4; i++)
     {
 
-        /* Get the current ULONG value. */
+        /* Get the current UINT32 value. */
         val = ipv6_addr[i];
 
-        /* Go through each bit of the ULONG to convert. */
+        /* Go through each bit of the UINT32 to convert. */
         for (j = 0; j <= 7; j++)
         {
 
@@ -3788,7 +3788,7 @@ NX_RTSP_SERVER_METHOD_CALLBACKS method_callbacks = rtsp_server_ptr -> nx_rtsp_se
                     {
 
                         /* Remember the session ID for future validation.  */
-                        rtsp_client_ptr -> nx_rtsp_client_session_id = (ULONG)NX_RAND();
+                        rtsp_client_ptr -> nx_rtsp_client_session_id = (UINT32)NX_RAND();
                     }
                 }
                 else

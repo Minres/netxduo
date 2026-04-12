@@ -66,7 +66,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_data_extract_offset(NX_PACKET *packet_ptr, ULONG offset, VOID *buffer_start, ULONG buffer_length, ULONG *bytes_copied)
+UINT  _nxe_packet_data_extract_offset(NX_PACKET *packet_ptr, UINT32 offset, VOID *buffer_start, UINT32 buffer_length, UINT32 *bytes_copied)
 {
 
     if (packet_ptr == NX_NULL)

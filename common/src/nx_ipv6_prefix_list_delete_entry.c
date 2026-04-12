@@ -80,9 +80,9 @@ VOID _nx_ipv6_prefix_list_delete_entry(NX_IP *ip_ptr, NX_IPV6_PREFIX_ENTRY *entr
 {
 
 UINT              i;
-ULONG             address_prefix[4];
+UINT32             address_prefix[4];
 NXD_IPV6_ADDRESS *interface_ipv6_address_prev, *interface_ipv6_address;
-ULONG             multicast_address[4];
+UINT32             multicast_address[4];
 #ifdef NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY
 UINT              ipv6_addr_index;
 #endif /* NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY */
@@ -146,7 +146,7 @@ UINT              ipv6_addr_index;
                     /* If the address change notify callback is set, invoke the callback function. */
                     if (ip_ptr -> nx_ipv6_address_change_notify)
                     {
-                        ipv6_addr_index = (ULONG)interface_ipv6_address -> nxd_ipv6_address_index;
+                        ipv6_addr_index = (UINT32)interface_ipv6_address -> nxd_ipv6_address_index;
                         ip_ptr -> nx_ipv6_address_change_notify(ip_ptr, NX_IPV6_ADDRESS_LIFETIME_EXPIRED, i, ipv6_addr_index,
                                                                 &interface_ipv6_address -> nxd_ipv6_address[0]);
                     }

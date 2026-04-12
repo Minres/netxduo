@@ -166,13 +166,13 @@ extern   "C" {
 
 /* Define BSD events */
 
-#define NX_BSD_RECEIVE_EVENT                ((ULONG) 0x00000001)    /* Event flag to signal a receive packet event                          */
-#define NX_BSD_SELECT_EVENT                 ((ULONG) 0x00008000)    /* Event flag to signal a thread is waiting in select                   */
-#define NX_BSD_ALL_EVENTS                   ((ULONG) 0xFFFFFFFF)    /* All event flag                                                       */
-#define NX_BSD_CONNECT_EVENT                ((ULONG) 0x00000002)
-#define NX_BSD_LINGER_EVENT                 ((ULONG) 0x00000004)    /* Event flag to signal a timed linger state has expired on a socket    */
-#define NX_BSD_TIMED_WAIT_EVENT             ((ULONG) 0x00000008)    /* Event flag to signal a timed wait state has expired on a socket      */
-#define NX_BSD_TIMER_EVENT                  ((ULONG) 0x00000010)    /* Event flag to singal a BSD 1 sec timer */
+#define NX_BSD_RECEIVE_EVENT                ((UINT32) 0x00000001)    /* Event flag to signal a receive packet event                          */
+#define NX_BSD_SELECT_EVENT                 ((UINT32) 0x00008000)    /* Event flag to signal a thread is waiting in select                   */
+#define NX_BSD_ALL_EVENTS                   ((UINT32) 0xFFFFFFFF)    /* All event flag                                                       */
+#define NX_BSD_CONNECT_EVENT                ((UINT32) 0x00000002)
+#define NX_BSD_LINGER_EVENT                 ((UINT32) 0x00000004)    /* Event flag to signal a timed linger state has expired on a socket    */
+#define NX_BSD_TIMED_WAIT_EVENT             ((UINT32) 0x00000008)    /* Event flag to signal a timed wait state has expired on a socket      */
+#define NX_BSD_TIMER_EVENT                  ((UINT32) 0x00000010)    /* Event flag to singal a BSD 1 sec timer */
 
 
 /* For BSD APIs overriding.  */
@@ -631,7 +631,7 @@ struct nx_bsd_in6_addr
     union
     {
         UCHAR _S6_u8[16];
-        ULONG _S6_u32[4];
+        UINT32 _S6_u32[4];
     } _S6_un;
 };
 
@@ -642,10 +642,10 @@ struct nx_bsd_sockaddr_in6
 {
     USHORT          sin6_family;                 /* AF_INET6 */
     USHORT          sin6_port;                   /* Transport layer port.  */
-    ULONG           sin6_flowinfo;               /* IPv6 flow information. */
+    UINT32           sin6_flowinfo;               /* IPv6 flow information. */
     struct nx_bsd_in6_addr
                     sin6_addr;                   /* IPv6 address. */
-    ULONG           sin6_scope_id;               /* set of interafces for a scope. */
+    UINT32           sin6_scope_id;               /* set of interafces for a scope. */
 
 };
 
@@ -653,11 +653,11 @@ struct nx_bsd_sockaddr_in6
 
 struct nx_bsd_in_addr
 {
-    ULONG           s_addr;             /* Internet address (32 bits).                         */
+    UINT32           s_addr;             /* Internet address (32 bits).                         */
 };
 
-typedef ULONG       nx_bsd_in_addr_t;
-typedef ULONG       nx_bsd_socklen_t;
+typedef UINT32       nx_bsd_in_addr_t;
+typedef UINT32       nx_bsd_socklen_t;
 
 
 
@@ -677,14 +677,14 @@ struct nx_bsd_sockaddr_in
 typedef struct FD_SET_STRUCT                /* The select socket array manager.                                                             */
 {
    INT                  fd_count;           /* How many are SET?                                                                            */
-   ULONG                fd_array[(NX_BSD_MAX_SOCKETS + 31)/32]; /* Bit map of SOCKET Descriptors.                                                   */
+   UINT32                fd_array[(NX_BSD_MAX_SOCKETS + 31)/32]; /* Bit map of SOCKET Descriptors.                                                   */
 } nx_bsd_fd_set;
 
 
 
 typedef struct NX_BSD_SOCKET_SUSPEND_STRUCT
 {
-    ULONG               nx_bsd_socket_suspend_actual_flags;
+    UINT32               nx_bsd_socket_suspend_actual_flags;
     nx_bsd_fd_set       nx_bsd_socket_suspend_read_request_fd_set;
     nx_bsd_fd_set       nx_bsd_socket_suspend_write_request_fd_set;
     nx_bsd_fd_set       nx_bsd_socket_suspend_exception_request_fd_set;
@@ -934,7 +934,7 @@ typedef struct NX_BSD_SOCKET_STRUCT
 {
     NX_TCP_SOCKET       *nx_bsd_socket_tcp_socket;
     NX_UDP_SOCKET       *nx_bsd_socket_udp_socket;
-    ULONG               nx_bsd_socket_family;
+    UINT32               nx_bsd_socket_family;
     /* Store the protocol number.  For example TCP is 6, UDP is 17. For raw socket
        it is the protocol it wishes to receive. */
     USHORT              nx_bsd_socket_protocol;
@@ -946,9 +946,9 @@ typedef struct NX_BSD_SOCKET_STRUCT
     UINT                nx_bsd_socket_received_byte_count_max;
     UINT                nx_bsd_socket_received_packet_count;
     UINT                nx_bsd_socket_received_packet_count_max;
-    ULONG               nx_bsd_socket_received_packet_offset;
+    UINT32               nx_bsd_socket_received_packet_offset;
     INT                 nx_bsd_socket_source_port;
-    ULONG               nx_bsd_socket_local_bind_interface;
+    UINT32               nx_bsd_socket_local_bind_interface;
     UINT                nx_bsd_socket_local_bind_interface_index;
     NXD_ADDRESS         nx_bsd_socket_source_ip_address;
     NXD_ADDRESS         nx_bsd_socket_peer_ip;
@@ -961,11 +961,11 @@ typedef struct NX_BSD_SOCKET_STRUCT
     UINT                nx_bsd_option_linger_time_closed;
     UINT                nx_bsd_option_linger_start_close;
     UINT                nx_bsd_socket_time_wait_remaining;
-    ULONG               nx_bsd_option_receive_timeout;
-    ULONG               nx_bsd_option_send_timeout;
+    UINT32               nx_bsd_option_receive_timeout;
+    UINT32               nx_bsd_option_send_timeout;
     INT                 nx_bsd_file_descriptor_flags;
-    ULONG               nx_bsd_socket_status_flags;
-    ULONG               nx_bsd_socket_option_flags;
+    UINT32               nx_bsd_socket_status_flags;
+    UINT32               nx_bsd_socket_option_flags;
     int                 nx_bsd_socket_error_code;
 
     struct NX_BSD_SOCKET_STRUCT
@@ -990,7 +990,7 @@ typedef struct NX_BSD_SOCKET_STRUCT
 
 
 INT  nx_bsd_accept(INT sockID, struct nx_bsd_sockaddr *ClientAddress, INT *addressLength);
-INT  nx_bsd_initialize(NX_IP *default_ip, NX_PACKET_POOL *default_pool, CHAR *bsd_thread_stack_area, ULONG bsd_thread_stack_size, UINT bsd_thread_priority);
+INT  nx_bsd_initialize(NX_IP *default_ip, NX_PACKET_POOL *default_pool, CHAR *bsd_thread_stack_area, UINT32 bsd_thread_stack_size, UINT bsd_thread_priority);
 INT  nx_bsd_bind(INT sockID, const struct nx_bsd_sockaddr *localAddress, INT addressLength);
 INT  nx_bsd_connect(INT sockID, struct nx_bsd_sockaddr *remoteAddress, INT addressLength);
 INT  nx_bsd_getpeername(INT sockID, struct nx_bsd_sockaddr *remoteAddress, INT *addressLength);
@@ -1022,8 +1022,8 @@ INT  nx_bsd_setsockopt(INT sockID, INT option_level, INT option_name, const VOID
 INT  nx_bsd_getaddrinfo(const CHAR *node, const CHAR *service, const struct nx_bsd_addrinfo *hints, struct nx_bsd_addrinfo **res);
 VOID nx_bsd_freeaddrinfo(struct nx_bsd_addrinfo *res);
 INT  nx_bsd_getnameinfo(const struct nx_bsd_sockaddr *sa, nx_bsd_socklen_t salen, char *host, size_t hostlen, char *serv, size_t servlen, int flags);
-VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, ULONG serv_list_len);
-INT  nx_bsd_poll(struct nx_bsd_pollfd *fds, ULONG nfds, INT timeout);
+VOID nx_bsd_set_service_list(struct NX_BSD_SERVICE_LIST *serv_list_ptr, UINT32 serv_list_len);
+INT  nx_bsd_poll(struct nx_bsd_pollfd *fds, UINT32 nfds, INT timeout);
 
 #if !defined(NX_BSD_ENABLE_NATIVE_API)
 #undef FD_SET

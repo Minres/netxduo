@@ -73,7 +73,7 @@ USHORT protocol_version;
      * | DTLS version | Cookie length | Server Cookie data |
      */
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) <
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) <
         (3u + dtls_session -> nx_secure_dtls_cookie_length))
     {
 
@@ -103,7 +103,7 @@ USHORT protocol_version;
     for (i = 0; i < dtls_session -> nx_secure_dtls_cookie_length; i += (UINT)sizeof(random_value))
     {
         random_value = (UINT)NX_RAND();
-        NX_CHANGE_ULONG_ENDIAN(random_value);
+        NX_CHANGE_UINT32_ENDIAN(random_value);
         NX_SECURE_MEMCPY(&dtls_session -> nx_secure_dtls_cookie[i],
                (UCHAR *)&random_value, sizeof(random_value)); /* Use case of memcpy is verified. */
     }

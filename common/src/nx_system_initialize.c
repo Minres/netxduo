@@ -109,64 +109,64 @@ VOID  _nx_system_initialize(VOID)
     /* Setup the build options variables.  */
     _nx_system_build_options_1 = 0
 #ifdef NX_LITTLE_ENDIAN
-        | (((ULONG)1) << 31)
+        | (((UINT32)1) << 31)
 #endif
 #ifdef NX_DISABLE_ARP_AUTO_ENTRY
-        | (((ULONG)1) << 30)
+        | (((UINT32)1) << 30)
 #endif
 #ifdef NX_ENABLE_TCP_KEEPALIVE
-        | (((ULONG)1) << 29)
+        | (((UINT32)1) << 29)
 #endif
 #ifdef NX_TCP_IMMEDIATE_ACK
-        | (((ULONG)1) << 28)
+        | (((UINT32)1) << 28)
 #endif
 #ifdef NX_DRIVER_DEFERRED_PROCESSING
-        | (((ULONG)1) << 27)
+        | (((UINT32)1) << 27)
 #endif
 #ifdef NX_DISABLE_FRAGMENTATION
-        | (((ULONG)1) << 26)
+        | (((UINT32)1) << 26)
 #endif
 #ifdef NX_DISABLE_IP_RX_CHECKSUM
-        | (((ULONG)1) << 25)
+        | (((UINT32)1) << 25)
 #endif
 #ifdef NX_DISABLE_IP_TX_CHECKSUM
-        | (((ULONG)1) << 24)
+        | (((UINT32)1) << 24)
 #endif
 #ifdef NX_DISABLE_TCP_RX_CHECKSUM
-        | (((ULONG)1) << 23)
+        | (((UINT32)1) << 23)
 #endif
 #ifdef NX_DISABLE_TCP_TX_CHECKSUM
-        | (((ULONG)1) << 22)
+        | (((UINT32)1) << 22)
 #endif
 #ifdef NX_DISABLE_RESET_DISCONNECT
-        | (((ULONG)1) << 21)
+        | (((UINT32)1) << 21)
 #endif
 #ifdef NX_DISABLE_RX_SIZE_CHECKING
-        | (((ULONG)1) << 20)
+        | (((UINT32)1) << 20)
 #endif
 #ifdef NX_DISABLE_ARP_INFO
-        | (((ULONG)1) << 19)
+        | (((UINT32)1) << 19)
 #endif
 #ifdef NX_DISABLE_IP_INFO
-        | (((ULONG)1) << 18)
+        | (((UINT32)1) << 18)
 #endif
 #ifdef NX_DISABLE_ICMP_INFO
-        | (((ULONG)1) << 17)
+        | (((UINT32)1) << 17)
 #endif
 #ifdef NX_DISABLE_IGMP_INFO
-        | (((ULONG)1) << 16)
+        | (((UINT32)1) << 16)
 #endif
 #ifdef NX_DISABLE_PACKET_INFO
-        | (((ULONG)1) << 15)
+        | (((UINT32)1) << 15)
 #endif
 #ifdef NX_DISABLE_RARP_INFO
-        | (((ULONG)1) << 14)
+        | (((UINT32)1) << 14)
 #endif
 #ifdef NX_DISABLE_TCP_INFO
-        | (((ULONG)1) << 13)
+        | (((UINT32)1) << 13)
 #endif
 #ifdef NX_DISABLE_UDP_INFO
-        | (((ULONG)1) << 12)
+        | (((UINT32)1) << 12)
 #endif
     ;
 
@@ -179,86 +179,86 @@ VOID  _nx_system_initialize(VOID)
 #endif
 
 #if (NX_IP_PERIODIC_RATE > 0xFFFFUL)
-    _nx_system_build_options_2 =  ((ULONG)0xFFFF0000);
+    _nx_system_build_options_2 =  ((UINT32)0xFFFF0000);
 #else
-    _nx_system_build_options_2 =  ((ULONG)NX_IP_PERIODIC_RATE) << 16;
+    _nx_system_build_options_2 =  ((UINT32)NX_IP_PERIODIC_RATE) << 16;
 #endif
 
 #if (NX_ARP_EXPIRATION_RATE > 0xFF)
-    _nx_system_build_options_2 |=  ((ULONG)0xFF) << 8;
+    _nx_system_build_options_2 |=  ((UINT32)0xFF) << 8;
 #else
-    _nx_system_build_options_2 |=  ((ULONG)NX_ARP_EXPIRATION_RATE) << 8;
+    _nx_system_build_options_2 |=  ((UINT32)NX_ARP_EXPIRATION_RATE) << 8;
 #endif
 #if (NX_ARP_UPDATE_RATE > 0xFF)
-    _nx_system_build_options_2 |=  ((ULONG)0xFF);
+    _nx_system_build_options_2 |=  ((UINT32)0xFF);
 #else
-    _nx_system_build_options_2 |=  ((ULONG)NX_ARP_UPDATE_RATE);
+    _nx_system_build_options_2 |=  ((UINT32)NX_ARP_UPDATE_RATE);
 #endif
 
     /* Setup third option word.  */
 #if (NX_TCP_ACK_TIMER_RATE > 0xFF)
-    _nx_system_build_options_3 =  ((ULONG)0xFF000000);
+    _nx_system_build_options_3 =  ((UINT32)0xFF000000);
 #else
-    _nx_system_build_options_3 =  ((ULONG)NX_TCP_ACK_TIMER_RATE) << 24;
+    _nx_system_build_options_3 =  ((UINT32)NX_TCP_ACK_TIMER_RATE) << 24;
 #endif
 #if (NX_TCP_FAST_TIMER_RATE > 0xFF)
-    _nx_system_build_options_3 |=  ((ULONG)0xFF) << 16;
+    _nx_system_build_options_3 |=  ((UINT32)0xFF) << 16;
 #else
-    _nx_system_build_options_3 |=  ((ULONG)NX_TCP_FAST_TIMER_RATE) << 16;
+    _nx_system_build_options_3 |=  ((UINT32)NX_TCP_FAST_TIMER_RATE) << 16;
 #endif
 #if (NX_TCP_TRANSMIT_TIMER_RATE > 0xFF)
-    _nx_system_build_options_3 |=  ((ULONG)0xFF) << 8;
+    _nx_system_build_options_3 |=  ((UINT32)0xFF) << 8;
 #else
-    _nx_system_build_options_3 |=  ((ULONG)NX_TCP_TRANSMIT_TIMER_RATE) << 8;
+    _nx_system_build_options_3 |=  ((UINT32)NX_TCP_TRANSMIT_TIMER_RATE) << 8;
 #endif
 #if (NX_TCP_KEEPALIVE_RETRY > 0xFF)
-    _nx_system_build_options_3 |=  ((ULONG)0xFF);
+    _nx_system_build_options_3 |=  ((UINT32)0xFF);
 #else
-    _nx_system_build_options_3 |=  ((ULONG)NX_TCP_KEEPALIVE_RETRY);
+    _nx_system_build_options_3 |=  ((UINT32)NX_TCP_KEEPALIVE_RETRY);
 #endif
 
     /* Setup the fourth option word.  */
 #if (NX_TCP_KEEPALIVE_INITIAL > 0xFFFFUL)
-    _nx_system_build_options_4 =  ((ULONG)0xFFFF0000);
+    _nx_system_build_options_4 =  ((UINT32)0xFFFF0000);
 #else
-    _nx_system_build_options_4 =  ((ULONG)NX_TCP_KEEPALIVE_INITIAL) << 16;
+    _nx_system_build_options_4 =  ((UINT32)NX_TCP_KEEPALIVE_INITIAL) << 16;
 #endif
 #if (NX_ARP_MAXIMUM_RETRIES > 0xFF)
-    _nx_system_build_options_4 |=  ((ULONG)0xFF) << 8;
+    _nx_system_build_options_4 |=  ((UINT32)0xFF) << 8;
 #else
-    _nx_system_build_options_4 |=  ((ULONG)NX_ARP_MAXIMUM_RETRIES) << 8;
+    _nx_system_build_options_4 |=  ((UINT32)NX_ARP_MAXIMUM_RETRIES) << 8;
 #endif
 #if (NX_ARP_MAX_QUEUE_DEPTH > 0xF)
-    _nx_system_build_options_4 |=  ((ULONG)0xF) << 4;
+    _nx_system_build_options_4 |=  ((UINT32)0xF) << 4;
 #else
-    _nx_system_build_options_4 |=  ((ULONG)NX_ARP_MAX_QUEUE_DEPTH) << 4;
+    _nx_system_build_options_4 |=  ((UINT32)NX_ARP_MAX_QUEUE_DEPTH) << 4;
 #endif
 #if (NX_TCP_KEEPALIVE_RETRIES > 0xF)
-    _nx_system_build_options_4 |=  ((ULONG)0xF);
+    _nx_system_build_options_4 |=  ((UINT32)0xF);
 #else
-    _nx_system_build_options_4 |=  ((ULONG)NX_TCP_KEEPALIVE_RETRIES);
+    _nx_system_build_options_4 |=  ((UINT32)NX_TCP_KEEPALIVE_RETRIES);
 #endif
 
     /* Setup the fifth option word.  */
 #if (NX_MAX_MULTICAST_GROUPS > 0xFF)
-    _nx_system_build_options_5 =  ((ULONG)0xFF000000);
+    _nx_system_build_options_5 =  ((UINT32)0xFF000000);
 #else
-    _nx_system_build_options_5 =  ((ULONG)NX_MAX_MULTICAST_GROUPS) << 24;
+    _nx_system_build_options_5 =  ((UINT32)NX_MAX_MULTICAST_GROUPS) << 24;
 #endif
 #if (NX_MAX_LISTEN_REQUESTS > 0xFF)
-    _nx_system_build_options_5 |=  ((ULONG)0xFF) << 16;
+    _nx_system_build_options_5 |=  ((UINT32)0xFF) << 16;
 #else
-    _nx_system_build_options_5 |=  ((ULONG)NX_MAX_LISTEN_REQUESTS) << 16;
+    _nx_system_build_options_5 |=  ((UINT32)NX_MAX_LISTEN_REQUESTS) << 16;
 #endif
 #if (NX_TCP_MAXIMUM_RETRIES > 0xFF)
-    _nx_system_build_options_5 |=  ((ULONG)0xFF) << 8;
+    _nx_system_build_options_5 |=  ((UINT32)0xFF) << 8;
 #else
-    _nx_system_build_options_5 |=  ((ULONG)NX_TCP_MAXIMUM_RETRIES) << 8;
+    _nx_system_build_options_5 |=  ((UINT32)NX_TCP_MAXIMUM_RETRIES) << 8;
 #endif
 #if (NX_TCP_MAXIMUM_TX_QUEUE > 0xFF)
-    _nx_system_build_options_5 |=  ((ULONG)0xFF);
+    _nx_system_build_options_5 |=  ((UINT32)0xFF);
 #else
-    _nx_system_build_options_5 |=  ((ULONG)NX_TCP_MAXIMUM_TX_QUEUE);
+    _nx_system_build_options_5 |=  ((UINT32)NX_TCP_MAXIMUM_TX_QUEUE);
 #endif
 }
 

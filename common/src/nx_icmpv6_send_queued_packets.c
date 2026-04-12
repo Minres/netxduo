@@ -74,7 +74,7 @@ UINT         next_hop_mtu;
 #ifdef NX_ENABLE_IPV6_PATH_MTU_DISCOVERY
 NX_IPV6_DESTINATION_ENTRY *dest_entry_ptr;
 NX_IPV6_HEADER            *ip_header_ptr;
-ULONG                      status;
+UINT32                      status;
 #endif  /* NX_ENABLE_IPV6_PATH_MTU_DISCOVERY */
 
 TX_INTERRUPT_SAVE_AREA
@@ -91,8 +91,8 @@ TX_INTERRUPT_SAVE_AREA
     mac_addr = nd_entry -> nx_nd_cache_mac_addr;
 
     /* Build the driver request packet.  */
-    driver_request.nx_ip_driver_physical_address_msw =  ((ULONG)(mac_addr[0]) << 8)  | mac_addr[1];
-    driver_request.nx_ip_driver_physical_address_lsw =  ((ULONG)(mac_addr[2]) << 24) | ((ULONG)(mac_addr[3]) << 16) | ((ULONG)(mac_addr[4]) << 8) | mac_addr[5];
+    driver_request.nx_ip_driver_physical_address_msw =  ((UINT32)(mac_addr[0]) << 8)  | mac_addr[1];
+    driver_request.nx_ip_driver_physical_address_lsw =  ((UINT32)(mac_addr[2]) << 24) | ((UINT32)(mac_addr[3]) << 16) | ((UINT32)(mac_addr[4]) << 8) | mac_addr[5];
     driver_request.nx_ip_driver_ptr                  =  ip_ptr;
     driver_request.nx_ip_driver_command              =  NX_LINK_PACKET_SEND;
     driver_request.nx_ip_driver_interface            =  nd_entry -> nx_nd_cache_interface_ptr;
@@ -137,7 +137,7 @@ TX_INTERRUPT_SAVE_AREA
         if (status == NX_SUCCESS)
         {
 
-        ULONG                      next_hop_address[4];
+        UINT32                      next_hop_address[4];
         NX_IPV6_DESTINATION_ENTRY *next_hop_dest_entry_ptr;
 
             /* If this destination has a non null next hop, we need to ascertain the next hop MTU.  */
@@ -201,7 +201,7 @@ TX_INTERRUPT_SAVE_AREA
             ip_ptr -> nx_ip_total_packets_sent++;
 
             /* Increment the IP bytes sent count.  */
-            ip_ptr -> nx_ip_total_bytes_sent +=  ip_packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER);
+            ip_ptr -> nx_ip_total_bytes_sent +=  ip_packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER);
 #endif /* !NX_DISABLE_IP_INFO */
 
             /* Add debug information. */

@@ -378,7 +378,7 @@ typedef struct NX_SNMP_TRAP_OBJECT_STRUCT
 
 typedef struct NX_SNMP_AGENT_STRUCT 
 {
-    ULONG           nx_snmp_agent_id;                               /* SNMP Agent ID                        */
+    UINT32           nx_snmp_agent_id;                               /* SNMP Agent ID                        */
     CHAR           *nx_snmp_agent_name;                             /* Name of this SNMP Agent              */
     NX_IP          *nx_snmp_agent_ip_ptr;                           /* Pointer to associated IP structure   */ 
     NX_PACKET_POOL *nx_snmp_agent_packet_pool_ptr;                  /* Pointer to SNMP agent packet pool    */ 
@@ -389,14 +389,14 @@ typedef struct NX_SNMP_AGENT_STRUCT
     UINT            nx_snmp_agent_v2_enabled;                       /* SNMP agent enabled for V2/V2C status */
     UINT            nx_snmp_agent_v3_enabled;                       /* SNMP agent enabled for V3 status     */
 #ifndef NX_SNMP_DISABLE_V3
-    ULONG           nx_snmp_agent_v3_message_id;                    /* SNMP v3 message id                   */ 
-    ULONG           nx_snmp_agent_v3_message_size;                  /* SNMP v3 message size                 */ 
-    ULONG           nx_snmp_agent_v3_message_security_type;         /* SNMP v3 message security type        */ 
+    UINT32           nx_snmp_agent_v3_message_id;                    /* SNMP v3 message id                   */ 
+    UINT32           nx_snmp_agent_v3_message_size;                  /* SNMP v3 message size                 */ 
+    UINT32           nx_snmp_agent_v3_message_security_type;         /* SNMP v3 message security type        */ 
     UCHAR           nx_snmp_agent_v3_message_security_options;      /* SNMP v3 message security flags       */ 
     UCHAR           nx_snmp_agent_v3_security_context_engine[NX_SNMP_MAX_CONTEXT_STRING]; /* Context engine */
     UINT            nx_snmp_agent_v3_security_context_engine_size;  /* SNMP v3 security context engine size */
-    ULONG           nx_snmp_agent_v3_security_engine_boots;         /* SNMP v3 security engine boot count   */ 
-    ULONG           nx_snmp_agent_v3_security_engine_boot_time;     /* SNMP v3 security engine boot time    */ 
+    UINT32           nx_snmp_agent_v3_security_engine_boots;         /* SNMP v3 security engine boot count   */ 
+    UINT32           nx_snmp_agent_v3_security_engine_boot_time;     /* SNMP v3 security engine boot time    */ 
     UCHAR           nx_snmp_agent_v3_security_user_name[NX_SNMP_MAX_USER_NAME]; /* SNMPv3 security username */
     UINT            nx_snmp_agent_v3_security_user_name_size;       /* SNMP v3 security user name size      */
     UCHAR           nx_snmp_agent_v3_security_trap_name[NX_SNMP_MAX_TRAP_NAME]; /* SNMPv3 username to send trap messages */
@@ -435,32 +435,32 @@ typedef struct NX_SNMP_AGENT_STRUCT
     NX_SNMP_OBJECT_DATA nx_snmp_agent_current_object_data;          /* Current SNMP Object information      */
     NXD_ADDRESS     nx_snmp_agent_current_manager_ip;               /* Current SNMP Manager IPv6/IPv4 address*/ 
     UINT            nx_snmp_agent_current_manager_port;             /* Current SNMP Manager UDP port        */ 
-    ULONG           nx_snmp_agent_packets_received;                 /* Number of SNMP packets received      */ 
-    ULONG           nx_snmp_agent_packets_sent;                     /* Number of SNMP packets sent          */ 
-    ULONG           nx_snmp_agent_invalid_version;                  /* Number of invalid SNMP versions      */ 
-    ULONG           nx_snmp_agent_total_get_variables;              /* Number of variables to get           */ 
-    ULONG           nx_snmp_agent_total_set_variables;              /* Number of variables to set           */ 
-    ULONG           nx_snmp_agent_too_big_errors;                   /* Number of too big errors sent        */ 
-    ULONG           nx_snmp_agent_no_such_name_errors;              /* Number of no such name errors sent   */ 
-    ULONG           nx_snmp_agent_bad_value_errors;                 /* Number of bad value errors sent      */ 
-    ULONG           nx_snmp_agent_general_errors;                   /* Number of general errors sent        */ 
-    ULONG           nx_snmp_agent_request_errors;                   /* Number of errors on SNMP requests    */ 
-    ULONG           nx_snmp_agent_get_requests;                     /* Number of GET requests               */ 
-    ULONG           nx_snmp_agent_getnext_requests;                 /* Number of GETNEXT requests           */ 
-    ULONG           nx_snmp_agent_getbulk_requests;                 /* Number of GETBULK requests           */ 
-    ULONG           nx_snmp_agent_set_requests;                     /* Number of SET requests               */ 
-    ULONG           nx_snmp_agent_reports_sent;                     /* Number of DISCOVERY requests         */ 
-    ULONG           nx_snmp_agent_internal_errors;                  /* Number of internal errors detected   */  
-    ULONG           nx_snmp_agent_traps_sent;                       /* Number of traps sent                 */ 
-    ULONG           nx_snmp_agent_total_bytes_sent;                 /* Number of total bytes sent           */ 
-    ULONG           nx_snmp_agent_total_bytes_received;             /* Number of total bytes received       */ 
-    ULONG           nx_snmp_agent_unknown_requests;                 /* Number of unknown commands received  */ 
-    ULONG           nx_snmp_agent_invalid_packets;                  /* Number of invalid SNMP packets       */ 
-    ULONG           nx_snmp_agent_allocation_errors;                /* Number of allocation errors          */ 
-    ULONG           nx_snmp_agent_username_errors;                  /* Number of community/username errors  */ 
-    ULONG           nx_snmp_agent_authentication_errors;            /* Number of authentication errors      */ 
-    ULONG           nx_snmp_agent_privacy_errors;                   /* Number of privacy errors             */ 
-    ULONG           nx_snmp_agent_getresponse_sent;                 /* Number of getresponse sent           */ 
+    UINT32           nx_snmp_agent_packets_received;                 /* Number of SNMP packets received      */ 
+    UINT32           nx_snmp_agent_packets_sent;                     /* Number of SNMP packets sent          */ 
+    UINT32           nx_snmp_agent_invalid_version;                  /* Number of invalid SNMP versions      */ 
+    UINT32           nx_snmp_agent_total_get_variables;              /* Number of variables to get           */ 
+    UINT32           nx_snmp_agent_total_set_variables;              /* Number of variables to set           */ 
+    UINT32           nx_snmp_agent_too_big_errors;                   /* Number of too big errors sent        */ 
+    UINT32           nx_snmp_agent_no_such_name_errors;              /* Number of no such name errors sent   */ 
+    UINT32           nx_snmp_agent_bad_value_errors;                 /* Number of bad value errors sent      */ 
+    UINT32           nx_snmp_agent_general_errors;                   /* Number of general errors sent        */ 
+    UINT32           nx_snmp_agent_request_errors;                   /* Number of errors on SNMP requests    */ 
+    UINT32           nx_snmp_agent_get_requests;                     /* Number of GET requests               */ 
+    UINT32           nx_snmp_agent_getnext_requests;                 /* Number of GETNEXT requests           */ 
+    UINT32           nx_snmp_agent_getbulk_requests;                 /* Number of GETBULK requests           */ 
+    UINT32           nx_snmp_agent_set_requests;                     /* Number of SET requests               */ 
+    UINT32           nx_snmp_agent_reports_sent;                     /* Number of DISCOVERY requests         */ 
+    UINT32           nx_snmp_agent_internal_errors;                  /* Number of internal errors detected   */  
+    UINT32           nx_snmp_agent_traps_sent;                       /* Number of traps sent                 */ 
+    UINT32           nx_snmp_agent_total_bytes_sent;                 /* Number of total bytes sent           */ 
+    UINT32           nx_snmp_agent_total_bytes_received;             /* Number of total bytes received       */ 
+    UINT32           nx_snmp_agent_unknown_requests;                 /* Number of unknown commands received  */ 
+    UINT32           nx_snmp_agent_invalid_packets;                  /* Number of invalid SNMP packets       */ 
+    UINT32           nx_snmp_agent_allocation_errors;                /* Number of allocation errors          */ 
+    UINT32           nx_snmp_agent_username_errors;                  /* Number of community/username errors  */ 
+    UINT32           nx_snmp_agent_authentication_errors;            /* Number of authentication errors      */ 
+    UINT32           nx_snmp_agent_privacy_errors;                   /* Number of privacy errors             */ 
+    UINT32           nx_snmp_agent_getresponse_sent;                 /* Number of getresponse sent           */ 
     NX_UDP_SOCKET   nx_snmp_agent_socket;                           /* SNMP Server UDP socket               */ 
     TX_THREAD       nx_snmp_agent_thread;                           /* SNMP agent thread                    */ 
     UINT (*nx_snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data);
@@ -635,7 +635,7 @@ UINT    nx_snmp_agent_community_get(NX_SNMP_AGENT *agent_ptr, UCHAR **community_
 UINT    nx_snmp_agent_context_engine_set(NX_SNMP_AGENT *agent_ptr, UCHAR *context_engine, UINT context_engine_size);
 UINT    nx_snmp_agent_context_name_set(NX_SNMP_AGENT *agent_ptr, UCHAR *context_name, UINT context_name_size);
 UINT    nx_snmp_agent_v3_context_boots_set(NX_SNMP_AGENT *agent_ptr, UINT boots); 
-UINT    nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT    nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*snmp_agent_username_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *username),
                 UINT (*snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_getnext_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
@@ -651,16 +651,16 @@ UINT    nx_snmp_agent_private_string_test(NX_SNMP_AGENT *agent_ptr, UCHAR *commu
 UINT    nx_snmp_agent_public_string_test(NX_SNMP_AGENT *agent_ptr, UCHAR *community_string, UINT *is_public);
 UINT    nx_snmp_agent_start(NX_SNMP_AGENT *agent_ptr);
 UINT    nx_snmp_agent_stop(NX_SNMP_AGENT *agent_ptr);
-UINT    nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nxd_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nxd_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nxd_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nxd_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
 UINT    nx_snmp_object_compare(UCHAR *requested_object, UCHAR *reference_object);
 UINT    nx_snmp_object_compare_extended(UCHAR *requested_object, UINT requested_object_length, UCHAR *actual_object, UINT actual_object_length);
 UINT    nx_snmp_object_copy(UCHAR *source_object_name, UCHAR *destination_object_name);
@@ -723,12 +723,12 @@ UINT    _nx_snmp_agent_context_name_set(NX_SNMP_AGENT *agent_ptr, UCHAR *context
 UINT    _nxe_snmp_agent_context_name_set(NX_SNMP_AGENT *agent_ptr, UCHAR *context_name, UINT context_name_size);
 UINT    _nx_snmp_agent_v3_context_boots_set(NX_SNMP_AGENT *agent_ptr, UINT boots); 
 UINT    _nxe_snmp_agent_v3_context_boots_set(NX_SNMP_AGENT *agent_ptr, UINT boots); 
-UINT    _nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT    _nx_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*snmp_agent_username_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *username),
                 UINT (*snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_getnext_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_set_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data));
-UINT    _nxe_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT    _nxe_snmp_agent_create(NX_SNMP_AGENT *agent_ptr, CHAR *snmp_agent_name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*snmp_agent_username_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *username),
                 UINT (*snmp_agent_get_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
                 UINT (*snmp_agent_getnext_process)(struct NX_SNMP_AGENT_STRUCT *agent_ptr, UCHAR *object_requested, NX_SNMP_OBJECT_DATA *object_data),
@@ -755,26 +755,26 @@ UINT    _nx_snmp_agent_start(NX_SNMP_AGENT *agent_ptr);
 UINT    _nxe_snmp_agent_start(NX_SNMP_AGENT *agent_ptr);
 UINT    _nx_snmp_agent_stop(NX_SNMP_AGENT *agent_ptr);
 UINT    _nxe_snmp_agent_stop(NX_SNMP_AGENT *agent_ptr);
-UINT    _nxe_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxe_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxe_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxe_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxe_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, ULONG ip_address, UCHAR *username, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxd_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxde_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxd_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxde_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxde_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxde_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
-UINT    _nxde_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, ULONG elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxe_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nx_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nx_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxe_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nx_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxe_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nx_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxe_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nx_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxe_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, UINT32 ip_address, UCHAR *username, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxd_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxde_snmp_agent_trap_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UCHAR *enterprise, UINT trap_type, UINT trap_code, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxd_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxde_snmp_agent_trapv2_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *community, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxd_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxde_snmp_agent_trapv3_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ip_address, UCHAR *username, UINT trap_type, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxd_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxde_snmp_agent_trapv2_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxd_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
+UINT    _nxde_snmp_agent_trapv3_oid_send(NX_SNMP_AGENT *agent_ptr, NXD_ADDRESS *ipduo_address, UCHAR *community, UCHAR *oid, UINT32 elapsed_time, NX_SNMP_TRAP_OBJECT *object_list_ptr);
 UINT    _nx_snmp_object_compare(UCHAR *requested_object, UCHAR *reference_object);
 UINT    _nxe_snmp_object_compare(UCHAR *requested_object, UCHAR *reference_object);
 UINT    _nx_snmp_object_compare_extended(UCHAR *requested_object, UINT requested_object_length, UCHAR *actual_object, UINT actual_object_length);
@@ -850,14 +850,14 @@ UINT    _nx_snmp_utility_octet_set(UCHAR *buffer_ptr, UCHAR *octet_string, UINT 
 UINT    _nx_snmp_utility_sequence_get(UCHAR *buffer_ptr, UINT *sequence_value, INT buffer_length);
 UINT    _nx_snmp_utility_sequence_set(UCHAR *buffer_ptr, UINT sequence_value, UCHAR *buffer_end);
 UINT    _nx_snmp_utility_sequence_set_1byte(UCHAR *buffer_ptr, UINT sequence_value, UCHAR *buffer_end);
-UINT    _nx_snmp_utility_request_id_get(UCHAR *buffer_ptr, ULONG *request_id, INT buffer_length);
-UINT    _nx_snmp_utility_request_id_set(UCHAR *buffer_ptr, ULONG request_id, UCHAR *buffer_end);
+UINT    _nx_snmp_utility_request_id_get(UCHAR *buffer_ptr, UINT32 *request_id, INT buffer_length);
+UINT    _nx_snmp_utility_request_id_set(UCHAR *buffer_ptr, UINT32 request_id, UCHAR *buffer_end);
 UINT    _nx_snmp_utility_request_type_get(UCHAR *buffer_ptr, UINT *request_type, UINT *request_length, INT buffer_length);
 UINT    _nx_snmp_utility_request_type_set_1byte(UCHAR *buffer_ptr, UINT request_type, UINT request_length, UCHAR *buffer_end);
 UINT    _nx_snmp_utility_request_type_set_multibyte(UCHAR *buffer_ptr, UINT request_type, UINT request_length, UCHAR *buffer_end);
 UINT    _nx_snmp_utility_version_get(UCHAR *buffer_ptr, UINT *snmp_version, INT buffer_length);
 UINT    _nx_snmp_utility_version_set(UCHAR *buffer_ptr, UINT snmp_version, UCHAR *buffer_end);
-UINT    _nx_snmp_utility_tlv_block_parse(UCHAR *buffer, INT buffer_length, USHORT *tlv_type, USHORT *tlv_tag_class, ULONG *tlv_length, UCHAR **tlv_data, ULONG *header_length);
+UINT    _nx_snmp_utility_tlv_block_parse(UCHAR *buffer, INT buffer_length, USHORT *tlv_type, USHORT *tlv_tag_class, UINT32 *tlv_length, UCHAR **tlv_data, UINT32 *header_length);
 VOID    _nx_snmp_version_error_response(NX_SNMP_AGENT *agent_ptr, NX_PACKET *packet_ptr, UCHAR *request_type_ptr, UCHAR *error_string_ptr, UINT status, UINT objects);
 VOID    _nx_snmp_version_1_and_2_process(NX_SNMP_AGENT *agent_ptr, NX_PACKET *packet_ptr);
 VOID    _nx_snmp_version_3_report_send(NX_SNMP_AGENT *agent_ptr, UCHAR *buffer_ptr, UINT discovery_response, INT buffer_length);

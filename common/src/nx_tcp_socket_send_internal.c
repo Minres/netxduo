@@ -73,14 +73,14 @@
 /*    _nx_tcp_socket_send_internal                                        */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_tcp_socket_driver_send(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+static UINT _nx_tcp_socket_driver_send(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 UINT            status;
 NX_IP          *ip_ptr;
 NX_INTERFACE   *interface_ptr = socket_ptr -> nx_tcp_socket_connect_interface;
 #ifdef NX_ENABLE_IP_PACKET_FILTER
 UCHAR          *original_ptr = packet_ptr -> nx_packet_prepend_ptr;
-ULONG           original_length = packet_ptr -> nx_packet_length;
+UINT32           original_length = packet_ptr -> nx_packet_length;
 NX_TCP_HEADER  *header_ptr;
 #endif /* NX_ENABLE_IP_PACKET_FILTER */
 
@@ -97,15 +97,15 @@ NX_TCP_HEADER  *header_ptr;
         packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_TCP_HEADER);
 
         /* Add the length of the TCP header.  */
-        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_TCP_HEADER);
+        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_TCP_HEADER);
 
         /* Pickup the pointer to the head of the TCP packet.  */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
         header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
         /* Build the output request in the TCP header.  */
-        header_ptr -> nx_tcp_header_word_0 = (((ULONG)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) |
-                                                (ULONG)socket_ptr -> nx_tcp_socket_connect_port;
+        header_ptr -> nx_tcp_header_word_0 = (((UINT32)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) |
+                                                (UINT32)socket_ptr -> nx_tcp_socket_connect_port;
         header_ptr -> nx_tcp_acknowledgment_number = 0;
         header_ptr -> nx_tcp_sequence_number = 0;            
         header_ptr -> nx_tcp_header_word_3 = NX_TCP_HEADER_SIZE | NX_TCP_ACK_BIT | NX_TCP_PSH_BIT;
@@ -113,8 +113,8 @@ NX_TCP_HEADER  *header_ptr;
         
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
             swap the endian of the TCP header.  */
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_0);
-        NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
 
 #ifndef NX_DISABLE_IPV4
         if (socket_ptr -> nx_tcp_socket_connect_ip.nxd_ip_version == NX_IP_VERSION_V4)
@@ -241,7 +241,7 @@ NX_TCP_HEADER  *header_ptr;
 /*    size does not exceed MSS.                                           */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_send_internal(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, ULONG wait_option)
+UINT  _nx_tcp_socket_send_internal(NX_TCP_SOCKET *socket_ptr, NX_PACKET *packet_ptr, UINT32 wait_option)
 {
 
 TX_INTERRUPT_SAVE_AREA
@@ -249,24 +249,24 @@ TX_INTERRUPT_SAVE_AREA
 NX_IP          *ip_ptr;
 NX_PACKET_POOL *pool_ptr;
 NX_TCP_HEADER  *header_ptr;
-ULONG           checksum = 0;
-ULONG           sequence_number;
-ULONG           tx_window_current;
-ULONG           remaining_bytes;
-ULONG          *source_ip = NX_NULL, *dest_ip = NX_NULL;
-ULONG           send_mss;
+UINT32           checksum = 0;
+UINT32           sequence_number;
+UINT32           tx_window_current;
+UINT32           remaining_bytes;
+UINT32          *source_ip = NX_NULL, *dest_ip = NX_NULL;
+UINT32           send_mss;
 NX_PACKET      *send_packet = packet_ptr;
 NX_PACKET      *current_packet;
 UCHAR          *current_ptr;
-ULONG           data_offset = 0;
-ULONG           source_data_size;
-ULONG           copy_size;
+UINT32           data_offset = 0;
+UINT32           source_data_size;
+UINT32           copy_size;
 UINT            data_left;
 UINT            ret;
 UCHAR           preempted = NX_FALSE;
 UCHAR           adjust_packet;
 UINT            old_threshold = 0;
-ULONG           window_size;
+UINT32           window_size;
 #ifdef NX_ENABLE_TCPIP_OFFLOAD
 UINT            status;
 NX_INTERFACE   *interface_ptr;
@@ -472,7 +472,7 @@ UINT            compute_checksum = 1;
                 /* Packet need to be fragmented. */
                 adjust_packet = NX_TRUE;
             }
-            /*lint -e(923) suppress cast of pointer to ULONG.  */
+            /*lint -e(923) suppress cast of pointer to UINT32.  */
             else if (((ALIGN_TYPE)packet_ptr -> nx_packet_prepend_ptr) & 3)
             {
 
@@ -504,7 +504,7 @@ UINT            compute_checksum = 1;
                 /* packet length is not 0. Therefore the packet chain is expected to contain data. */
                 NX_ASSERT(current_packet != NX_NULL);
 
-                /*lint -e{923} suppress cast of pointer to ULONG.  */
+                /*lint -e{923} suppress cast of pointer to UINT32.  */
                 if (((ALIGN_TYPE)current_packet -> nx_packet_prepend_ptr) & 3)
                 {
 
@@ -580,7 +580,7 @@ UINT            compute_checksum = 1;
 
                     /* Figure out whether or not the source packet still contains data. */
                     /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-                    source_data_size = (ULONG)(current_packet -> nx_packet_append_ptr - current_ptr);
+                    source_data_size = (UINT32)(current_packet -> nx_packet_append_ptr - current_ptr);
                     while (source_data_size == 0)
                     {
 
@@ -618,7 +618,7 @@ UINT            compute_checksum = 1;
 
                         /* Compute the amount of data present in this source buffer. */
                         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-                        source_data_size = (ULONG)(current_packet -> nx_packet_append_ptr - current_ptr);
+                        source_data_size = (UINT32)(current_packet -> nx_packet_append_ptr - current_ptr);
 #endif /* NX_DISABLE_PACKET_CHAIN */
                     }
 
@@ -702,14 +702,14 @@ UINT            compute_checksum = 1;
             send_packet -> nx_packet_prepend_ptr =  send_packet -> nx_packet_prepend_ptr - sizeof(NX_TCP_HEADER);
 
             /* Add the length of the TCP header.  */
-            send_packet -> nx_packet_length =  send_packet -> nx_packet_length + (ULONG)sizeof(NX_TCP_HEADER);
+            send_packet -> nx_packet_length =  send_packet -> nx_packet_length + (UINT32)sizeof(NX_TCP_HEADER);
 
             /* Pickup the pointer to the head of the TCP packet.  */
             /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
             header_ptr =  (NX_TCP_HEADER *)send_packet -> nx_packet_prepend_ptr;
 
             /* Build the output request in the TCP header.  */
-            header_ptr -> nx_tcp_header_word_0 =        (((ULONG)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) | (ULONG)socket_ptr -> nx_tcp_socket_connect_port;
+            header_ptr -> nx_tcp_header_word_0 =        (((UINT32)(socket_ptr -> nx_tcp_socket_port)) << NX_SHIFT_BY_16) | (UINT32)socket_ptr -> nx_tcp_socket_connect_port;
             header_ptr -> nx_tcp_acknowledgment_number = socket_ptr -> nx_tcp_socket_rx_sequence;
 
             /* Set window size. */
@@ -737,10 +737,10 @@ UINT            compute_checksum = 1;
 
             /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
                swap the endian of the TCP header.  */
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_0);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_acknowledgment_number);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_3);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_0);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_acknowledgment_number);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_3);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
 
             /* Release the protection.  */
             tx_mutex_put(&(ip_ptr -> nx_ip_protection));
@@ -750,7 +750,7 @@ UINT            compute_checksum = 1;
             sequence_number =  header_ptr -> nx_tcp_sequence_number;
 
             /* Swap the headers for endianness. */
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_sequence_number);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_sequence_number);
 
 #ifdef NX_ENABLE_INTERFACE_CAPABILITY
             if (socket_ptr -> nx_tcp_socket_connect_interface -> nx_interface_capability_flag & NX_INTERFACE_CAPABILITY_TCP_TX_CHECKSUM)
@@ -843,7 +843,7 @@ UINT            compute_checksum = 1;
 
             /* Adjust the transmit sequence number to reflect the output data.  */
             socket_ptr -> nx_tcp_socket_tx_sequence = socket_ptr -> nx_tcp_socket_tx_sequence +
-                (send_packet -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER));
+                (send_packet -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER));
 
             /* Restore interrupts.  */
             TX_RESTORE
@@ -852,12 +852,12 @@ UINT            compute_checksum = 1;
             socket_ptr -> nx_tcp_socket_zero_window_probe_has_data = NX_FALSE;
 
             /* Move the checksum into header.  */
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
             header_ptr -> nx_tcp_header_word_4 =  (checksum << NX_SHIFT_BY_16);
-            NX_CHANGE_ULONG_ENDIAN(header_ptr -> nx_tcp_header_word_4);
+            NX_CHANGE_UINT32_ENDIAN(header_ptr -> nx_tcp_header_word_4);
 
             /* Place the packet on the sent list.  */
-            data_left -= (send_packet -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER));
+            data_left -= (send_packet -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER));
             if (socket_ptr -> nx_tcp_socket_transmit_sent_head)
             {
 
@@ -879,7 +879,7 @@ UINT            compute_checksum = 1;
             }
 
             /* Set the next pointer to NX_PACKET_ENQUEUED to indicate the packet is part of a TCP queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             send_packet -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ENQUEUED;
 
             /* Increment the packet sent count.  */
@@ -887,15 +887,15 @@ UINT            compute_checksum = 1;
 
             /* Increase the transmit outstanding byte count. */
             socket_ptr -> nx_tcp_socket_tx_outstanding_bytes +=
-                (send_packet -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER));
+                (send_packet -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER));
 #ifndef NX_DISABLE_TCP_INFO
             /* Increment the TCP packet sent count and bytes sent count.  */
             ip_ptr -> nx_ip_tcp_packets_sent++;
-            ip_ptr -> nx_ip_tcp_bytes_sent += send_packet -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER);
+            ip_ptr -> nx_ip_tcp_bytes_sent += send_packet -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER);
 
             /* Increment the TCP packet sent count and bytes sent count for the socket.  */
             socket_ptr -> nx_tcp_socket_packets_sent++;
-            socket_ptr -> nx_tcp_socket_bytes_sent += send_packet -> nx_packet_length - (ULONG)sizeof(NX_TCP_HEADER);
+            socket_ptr -> nx_tcp_socket_bytes_sent += send_packet -> nx_packet_length - (UINT32)sizeof(NX_TCP_HEADER);
 #endif /* NX_DISABLE_TCP_INFO */
 
 #ifdef NX_ENABLE_VLAN
@@ -977,13 +977,13 @@ UINT            compute_checksum = 1;
                 {
 
                     /* Trim all data in the train. */
-                    /*lint -e{923} suppress cast of pointer to ULONG.  */
-                    packet_ptr -> nx_packet_length -= (ULONG)((ALIGN_TYPE)current_packet -> nx_packet_append_ptr - (ALIGN_TYPE)current_packet -> nx_packet_prepend_ptr);
+                    /*lint -e{923} suppress cast of pointer to UINT32.  */
+                    packet_ptr -> nx_packet_length -= (UINT32)((ALIGN_TYPE)current_packet -> nx_packet_append_ptr - (ALIGN_TYPE)current_packet -> nx_packet_prepend_ptr);
 
-                    /*lint -e{923} suppress cast of pointer to ULONG.  */
-                    remaining_bytes -= (ULONG)((ALIGN_TYPE)current_packet -> nx_packet_append_ptr - (ALIGN_TYPE)current_packet -> nx_packet_prepend_ptr);
+                    /*lint -e{923} suppress cast of pointer to UINT32.  */
+                    remaining_bytes -= (UINT32)((ALIGN_TYPE)current_packet -> nx_packet_append_ptr - (ALIGN_TYPE)current_packet -> nx_packet_prepend_ptr);
 
-                    /*lint -e{923} suppress cast between ULONG and pointer.  */
+                    /*lint -e{923} suppress cast between UINT32 and pointer.  */
                     current_packet -> nx_packet_append_ptr = (UCHAR *)(((ALIGN_TYPE)current_packet -> nx_packet_append_ptr) & (ALIGN_TYPE)(~3));
                     current_packet -> nx_packet_prepend_ptr = current_packet -> nx_packet_append_ptr;
 

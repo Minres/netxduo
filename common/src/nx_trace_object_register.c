@@ -29,7 +29,7 @@
 
 
 #ifdef TX_ENABLE_EVENT_TRACE
-extern VOID _tx_trace_object_register(UCHAR, VOID *, CHAR *, ULONG, ULONG);
+extern VOID _tx_trace_object_register(UCHAR, VOID *, CHAR *, UINT32, UINT32);
 /**************************************************************************/
 /*                                                                        */
 /*  FUNCTION                                               RELEASE        */
@@ -65,7 +65,7 @@ extern VOID _tx_trace_object_register(UCHAR, VOID *, CHAR *, ULONG, ULONG);
 /*    Application Initialization                                          */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_trace_object_register(UCHAR object_type, VOID *object_ptr, CHAR *object_name, ULONG parameter_1, ULONG parameter_2)
+VOID  _nx_trace_object_register(UCHAR object_type, VOID *object_ptr, CHAR *object_name, UINT32 parameter_1, UINT32 parameter_2)
 {
 
 TX_INTERRUPT_SAVE_AREA

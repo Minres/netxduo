@@ -318,7 +318,7 @@ typedef struct NX_SMTP_CLIENT_MAIL_STRUCT
 
 typedef struct NX_SMTP_CLIENT_STRUCT
 {
-    ULONG                           nx_smtp_client_id;                                      /* SMTP ID for identify client service.  */
+    UINT32                           nx_smtp_client_id;                                      /* SMTP ID for identify client service.  */
     CHAR                            nx_smtp_username[NX_SMTP_CLIENT_MAX_USERNAME + 1];      /* Client name (may be used in authentication) */
     CHAR                            nx_smtp_password[NX_SMTP_CLIENT_MAX_PASSWORD + 1];      /* Client password (used in authentication) */
     CHAR                            nx_smtp_client_domain[NX_SMTP_CLIENT_MAX_USERNAME + 1]; /* Client domain of the client (and sender) */

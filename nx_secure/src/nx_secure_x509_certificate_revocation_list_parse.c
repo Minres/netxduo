@@ -26,23 +26,23 @@
 
 #ifndef NX_SECURE_X509_DISABLE_CRL
 /* Helper functions. */
-static UINT _nx_secure_x509_crl_tbscert_list_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_tbscert_list_parse(const UCHAR *buffer, UINT32 length,
                                                    UINT *bytes_processed, NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_signature_algorithm_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_signature_algorithm_parse(const UCHAR *buffer, UINT32 length,
                                                           UINT *bytes_processed,
                                                           NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_signature_data_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_signature_data_parse(const UCHAR *buffer, UINT32 length,
                                                      UINT *bytes_processed, NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_version_parse(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_crl_version_parse(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                               NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_issuer_parse(const UCHAR *buffer, ULONG length, UINT *bytes_processed,
+static UINT _nx_secure_x509_crl_issuer_parse(const UCHAR *buffer, UINT32 length, UINT *bytes_processed,
                                              NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_update_times_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_update_times_parse(const UCHAR *buffer, UINT32 length,
                                                    UINT *bytes_processed, NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_revoked_certs_list_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_revoked_certs_list_parse(const UCHAR *buffer, UINT32 length,
                                                          UINT *bytes_processed,
                                                          NX_SECURE_X509_CRL *crl);
-static UINT _nx_secure_x509_crl_extensions_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_extensions_parse(const UCHAR *buffer, UINT32 length,
                                                  UINT *bytes_processed, NX_SECURE_X509_CRL *crl);
 
 
@@ -94,10 +94,10 @@ UINT _nx_secure_x509_certificate_revocation_list_parse(const UCHAR *buffer, UINT
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  ASN.1 for CRL structure from RFC 5280:
@@ -152,7 +152,7 @@ UINT         status;
      */
 
     /*  Parse a TLV block - first block should be the CertificateList. */
-    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (ULONG *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
+    status = _nx_secure_x509_asn1_tlv_block_parse(buffer, (UINT32 *)&length, &tlv_type, &tlv_type_class, &tlv_length, &tlv_data, &header_length);
 
     /*  Make sure we parsed the block alright. */
     if (status != 0)
@@ -256,16 +256,16 @@ UINT         status;
 /*                                          Parse revocation list         */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_tbscert_list_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_tbscert_list_parse(const UCHAR *buffer, UINT32 length,
                                                    UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 UINT         cur_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*
@@ -433,16 +433,16 @@ UINT         status;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_signature_algorithm_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_signature_algorithm_parse(const UCHAR *buffer, UINT32 length,
                                                           UINT *bytes_processed,
                                                           NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
 UINT         oid;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 UCHAR        oid_found = NX_CRYPTO_FALSE;
 
@@ -548,14 +548,14 @@ UCHAR        oid_found = NX_CRYPTO_FALSE;
 /*                                          Parse revocation list         */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_signature_data_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_signature_data_parse(const UCHAR *buffer, UINT32 length,
                                                      UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  First, parse the sequence. */
@@ -623,14 +623,14 @@ UINT         status;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_version_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_version_parse(const UCHAR *buffer, UINT32 length,
                                               UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  Parse a TLV block and get information to continue parsing. */
@@ -702,15 +702,15 @@ UINT         status;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_issuer_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_issuer_parse(const UCHAR *buffer, UINT32 length,
                                              UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 UINT         bytes;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     /*  First, parse the sequence. */
@@ -773,14 +773,14 @@ UINT         status;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_update_times_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_update_times_parse(const UCHAR *buffer, UINT32 length,
                                                    UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 const UCHAR *current_buffer;
 
@@ -875,15 +875,15 @@ const UCHAR *current_buffer;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_revoked_certs_list_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_revoked_certs_list_parse(const UCHAR *buffer, UINT32 length,
                                                          UINT *bytes_processed,
                                                          NX_SECURE_X509_CRL *crl)
 {
 USHORT       tlv_type;
 USHORT       tlv_type_class;
-ULONG        tlv_length;
+UINT32        tlv_length;
 const UCHAR *tlv_data;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 const UCHAR *current_buffer;
 
@@ -950,19 +950,19 @@ const UCHAR *current_buffer;
 /*                                          Parse TBSCertList in crl      */
 /*                                                                        */
 /**************************************************************************/
-static UINT _nx_secure_x509_crl_extensions_parse(const UCHAR *buffer, ULONG length,
+static UINT _nx_secure_x509_crl_extensions_parse(const UCHAR *buffer, UINT32 length,
                                                  UINT *bytes_processed, NX_SECURE_X509_CRL *crl)
 {
 USHORT tlv_type;
 USHORT tlv_type_class;
-ULONG  tlv_length;
+UINT32  tlv_length;
 /*
-   ULONG        extensions_sequence_length;
+   UINT32        extensions_sequence_length;
    UINT         extension_oid;
  */
 const UCHAR *tlv_data;
 const UCHAR *current_buffer;
-ULONG        header_length;
+UINT32        header_length;
 UINT         status;
 
     NX_CRYPTO_PARAMETER_NOT_USED(bytes_processed);

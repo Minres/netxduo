@@ -81,7 +81,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxde_ip_raw_packet_send(NX_IP *ip_ptr, NX_PACKET **packet_ptr_ptr,
-                               NXD_ADDRESS *destination_ip, ULONG protocol, UINT ttl, ULONG tos)
+                               NXD_ADDRESS *destination_ip, UINT32 protocol, UINT ttl, UINT32 tos)
 {
 
 
@@ -92,8 +92,8 @@ NX_PACKET *packet_ptr;
     packet_ptr =  *packet_ptr_ptr;
 
     /* Check for invalid input pointers.  */
-    /* Cast the ULONG into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /* Cast the UINT32 into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((ip_ptr == NX_NULL) || (ip_ptr -> nx_ip_id != NX_IP_ID) || (packet_ptr == NX_NULL) ||
         (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)))
     {

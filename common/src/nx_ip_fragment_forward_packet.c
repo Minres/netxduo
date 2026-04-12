@@ -73,19 +73,19 @@
 /*    _nx_ip_forward_packet_process         Process the forward packet    */
 /*                                                                        */
 /**************************************************************************/
-VOID  _nx_ip_fragment_forward_packet(NX_IP *ip_ptr, NX_PACKET *source_packet, ULONG destination_ip, ULONG fragment, ULONG next_hop_address)
+VOID  _nx_ip_fragment_forward_packet(NX_IP *ip_ptr, NX_PACKET *source_packet, UINT32 destination_ip, UINT32 fragment, UINT32 next_hop_address)
 {
 
 UINT            status;
-ULONG           checksum;
-ULONG           temp;
+UINT32           checksum;
+UINT32           temp;
 UCHAR          *source_ptr;
-ULONG           remaining_bytes;
-ULONG           fragment_size;
-ULONG           copy_size;
-ULONG           copy_remaining_size;
-ULONG           more_fragment;
-ULONG           fragment_offset;
+UINT32           remaining_bytes;
+UINT32           fragment_size;
+UINT32           copy_size;
+UINT32           copy_remaining_size;
+UINT32           more_fragment;
+UINT32           fragment_offset;
 NX_PACKET      *fragment_packet;
 NX_IPV4_HEADER *source_header_ptr;
 NX_IPV4_HEADER *fragment_header_ptr;
@@ -115,14 +115,14 @@ NX_IPV4_HEADER *fragment_header_ptr;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the IP header.  */
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_1);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_2);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_source_ip);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_2);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_source_ip);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_destination_ip);
 
     /* Pickup the length of the packet and the starting pointer.  */
-    remaining_bytes =  (source_packet -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER));
+    remaining_bytes =  (source_packet -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER));
     source_ptr =  source_packet -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
     more_fragment = source_header_ptr -> nx_ip_header_word_1 & NX_IP_MORE_FRAGMENT;
     fragment_offset = (source_header_ptr -> nx_ip_header_word_1 & NX_IP_OFFSET_MASK) * NX_IP_ALIGN_FRAGS;
@@ -131,7 +131,7 @@ NX_IPV4_HEADER *fragment_header_ptr;
     source_header_ptr -> nx_ip_header_word_1 &= 0xFFFF0000;
 
     /* Derive the fragment size.  */
-    fragment_size =  (source_packet -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_mtu_size - (ULONG)sizeof(NX_IPV4_HEADER));
+    fragment_size =  (source_packet -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_mtu_size - (UINT32)sizeof(NX_IPV4_HEADER));
     fragment_size =  (fragment_size / NX_IP_ALIGN_FRAGS) * NX_IP_ALIGN_FRAGS;
 
     /* Loop to break the source packet into fragments and send each out through
@@ -190,11 +190,11 @@ NX_IPV4_HEADER *fragment_header_ptr;
             /* We need to copy the remaining bytes into the new packet and then move to the next
                packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (copy_remaining_size > (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr))
+            if (copy_remaining_size > (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr))
             {
 
                 /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-                copy_size = (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr);
+                copy_size = (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr);
             }
             else
             {
@@ -230,7 +230,7 @@ NX_IPV4_HEADER *fragment_header_ptr;
             copy_remaining_size -= copy_size;
 
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (copy_size == (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr))
+            if (copy_size == (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr))
             {
 
                 /* Move to the next physical packet in the source message.  */
@@ -276,7 +276,7 @@ NX_IPV4_HEADER *fragment_header_ptr;
 
         /* Setup the fragment packet pointers.  */
         fragment_packet -> nx_packet_prepend_ptr = (fragment_packet -> nx_packet_prepend_ptr - sizeof(NX_IPV4_HEADER));
-        fragment_packet -> nx_packet_length += (ULONG)sizeof(NX_IPV4_HEADER);
+        fragment_packet -> nx_packet_length += (UINT32)sizeof(NX_IPV4_HEADER);
 
         /* Setup the fragment's IP header.  */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
@@ -341,11 +341,11 @@ NX_IPV4_HEADER *fragment_header_ptr;
 #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
            swap the endian of the IP header.  */
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_0);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_1);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_2);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_source_ip);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_destination_ip);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_1);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_2);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_source_ip);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_destination_ip);
 
 #ifndef NX_DISABLE_IP_INFO
         /* Increment the IP fragments sent count.  */
@@ -355,7 +355,7 @@ NX_IPV4_HEADER *fragment_header_ptr;
         ip_ptr -> nx_ip_total_packets_sent++;
 
         /* Increment the IP bytes sent count.  */
-        ip_ptr -> nx_ip_total_bytes_sent +=  (fragment_packet -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER));
+        ip_ptr -> nx_ip_total_bytes_sent +=  (fragment_packet -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER));
 #endif
 
         /* Add debug information. */

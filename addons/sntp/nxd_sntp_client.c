@@ -60,16 +60,16 @@
 
 extern  TX_THREAD           *_tx_thread_current_ptr; 
 extern  TX_THREAD           _tx_timer_thread; 
-extern  volatile ULONG      _tx_thread_system_state;
+extern  volatile UINT32      _tx_thread_system_state;
 
 TX_EVENT_FLAGS_GROUP        nx_sntp_client_events;
 
 /* Define internal time variables for offsets between
    receipt of SNTP packet and application to
    SNTP Client local time. */
-static ULONG send_timerticks = 0;
-static ULONG receive_timerticks = 0;
-static ULONG process_timerticks = 0;
+static UINT32 send_timerticks = 0;
+static UINT32 receive_timerticks = 0;
+static UINT32 process_timerticks = 0;
 
 
 /**************************************************************************/ 
@@ -115,7 +115,7 @@ static ULONG process_timerticks = 0;
 UINT  _nxe_sntp_client_create(NX_SNTP_CLIENT *client_ptr, NX_IP *ip_ptr, UINT iface_index, NX_PACKET_POOL *packet_pool_ptr,   
                                 UINT (*leap_second_handler)(NX_SNTP_CLIENT *client_ptr, UINT indicator), 
                                 UINT (*kiss_of_death_handler)(NX_SNTP_CLIENT *client_ptr, UINT code),
-                                VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand))
+                                VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand))
 {
 
 UINT status;
@@ -205,7 +205,7 @@ UINT status;
 UINT  _nx_sntp_client_create(NX_SNTP_CLIENT *client_ptr, NX_IP *ip_ptr, UINT iface_index, NX_PACKET_POOL *packet_pool_ptr,    
                                 UINT (*leap_second_handler)(NX_SNTP_CLIENT *client_ptr, UINT indicator), 
                                 UINT (*kiss_of_death_handler)(NX_SNTP_CLIENT *client_ptr, UINT code),
-                                VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, ULONG *rand))
+                                VOID (random_number_generator)(struct NX_SNTP_CLIENT_STRUCT *client_ptr, UINT32 *rand))
 {
 
 UINT status;
@@ -282,7 +282,7 @@ UINT status;
 
     /* Create the SNTP update timeout timer.  */
     status =  tx_timer_create(&client_ptr -> nx_sntp_update_timer, "SNTP Client Update Timer",
-              _nx_sntp_client_update_timeout_entry, (ULONG)client_ptr, 
+              _nx_sntp_client_update_timeout_entry, (UINT32)client_ptr, 
               (NX_IP_PERIODIC_RATE * NX_SNTP_UPDATE_TIMEOUT_INTERVAL), 
               (NX_IP_PERIODIC_RATE * NX_SNTP_UPDATE_TIMEOUT_INTERVAL), TX_NO_ACTIVATE);
 
@@ -335,7 +335,7 @@ UINT status;
     }
 
     /* Create the SNTP Client processing thread.  */
-    status =  tx_thread_create(&(client_ptr -> nx_sntp_client_thread), "NetX SNTP Client", _nx_sntp_client_thread_entry, (ULONG)client_ptr,
+    status =  tx_thread_create(&(client_ptr -> nx_sntp_client_thread), "NetX SNTP Client", _nx_sntp_client_thread_entry, (UINT32)client_ptr,
                         client_ptr -> nx_sntp_client_thread_stack, NX_SNTP_CLIENT_THREAD_STACK_SIZE, 
                         NX_SNTP_CLIENT_THREAD_PRIORITY, NX_SNTP_CLIENT_PREEMPTION_THRESHOLD, 1, TX_DONT_START);
 
@@ -612,7 +612,7 @@ UINT  _nx_sntp_client_create_time_request_packet(NX_SNTP_CLIENT *client_ptr, NX_
 {
     NX_PARAMETER_NOT_USED(client_ptr);
 
-    if (40u > ((ULONG)(packet_ptr -> nx_packet_data_end) - (ULONG)(packet_ptr -> nx_packet_append_ptr)))
+    if (40u > ((UINT32)(packet_ptr -> nx_packet_data_end) - (UINT32)(packet_ptr -> nx_packet_append_ptr)))
     {
         return(NX_SIZE_ERROR);
     }
@@ -631,12 +631,12 @@ UINT  _nx_sntp_client_create_time_request_packet(NX_SNTP_CLIENT *client_ptr, NX_
     time_message_ptr -> transmit_time.fraction = time_message_ptr -> transmit_time_stamp[1];
 
     /* Now copy the data to the buffer. */
-    *((ULONG*)(packet_ptr -> nx_packet_append_ptr)) = (ULONG)(time_message_ptr -> transmit_time.seconds);
-    *((ULONG*)(packet_ptr -> nx_packet_append_ptr + 4)) = (ULONG)(time_message_ptr -> transmit_time.fraction);
+    *((UINT32*)(packet_ptr -> nx_packet_append_ptr)) = (UINT32)(time_message_ptr -> transmit_time.seconds);
+    *((UINT32*)(packet_ptr -> nx_packet_append_ptr + 4)) = (UINT32)(time_message_ptr -> transmit_time.fraction);
 
     /* Change endian to network order. */
-    NX_CHANGE_ULONG_ENDIAN(*((ULONG*)(packet_ptr -> nx_packet_append_ptr)));
-    NX_CHANGE_ULONG_ENDIAN(*((ULONG*)(packet_ptr -> nx_packet_append_ptr + 4)));
+    NX_CHANGE_UINT32_ENDIAN(*((UINT32*)(packet_ptr -> nx_packet_append_ptr)));
+    NX_CHANGE_UINT32_ENDIAN(*((UINT32*)(packet_ptr -> nx_packet_append_ptr + 4)));
 
     packet_ptr -> nx_packet_append_ptr += 8;
     packet_ptr -> nx_packet_length += 8;
@@ -822,7 +822,7 @@ UINT  _nxd_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, NXD_ADDRES
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, ULONG unicast_time_server)
+UINT  _nxe_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, UINT32 unicast_time_server)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -893,7 +893,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, ULONG unicast_time_server)
+UINT  _nx_sntp_client_initialize_unicast(NX_SNTP_CLIENT *client_ptr, UINT32 unicast_time_server)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -1013,7 +1013,7 @@ UINT  _nx_sntp_client_run_unicast(NX_SNTP_CLIENT *client_ptr)
 {
 
 UINT    status;
-ULONG   startup_ticks;
+UINT32   startup_ticks;
 
 
     status = tx_mutex_get(&client_ptr -> nx_sntp_client_mutex, TX_WAIT_FOREVER);
@@ -1481,7 +1481,7 @@ UINT  _nxd_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, NXD_ADDR
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, ULONG multicast_server_address, ULONG broadcast_server_address)
+UINT  _nxe_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, UINT32 multicast_server_address, UINT32 broadcast_server_address)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -1556,7 +1556,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, ULONG multicast_server_address, ULONG broadcast_server_address)
+UINT  _nx_sntp_client_initialize_broadcast(NX_SNTP_CLIENT *client_ptr, UINT32 multicast_server_address, UINT32 broadcast_server_address)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -2278,7 +2278,7 @@ NX_SNTP_TIME local_time;
 /*    nx_packet_release                 Release packet back to packet pool*/ 
 /*    tx_mutex_get                      Obtain exclusive lock on list     */
 /*    memset                            Clear specified area of memory    */
-/*    _nx_sntp_client_add_server_ULONG_to_list                            */
+/*    _nx_sntp_client_add_server_UINT32_to_list                            */
 /*                                      Add sender address to Client list */
 /*    _nx_sntp_client_utility_convert_LONG_to_IP                          */
 /*                                     Convert IP to string for display   */
@@ -2291,7 +2291,7 @@ NX_SNTP_TIME local_time;
 /*    _nx_sntp_client_run_broadcast   Listen for server update broadcasts */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_receive_time_update(NX_SNTP_CLIENT *client_ptr, ULONG timeout)
+UINT  _nx_sntp_client_receive_time_update(NX_SNTP_CLIENT *client_ptr, UINT32 timeout)
 {
 
 UINT            status;
@@ -2457,7 +2457,7 @@ NXD_ADDRESS     source_ip_address, destination_ip_address;
             else /* BROADCAST_MODE */
             {
 
-                ULONG network_mask;
+                UINT32 network_mask;
                 UINT  iface_index;
 
                 /* Compare the sender address with the Client's current sntp server. */
@@ -2578,7 +2578,7 @@ NXD_ADDRESS     source_ip_address, destination_ip_address;
 UINT  _nx_sntp_client_extract_time_message_from_packet(NX_SNTP_CLIENT *client_ptr, NX_PACKET *packet_ptr) 
 {
 
-ULONG   *ntp_word_0;    
+UINT32   *ntp_word_0;    
 NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
 
@@ -2589,8 +2589,8 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
     memset(time_message_ptr, 0, sizeof(NX_SNTP_TIME_MESSAGE));
 
     /* Pickup the pointer to the head of the UDP packet.  */
-    ntp_word_0 = (ULONG *)packet_ptr -> nx_packet_prepend_ptr;   
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    ntp_word_0 = (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;   
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
 
     /* Extract fields from the first 32 bits of the time message.  */
     time_message_ptr -> flags = (*ntp_word_0 & 0xFF000000UL) >> 24;
@@ -2603,13 +2603,13 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
     /* Advance to the next 32 bit field and extract the root delay field.  */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
 
-    time_message_ptr -> root_delay = (ULONG)(*ntp_word_0);
+    time_message_ptr -> root_delay = (UINT32)(*ntp_word_0);
 
     /* Advance to the next 32 bit field and extract the clock dispersion field.  */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
 
     time_message_ptr -> clock_dispersion= *ntp_word_0;    
 
@@ -2619,11 +2619,11 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
     /* Advance to the next field (64 bit field) and extract the reference time stamp field.  */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> reference_clock_update_time_stamp[0] = *ntp_word_0;
 
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> reference_clock_update_time_stamp[1] = *ntp_word_0;
 
     /* If a non zero reference time was supplied, separate out seconds and fraction.  */
@@ -2637,12 +2637,12 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
     /* Copy the first 32 bits into the originate time stamp seconds field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> originate_time_stamp[0] = *ntp_word_0;
 
     /* Copy the next 32 bits into the originate time stamp fraction field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> originate_time_stamp[1] = *ntp_word_0;
 
     /* If an originate time was supplied, separate out seconds and fraction.  */
@@ -2657,12 +2657,12 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
     /* Copy the first 32 bits into the receive time stamp seconds field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> receive_time_stamp[0] = *ntp_word_0;
 
     /* Copy the next 32 bits into the receive time stamp fraction field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> receive_time_stamp[1] = *ntp_word_0;
 
     /* If an receive time was supplied, separate out seconds and fraction.  */
@@ -2675,12 +2675,12 @@ NX_SNTP_TIME_MESSAGE *time_message_ptr;
 
     /* Copy the first 32 bits into the transmit time stamp seconds field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> transmit_time_stamp[0] = *ntp_word_0;
 
     /* Copy the next 32 bits into the transmit time stamp fraction field. */
     ntp_word_0++;
-    NX_CHANGE_ULONG_ENDIAN(*ntp_word_0);
+    NX_CHANGE_UINT32_ENDIAN(*ntp_word_0);
     time_message_ptr -> transmit_time_stamp[1] = *ntp_word_0;
 
     /* If an transmit time was supplied, separate out seconds and fraction.  */
@@ -2975,7 +2975,7 @@ UINT    mode;
 UINT    leap_second_indicator;
 UINT    server_ntp_version;
 UINT    is_a_dupe_check;
-ULONG   msecs;   
+UINT32   msecs;   
 NX_SNTP_TIME_MESSAGE *server_time_msg_ptr;
 
     server_time_msg_ptr = &(client_ptr -> nx_sntp_current_server_time_message);
@@ -3227,8 +3227,8 @@ UINT  _nx_sntp_client_check_server_clock_dispersion(NX_SNTP_CLIENT *client_ptr)
 #if (NX_SNTP_CLIENT_MAX_ROOT_DISPERSION != 0)
 UINT    mask = 0x8000;
 UINT    bit = 1;
-ULONG   divisor;
-ULONG   dispersion_usecs;
+UINT32   divisor;
+UINT32   dispersion_usecs;
 
     /* Check for zero clock dispersion reported in server update.  */
     if (client_ptr -> nx_sntp_current_server_time_message.clock_dispersion == 0)
@@ -3260,7 +3260,7 @@ ULONG   dispersion_usecs;
     {
         if (mask & client_ptr -> nx_sntp_current_server_time_message.clock_dispersion)
         {
-            divisor = (ULONG)(1 << bit);
+            divisor = (UINT32)(1 << bit);
             if ((divisor < 1000000) && (divisor > 0))
             {
                 dispersion_usecs += 1000000/divisor;                
@@ -3523,7 +3523,7 @@ UINT  _nx_sntp_client_process_time_data(NX_SNTP_CLIENT *client_ptr)
 
 UINT            status;
 UINT            ignore_max_adjustment_limit;
-ULONG           elapsed_msecs_difference;
+UINT32           elapsed_msecs_difference;
 UINT            adjustment;
 NX_SNTP_TIME    local_time;
 
@@ -3654,7 +3654,7 @@ NX_SNTP_TIME    local_time;
 UINT  _nx_sntp_client_calculate_roundtrip(LONG *roundtrip_time)
 {
 
-ULONG x;
+UINT32 x;
 
 
     /* Initialize invalid results. */
@@ -3676,7 +3676,7 @@ ULONG x;
     }
 
     /* Convert to milliseconds. */
-    *roundtrip_time = (LONG)((ULONG)(*roundtrip_time) * NX_SNTP_MILLISECONDS_PER_TICK);
+    *roundtrip_time = (LONG)((UINT32)(*roundtrip_time) * NX_SNTP_MILLISECONDS_PER_TICK);
 
      /* Return successful completion.  */
      return NX_SUCCESS;
@@ -3717,7 +3717,7 @@ ULONG x;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer)
+UINT  _nxe_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer)
 {
 
 UINT status;
@@ -3780,7 +3780,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer) 
+UINT  _nx_sntp_client_get_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer) 
 {
 
 UINT  status;
@@ -3827,7 +3827,7 @@ UINT  status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer, UINT buffer_size)
+UINT  _nxe_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer, UINT buffer_size)
 {
 
 UINT status;
@@ -3891,10 +3891,10 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, ULONG *seconds, ULONG *fraction, CHAR *buffer, UINT buffer_size) 
+UINT  _nx_sntp_client_get_local_time_extended(NX_SNTP_CLIENT *client_ptr, UINT32 *seconds, UINT32 *fraction, CHAR *buffer, UINT buffer_size) 
 {
 
-ULONG usecs;
+UINT32 usecs;
 UINT offset = 0;
 UINT length = 0;
     
@@ -3975,7 +3975,7 @@ UINT length = 0;
 /*                                                                        */
 /*  DESCRIPTION                                                           */ 
 /*                                                                        */ 
-/*    This function converts time from the ULONG seconds and msecs in the */
+/*    This function converts time from the UINT32 seconds and msecs in the */
 /*    NX_SNTP_TIME data to the 32 bit UCHAR seconds and fraction fields in*/
 /*    the NTP time message.  The caller specifies which time stamp in the */
 /*    NTP time message (transmit,receive, origination, or reference clock)*/
@@ -4006,7 +4006,7 @@ UINT  _nx_sntp_client_utility_convert_time_to_UCHAR(NX_SNTP_TIME *time_ptr,
                                      NX_SNTP_TIME_MESSAGE *time_message_ptr, UINT which_stamp)
 {
 
-ULONG *buffer;
+UINT32 *buffer;
 
     /* Copy the buffer to the requested time stamp field.  */
     switch (which_stamp)
@@ -4294,7 +4294,7 @@ UINT seconds_into_currenthour;
     current_date_time_ptr -> second = seconds_into_currenthour % SECONDS_PER_MINUTE;
 
     /* Convert time fraction field into milliseconds.  */
-    _nx_sntp_client_utility_convert_fraction_to_msecs((ULONG *)(&(current_date_time_ptr -> millisecond)), current_NTP_time_ptr);
+    _nx_sntp_client_utility_convert_fraction_to_msecs((UINT32 *)(&(current_date_time_ptr -> millisecond)), current_NTP_time_ptr);
 
     return NX_SUCCESS;
 #endif
@@ -4683,7 +4683,7 @@ UINT  _nx_sntp_client_utility_add_msecs_to_ntp_time(NX_SNTP_TIME *timeA_ptr, LON
 {
 
 UINT  status;
-ULONG timeA_usec;
+UINT32 timeA_usec;
 LONG  seconds;
 LONG  usecs;
 
@@ -4696,7 +4696,7 @@ LONG  usecs;
     if (msecs_to_add > 0)
     {
         /* Yes; check for overflow before trying to add seconds to the TimeA operand.  */        
-        status = _nx_sntp_client_utility_addition_overflow_check(timeA_ptr -> seconds, (ULONG)seconds);
+        status = _nx_sntp_client_utility_addition_overflow_check(timeA_ptr -> seconds, (UINT32)seconds);
 
         /* Check for error (overflow).  */
         if (status != NX_SUCCESS)
@@ -4707,7 +4707,7 @@ LONG  usecs;
         }
     }
     /* Check if a negative number larger than the timeA operand is being added (creates negative time!)*/
-    else if (timeA_ptr -> seconds < (ULONG)abs(seconds))
+    else if (timeA_ptr -> seconds < (UINT32)abs(seconds))
     {
 
         /* Yes; return the error condition.  */
@@ -4715,7 +4715,7 @@ LONG  usecs;
     }
 
     /* Ok to add seconds to the NTP time seconds.  */
-    timeA_ptr -> seconds += (ULONG)seconds;
+    timeA_ptr -> seconds += (UINT32)seconds;
 
     /* Next get the usecs from the timeA operand (always positive and < 1000000).  */
     _nx_sntp_client_utility_fraction_to_usecs(timeA_ptr -> fraction, &timeA_usec);
@@ -4752,7 +4752,7 @@ LONG  usecs;
     }
 
     /* Convert usecs to the fixed point notation fraction and store in TimeA fraction.  */
-    status = _nx_sntp_client_utility_usecs_to_fraction((ULONG)usecs, &(timeA_ptr ->fraction));
+    status = _nx_sntp_client_utility_usecs_to_fraction((UINT32)usecs, &(timeA_ptr ->fraction));
 
     /* Return completion status.  */
     return status;    
@@ -4908,7 +4908,7 @@ UINT _nx_sntp_client_receiving_updates(NX_SNTP_CLIENT *client_ptr, UINT *receive
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, ULONG seconds, ULONG fraction) 
+UINT  _nxe_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 seconds, UINT32 fraction) 
 {
 
 UINT status;
@@ -4978,7 +4978,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, ULONG seconds, ULONG fraction) 
+UINT  _nx_sntp_client_set_local_time(NX_SNTP_CLIENT *client_ptr, UINT32 seconds, UINT32 fraction) 
 {
 
 
@@ -5145,13 +5145,13 @@ UINT    _nx_sntp_client_set_time_update_notify(NX_SNTP_CLIENT *client_ptr,
 /*                                     Apply server time to local time    */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_get_msec_diff(NX_SNTP_TIME *timeReceived_ptr, NX_SNTP_TIME *timeTransmit_ptr, ULONG *total_difference_msecs, UINT *pos_diff)
+UINT  _nx_sntp_client_utility_get_msec_diff(NX_SNTP_TIME *timeReceived_ptr, NX_SNTP_TIME *timeTransmit_ptr, UINT32 *total_difference_msecs, UINT *pos_diff)
 {
 
-ULONG    usecsReceived, usecsTransmit;
-ULONG    msecsReceived, msecsTransmit;
-ULONG    seconds_difference_in_msecs;
-ULONG    temp;  
+UINT32    usecsReceived, usecsTransmit;
+UINT32    msecsReceived, msecsTransmit;
+UINT32    seconds_difference_in_msecs;
+UINT32    temp;  
 
  
     /* Check for overflow with a very large positive difference result.  */
@@ -5358,10 +5358,10 @@ UINT is_zero;
 /*                                     Display NTP time in seconds        */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_convert_fraction_to_msecs(ULONG *milliseconds, NX_SNTP_TIME *time_ptr)
+UINT  _nx_sntp_client_utility_convert_fraction_to_msecs(UINT32 *milliseconds, NX_SNTP_TIME *time_ptr)
 {
 
-ULONG usecs;
+UINT32 usecs;
 
 
     /* Convert to usecs first.  */
@@ -5417,7 +5417,7 @@ ULONG usecs;
 /*   Application code                                                     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nxe_sntp_client_utility_usecs_to_fraction(ULONG usecs, ULONG *fraction)
+UINT    _nxe_sntp_client_utility_usecs_to_fraction(UINT32 usecs, UINT32 *fraction)
 {
 
 UINT status;
@@ -5473,10 +5473,10 @@ UINT status;
 /*                                     Convert milliseconds to fixed point*/
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_usecs_to_fraction(ULONG usecs, ULONG *fraction)
+UINT  _nx_sntp_client_utility_usecs_to_fraction(UINT32 usecs, UINT32 *fraction)
 {
 
-ULONG _frac = usecs * 3962;
+UINT32 _frac = usecs * 3962;
  
     
     *fraction = (usecs * 4294) + (_frac >> 12);
@@ -5524,7 +5524,7 @@ ULONG _frac = usecs * 3962;
 /*   Application code                                                     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nxe_sntp_client_utility_msecs_to_fraction(ULONG msecs, ULONG *fraction)
+UINT    _nxe_sntp_client_utility_msecs_to_fraction(UINT32 msecs, UINT32 *fraction)
 {
 
 UINT status;
@@ -5582,11 +5582,11 @@ UINT status;
 /*                                     Add two NTP time fields            */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_msecs_to_fraction(ULONG msecs, ULONG *fraction)
+UINT  _nx_sntp_client_utility_msecs_to_fraction(UINT32 msecs, UINT32 *fraction)
 {
 
 UINT    status;
-ULONG   usecs;
+UINT32   usecs;
 
 
     /* Check for possible overflow.  */
@@ -5650,7 +5650,7 @@ ULONG   usecs;
 /*   Application code                                                     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nxe_sntp_client_utility_fraction_to_usecs(ULONG fraction, ULONG *usecs)
+UINT    _nxe_sntp_client_utility_fraction_to_usecs(UINT32 fraction, UINT32 *usecs)
 {
 
 UINT status;
@@ -5704,10 +5704,10 @@ UINT status;
 /*                                     Convert time fraction to msecs     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_fraction_to_usecs(ULONG fraction, ULONG *usecs) 
+UINT  _nx_sntp_client_utility_fraction_to_usecs(UINT32 fraction, UINT32 *usecs) 
 {
 
-ULONG value, segment;
+UINT32 value, segment;
 int i;
     
     value = 0;
@@ -5874,10 +5874,10 @@ UINT  _nx_sntp_client_utility_convert_refID_KOD_code(UCHAR *reference_id, UINT *
 /*                                     Add two NTP times                  */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_sntp_client_utility_addition_overflow_check(ULONG temp1, ULONG temp2)
+UINT  _nx_sntp_client_utility_addition_overflow_check(UINT32 temp1, UINT32 temp2)
 {
 
-ULONG sum_lower_16, sum_upper_16;
+UINT32 sum_lower_16, sum_upper_16;
 UINT  carry;
 
 

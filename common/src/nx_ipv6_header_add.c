@@ -79,8 +79,8 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_ipv6_header_add(NX_IP *ip_ptr, NX_PACKET **packet_pptr,
-                         ULONG protocol, ULONG payload_size, ULONG hop_limit,
-                         ULONG *src_address, ULONG *dest_address, ULONG *fragment)
+                         UINT32 protocol, UINT32 payload_size, UINT32 hop_limit,
+                         UINT32 *src_address, UINT32 *dest_address, UINT32 *fragment)
 {
 
 NX_IPV6_HEADER            *ip_header_ptr;
@@ -175,7 +175,7 @@ USHORT                     short_val;
         packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_IPV6_HEADER);
 
         /* Increase the packet length.  */
-        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (ULONG)sizeof(NX_IPV6_HEADER);
+        packet_ptr -> nx_packet_length =  packet_ptr -> nx_packet_length + (UINT32)sizeof(NX_IPV6_HEADER);
 
         /* Increase header length. */
         packet_ptr -> nx_packet_ip_header_length = (UCHAR)(packet_ptr -> nx_packet_ip_header_length +
@@ -225,13 +225,13 @@ USHORT                     short_val;
         packet_ptr -> nx_packet_ip_header = packet_ptr -> nx_packet_prepend_ptr;
 
         /* bits 31-28: IP version.  Bits 27-20: Traffic Class.  Bits 19-00: Flow Lable */
-        ip_header_ptr -> nx_ip_header_word_0 = (ULONG)(6 << 28);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
+        ip_header_ptr -> nx_ip_header_word_0 = (UINT32)(6 << 28);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_0);
 
         /* bits 31-16: payload size.  Bits 15-8: Next Header.   Bits 7-0 Hop limit */
         /* ip_header_ptr -> nx_ip_header_word_1 = (payload_size << 16) | (protocol << 8) | (ip_ptr -> nx_ipv6_hop_limit);*/
         ip_header_ptr -> nx_ip_header_word_1 = (payload_size << 16) | (protocol << 8) | (hop_limit);
-        NX_CHANGE_ULONG_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
+        NX_CHANGE_UINT32_ENDIAN(ip_header_ptr -> nx_ip_header_word_1);
 
 
         /* Fill in local IPv6 address as sender's address*/
@@ -270,7 +270,7 @@ USHORT                     short_val;
         packet_ptr -> nx_packet_ipsec_state != NX_IPSEC_AH_PACKET &&
         ((NX_IPSEC_SA *)(packet_ptr -> nx_packet_ipsec_sa_ptr)) -> nx_ipsec_sa_mode == NX_IPSEC_TUNNEL_MODE)
     {
-        status = _nx_ipsec_ip_output_packet_process(ip_ptr, &packet_ptr, NX_PROTOCOL_IPV6, (ULONG)payload_size, (ULONG *)(&payload_size));
+        status = _nx_ipsec_ip_output_packet_process(ip_ptr, &packet_ptr, NX_PROTOCOL_IPV6, (UINT32)payload_size, (UINT32 *)(&payload_size));
 
         if ((status != NX_SUCCESS) &&
             (status != NX_IPSEC_HW_PENDING))

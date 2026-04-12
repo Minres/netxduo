@@ -96,18 +96,18 @@ static NX_DHCPV6    *_nx_dhcpv6_DAD_ptr;
 UINT  _nx_dhcpv6_add_client_duid(NX_DHCPV6 *dhcpv6_ptr, UCHAR *buffer_ptr, UINT *index)
 {
 
-ULONG message_word;
-ULONG available_payload;
+UINT32 message_word;
+UINT32 available_payload;
 UCHAR mac[8];
 UINT  i = 0;
 
 
     /* Compute the available payload in the packet buffer. */
     available_payload = dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                        (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index;
+                        (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index;
 
     /* Check if the largest possible client DUID will fit in the packet buffer. */
-    if ((available_payload - 4) < ((ULONG)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_option_length))) 
+    if ((available_payload - 4) < ((UINT32)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_option_length))) 
     {
 
         /* Hmmm... not enough! Can't do it. */
@@ -115,26 +115,26 @@ UINT  i = 0;
     }
 
     /* Build the header from the client DUID. */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_op_code)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_op_code)) << 16);
     message_word |= (dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_option_length);
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Copy first half of the Client DUID option to packet buffer. */
     memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(UINT);
+    (*index) += (UINT32)sizeof(UINT);
 
     /* Build the DUID type and hardware type.  */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_type)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_type)) << 16);
     message_word |= dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_hardware_type;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Set up the DUID type and hardware type. */
     memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(UINT);
+    (*index) += (UINT32)sizeof(UINT);
 
     /* Include the 'time' field if this is a Link layer time DUID type. */
     if (dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_type == NX_DHCPV6_DUID_TYPE_LINK_TIME)
@@ -144,11 +144,11 @@ UINT  i = 0;
         message_word = dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_time;
 
         /* Adjust for endianness. */
-        NX_CHANGE_ULONG_ENDIAN(message_word);
+        NX_CHANGE_UINT32_ENDIAN(message_word);
 
         /* Set up the time.  */
-        memcpy((buffer_ptr + (*index)), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
+        memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
     }
 
     /* Build the link layer address.  */
@@ -235,12 +235,12 @@ UINT  i = 0;
 UINT _nx_dhcpv6_add_elapsed_time(NX_DHCPV6 *dhcpv6_ptr, UCHAR *buffer_ptr, UINT *index)
 {
 
-ULONG available_payload;
+UINT32 available_payload;
 
 
     /* Compute the available payload for DHCP data in the packet buffer. */
     available_payload = (dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                         (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index);
+                         (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index);
 
     /* Check if the data will fit in the packet buffer. */
     if (available_payload < sizeof(NX_DHCPV6_ELAPSED_TIME))
@@ -257,7 +257,7 @@ ULONG available_payload;
 
     /* Set up the elapsed time option, in hundredths of seconds. */
     memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_elapsed_time), sizeof(NX_DHCPV6_ELAPSED_TIME)); /* Use case of memcpy is verified. */
-    *index += (ULONG)sizeof(NX_DHCPV6_ELAPSED_TIME);
+    *index += (UINT32)sizeof(NX_DHCPV6_ELAPSED_TIME);
 
     /* Swap bytes back. */
     NX_CHANGE_USHORT_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_elapsed_time.nx_op_code);
@@ -313,18 +313,18 @@ ULONG available_payload;
 UINT _nx_dhcpv6_add_ia_address(NX_DHCPV6 *dhcpv6_ptr, UCHAR *buffer_ptr, UINT *index, UINT ia_index)
 {
 
-ULONG   message_word;
-ULONG   available_payload;
+UINT32   message_word;
+UINT32   available_payload;
 
     /* Set the IA option length. */
-    dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length = (6 * sizeof(ULONG));
+    dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length = (6 * sizeof(UINT32));
 
     /* Compute the available payload for DHCP data in the packet buffer. */
     available_payload = (dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                         (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index);
+                         (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index);
 
     /* Check if the client IA address option will fit in the packet buffer. */
-    if (available_payload < (((ULONG)dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length) + 4)) 
+    if (available_payload < (((UINT32)dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length) + 4)) 
     {
 
         /* Hmmm... not enough! Can't do it. */
@@ -352,41 +352,41 @@ ULONG   available_payload;
     /* If the client has created an address option, apply it to the message. */
 
     /* Clear memory to make the first word of the IA option header. */
-    memset(&message_word, 0, sizeof(ULONG));
+    memset(&message_word, 0, sizeof(UINT32));
 
     /* Extract the IA data from the client record. */
-    message_word = (((ULONG)dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_op_code) << 16);
+    message_word = (((UINT32)dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_op_code) << 16);
     message_word |= dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Copy IA data into the packet and update the index into the buffer. */
-    memcpy((buffer_ptr + (*index)), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
-     (*index) += (ULONG)sizeof(ULONG);
+    memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
+     (*index) += (UINT32)sizeof(UINT32);
 
      /* Add the IPv6 address.  */
     /* Adjust for endianness.  */
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]);
 
     /* Copy the Client preferred IPv6 address to the packet. */
-    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]), sizeof(ULONG)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(ULONG);
-    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]), sizeof(ULONG)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(ULONG);
-    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]), sizeof(ULONG)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(ULONG);
-    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]), sizeof(ULONG)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(ULONG);
+    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]), sizeof(UINT32)); /* Use case of memcpy is verified. */
+    (*index) += (UINT32)sizeof(UINT32);
+    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]), sizeof(UINT32)); /* Use case of memcpy is verified. */
+    (*index) += (UINT32)sizeof(UINT32);
+    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]), sizeof(UINT32)); /* Use case of memcpy is verified. */
+    (*index) += (UINT32)sizeof(UINT32);
+    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]), sizeof(UINT32)); /* Use case of memcpy is verified. */
+    (*index) += (UINT32)sizeof(UINT32);
 
     /* Swap bytes back. */
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]);
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[0]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[1]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[2]);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[3]);
     
     /* Add the preferred lifetime and valid lifetime option.  */
     if((dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_type == NX_DHCPV6_MESSAGE_TYPE_SOLICIT) ||
@@ -397,26 +397,26 @@ ULONG   available_payload;
 
         /* When sending a confirm request, DHCPv6 Client should set its T1,T2,preferred-lifetime and
            valid-lifetime to zero, as the server will ignore these fields, RFC3315,page41.  */
-        memset((buffer_ptr + (*index)), 0, sizeof(ULONG));
-        (*index) += (ULONG)sizeof(ULONG);
-        memset((buffer_ptr + (*index)), 0, sizeof(ULONG));
-        (*index) += (ULONG)sizeof(ULONG);
+        memset((buffer_ptr + (*index)), 0, sizeof(UINT32));
+        (*index) += (UINT32)sizeof(UINT32);
+        memset((buffer_ptr + (*index)), 0, sizeof(UINT32));
+        (*index) += (UINT32)sizeof(UINT32);
     }
     else
     {
 
         /* Adjust for endianness. */
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime);
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime);
 
-        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime), sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
-        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime), sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
+        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime), sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
+        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime), sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
 
         /* Swap bytes back. */
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime);
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_preferred_lifetime);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_valid_lifetime);
 
     }
 
@@ -474,8 +474,8 @@ UINT    status;
 UINT    temp_index;
 UINT    ia_index;
 UINT    ia_length;
-ULONG   message_word;
-ULONG   available_payload;
+UINT32   message_word;
+UINT32   available_payload;
 
 
     /* Initialize the completion status variable. */
@@ -484,10 +484,10 @@ ULONG   available_payload;
 
     /* Compute the available payload in the packet buffer. */
     available_payload = dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                        (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index;
+                        (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index;
 
     /* Check if the client IANA will fit in the packet buffer. */
-    if (available_payload < (((ULONG)dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length) + 4)) 
+    if (available_payload < (((UINT32)dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length) + 4)) 
     {
 
         /* Hmmm... not enough! Can't do it. */
@@ -498,13 +498,13 @@ ULONG   available_payload;
     temp_index = *index;
 
     /* Skip the option code and option lenght of IA_NA, write these option after padding the all IA option. */
-    (*index) += (ULONG)sizeof(ULONG);
+    (*index) += (UINT32)sizeof(UINT32);
 
     /* Add the IA_NA ID.  */
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id);
-    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id), sizeof(ULONG)); /* Use case of memcpy is verified. */
-    (*index) += (ULONG)sizeof(ULONG);    
-    NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id);
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id);
+    memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id), sizeof(UINT32)); /* Use case of memcpy is verified. */
+    (*index) += (UINT32)sizeof(UINT32);    
+    NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id);
 
     /* Add the T1 and T2 option.  */
     if((dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_type == NX_DHCPV6_MESSAGE_TYPE_SOLICIT) ||
@@ -515,26 +515,26 @@ ULONG   available_payload;
 
         /* When sending a confirm request, DHCPv6 Client should set its T1,T2,preferred-lifetime and
            valid-lifetime to zero, as the server will ignore these fields, RFC3315,page41.  */
-        memset((buffer_ptr + (*index)), 0, sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
-        memset((buffer_ptr + (*index)), 0, sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
+        memset((buffer_ptr + (*index)), 0, sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
+        memset((buffer_ptr + (*index)), 0, sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
     }
     else
     {
 
         /* Adjust the data.  */
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1);
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2);
 
-        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1), sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
-        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2), sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
+        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1), sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
+        memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2), sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
 
         /* Swap bytes back. */
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1);
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_iana.nx_T2);
     }
 
     for(ia_index = 0; ia_index < NX_DHCPV6_MAX_IA_ADDRESS; ia_index++)
@@ -558,21 +558,21 @@ ULONG   available_payload;
     }
     
     /* Clear memory to make the first word of the IA-NA header. */
-    memset(&message_word, 0, sizeof(ULONG));
+    memset(&message_word, 0, sizeof(UINT32));
     
     /* Set the IA_NA option code and option length.  */
     dhcpv6_ptr -> nx_dhcpv6_iana.nx_op_code = NX_DHCPV6_OP_IA_NA;
     dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length = (USHORT)(ia_length + 12);
 
     /* Write the IANA opcode and data length into one word. */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_iana.nx_op_code)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_iana.nx_op_code)) << 16);
     message_word |= dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Copy the word into the packet buffer going to the server. */
-    memcpy((buffer_ptr + temp_index), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
+    memcpy((buffer_ptr + temp_index), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
     
     return NX_SUCCESS;
 }
@@ -625,15 +625,15 @@ USHORT   message_word;
 USHORT   option_list;
 USHORT   option_length = 0;
 UCHAR    *option_length_ptr;
-ULONG    available_payload;
+UINT32    available_payload;
 
 
     /* Compute the available payload for DHCP data in the packet buffer. */
     available_payload = (dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                         (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index);
+                         (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index);
 
     /* Check if the option request option will fit in the packet buffer. */
-    if (available_payload < (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_option_request.nx_option_length)) + 4))
+    if (available_payload < (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_option_request.nx_option_length)) + 4))
     {
 
         /* Hmmm... not enough! Can't do it. */
@@ -649,14 +649,14 @@ ULONG    available_payload;
 
     /* Copy the option code to the packet. */
     memcpy((buffer_ptr + (*index)), &(dhcpv6_ptr -> nx_dhcpv6_option_request.nx_op_code), sizeof(USHORT)); /* Use case of memcpy is verified. */
-    *index += (ULONG)sizeof(USHORT);
+    *index += (UINT32)sizeof(USHORT);
     
     /* Swap bytes back. */
     NX_CHANGE_USHORT_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_option_request.nx_op_code);
 
     /* Record the option length pointer and skip it, update the option length after fill the option data.  */
     option_length_ptr = buffer_ptr + (*index);
-    *index += (ULONG)sizeof(USHORT);
+    *index += (UINT32)sizeof(USHORT);
 
     /* Now check to see which options we add as option data: */
 
@@ -673,7 +673,7 @@ ULONG    available_payload;
         memcpy((buffer_ptr + (*index)), &message_word, sizeof(SHORT)); /* Use case of memcpy is verified. */
 
         /* Update the location of the buffer write pointer. */
-        *index += (ULONG)sizeof(SHORT);      
+        *index += (UINT32)sizeof(SHORT);      
         option_length = (USHORT)(option_length + sizeof(SHORT));
     }
 
@@ -690,7 +690,7 @@ ULONG    available_payload;
         memcpy((buffer_ptr + (*index)), &message_word, sizeof(SHORT)); /* Use case of memcpy is verified. */
 
         /* Update the location of the buffer write pointer. */
-        *index += (ULONG)sizeof(SHORT);
+        *index += (UINT32)sizeof(SHORT);
         option_length = (USHORT)(option_length + sizeof(SHORT));
     }
 
@@ -707,7 +707,7 @@ ULONG    available_payload;
         memcpy((buffer_ptr + (*index)), &message_word, sizeof(SHORT)); /* Use case of memcpy is verified. */
 
         /* Update the location of the buffer write pointer. */
-        *index += (ULONG)sizeof(SHORT);
+        *index += (UINT32)sizeof(SHORT);
         option_length = (USHORT)(option_length + sizeof(SHORT));
     }
 
@@ -724,7 +724,7 @@ ULONG    available_payload;
         memcpy((buffer_ptr + (*index)), &message_word, sizeof(SHORT)); /* Use case of memcpy is verified. */
 
         /* Update the location of the buffer write pointer. */
-        *index += (ULONG)sizeof(SHORT);
+        *index += (UINT32)sizeof(SHORT);
         option_length = (USHORT)(option_length + sizeof(SHORT));
     }
        
@@ -748,7 +748,7 @@ ULONG    available_payload;
         memcpy((buffer_ptr + (*index)), &message_word, sizeof(SHORT)); /* Use case of memcpy is verified. */
 
         /* Update the location of the buffer write pointer. */
-        *index += (ULONG)sizeof(SHORT);
+        *index += (UINT32)sizeof(SHORT);
         option_length = (USHORT)(option_length + sizeof(SHORT));
     }
 
@@ -803,18 +803,18 @@ ULONG    available_payload;
 UINT _nx_dhcpv6_add_server_duid(NX_DHCPV6 *dhcpv6_ptr, UCHAR *buffer_ptr, UINT *index)
 {
 
-ULONG   message_word;
-ULONG   available_payload;
+UINT32   message_word;
+UINT32   available_payload;
 UCHAR   mac[8];
 UINT    i = 0;
 
 
     /* Compute the available payload for DHCP data in the packet buffer. */
     available_payload = (dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                         (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index);
+                         (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index);
 
     /* Check if the largest possible server DUID will fit in the packet buffer. */
-    if (available_payload < (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_option_length)) + 4)) 
+    if (available_payload < (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_option_length)) + 4)) 
     {
 
         /* Hmmm... not enough! Can't do it. */
@@ -830,26 +830,26 @@ UINT    i = 0;
     }
 
     /* Build the header from the client's record of its DHCPv6 Server DUID. */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_op_code)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_op_code)) << 16);
     message_word |= (dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_option_length);
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Copy first half of the Server DUID option to packet buffer. */
-    memcpy((buffer_ptr + (*index)), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
-    *index += (ULONG)sizeof(ULONG);
+    memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
+    *index += (UINT32)sizeof(UINT32);
 
     /* Build the DUID type and hardware type.  */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_duid_type)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_duid_type)) << 16);
     message_word |= dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_hardware_type;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Set up the DUID type and hardware type. */
     memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT)); /* Use case of memcpy is verified. */
-    *index += (ULONG)sizeof(UINT);
+    *index += (UINT32)sizeof(UINT);
 
     /* Include the 'time' field if this is a Link layer time DUID type. */
     if (dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_duid_type == NX_DHCPV6_DUID_TYPE_LINK_TIME)
@@ -859,11 +859,11 @@ UINT    i = 0;
         message_word = dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_duid_time;
 
         /* Adjust for endianness. */
-        NX_CHANGE_ULONG_ENDIAN(message_word);
+        NX_CHANGE_UINT32_ENDIAN(message_word);
 
         /* Set up the time.  */
-        memcpy((buffer_ptr + (*index)), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
-        (*index) += (ULONG)sizeof(ULONG);
+        memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
+        (*index) += (UINT32)sizeof(UINT32);
     }
 
     /* Build the link layer address.  */
@@ -944,35 +944,35 @@ UINT    i = 0;
 UINT _nx_dhcpv6_add_client_FQDN(NX_DHCPV6 *dhcpv6_ptr, UCHAR *buffer_ptr, UINT *index)
 {
 
-ULONG   message_word;
-ULONG   available_payload; 
+UINT32   message_word;
+UINT32   available_payload; 
 UINT    domain_name_length;
 
 
     /* Compute the available payload for DHCP data in the packet buffer. */
     available_payload = (dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size - 
-                         (ULONG)sizeof(NX_IPV6_HEADER) - (ULONG)sizeof(NX_UDP_HEADER) - *index);
+                         (UINT32)sizeof(NX_IPV6_HEADER) - (UINT32)sizeof(NX_UDP_HEADER) - *index);
 
     /* Check if the largest possible server DUID will fit in the packet buffer. */
-    if (available_payload < (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_option_length)) + 4)) 
+    if (available_payload < (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_server_duid.nx_option_length)) + 4)) 
     {
 
         /* Hmmm... not enough! Can't do it. */
         return NX_DHCPV6_INSUFFICIENT_PACKET_PAYLOAD;
     }
     
-    memset(&message_word, 0, sizeof(ULONG));
+    memset(&message_word, 0, sizeof(UINT32));
 
     /* Set the option code and option length.  */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_client_FQDN.nx_op_code)) << 16);
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_client_FQDN.nx_op_code)) << 16);
     message_word |= (dhcpv6_ptr -> nx_dhcpv6_client_FQDN.nx_op_length);
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Add the option code and option length into packet buffer. */
-    memcpy((buffer_ptr + (*index)), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
-    *index += (ULONG)sizeof(ULONG);
+    memcpy((buffer_ptr + (*index)), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
+    *index += (UINT32)sizeof(UINT32);
 
     /* Add the flags into packet buffer.  */
     *(buffer_ptr + (*index)) = dhcpv6_ptr -> nx_dhcpv6_client_FQDN.nx_flags;
@@ -1028,7 +1028,7 @@ UINT    domain_name_length;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, 
-                                NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, ULONG stack_size,
+                                NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, UINT32 stack_size,
                                 VOID (*dhcpv6_state_change_notify)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT old_state, UINT new_state),
                                 VOID (*dhcpv6_server_error_handler)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT op_code, UINT status_code, UINT message_type))                        
 {
@@ -1112,7 +1112,7 @@ UINT    status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_dhcpv6_client_create(NX_DHCPV6 *dhcpv6_ptr, NX_IP *ip_ptr, CHAR *name_ptr, 
-                               NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, ULONG stack_size, 
+                               NX_PACKET_POOL *packet_pool_ptr, VOID *stack_ptr, UINT32 stack_size, 
                                VOID (*dhcpv6_state_change_notify)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT old_state, UINT new_state),
                                VOID (*dhcpv6_server_error_handler)(struct NX_DHCPV6_STRUCT *dhcpv6_ptr, UINT op_code, UINT status_code, UINT message_type))                        
 
@@ -1173,7 +1173,7 @@ UINT  status;
 
     /* Create the DHCPV6 timer for keeping track of the IP lease's time remaining before expiration.  */
     status =  tx_timer_create(&(dhcpv6_ptr -> nx_dhcpv6_IP_lifetime_timer), "NetX DHCPV6 Client IP Lease timer",
-                              _nx_dhcpv6_IP_lifetime_timeout_entry, (ULONG)(ALIGN_TYPE)dhcpv6_ptr,
+                              _nx_dhcpv6_IP_lifetime_timeout_entry, (UINT32)(ALIGN_TYPE)dhcpv6_ptr,
                               (NX_DHCPV6_IP_LIFETIME_TIMER_INTERVAL * NX_DHCPV6_TICKS_PER_SECOND), 
                               (NX_DHCPV6_IP_LIFETIME_TIMER_INTERVAL * NX_DHCPV6_TICKS_PER_SECOND), 
                               TX_NO_ACTIVATE);
@@ -1203,7 +1203,7 @@ UINT  status;
 
     /* Create the DHCPV6 timer for keeping track of the DHCPv6 Client session time.  */
     status =  tx_timer_create(&(dhcpv6_ptr -> nx_dhcpv6_session_timer), "NetX DHCPV6 Client Session Duration timer",
-                             _nx_dhcpv6_session_timeout_entry, (ULONG)(ALIGN_TYPE)dhcpv6_ptr,
+                             _nx_dhcpv6_session_timeout_entry, (UINT32)(ALIGN_TYPE)dhcpv6_ptr,
                              (NX_DHCPV6_SESSION_TIMER_INTERVAL * NX_DHCPV6_TICKS_PER_SECOND), 
                              (NX_DHCPV6_SESSION_TIMER_INTERVAL * NX_DHCPV6_TICKS_PER_SECOND), 
                               TX_NO_ACTIVATE);
@@ -1234,7 +1234,7 @@ UINT  status;
 
     /* Create the DHCPV6 processing thread. */
     status =  tx_thread_create(&(dhcpv6_ptr -> nx_dhcpv6_thread), "NetX DHCPV6 Client", _nx_dhcpv6_thread_entry, 
-                               (ULONG)(ALIGN_TYPE)dhcpv6_ptr, stack_ptr, stack_size, 
+                               (UINT32)(ALIGN_TYPE)dhcpv6_ptr, stack_ptr, stack_size, 
                                NX_DHCPV6_THREAD_PRIORITY, NX_DHCPV6_THREAD_PRIORITY, 1, TX_DONT_START);
 
     NX_THREAD_EXTENSION_PTR_SET(&(dhcpv6_ptr -> nx_dhcpv6_thread), dhcpv6_ptr)
@@ -1517,7 +1517,7 @@ UINT  _nx_dhcpv6_client_delete(NX_DHCPV6 *dhcpv6_ptr)
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nxe_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, ULONG time)
+UINT    _nxe_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, UINT32 time)
 {
 
 UINT status;
@@ -1602,7 +1602,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, ULONG time)
+UINT    _nx_dhcpv6_create_client_duid(NX_DHCPV6 *dhcpv6_ptr, UINT duid_type, UINT hardware_type, UINT32 time)
 {
 
 NX_INTERFACE  *interface_ptr;
@@ -1638,7 +1638,7 @@ USHORT         option_length;
             if (!time)
             {
                 /* No, create a time field using the defined time constant plus a randomizing factor.*/
-                dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_time = (SECONDS_SINCE_JAN_1_2000_MOD_32 + (ULONG)(NX_RAND())) & 0xFFFFFFFF;
+                dhcpv6_ptr -> nx_dhcpv6_client_duid.nx_duid_time = (SECONDS_SINCE_JAN_1_2000_MOD_32 + (UINT32)(NX_RAND())) & 0xFFFFFFFF;
             }
             else
             {
@@ -1714,7 +1714,7 @@ USHORT         option_length;
 /*                                                                        */ 
 /**************************************************************************/
 UINT    _nxe_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, 
-                                  ULONG preferred_lifetime, ULONG valid_lifetime) 
+                                  UINT32 preferred_lifetime, UINT32 valid_lifetime) 
 {
 
 UINT status;
@@ -1800,7 +1800,7 @@ UINT status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT    _nx_dhcpv6_add_client_ia(NX_DHCPV6 *dhcpv6_ptr, NXD_ADDRESS *ipv6_address, 
-                                 ULONG preferred_lifetime, ULONG valid_lifetime) 
+                                 UINT32 preferred_lifetime, UINT32 valid_lifetime) 
 {
 UINT    ia_index;
 
@@ -1842,7 +1842,7 @@ UINT    ia_index;
         dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_op_code = NX_DHCPV6_OP_IA_ADDRESS;
 
         /* Set the IA option length - minus the option header. */
-        dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length = (7 * sizeof(ULONG)) - 4;
+        dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_option_length = (7 * sizeof(UINT32)) - 4;
 
         /* Set the IP address parameters as a hint to the server. */
         dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_version = NX_IP_VERSION_V6;
@@ -1901,7 +1901,7 @@ UINT    ia_index;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nxe_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULONG T1, ULONG T2) 
+UINT    _nxe_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, UINT32 T1, UINT32 T2) 
 {
 
 UINT status;
@@ -1968,7 +1968,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT    _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULONG T1, ULONG T2) 
+UINT    _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, UINT32 T1, UINT32 T2) 
 {
 
     /* Initialize the IANA to null. */
@@ -1979,7 +1979,7 @@ UINT    _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULON
     dhcpv6_ptr -> nx_dhcpv6_iana.nx_IA_NA_id = IA_ident;
 
     /* Set the IANA option data length, minus the option header. */    
-    dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length = 3 * sizeof(ULONG);  
+    dhcpv6_ptr -> nx_dhcpv6_iana.nx_option_length = 3 * sizeof(UINT32);  
 
     /* Apply the Client's preference for IP renew/rebind times. */
     dhcpv6_ptr -> nx_dhcpv6_iana.nx_T1 = T1;
@@ -2024,7 +2024,7 @@ UINT    _nx_dhcpv6_create_client_iana(NX_DHCPV6 *dhcpv6_ptr, UINT IA_ident, ULON
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_id)
+UINT _nxe_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_id)
 {
 
 UINT status;
@@ -2084,7 +2084,7 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT   _nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_id)
+UINT   _nx_dhcpv6_get_client_duid_time_id(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_id)
 {
          
     /* The Time field is part of the NX_DHCPV6_DUID struct in the Client record. */
@@ -2353,8 +2353,8 @@ UINT status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2, ULONG *preferred_lifetime, 
-                                    ULONG *valid_lifetime)
+UINT _nxe_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2, UINT32 *preferred_lifetime, 
+                                    UINT32 *valid_lifetime)
 {
 
 UINT status;
@@ -2417,8 +2417,8 @@ UINT status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2, ULONG *preferred_lifetime, 
-                                    ULONG *valid_lifetime)
+UINT _nx_dhcpv6_get_lease_time_data(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2, UINT32 *preferred_lifetime, 
+                                    UINT32 *valid_lifetime)
 {
 
     /* Initialize data to zero. */
@@ -2868,7 +2868,7 @@ UINT length = 0;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_accrued)
+UINT _nxe_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_accrued)
 {
 
 UINT status;
@@ -2928,7 +2928,7 @@ UINT status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG *time_accrued)
+UINT _nx_dhcpv6_get_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 *time_accrued)
 {    
 UINT    ia_index;
 UINT    found_ia = 0;
@@ -2996,7 +2996,7 @@ UINT    found_ia = 0;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2)
+UINT _nxe_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2)
 {
 
 UINT status;
@@ -3052,7 +3052,7 @@ UINT status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, ULONG *T1, ULONG *T2)
+UINT _nx_dhcpv6_get_iana_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT32 *T1, UINT32 *T2)
 {    
 UINT    ia_index;
 UINT    found_ia = 0;
@@ -3243,7 +3243,7 @@ UINT    ia_index;
 /*                                                                        */ 
 /**************************************************************************/
 UINT _nxe_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address,
-                                                 ULONG *preferred_lifetime, ULONG *valid_lifetime)
+                                                 UINT32 *preferred_lifetime, UINT32 *valid_lifetime)
 {
 
 UINT status;
@@ -3303,7 +3303,7 @@ UINT status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT _nx_dhcpv6_get_valid_ip_address_lease_time(NX_DHCPV6 *dhcpv6_ptr, UINT address_index, NXD_ADDRESS *ip_address,
-                                                ULONG *preferred_lifetime, ULONG *valid_lifetime)
+                                                UINT32 *preferred_lifetime, UINT32 *valid_lifetime)
 {
     
 UINT    status;
@@ -4217,7 +4217,7 @@ UCHAR     original_state;
 UINT _nx_dhcpv6_process_client_duid(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, UINT option_length)
 {
 
-ULONG   data;
+UINT32   data;
 UINT    index = 0;
 
 
@@ -4702,10 +4702,10 @@ UINT   w, j = 0;
 
                 /* Yes; copy the next word into the current DNS server address. */
                 memcpy(&(dhcpv6_ptr -> nx_dhcpv6_DNS_name_server_address[j].nxd_ip_address.v6[w]), /* Use case of memcpy is verified. */
-                        (option_data + index), sizeof(ULONG));
+                        (option_data + index), sizeof(UINT32));
 
                 /* Adjust for endianness. */
-                NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_DNS_name_server_address[j].nxd_ip_address.v6[w]);
+                NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_DNS_name_server_address[j].nxd_ip_address.v6[w]);
 
                 /* Move to the next IPv6 address word. */
                 index += 4;
@@ -4783,11 +4783,11 @@ UINT   w, j = 0;
 UINT _nx_dhcpv6_process_ia(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, UINT option_length, UINT ia_index)
 {
 
-ULONG   preferred_lifetime;
-ULONG   valid_lifetime;
+UINT32   preferred_lifetime;
+UINT32   valid_lifetime;
 UINT    index = 0, w;
 UINT    status;
-ULONG   ia_option_code, ia_option_length;
+UINT32   ia_option_code, ia_option_length;
 
 
     /* Fill in the IA address code and length. Client might already have one on
@@ -4807,10 +4807,10 @@ ULONG   ia_option_code, ia_option_length;
 
         /* Copy each IPv6 address word into the IA address. */
         memcpy(&(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[w]), /* Use case of memcpy is verified. */
-               (option_data + index), sizeof(ULONG));
+               (option_data + index), sizeof(UINT32));
 
         /* Adjust for endianness. */
-        NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[w]);
+        NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_address.v6[w]);
 
         /* Move to the next IPv6 address word. */
         index += 4;
@@ -4819,17 +4819,17 @@ ULONG   ia_option_code, ia_option_length;
     dhcpv6_ptr -> nx_dhcpv6_ia[ia_index].nx_global_address.nxd_ip_version = NX_IP_VERSION_V6;
 
     /* Copy the lifetime data from the reply buffer to temporary variables.*/
-    memcpy(&preferred_lifetime, (option_data + index), sizeof(ULONG)); /* Use case of memcpy is verified. */
+    memcpy(&preferred_lifetime, (option_data + index), sizeof(UINT32)); /* Use case of memcpy is verified. */
     index += 4;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(preferred_lifetime);
+    NX_CHANGE_UINT32_ENDIAN(preferred_lifetime);
 
-    memcpy(&valid_lifetime, (option_data + index), sizeof(ULONG)); /* Use case of memcpy is verified. */
+    memcpy(&valid_lifetime, (option_data + index), sizeof(UINT32)); /* Use case of memcpy is verified. */
     index += 4;
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(valid_lifetime);
+    NX_CHANGE_UINT32_ENDIAN(valid_lifetime);
 
     /* Check for invalid lifetime data. The preferred lifetime MUST be less than
       the valid lifetime.  Note that a zero lifetime is acceptable
@@ -4990,9 +4990,9 @@ UINT _nx_dhcpv6_process_iana(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, UINT opt
 {
 
 UINT    status;
-ULONG   T1, T2, data;
+UINT32   T1, T2, data;
 UINT    index = 0;
-ULONG   iana_option_code, iana_option_length;
+UINT32   iana_option_code, iana_option_length;
 UINT    ia_index; 
 UINT    ia_count = 0;
 UINT    ia_status;
@@ -5008,7 +5008,7 @@ UINT    ia_status;
     memcpy(&data, (option_data + index), 4); /* Use case of memcpy is verified. */
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(data);
+    NX_CHANGE_UINT32_ENDIAN(data);
 
     /* The server response must return the correct IANA ID; this is applicable
        to clients configured with more than one IANA. */
@@ -5033,13 +5033,13 @@ UINT    ia_status;
     index += 4; 
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(T1);
+    NX_CHANGE_UINT32_ENDIAN(T1);
 
     memcpy(&T2, (option_data + index), 4); /* Use case of memcpy is verified. */
     index += 4; 
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(T2);
+    NX_CHANGE_UINT32_ENDIAN(T2);
 
     /* Check for invalid T1/T2 lifetimes. */
     if (T1 > T2)
@@ -5317,11 +5317,11 @@ UINT _nx_dhcpv6_process_server_duid(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, U
 {
 
 UINT    index = 0;
-ULONG   temp_type;
-ULONG   temp_hardware_type;
-ULONG   temp_time = 0;
-ULONG   temp_msw = 0;
-ULONG   temp_lsw = 0;
+UINT32   temp_type;
+UINT32   temp_hardware_type;
+UINT32   temp_time = 0;
+UINT32   temp_msw = 0;
+UINT32   temp_lsw = 0;
 
 
     /* Set the DHCPv6 option header fields for a Server DUID. */
@@ -5502,7 +5502,7 @@ UINT _nx_dhcpv6_process_status(NX_DHCPV6 *dhcpv6_ptr, UCHAR *option_data, UINT o
 
 UINT  index = 0;
 UINT  message_length;
-ULONG status_code;
+UINT32 status_code;
 
 
     /* Check option length for status code.  */
@@ -5666,10 +5666,10 @@ UINT   w, j = 0;
 
                 /* Yes; copy each IPv6 address word into the time server address. */
                 memcpy(&(dhcpv6_ptr -> nx_dhcpv6_time_server_address[j].nxd_ip_address.v6[w]), /* Use case of memcpy is verified. */
-                       (option_data + index), sizeof(ULONG));
+                       (option_data + index), sizeof(UINT32));
 
                 /* Adjust for endianness. */
-                NX_CHANGE_ULONG_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_time_server_address[j].nxd_ip_address.v6[w]);
+                NX_CHANGE_UINT32_ENDIAN(dhcpv6_ptr -> nx_dhcpv6_time_server_address[j].nxd_ip_address.v6[w]);
 
                 /* Move to the next IPv6 address word. */
                 index += 4;
@@ -7720,11 +7720,11 @@ UINT  _nx_dhcpv6_send_request(NX_DHCPV6 *dhcpv6_ptr)
 NX_PACKET   *packet_ptr;
 UCHAR       *buffer;  
 UINT        status;
-ULONG       message_word;
+UINT32       message_word;
 UINT        index; 
 NX_INTERFACE     *interface_ptr;
 NXD_IPV6_ADDRESS *ipv6_address;
-ULONG             available_payload;
+UINT32             available_payload;
 UCHAR            *user_option_ptr;
 UINT              user_option_length;
 
@@ -7779,28 +7779,28 @@ UINT              user_option_length;
         dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid =  
             ((dhcpv6_ptr -> nx_dhcpv6_ip_ptr -> nx_ip_arp_physical_address_msw) ^ 
             (dhcpv6_ptr -> nx_dhcpv6_ip_ptr -> nx_ip_arp_physical_address_lsw) ^ 
-            (ULONG)(NX_RAND()));
+            (UINT32)(NX_RAND()));
 
         /* Now reduce it to three bytes. */
-        dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid = (dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid & (ULONG)(0x0ffffff));
+        dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid = (dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid & (UINT32)(0x0ffffff));
     }
 
     /* Clear memory to make the message header. */
-    memset(&message_word, 0, sizeof(ULONG));
+    memset(&message_word, 0, sizeof(UINT32));
 
     /* Add the message type and transaction ID as the DHCPv6 header fields. */
-    message_word = (((ULONG)(dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_type)) << 24); 
+    message_word = (((UINT32)(dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_type)) << 24); 
 
-    message_word |= (((ULONG)(0x0ffffff)) & (dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid));
+    message_word |= (((UINT32)(0x0ffffff)) & (dhcpv6_ptr -> nx_dhcpv6_message_hdr.nx_message_xid));
 
     /* Adjust for endianness. */
-    NX_CHANGE_ULONG_ENDIAN(message_word);
+    NX_CHANGE_UINT32_ENDIAN(message_word);
 
     /* Copy the message header to the packet buffer. */
     memcpy(buffer, &message_word, 4); /* Use case of memcpy is verified. */
 
     /* Update the buffer 'pointer'. */
-    index += (ULONG)sizeof(ULONG);
+    index += (UINT32)sizeof(UINT32);
 
     /* Add the Client DUID to the packet buffer. */
     status = _nx_dhcpv6_add_client_duid(dhcpv6_ptr, buffer, &index);
@@ -7888,11 +7888,11 @@ UINT              user_option_length;
             {
 
                 /* Compute the available payload for DHCP data in the packet buffer. */
-                available_payload = (ULONG)(dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size -
+                available_payload = (UINT32)(dhcpv6_ptr -> nx_dhcpv6_pool_ptr -> nx_packet_pool_payload_size -
                                             sizeof(NX_IPV6_HEADER) - sizeof(NX_UDP_HEADER) - index);
 
                 /* Check if the data will fit in the packet buffer. */
-                if (available_payload < sizeof(ULONG))
+                if (available_payload < sizeof(UINT32))
                 {
 
                     /* Hmmm... not enough! Can't do it. */
@@ -7901,19 +7901,19 @@ UINT              user_option_length;
 
                 /* Add the rapid commit option request. */
                 /* Clear memory to make the message header, and add the message type.  */
-                memset(&message_word, 0, sizeof(ULONG));
+                memset(&message_word, 0, sizeof(UINT32));
 
                 /* Add the message type. */
-                message_word = (((ULONG)NX_DHCPV6_OP_RAPID_COMMIT) << 16); 
+                message_word = (((UINT32)NX_DHCPV6_OP_RAPID_COMMIT) << 16); 
 
                 /* Adjust for endianness. */
-                NX_CHANGE_ULONG_ENDIAN(message_word);
+                NX_CHANGE_UINT32_ENDIAN(message_word);
 
                 /* Copy the message to the packet buffer. */
-                memcpy((buffer + index), &message_word, sizeof(ULONG)); /* Use case of memcpy is verified. */
+                memcpy((buffer + index), &message_word, sizeof(UINT32)); /* Use case of memcpy is verified. */
 
                 /* Update the index.  */
-                index += (ULONG)sizeof(ULONG);
+                index += (UINT32)sizeof(UINT32);
             }
 
             /* Increment the number of Solicit messages sent.  */
@@ -8571,7 +8571,7 @@ NX_DHCPV6 *dhcpv6_ptr;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nxe_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG time_accrued)
+UINT _nxe_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 time_accrued)
 {
 
 UINT status;
@@ -8627,7 +8627,7 @@ UINT status;
 /*    Application                                                         */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT _nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, ULONG time_accrued)
+UINT _nx_dhcpv6_set_time_accrued(NX_DHCPV6 *dhcpv6_ptr, UINT32 time_accrued)
 {
 
 
@@ -9622,7 +9622,7 @@ UINT        original_state;
             /* The DAD process failure, send DHCPv6 DECLINE message.  */
             _nx_dhcpv6_request_decline(dhcpv6_ptr);        
             
-            dhcpv6_events = dhcpv6_events & ~(ULONG)(NX_DHCPV6_DAD_FAILURE_EVENT);
+            dhcpv6_events = dhcpv6_events & ~(UINT32)(NX_DHCPV6_DAD_FAILURE_EVENT);
 
             /* Reset flag to indicate DHCP thread is not idle (not stoppable).  */
             dhcpv6_ptr -> nx_dhcpv6_sleep_flag =  NX_FALSE;
@@ -9676,7 +9676,7 @@ UINT        original_state;
 /*                                        reply and updates Client record */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_dhcpv6_utility_get_block_option_length(UCHAR *buffer_ptr, ULONG *option, ULONG *length)
+UINT  _nx_dhcpv6_utility_get_block_option_length(UCHAR *buffer_ptr, UINT32 *option, UINT32 *length)
 {
        
     /* Initialize to zero. */
@@ -9749,12 +9749,12 @@ UINT  _nx_dhcpv6_utility_get_block_option_length(UCHAR *buffer_ptr, ULONG *optio
 /*                                        reply and updates Client record */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_dhcpv6_utility_get_data(UCHAR *buffer, UINT size, ULONG *value)
+UINT  _nx_dhcpv6_utility_get_data(UCHAR *buffer, UINT size, UINT32 *value)
 {
 
 
-    /* Check that the size of the data fits in a ULONG. */
-    if (size > sizeof(ULONG))
+    /* Check that the size of the data fits in a UINT32. */
+    if (size > sizeof(UINT32))
     {
         return NX_DHCPV6_INVALID_DATA_SIZE;
     }
@@ -9873,10 +9873,10 @@ UINT _nx_dhcpv6_waiting_on_reply(NX_DHCPV6 *dhcpv6_ptr)
 UINT        current_preemption;
 UINT        status;
 NX_PACKET   *packet_ptr;
-ULONG       start_time;
-ULONG       current_time;
-ULONG       elapsed_time;
-ULONG       receive_wait;
+UINT32       start_time;
+UINT32       current_time;
+UINT32       elapsed_time;
+UINT32       receive_wait;
 UINT        time_remaining; 
 UINT        valid_answer;
 
@@ -9996,7 +9996,7 @@ UINT        valid_answer;
         {
 
             /* Yes it has. Time has rolled over the 32-bit boundary.  */
-            elapsed_time =  (((ULONG) 0xFFFFFFFF) - start_time) + current_time;
+            elapsed_time =  (((UINT32) 0xFFFFFFFF) - start_time) + current_time;
         }
 
         /* Update the time remaining. */
@@ -10082,7 +10082,7 @@ UINT _nx_dhcpv6_packet_process(NX_DHCPV6 *dhcpv6_ptr, NX_PACKET *packet_ptr)
 
 UINT        status;
 UINT        port;  
-ULONG       bytes_copied;
+UINT32       bytes_copied;
 NXD_ADDRESS server_IP_Address;
 NX_PACKET   *new_packet_ptr;
 
@@ -10128,7 +10128,7 @@ NX_PACKET   *new_packet_ptr;
     }
                    
     /* Verify the incoming packet does not exceed our DHCPv6 Client packet payload. */
-    if ((ULONG)(new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_prepend_ptr) < packet_ptr -> nx_packet_length)
+    if ((UINT32)(new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_prepend_ptr) < packet_ptr -> nx_packet_length)
     {
                                              
         /* Release the packet allocated from the Client pool*/
@@ -10256,17 +10256,17 @@ UINT  _nx_dhcpv6_scan_packet_options(NX_DHCPV6 *dhcpv6_ptr, NX_PACKET *packet_pt
 UINT        status;
 UCHAR       *dhcpv6_option_ptr;
 UINT        index;
-ULONG       option_code;
-ULONG       option_length;
+UINT32       option_code;
+UINT32       option_length;
 UCHAR       *dhcpv6_iana_option_ptr;
 UINT        iana_index;
-ULONG       iana_option_code;
-ULONG       iana_option_length;
+UINT32       iana_option_code;
+UINT32       iana_option_length;
 UCHAR       *dhcpv6_ia_option_ptr;
-ULONG       ia_option_index;
-ULONG       ia_option_code;
-ULONG       ia_option_length;
-ULONG       ipv6_address[4];
+UINT32       ia_option_index;
+UINT32       ia_option_code;
+UINT32       ia_option_length;
+UINT32       ipv6_address[4];
 USHORT      status_code;
 UINT        ia_index;
 UINT        w;
@@ -10383,10 +10383,10 @@ UINT        ia_count = 0;
                         {
 
                             /* Copy each IPv6 address word into the IA address. */
-                            memcpy(&ipv6_address[w], (dhcpv6_iana_option_ptr + ia_option_index), sizeof(ULONG)); /* Use case of memcpy is verified. */
+                            memcpy(&ipv6_address[w], (dhcpv6_iana_option_ptr + ia_option_index), sizeof(UINT32)); /* Use case of memcpy is verified. */
 
                             /* Adjust for endianness. */
-                            NX_CHANGE_ULONG_ENDIAN(ipv6_address[w]);
+                            NX_CHANGE_UINT32_ENDIAN(ipv6_address[w]);
 
                             ia_option_index += 4;
                         }
@@ -10749,8 +10749,8 @@ UINT        ia_count = 0;
 UINT  _nx_dhcpv6_preprocess_packet_information(NX_DHCPV6 *dhcpv6_ptr, NX_PACKET *packet_ptr)
 {
     
-ULONG       received_message_type;
-ULONG       returned_xid;
+UINT32       received_message_type;
+UINT32       returned_xid;
 
     /* Preprocess the DHCPv6 packet.  */   
 
@@ -10932,8 +10932,8 @@ UINT  _nx_dhcpv6_extract_packet_information(NX_DHCPV6 *dhcpv6_ptr, NX_PACKET *pa
 {
 
 UINT        status;
-ULONG       option_code;
-ULONG       option_length;
+UINT32       option_code;
+UINT32       option_length;
 UCHAR       *buffer_ptr;
 UINT        index;
 
@@ -11382,7 +11382,7 @@ UINT _nx_dhcpv6_user_option_add_callback_set(NX_DHCPV6 *dhcpv6_ptr, UINT (*dhcpv
 /*    UDP receive callback                                                */ 
 /*                                                                        */ 
 /**************************************************************************/
-VOID _nx_dhcpv6_ipv6_address_DAD_notify(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT ipv6_addr_index, ULONG *ipv6_address)
+VOID _nx_dhcpv6_ipv6_address_DAD_notify(NX_IP *ip_ptr, UINT status, UINT interface_index, UINT ipv6_addr_index, UINT32 *ipv6_address)
 {
 UINT    ia_index;
 
@@ -11635,7 +11635,7 @@ UINT  _nx_dhcpv6_client_get_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECOR
 /*    Application code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, ULONG time_elapsed)
+UINT  _nxe_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, UINT32 time_elapsed)
 {
 
 UINT status;           
@@ -11700,7 +11700,7 @@ UINT status;
 /*    Application code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, ULONG time_elapsed)
+UINT  _nx_dhcpv6_client_restore_record(NX_DHCPV6 *dhcpv6_ptr, NX_DHCPV6_CLIENT_RECORD *client_record_ptr, UINT32 time_elapsed)
 {               
 
 UINT    ia_index; 

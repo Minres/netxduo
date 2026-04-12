@@ -71,7 +71,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_packet_allocate(NX_PACKET_POOL *pool_ptr,  NX_PACKET **packet_ptr,
-                           ULONG packet_type, ULONG wait_option)
+                           UINT32 packet_type, UINT32 wait_option)
 {
 
 UINT status;
@@ -84,8 +84,8 @@ UINT status;
     }
 
     /* Check for an invalid packet type - for alignment purposes, it must be evenly divisible by the size
-       of a ULONG.  */
-    if (packet_type % sizeof(ULONG))
+       of a UINT32.  */
+    if (packet_type % sizeof(UINT32))
     {
         return(NX_OPTION_ERROR);
     }

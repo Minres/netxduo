@@ -94,7 +94,7 @@ extern UCHAR _nx_secure_tls_record_block_buffer[NX_SECURE_TLS_MAX_CIPHER_BLOCK_S
 /**************************************************************************/
 UINT _nx_secure_tls_record_payload_decrypt(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET *encrypted_packet,
                                            UINT offset, UINT message_length, NX_PACKET **decrypted_packet,
-                                           ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                           UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                            UCHAR record_type, UINT wait_option)
 {
 UINT                                  status;
@@ -104,7 +104,7 @@ UCHAR                                 copy_size;
 const NX_CRYPTO_METHOD               *session_cipher_method;
 USHORT                                iv_size;
 UINT                                  i;
-ULONG                                 bytes_copied;
+UINT32                                 bytes_copied;
 #ifdef NX_SECURE_ENABLE_AEAD_CIPHER
 UINT                                  icv_size;
 UCHAR                                 additional_data[13];
@@ -523,7 +523,7 @@ UINT status;
 UCHAR *icv_ptr;
 UINT icv_size;
 UINT bytes_processed;
-ULONG bytes_copied;
+UINT32 bytes_copied;
 NX_PACKET *packet_ptr;
 UINT icv_offset = offset;
 VOID *handler = NX_NULL;
@@ -717,7 +717,7 @@ UINT length;
 UINT block_size;
 UINT encrypted_length;
 UINT decrypted_length;
-ULONG bytes_copied;
+UINT32 bytes_copied;
 UINT remainder_length;
 UINT original_offset = offset;
 

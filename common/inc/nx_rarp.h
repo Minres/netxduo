@@ -64,12 +64,12 @@
         24          4           Target IP Address
  */
 
-#define NX_RARP_HARDWARE_TYPE   ((ULONG)0x0001)
-#define NX_RARP_PROTOCOL_TYPE   ((ULONG)0x0800)
-#define NX_RARP_HARDWARE_SIZE   ((ULONG)0x06)
-#define NX_RARP_PROTOCOL_SIZE   ((ULONG)0x04)
-#define NX_RARP_OPTION_REQUEST  ((ULONG)0x0003)
-#define NX_RARP_OPTION_RESPONSE ((ULONG)0x0004)
+#define NX_RARP_HARDWARE_TYPE   ((UINT32)0x0001)
+#define NX_RARP_PROTOCOL_TYPE   ((UINT32)0x0800)
+#define NX_RARP_HARDWARE_SIZE   ((UINT32)0x06)
+#define NX_RARP_PROTOCOL_SIZE   ((UINT32)0x04)
+#define NX_RARP_OPTION_REQUEST  ((UINT32)0x0003)
+#define NX_RARP_OPTION_RESPONSE ((UINT32)0x0004)
 #define NX_RARP_MESSAGE_SIZE    28
 
 /* Define RARP internal function prototypes.  */
@@ -83,15 +83,15 @@ VOID _nx_rarp_queue_process(NX_IP *ip_ptr);
 /* Define RARP function prototypes.  */
 UINT _nx_rarp_enable(NX_IP *ip_ptr);
 UINT _nx_rarp_disable(NX_IP *ip_ptr);
-UINT _nx_rarp_info_get(NX_IP *ip_ptr, ULONG *rarp_requests_sent, ULONG *rarp_responses_received,
-                       ULONG *rarp_invalid_messages);
+UINT _nx_rarp_info_get(NX_IP *ip_ptr, UINT32 *rarp_requests_sent, UINT32 *rarp_responses_received,
+                       UINT32 *rarp_invalid_messages);
 
 /* Define error checking shells for RARP services.  These are only referenced by the
    application.  */
 
 UINT _nxe_rarp_enable(NX_IP *ip_ptr);
 UINT _nxe_rarp_disable(NX_IP *ip_ptr);
-UINT _nxe_rarp_info_get(NX_IP *ip_ptr, ULONG *rarp_requests_sent, ULONG *rarp_responses_received,
-                        ULONG *rarp_invalid_messages);
+UINT _nxe_rarp_info_get(NX_IP *ip_ptr, UINT32 *rarp_requests_sent, UINT32 *rarp_responses_received,
+                        UINT32 *rarp_invalid_messages);
 #endif
 

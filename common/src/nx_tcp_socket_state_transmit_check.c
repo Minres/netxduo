@@ -70,7 +70,7 @@
 VOID  _nx_tcp_socket_state_transmit_check(NX_TCP_SOCKET *socket_ptr)
 {
 
-ULONG tx_window_current;
+UINT32 tx_window_current;
 
     /* Now check to see if there is a thread suspended attempting to transmit.  */
     if (socket_ptr -> nx_tcp_socket_transmit_suspension_list)

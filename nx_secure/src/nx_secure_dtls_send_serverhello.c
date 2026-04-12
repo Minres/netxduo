@@ -94,7 +94,7 @@ USHORT                                protocol_version;
 
     if ((6u + sizeof(tls_session -> nx_secure_tls_key_material.nx_secure_tls_server_random) +
          tls_session -> nx_secure_tls_session_id_length) >
-        ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_prepend_ptr)))
+        ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_prepend_ptr)))
     {
 
         /* Packet buffer is too small. */
@@ -120,7 +120,7 @@ USHORT                                protocol_version;
     {
         gmt_time = tls_session -> nx_secure_tls_session_time_function();
     }
-    NX_CHANGE_ULONG_ENDIAN(gmt_time);
+    NX_CHANGE_UINT32_ENDIAN(gmt_time);
 
     NX_SECURE_MEMCPY(tls_session -> nx_secure_tls_key_material.nx_secure_tls_server_random, (UCHAR *)&gmt_time, sizeof(gmt_time)); /* Use case of memcpy is verified. */
 
@@ -166,7 +166,7 @@ USHORT                                protocol_version;
 #ifdef NX_SECURE_ENABLE_ECJPAKE_CIPHERSUITE
     if (tls_session -> nx_secure_tls_session_ciphersuite -> nx_secure_tls_public_auth -> nx_crypto_algorithm == NX_CRYPTO_KEY_EXCHANGE_ECJPAKE)
     {
-        if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_prepend_ptr)) < 12u)
+        if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_prepend_ptr)) < 12u)
         {
 
             /* Packet buffer is too small. */
@@ -210,7 +210,7 @@ USHORT                                protocol_version;
 
         extended_output.nx_crypto_extended_output_data = &packet_buffer[length];
         extended_output.nx_crypto_extended_output_length_in_byte =
-            (ULONG)send_packet -> nx_packet_data_end - (ULONG)&packet_buffer[length];
+            (UINT32)send_packet -> nx_packet_data_end - (UINT32)&packet_buffer[length];
         extended_output.nx_crypto_extended_output_actual_size = 0;
         status = crypto_method -> nx_crypto_operation(NX_CRYPTO_ECJPAKE_SERVER_HELLO_GENERATE,
                                                       NX_NULL,

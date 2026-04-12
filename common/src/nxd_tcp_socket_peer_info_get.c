@@ -69,10 +69,10 @@
 /**************************************************************************/
 UINT  _nxd_tcp_socket_peer_info_get(NX_TCP_SOCKET *socket_ptr,
                                     NXD_ADDRESS *peer_ip_address,
-                                    ULONG *peer_port)
+                                    UINT32 *peer_port)
 {
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG  ip_address_lsw = 0;
+UINT32  ip_address_lsw = 0;
 #endif /* TX_ENABLE_EVENT_TRACE */
 NX_IP *ip_ptr;
 

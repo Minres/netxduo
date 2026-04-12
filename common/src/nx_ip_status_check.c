@@ -65,8 +65,8 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_status_check(NX_IP *ip_ptr, ULONG needed_status,
-                          ULONG *actual_status, ULONG wait_option)
+UINT  _nx_ip_status_check(NX_IP *ip_ptr, UINT32 needed_status,
+                          UINT32 *actual_status, UINT32 wait_option)
 {
     return(_nx_ip_interface_status_check(ip_ptr, 0, needed_status, actual_status, wait_option));
 }

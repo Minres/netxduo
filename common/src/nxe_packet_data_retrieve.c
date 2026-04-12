@@ -64,7 +64,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_data_retrieve(NX_PACKET *packet_ptr, VOID *buffer_start, ULONG *bytes_copied)
+UINT  _nxe_packet_data_retrieve(NX_PACKET *packet_ptr, VOID *buffer_start, UINT32 *bytes_copied)
 {
 
 UINT status;

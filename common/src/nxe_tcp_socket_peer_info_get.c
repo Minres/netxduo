@@ -68,8 +68,8 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_tcp_socket_peer_info_get(NX_TCP_SOCKET *socket_ptr,
-                                    ULONG *peer_ip_address,
-                                    ULONG *peer_port)
+                                    UINT32 *peer_ip_address,
+                                    UINT32 *peer_port)
 {
 #ifndef NX_DISABLE_IPV4
 UINT status;

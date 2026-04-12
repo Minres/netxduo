@@ -74,11 +74,11 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_nd_cache_find_entry_by_mac_addr(NX_IP *ip_ptr, ULONG physical_msw,
-                                         ULONG physical_lsw, ND_CACHE_ENTRY **nd_cache_entry)
+UINT _nx_nd_cache_find_entry_by_mac_addr(NX_IP *ip_ptr, UINT32 physical_msw,
+                                         UINT32 physical_lsw, ND_CACHE_ENTRY **nd_cache_entry)
 {
 INT   i;
-ULONG mac_msw, mac_lsw;
+UINT32 mac_msw, mac_lsw;
 
     /* Initialize the return value. */
     *nd_cache_entry = NX_NULL;
@@ -100,9 +100,9 @@ ULONG mac_msw, mac_lsw;
         }
 
         /* Set the physical address.  */
-        mac_msw = ((ULONG)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[0] << 8) | ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[1];
-        mac_lsw = ((ULONG)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[2] << 24) | ((ULONG)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[3] << 16) |
-            ((ULONG)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[4] << 8) | ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[5];
+        mac_msw = ((UINT32)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[0] << 8) | ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[1];
+        mac_lsw = ((UINT32)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[2] << 24) | ((UINT32)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[3] << 16) |
+            ((UINT32)ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[4] << 8) | ip_ptr -> nx_ipv6_nd_cache[i].nx_nd_cache_mac_addr[5];
 
         /* Check the physical address.  */
         if ((mac_msw == physical_msw) && (mac_lsw == physical_lsw))

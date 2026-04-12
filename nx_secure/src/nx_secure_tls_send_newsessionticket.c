@@ -138,7 +138,7 @@ UCHAR            *packet_buffer;
 
      NX_PARAMETER_NOT_USED(tls_session);
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < 13u)
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < 13u)
     {
 
         /* Packet buffer too small. */
@@ -186,7 +186,7 @@ UCHAR            *packet_buffer;
     ticket =  (UCHAR *)("NewSessionTicket");
     ticket_len = sizeof("NewSessionTicket");
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < (17u + ticket_len))
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < (17u + ticket_len))
     {
 
         /* Packet buffer too small. */

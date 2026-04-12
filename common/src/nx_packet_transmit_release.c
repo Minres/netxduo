@@ -87,14 +87,14 @@ UINT status;
 
     /* Determine if the packet is a queued TCP data packet.  Such packets cannot be released
        immediately, since they may need to be resent.  */
-    /*lint -e{923} suppress cast of ULONG to pointer.  */
+    /*lint -e{923} suppress cast of UINT32 to pointer.  */
     if ((packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_ALLOCATED)) &&
         (packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next != ((NX_PACKET *)NX_PACKET_FREE)))
     {
 
         /* Yes, this is indeed a TCP packet.  Just mark this with the NX_DRIVER_TX_DONE
            value to let the TCP layer know it is no longer queued up.  */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         packet_ptr -> nx_packet_queue_next =  (NX_PACKET *)NX_DRIVER_TX_DONE;
 
         /* Remove the IP header and adjust the length.  */

@@ -200,7 +200,7 @@ static UCHAR secret_512_256[] = {
 };
 
 /* Output. */
-static ULONG output[16];
+static UINT32 output[16];
 
 /**************************************************************************/
 /*                                                                        */

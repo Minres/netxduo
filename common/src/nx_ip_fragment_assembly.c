@@ -84,13 +84,13 @@ NX_PACKET                      *old_ptr;
 #ifndef NX_DISABLE_IPV4
 NX_IPV4_HEADER                 *search_header = NX_NULL;
 NX_IPV4_HEADER                 *current_header = NX_NULL;
-ULONG                           current_ttl = 0;
+UINT32                           current_ttl = 0;
 #endif /* NX_DISABLE_IPV4 */
-ULONG                           current_id = 0;
-ULONG                           current_offset = 0;
-ULONG                           protocol = NX_PROTOCOL_NO_NEXT_HEADER;
-ULONG                           incomplete;
-ULONG                           ip_version = NX_IP_VERSION_V4;
+UINT32                           current_id = 0;
+UINT32                           current_offset = 0;
+UINT32                           protocol = NX_PROTOCOL_NO_NEXT_HEADER;
+UINT32                           incomplete;
+UINT32                           ip_version = NX_IP_VERSION_V4;
 UCHAR                           copy_packet;
 #ifdef FEATURE_NX_IPV6
 NX_IPV6_HEADER_FRAGMENT_OPTION *search_v6_fragment_option = NX_NULL;
@@ -321,11 +321,11 @@ UINT                            packet_consumed;
                     search_v6_fragment_option = (NX_IPV6_HEADER_FRAGMENT_OPTION *)search_ptr -> nx_packet_prepend_ptr;
 
                     /* Determine if the incoming IP fragment goes before this packet.  */
-                    if (current_offset <= (ULONG)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
+                    if (current_offset <= (UINT32)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
                     {
 
                         /* Determine if the incoming IP fragment is copy packet. Link the new packet before old packet.  */
-                        if (current_offset == (ULONG)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
+                        if (current_offset == (UINT32)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
                         {
                             copy_packet = NX_TRUE;
                         }
@@ -398,8 +398,8 @@ UINT                            packet_consumed;
                 current_fragment -> nx_packet_union_next.nx_packet_fragment_next =  old_ptr -> nx_packet_union_next.nx_packet_fragment_next;
 
                 /* Reset tcp_queue_next before releasing. */
-                /* Cast the ULONG into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /* Cast the UINT32 into a packet pointer. Since this is exactly what we wish to do, disable the lint warning with the following comment:  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 old_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
                 /* Release the old packet.  */
@@ -442,7 +442,7 @@ UINT                            packet_consumed;
 
                     /* Calculate the next expected offset.  */
                     current_offset =  current_offset +
-                        ((search_header -> nx_ip_header_word_0 & NX_LOWER_16_MASK) - (ULONG)sizeof(NX_IPV4_HEADER)) /
+                        ((search_header -> nx_ip_header_word_0 & NX_LOWER_16_MASK) - (UINT32)sizeof(NX_IPV4_HEADER)) /
                         NX_IP_ALIGN_FRAGS;
                 }
 #endif /* NX_DISABLE_IPV4 */
@@ -456,7 +456,7 @@ UINT                            packet_consumed;
                     search_v6_fragment_option = (NX_IPV6_HEADER_FRAGMENT_OPTION *)search_ptr -> nx_packet_prepend_ptr;
 
                     /* Check for the expected current offset.  */
-                    if (current_offset != (ULONG)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
+                    if (current_offset != (UINT32)(search_v6_fragment_option -> nx_ipv6_header_fragment_option_offset_flag & 0xFFF8))
                     {
 
                         incomplete = 1;
@@ -467,7 +467,7 @@ UINT                            packet_consumed;
 
                     /* Calculate the next expected offset.  */
                     current_offset =  current_offset +
-                        (search_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION));
+                        (search_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION));
                 }
 #endif /* FEATURE_NX_IPV6 */
 
@@ -540,7 +540,7 @@ UINT                            packet_consumed;
             {
 
                 /* Reset tcp_queue_next before releasing. */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 previous_fragment -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
 #ifndef NX_DISABLE_IPV4
@@ -548,7 +548,7 @@ UINT                            packet_consumed;
                 {
                     /* Accumulate the new length into the head packet.  */
                     fragment_head -> nx_packet_length =  fragment_head -> nx_packet_length +
-                        search_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+                        search_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 
                     /* Position past the IP header in the subsequent packets.  */
                     search_ptr -> nx_packet_prepend_ptr =  search_ptr -> nx_packet_prepend_ptr +
@@ -561,7 +561,7 @@ UINT                            packet_consumed;
 
                     /* For IPv6, we move the prepend ptr to the next option .*/
                     search_ptr -> nx_packet_prepend_ptr += sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
-                    search_ptr -> nx_packet_length -= (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+                    search_ptr -> nx_packet_length -= (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
 
                     /* Accumulate the new length into the head packet. */
                     fragment_head -> nx_packet_length += search_ptr -> nx_packet_length;
@@ -595,7 +595,7 @@ UINT                            packet_consumed;
             }
 
             /* Reset tcp_queue_next before releasing. */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             previous_fragment -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
             /* We are now ready to dispatch this packet just like the normal IP receive packet
@@ -661,14 +661,14 @@ UINT                            packet_consumed;
                 fragment_head -> nx_packet_prepend_ptr = fragment_head -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
 
                 /* Adjust the length.  */
-                fragment_head -> nx_packet_length = fragment_head -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+                fragment_head -> nx_packet_length = fragment_head -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
             }
 #endif /* NX_DISABLE_IPV4 */
 #ifdef FEATURE_NX_IPV6
             if (ip_version == NX_IP_VERSION_V6)
             {
                 fragment_head -> nx_packet_prepend_ptr += sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
-                fragment_head -> nx_packet_length -= (ULONG)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
+                fragment_head -> nx_packet_length -= (UINT32)sizeof(NX_IPV6_HEADER_FRAGMENT_OPTION);
 
                 /*lint -e{613} suppress possible use of null pointer, since "current_pkt_ip_header" was set to none NULL above. */
                 protocol = current_v6_fragment_option -> nx_ipv6_header_fragment_option_next_header;

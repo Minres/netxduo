@@ -69,11 +69,11 @@ NX_SECURE_CALLER_CHECKING_EXTERNS
 UINT  _nxe_secure_tls_session_create(NX_SECURE_TLS_SESSION *session_ptr,
                                      const NX_SECURE_TLS_CRYPTO *cipher_table,
                                      VOID *metadata_area,
-                                     ULONG metadata_size)
+                                     UINT32 metadata_size)
 {
 UINT status;
 NX_SECURE_TLS_SESSION *created_tls_session;
-ULONG created_count;
+UINT32 created_count;
 
     if ((session_ptr == NX_NULL) || (cipher_table == NX_NULL) || (metadata_area == NX_NULL))
     {

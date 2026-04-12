@@ -64,7 +64,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ipv4_multicast_interface_leave(NX_IP *ip_ptr, ULONG group_address, UINT interface_index)
+UINT  _nx_ipv4_multicast_interface_leave(NX_IP *ip_ptr, UINT32 group_address, UINT interface_index)
 {
 
 #ifndef NX_DISABLE_IPV4

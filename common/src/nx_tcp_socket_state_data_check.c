@@ -66,9 +66,9 @@
 /*    _nx_tcp_socket_state_data_check       Process TCP packet for socket */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_tcp_socket_state_data_trim(NX_PACKET *packet_ptr, ULONG amount)
+VOID _nx_tcp_socket_state_data_trim(NX_PACKET *packet_ptr, UINT32 amount)
 {
-ULONG      bytes_to_keep;
+UINT32      bytes_to_keep;
 NX_PACKET *work_ptr;
 
     if (amount >= packet_ptr -> nx_packet_length)
@@ -94,8 +94,8 @@ NX_PACKET *work_ptr;
         if ((INT)(work_ptr -> nx_packet_append_ptr - work_ptr -> nx_packet_prepend_ptr) < (INT)bytes_to_keep)
         {
 
-            /*lint -e{923} suppress cast of pointer to ULONG.  */
-            bytes_to_keep -= (ULONG)((ALIGN_TYPE)work_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)work_ptr -> nx_packet_prepend_ptr);
+            /*lint -e{923} suppress cast of pointer to UINT32.  */
+            bytes_to_keep -= (UINT32)((ALIGN_TYPE)work_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)work_ptr -> nx_packet_prepend_ptr);
 
             work_ptr = work_ptr -> nx_packet_next;
 
@@ -115,7 +115,7 @@ NX_PACKET *work_ptr;
         if (work_ptr)
         {
 
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             work_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
             _nx_packet_release(work_ptr);
@@ -161,10 +161,10 @@ NX_PACKET *work_ptr;
 /*    _nx_tcp_socket_state_data_check       Process TCP packet for socket */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_tcp_socket_state_data_trim_front(NX_PACKET *packet_ptr, ULONG amount)
+VOID _nx_tcp_socket_state_data_trim_front(NX_PACKET *packet_ptr, UINT32 amount)
 {
 NX_PACKET *work_ptr = packet_ptr;
-ULONG      work_length;
+UINT32      work_length;
 
     if (amount >= packet_ptr -> nx_packet_length || amount == 0)
     {
@@ -185,8 +185,8 @@ ULONG      work_length;
 #endif /* NX_DISABLE_PACKET_CHAIN */
 
         /* Compute the size of the data portion work_ptr.  */
-        /*lint -e{923} suppress cast of pointer to ULONG.  */
-        work_length = (ULONG)((ALIGN_TYPE)work_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)work_ptr -> nx_packet_prepend_ptr);
+        /*lint -e{923} suppress cast of pointer to UINT32.  */
+        work_length = (UINT32)((ALIGN_TYPE)work_ptr -> nx_packet_append_ptr - (ALIGN_TYPE)work_ptr -> nx_packet_prepend_ptr);
 
 #ifndef NX_DISABLE_PACKET_CHAIN
         if (amount > work_length)
@@ -211,7 +211,7 @@ ULONG      work_length;
                 work_ptr -> nx_packet_next = NX_NULL;
 
                 /* Mark the packet as ALLOCATED. */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 work_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
                 _nx_packet_release(work_ptr);
@@ -304,21 +304,21 @@ NX_TCP_HEADER *tcp_header_ptr;
 NX_TCP_HEADER *search_header_ptr;
 NX_PACKET     *search_ptr;
 NX_PACKET     *previous_ptr;
-ULONG          expected_sequence;
-ULONG          header_length;
-ULONG          search_header_length;
-ULONG          packet_begin_sequence;
-ULONG          packet_end_sequence;
-ULONG          packet_data_length;
-ULONG          search_begin_sequence;
-ULONG          search_end_sequence;
-ULONG          original_rx_sequence;
-ULONG          trim_data_length;
+UINT32          expected_sequence;
+UINT32          header_length;
+UINT32          search_header_length;
+UINT32          packet_begin_sequence;
+UINT32          packet_end_sequence;
+UINT32          packet_data_length;
+UINT32          search_begin_sequence;
+UINT32          search_end_sequence;
+UINT32          original_rx_sequence;
+UINT32          trim_data_length;
 TX_THREAD     *thread_ptr;
-ULONG          acked_packets = 0;
+UINT32          acked_packets = 0;
 UINT           need_ack = NX_FALSE;
 #ifdef NX_ENABLE_TCPIP_OFFLOAD
-ULONG          tcpip_offload;
+UINT32          tcpip_offload;
 #endif /* NX_ENABLE_TCPIP_OFFLOAD */
 #ifdef NX_ENABLE_LOW_WATERMARK
 UCHAR          drop_packet = NX_FALSE;
@@ -340,7 +340,7 @@ NX_IP         *ip_ptr;
     tcp_header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Determine the size of the TCP header.  */
-    header_length =  (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+    header_length =  (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
     /* Record the original rx_sequence. */
     original_rx_sequence = socket_ptr -> nx_tcp_socket_rx_sequence;
@@ -456,7 +456,7 @@ NX_IP         *ip_ptr;
         search_header_ptr =  (NX_TCP_HEADER *)search_ptr -> nx_packet_prepend_ptr;
 
         /* Determine the size of the search TCP header.  */
-        search_header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+        search_header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
         /* Now see if the current sequence number accounts for the last packet.  */
         search_end_sequence = search_header_ptr -> nx_tcp_sequence_number  + search_ptr -> nx_packet_length - search_header_length;
@@ -506,7 +506,7 @@ NX_IP         *ip_ptr;
 #endif /* NX_ENABLE_LOW_WATERMARK */
 
             /* Mark the packet as ready. This is done to simplify the logic in socket receive.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_queue_next =  (NX_PACKET *)NX_PACKET_READY;
 
             /* Add debug information. */
@@ -543,7 +543,7 @@ NX_IP         *ip_ptr;
             socket_ptr -> nx_tcp_socket_receive_queue_count++;
 
             /* Set the next pointer to indicate the packet is part of a TCP queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ENQUEUED;
 
             /* Calculate the next sequence number.  */
@@ -601,7 +601,7 @@ NX_IP         *ip_ptr;
             socket_ptr -> nx_tcp_socket_delayed_ack_timeout =  _nx_tcp_ack_timer_rate;
 
             /* Mark the packet as being part of a TCP queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ENQUEUED;
 #ifdef NX_ENABLE_LOW_WATERMARK
         }
@@ -646,7 +646,7 @@ NX_IP         *ip_ptr;
         while (search_ptr)
         {
 
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             if (search_ptr == (NX_PACKET *)NX_PACKET_ENQUEUED)
             {
                 /* We hit the end of the receive queue. */
@@ -663,7 +663,7 @@ NX_IP         *ip_ptr;
             search_begin_sequence = search_header_ptr -> nx_tcp_sequence_number;
 
             /* Calculate the header size for this packet.  */
-            header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+            header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
             search_end_sequence = search_begin_sequence + search_ptr -> nx_packet_length - header_length;
 
@@ -743,7 +743,7 @@ NX_IP         *ip_ptr;
                 tmp_ptr = search_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
 
                 /* Mark the packet as no longer being part of the TCP queue. */
-                /*lint -e{923} suppress cast of ULONG to pointer.  */
+                /*lint -e{923} suppress cast of UINT32 to pointer.  */
                 search_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
                 /* Decrease the packet queue count */
@@ -805,7 +805,7 @@ NX_IP         *ip_ptr;
              *                                                                                      *
              *                                                                                      *
              ***************************************************************************************/
-            _nx_tcp_socket_state_data_trim(search_ptr, (ULONG)(search_end_sequence - packet_begin_sequence));
+            _nx_tcp_socket_state_data_trim(search_ptr, (UINT32)(search_end_sequence - packet_begin_sequence));
 
 #ifndef NX_DISABLE_TCP_INFO
             /* The new packet has been admitted to the receive queue. */
@@ -844,7 +844,7 @@ NX_IP         *ip_ptr;
             socket_ptr -> nx_tcp_socket_receive_queue_tail = packet_ptr;
 
             /* Set the next pointer to indicate the packet is part of a TCP queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ENQUEUED;
         }
         else
@@ -878,7 +878,7 @@ NX_IP         *ip_ptr;
 
 
             /* Calculate the header size for this packet.  */
-            header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+            header_length =  (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
             search_begin_sequence = search_header_ptr -> nx_tcp_sequence_number;
 
@@ -898,7 +898,7 @@ NX_IP         *ip_ptr;
                     socket_ptr -> nx_tcp_socket_rx_sequence = expected_sequence;
 
                     /* Mark this packet as ready for retrieval.  */
-                    /*lint -e{923} suppress cast of ULONG to pointer.  */
+                    /*lint -e{923} suppress cast of UINT32 to pointer.  */
                     search_ptr -> nx_packet_queue_next =  (NX_PACKET *)NX_PACKET_READY;
                 }
             }
@@ -913,7 +913,7 @@ NX_IP         *ip_ptr;
             search_ptr =  search_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
 
             /* Determine if we are at the end of the queue.  */
-            /*lint -e{923} suppress cast of ULONG to pointer.  */
+            /*lint -e{923} suppress cast of UINT32 to pointer.  */
             if (search_ptr == ((NX_PACKET *)NX_PACKET_ENQUEUED))
             {
 
@@ -923,7 +923,7 @@ NX_IP         *ip_ptr;
 
 #ifdef NX_ENABLE_LOW_WATERMARK
             /* Do not calculate sequence for packet that is to be dropped. */
-            if (drop_packet && (acked_packets >= (ULONG)socket_ptr -> nx_tcp_socket_receive_queue_maximum))
+            if (drop_packet && (acked_packets >= (UINT32)socket_ptr -> nx_tcp_socket_receive_queue_maximum))
             {
 
                 /* Get out of the loop!  */
@@ -963,7 +963,7 @@ NX_IP         *ip_ptr;
 
                 /* Calculate the ending sequence number for the last packet.  */
                 search_header_ptr =  (NX_TCP_HEADER *)search_ptr -> nx_packet_prepend_ptr;
-                header_length = (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * sizeof(ULONG);
+                header_length = (search_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * sizeof(UINT32);
 
                 /* Decrease window size. */
                 socket_ptr -> nx_tcp_socket_rx_window_current = search_header_ptr -> nx_tcp_sequence_number +
@@ -1078,7 +1078,7 @@ NX_IP         *ip_ptr;
         socket_ptr -> nx_tcp_socket_receive_queue_head =  packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next;
 
         /* Mark the packet as no longer being part of the TCP queue.  */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         packet_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ALLOCATED;
 
         /* Clear the queue next pointer.  */
@@ -1094,7 +1094,7 @@ NX_IP         *ip_ptr;
         tcp_header_ptr =  (NX_TCP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
         /* Calculate the header size for this packet.  */
-        header_length =  (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (ULONG)sizeof(ULONG);
+        header_length =  (tcp_header_ptr -> nx_tcp_header_word_3 >> NX_TCP_HEADER_SHIFT) * (UINT32)sizeof(UINT32);
 
         /* Adjust the packet prepend pointer and length to position past the TCP header.  */
         packet_ptr -> nx_packet_prepend_ptr =  packet_ptr -> nx_packet_prepend_ptr + header_length;

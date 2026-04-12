@@ -67,9 +67,9 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_tcp_client_socket_connect(NX_TCP_SOCKET *socket_ptr,
-                                    ULONG server_ip,
+                                    UINT32 server_ip,
                                     UINT server_port,
-                                    ULONG wait_option)
+                                    UINT32 wait_option)
 {
 
 #ifndef NX_DISABLE_IPV4

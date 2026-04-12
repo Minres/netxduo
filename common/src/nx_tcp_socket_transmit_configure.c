@@ -72,8 +72,8 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_transmit_configure(NX_TCP_SOCKET *socket_ptr, ULONG max_queue_depth,
-                                        ULONG timeout, ULONG max_retries, ULONG timeout_shift)
+UINT  _nx_tcp_socket_transmit_configure(NX_TCP_SOCKET *socket_ptr, UINT32 max_queue_depth,
+                                        UINT32 timeout, UINT32 max_retries, UINT32 timeout_shift)
 {
 
 NX_IP *ip_ptr;

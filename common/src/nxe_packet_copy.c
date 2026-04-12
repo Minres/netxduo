@@ -70,7 +70,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_packet_copy(NX_PACKET *packet_ptr, NX_PACKET **new_packet_ptr,
-                       NX_PACKET_POOL *pool_ptr, ULONG wait_option)
+                       NX_PACKET_POOL *pool_ptr, UINT32 wait_option)
 {
 
 UINT status;

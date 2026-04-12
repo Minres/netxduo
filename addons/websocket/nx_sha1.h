@@ -83,8 +83,8 @@
 typedef struct NX_SHA1_STRUCT
 {
 
-    ULONG       nx_sha1_states[5];                      /* Contains each state (A,B,C,D)    */
-    ULONG       nx_sha1_bit_count[2];                   /* Contains the 64-bit total bit    */ 
+    UINT32       nx_sha1_states[5];                      /* Contains each state (A,B,C,D)    */
+    UINT32       nx_sha1_bit_count[2];                   /* Contains the 64-bit total bit    */ 
                                                         /*   count, where index 0 holds the */ 
                                                         /*   least significant bit count and*/ 
                                                         /*   index 1 contains the most      */ 
@@ -94,7 +94,7 @@ typedef struct NX_SHA1_STRUCT
                                                         /*   where partial buffers are      */ 
                                                         /*   accumulated until a full block */ 
                                                         /*   can be processed               */ 
-    ULONG       nx_sha1_word_array[80];                 /* Working 80 word array            */ 
+    UINT32       nx_sha1_word_array[80];                 /* Working 80 word array            */ 
 } NX_SHA1;
 
 

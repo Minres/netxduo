@@ -90,9 +90,9 @@ UINT _nxe_ip_max_payload_size_find(NX_IP *ip_ptr,
                                    UINT if_index,
                                    UINT src_port,
                                    UINT dest_port,
-                                   ULONG protocol,
-                                   ULONG *start_offset_ptr,
-                                   ULONG *payload_length_ptr)
+                                   UINT32 protocol,
+                                   UINT32 *start_offset_ptr,
+                                   UINT32 *payload_length_ptr)
 {
 
     /* Check for valid pointer to an IP instance.  */

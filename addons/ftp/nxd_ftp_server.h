@@ -272,9 +272,9 @@ typedef struct NX_FTP_CLIENT_REQUEST_STRUCT
     CHAR            nx_ftp_client_request_login;                    /* FTP Login flag                      */ 
     CHAR            nx_ftp_client_request_passive_transfer_enabled; /* Client enabled for passive transfer */
     UINT            nx_ftp_client_request_transfer_mode;            /* Client transfer mode                */
-    ULONG           nx_ftp_client_request_activity_timeout;         /* Timeout for client activity         */ 
-    ULONG           nx_ftp_client_request_total_bytes;              /* Total bytes read or written         */ 
-    ULONG           nx_ftp_client_request_block_bytes;              /* Block bytes in block mode           */ 
+    UINT32           nx_ftp_client_request_activity_timeout;         /* Timeout for client activity         */ 
+    UINT32           nx_ftp_client_request_total_bytes;              /* Total bytes read or written         */ 
+    UINT32           nx_ftp_client_request_block_bytes;              /* Block bytes in block mode           */ 
     CHAR            nx_ftp_client_request_username[NX_FTP_USERNAME_SIZE];
     CHAR            nx_ftp_client_request_password[NX_FTP_PASSWORD_SIZE];
     NX_PACKET       *nx_ftp_client_request_packet;                  /* Previous request packet             */ 
@@ -289,22 +289,22 @@ typedef struct NX_FTP_CLIENT_REQUEST_STRUCT
 
 typedef struct NX_FTP_SERVER_STRUCT 
 {
-    ULONG           nx_ftp_server_id;                               /* FTP Server ID                       */
+    UINT32           nx_ftp_server_id;                               /* FTP Server ID                       */
     CHAR           *nx_ftp_server_name;                             /* Name of this FTP server             */
     NX_IP          *nx_ftp_server_ip_ptr;                           /* Pointer to associated IP structure  */ 
 
     NX_PACKET_POOL *nx_ftp_server_packet_pool_ptr;                  /* Pointer to FTP server packet pool   */ 
     FX_MEDIA       *nx_ftp_server_media_ptr;                        /* Pointer to media control block      */ 
-    ULONG           nx_ftp_server_connection_requests;              /* Number of connection requests       */ 
-    ULONG           nx_ftp_server_disconnection_requests;           /* Number of disconnection requests    */ 
-    ULONG           nx_ftp_server_login_errors;                     /* Number of login errors              */ 
-    ULONG           nx_ftp_server_authentication_errors;            /* Number of access w/o authentication */ 
-    ULONG           nx_ftp_server_total_bytes_sent;                 /* Number of total bytes sent          */ 
-    ULONG           nx_ftp_server_total_bytes_received;             /* Number of total bytes received      */ 
-    ULONG           nx_ftp_server_unknown_commands;                 /* Number of unknown commands received */ 
-    ULONG           nx_ftp_server_allocation_errors;                /* Number of allocation errors         */ 
-    ULONG           nx_ftp_server_relisten_errors;                  /* Number of relisten errors           */ 
-    ULONG           nx_ftp_server_activity_timeouts;                /* Number of activity timeouts         */ 
+    UINT32           nx_ftp_server_connection_requests;              /* Number of connection requests       */ 
+    UINT32           nx_ftp_server_disconnection_requests;           /* Number of disconnection requests    */ 
+    UINT32           nx_ftp_server_login_errors;                     /* Number of login errors              */ 
+    UINT32           nx_ftp_server_authentication_errors;            /* Number of access w/o authentication */ 
+    UINT32           nx_ftp_server_total_bytes_sent;                 /* Number of total bytes sent          */ 
+    UINT32           nx_ftp_server_total_bytes_received;             /* Number of total bytes received      */ 
+    UINT32           nx_ftp_server_unknown_commands;                 /* Number of unknown commands received */ 
+    UINT32           nx_ftp_server_allocation_errors;                /* Number of allocation errors         */ 
+    UINT32           nx_ftp_server_relisten_errors;                  /* Number of relisten errors           */ 
+    UINT32           nx_ftp_server_activity_timeouts;                /* Number of activity timeouts         */ 
     UINT            nx_ftp_server_data_port;                        /* Port the data socket binds          */ 
     NX_FTP_CLIENT_REQUEST                                           /* FTP client request array            */ 
                     nx_ftp_server_client_list[NX_FTP_MAX_CLIENTS]; 
@@ -315,8 +315,8 @@ typedef struct NX_FTP_SERVER_STRUCT
     UINT            (*nx_ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info); 
     UINT            (*nx_ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info);
 #ifndef NX_DISABLE_IPV4
-    UINT            (*nx_ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info); 
-    UINT            (*nx_ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info);
+    UINT            (*nx_ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info); 
+    UINT            (*nx_ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info);
 #endif /* NX_DISABLE_IPV4 */
 
     struct NX_FTP_SERVER_STRUCT
@@ -357,10 +357,10 @@ typedef struct NX_FTP_SERVER_STRUCT
 #endif
 
 /* Define the prototypes accessible to the application software.  */
-UINT        nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
-                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
-                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)); 
-UINT        nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
+                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
+                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)); 
+UINT        nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
                 UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
 UINT        nx_ftp_server_delete(NX_FTP_SERVER *ftp_server_ptr);
@@ -370,16 +370,16 @@ UINT        nx_ftp_server_stop(NX_FTP_SERVER *ftp_server_ptr);
 #else
 
 /* FTP source code is being compiled, do not perform any API mapping.  */
-UINT        _nxe_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
-                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
-                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
-UINT        _nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
-                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
-                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, ULONG client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)); 
-UINT        _nxde_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nxe_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
+                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
+                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
+UINT        _nx_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
+                UINT (*ftp_login_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
+                UINT (*ftp_logout_ipv4)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, UINT32 client_ip_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info)); 
+UINT        _nxde_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
                 UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
-UINT        _nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nxd_ftp_server_create(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
                 UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_ipduo_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
 UINT        _nxe_ftp_server_delete(NX_FTP_SERVER *ftp_server_ptr);
@@ -390,7 +390,7 @@ UINT        _nxe_ftp_server_stop(NX_FTP_SERVER *ftp_server_ptr);
 UINT        _nx_ftp_server_stop(NX_FTP_SERVER *ftp_server_ptr);
        
 /* Internal FTP functions. */        
-UINT        _nx_ftp_server_create_internal(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT        _nx_ftp_server_create_internal(NX_FTP_SERVER *ftp_server_ptr, CHAR *ftp_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                 UINT (*ftp_login)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info),
                 UINT (*ftp_logout)(struct NX_FTP_SERVER_STRUCT *ftp_server_ptr, NXD_ADDRESS *client_address, UINT client_port, CHAR *name, CHAR *password, CHAR *extra_info));
 VOID        _nx_ftp_server_response(NX_TCP_SOCKET *socket, NX_PACKET *packet_ptr, CHAR *reply_code, CHAR *message);
@@ -405,7 +405,7 @@ VOID        _nx_ftp_server_data_disconnect_process(NX_FTP_SERVER *ftp_server_ptr
 VOID        _nx_ftp_server_data_present(NX_TCP_SOCKET *data_socket_ptr);
 VOID        _nx_ftp_server_data_process(NX_FTP_SERVER *ftp_server_ptr);
 UINT        _nx_ftp_server_parse_command(NX_PACKET *packet_ptr);
-VOID        _nx_ftp_server_timeout(ULONG ftp_server_address);
+VOID        _nx_ftp_server_timeout(UINT32 ftp_server_address);
 VOID        _nx_ftp_server_timeout_processing(NX_FTP_SERVER *ftp_server_ptr);
 VOID        _nx_ftp_server_control_disconnect(NX_TCP_SOCKET *control_socket_ptr);
 VOID        _nx_ftp_server_control_disconnect_processing(NX_FTP_SERVER *ftp_server_ptr);
@@ -421,8 +421,8 @@ UINT        _nx_ftp_server_utility_fill_port_number(CHAR *buffer_ptr, UINT port_
 #endif
 
 UINT        _nx_ftp_packet_allocate(NX_PACKET_POOL *pool_ptr, NX_FTP_CLIENT_REQUEST *client_request_ptr, NX_PACKET **packet_ptr, UINT packet_type, UINT wait_option);
-VOID        _nx_ftp_server_block_size_get(NX_FTP_SERVER *ftp_server_ptr, UINT ftp_command, CHAR *filename, ULONG *block_size);
-UINT        _nx_ftp_server_block_header_send(NX_PACKET_POOL *pool_ptr, NX_FTP_CLIENT_REQUEST *client_request_ptr, ULONG block_size);
+VOID        _nx_ftp_server_block_size_get(NX_FTP_SERVER *ftp_server_ptr, UINT ftp_command, CHAR *filename, UINT32 *block_size);
+UINT        _nx_ftp_server_block_header_send(NX_PACKET_POOL *pool_ptr, NX_FTP_CLIENT_REQUEST *client_request_ptr, UINT32 block_size);
 UINT        _nx_ftp_server_block_header_retrieve(NX_FTP_CLIENT_REQUEST *client_request_ptr, NX_PACKET *packet_ptr);
 
 

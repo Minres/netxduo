@@ -127,8 +127,8 @@ extern VOID *(*volatile _nx_crypto_memcpy_ptr)(void *dest, const void *src, size
 #define NX_CRYPTO_MEMCMP    memcmp
 #endif
 
-#if !defined(NX_CRYPTO_CHANGE_ULONG_ENDIAN) && defined(NX_CHANGE_ULONG_ENDIAN)
-#define NX_CRYPTO_CHANGE_ULONG_ENDIAN NX_CHANGE_ULONG_ENDIAN
+#if !defined(NX_CRYPTO_CHANGE_UINT32_ENDIAN) && defined(NX_CHANGE_UINT32_ENDIAN)
+#define NX_CRYPTO_CHANGE_UINT32_ENDIAN NX_CHANGE_UINT32_ENDIAN
 #endif
 
 #if !defined(NX_CRYPTO_CHANGE_USHORT_ENDIAN) && defined(NX_CHANGE_USHORT_ENDIAN)
@@ -246,10 +246,10 @@ typedef struct NX_CRYPTO_METHOD_STRUCT
     USHORT nx_crypto_ICV_size_in_bits;
 
     /* Size of the crypto block, in bytes. */
-    ULONG nx_crypto_block_size_in_bytes;
+    UINT32 nx_crypto_block_size_in_bytes;
 
     /* Size of the meta data area, in bytes. */
-    ULONG nx_crypto_metadata_area_size;
+    UINT32 nx_crypto_metadata_area_size;
 
     /* nx_cyrpto_init function initializes the underlying crypto
        method with the "key" information. If the crytpo method requires
@@ -264,7 +264,7 @@ typedef struct NX_CRYPTO_METHOD_STRUCT
                            UCHAR *key, NX_CRYPTO_KEY_SIZE key_size_in_bits,
                            VOID **handler,
                            VOID *crypto_metadata,
-                           ULONG crypto_metadata_size);
+                           UINT32 crypto_metadata_size);
 
     /* When the SA is no longer needed, NetX IPSec calls nx_crypto_cleanup
        function and passes in the handler, so that the underlying
@@ -288,12 +288,12 @@ typedef struct NX_CRYPTO_METHOD_STRUCT
                                 UCHAR *key,
                                 NX_CRYPTO_KEY_SIZE key_size_in_bits,
                                 UCHAR *input,
-                                ULONG input_length_in_byte,
+                                UINT32 input_length_in_byte,
                                 UCHAR *iv_ptr,
                                 UCHAR *output,
-                                ULONG output_length_in_byte,
+                                UINT32 output_length_in_byte,
                                 VOID *crypto_metadata,
-                                ULONG crypto_metadata_size,
+                                UINT32 crypto_metadata_size,
                                 VOID *packet_ptr,
                                 VOID (*nx_crypto_hw_process_callback)(VOID *packet_ptr, UINT status));
 } NX_CRYPTO_METHOD;
@@ -307,10 +307,10 @@ typedef struct NX_CRYPTO_EXTENDED_OUTPUT_STRUCT
     UCHAR *nx_crypto_extended_output_data;
 
     /* Length of output buffer. */
-    ULONG  nx_crypto_extended_output_length_in_byte;
+    UINT32  nx_crypto_extended_output_length_in_byte;
 
     /* Actual size of output buffer used. */
-    ULONG  nx_crypto_extended_output_actual_size;
+    UINT32  nx_crypto_extended_output_actual_size;
 } NX_CRYPTO_EXTENDED_OUTPUT;
 
 /* This defines the maximum number of cipher roles for a given ciphersuite. */

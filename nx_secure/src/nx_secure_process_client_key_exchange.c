@@ -85,8 +85,8 @@ static UCHAR _nx_secure_client_padded_pre_master[600];
 UINT _nx_secure_process_client_key_exchange(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, USHORT protocol_version,
                                             UCHAR *packet_buffer, UINT message_length, USHORT *received_remote_credentials,
                                             NX_SECURE_TLS_KEY_MATERIAL *tls_key_material, NX_SECURE_TLS_CREDENTIALS *tls_credentials,
-                                            VOID *public_cipher_metadata, ULONG public_cipher_metadata_size,
-                                            VOID *public_auth_metadata, ULONG public_auth_metadata_size, VOID *tls_ecc_curves)
+                                            VOID *public_cipher_metadata, UINT32 public_cipher_metadata_size,
+                                            VOID *public_auth_metadata, UINT32 public_auth_metadata_size, VOID *tls_ecc_curves)
 {
 #if !defined(NX_SECURE_DISABLE_X509) || \
     (defined(NX_SECURE_ENABLE_ECC_CIPHERSUITE) && !defined(NX_SECURE_DISABLE_X509))

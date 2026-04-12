@@ -69,10 +69,10 @@
 /*    _nx_tcp_server_socket_relisten        Socket relisten processing    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_window_scaling_option_get(UCHAR *option_ptr, ULONG option_area_size, ULONG *window_scale)
+UINT  _nx_tcp_window_scaling_option_get(UCHAR *option_ptr, UINT32 option_area_size, UINT32 *window_scale)
 {
 
-ULONG option_length;
+UINT32 option_length;
 
 
     /* Set invalid window scaling, in case the SYN message does not contain Window Scaling feature. */
@@ -98,7 +98,7 @@ ULONG option_length;
             }
 
             /* Get the window scale size.  */
-            *window_scale =  (ULONG)*option_ptr;
+            *window_scale =  (UINT32)*option_ptr;
 
             if (*window_scale > 14)
             {

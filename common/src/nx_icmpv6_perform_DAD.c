@@ -132,7 +132,7 @@ UINT              ipv6_addr_index;
                     /* If the callback function is set, invoke the callback function . */
                     if (ip_ptr -> nx_ipv6_address_change_notify)
                     {
-                        ipv6_addr_index = (ULONG)nx_ipv6_address_next -> nxd_ipv6_address_index;
+                        ipv6_addr_index = (UINT32)nx_ipv6_address_next -> nxd_ipv6_address_index;
                         ip_ptr -> nx_ipv6_address_change_notify(ip_ptr, NX_IPV6_ADDRESS_DAD_SUCCESSFUL,
                                                                 i, ipv6_addr_index, &nx_ipv6_address_next -> nxd_ipv6_address[0]);
                     }
@@ -140,7 +140,7 @@ UINT              ipv6_addr_index;
                     /* If the internal callback function is set, invoke the callback function . */
                     if (ip_ptr -> nx_ipv6_address_change_notify_internal)
                     {
-                        ipv6_addr_index = (ULONG)nx_ipv6_address_next -> nxd_ipv6_address_index;
+                        ipv6_addr_index = (UINT32)nx_ipv6_address_next -> nxd_ipv6_address_index;
                         ip_ptr -> nx_ipv6_address_change_notify_internal(ip_ptr, NX_IPV6_ADDRESS_DAD_SUCCESSFUL,
                                                                          i, ipv6_addr_index, &nx_ipv6_address_next -> nxd_ipv6_address[0]);
                     }

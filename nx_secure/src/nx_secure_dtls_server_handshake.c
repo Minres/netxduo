@@ -99,7 +99,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_server_handshake(NX_SECURE_DTLS_SESSION *dtls_session, UCHAR *packet_buffer,
-                                      UINT data_length, ULONG wait_option)
+                                      UINT data_length, UINT32 wait_option)
 {
 #ifndef NX_SECURE_TLS_SERVER_DISABLED
 UINT                                  status;

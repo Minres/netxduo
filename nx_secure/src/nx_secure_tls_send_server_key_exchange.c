@@ -64,7 +64,7 @@ UINT _nx_secure_tls_send_server_key_exchange(NX_SECURE_TLS_SESSION *tls_session,
                                              NX_PACKET *send_packet)
 {
 #ifndef NX_SECURE_TLS_SERVER_DISABLED
-ULONG                                 length;
+UINT32                                 length;
 const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite;
 UINT                                  status;
 VOID                                 *tls_ecc_curves = NX_NULL;
@@ -99,7 +99,7 @@ UCHAR                                 tls_1_3 = 0;
                                                                    tls_session -> nx_secure_tls_crypto_table, &tls_session -> nx_secure_tls_handshake_hash,
                                                                    &tls_session -> nx_secure_tls_key_material, &tls_session -> nx_secure_tls_credentials,
                                                                    send_packet -> nx_packet_append_ptr,
-                                                                   (ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr),
+                                                                   (UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr),
                                                                    &length, tls_session -> nx_secure_public_cipher_metadata_area,
                                                                    tls_session -> nx_secure_public_cipher_metadata_size,
                                                                    tls_session -> nx_secure_public_auth_metadata_area,

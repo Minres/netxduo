@@ -108,7 +108,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_http_server_content_get(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
+UINT  _nxe_http_server_content_get(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
 {
 
 UINT    status;
@@ -172,12 +172,12 @@ UINT    status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_content_get(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
+UINT  _nx_http_server_content_get(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
 {
 
-ULONG       content_length;
-ULONG       get_offset;
-ULONG       offset;
+UINT32       content_length;
+UINT32       get_offset;
+UINT32       offset;
 #ifndef NX_DISABLE_PACKET_CHAIN
 UINT        status;
 #endif /* NX_DISABLE_PACKET_CHAIN */
@@ -190,7 +190,7 @@ CHAR        *buffer_ptr;
     *actual_size =  0;
 
     /* Determine if there is content in this HTTP request.  */
-    content_length =  (ULONG) _nx_http_server_content_length_get(packet_ptr);
+    content_length =  (UINT32) _nx_http_server_content_length_get(packet_ptr);
 
     /* Make sure the content length is at least greater than the byte offset supplied.  */
     if (content_length <= byte_offset)
@@ -209,7 +209,7 @@ CHAR        *buffer_ptr;
     }
 
     /* Calculate the offset to the requested content area.  */
-    get_offset =  ((ULONG) _nx_http_server_calculate_content_offset(packet_ptr)) + byte_offset;
+    get_offset =  ((UINT32) _nx_http_server_calculate_content_offset(packet_ptr)) + byte_offset;
 
     /* Determine if we need to read one or more additional packets.  */
     while (get_offset >= packet_ptr -> nx_packet_length)
@@ -277,7 +277,7 @@ CHAR        *buffer_ptr;
     {
 
         /* Determine if the get request falls into this packet.  */
-        if (get_offset < (offset + (ULONG)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr)))
+        if (get_offset < (offset + (UINT32)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr)))
         {
 
             /* Yes, the get offset is in this packet.  */
@@ -288,7 +288,7 @@ CHAR        *buffer_ptr;
         }
 
         /* Otherwise update the offset.  */
-        offset =  offset + (ULONG)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr);
+        offset =  offset + (UINT32)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr);
 
 #ifdef NX_DISABLE_PACKET_CHAIN
         new_packet_ptr =  NX_NULL;
@@ -368,7 +368,7 @@ CHAR        *buffer_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_http_server_packet_content_find(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG *content_length)
+UINT  _nxe_http_server_packet_content_find(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 *content_length)
 {
 
 
@@ -424,18 +424,18 @@ UINT  _nxe_http_server_packet_content_find(NX_HTTP_SERVER *server_ptr, NX_PACKET
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_packet_content_find(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, ULONG *content_length)
+UINT  _nx_http_server_packet_content_find(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_ptr, UINT32 *content_length)
 {
 
-ULONG       get_offset;
+UINT32       get_offset;
 UINT        status;
 
     /* Determine if there is content in this HTTP request.  */
     if(content_length)
-        *content_length =  (ULONG) _nx_http_server_content_length_get(*packet_ptr);
+        *content_length =  (UINT32) _nx_http_server_content_length_get(*packet_ptr);
     
 
-    get_offset = (ULONG)_nx_http_server_calculate_content_offset(*packet_ptr);
+    get_offset = (UINT32)_nx_http_server_calculate_content_offset(*packet_ptr);
 
     while((*packet_ptr) -> nx_packet_length <= get_offset)
     {
@@ -761,7 +761,7 @@ CHAR    *buffer_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_http_server_content_get_extended(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, 
+UINT  _nxe_http_server_content_get_extended(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, 
                                             CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
 {
 
@@ -836,13 +836,13 @@ UINT    status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_content_get_extended(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, ULONG byte_offset, 
+UINT  _nx_http_server_content_get_extended(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_ptr, UINT32 byte_offset, 
                                            CHAR *destination_ptr, UINT destination_size, UINT *actual_size)
 {
 
-ULONG       content_length;
-ULONG       get_offset;
-ULONG       offset;
+UINT32       content_length;
+UINT32       get_offset;
+UINT32       offset;
 UINT        status;
 UINT        remaining_bytes;
 NX_PACKET   *new_packet_ptr;
@@ -853,7 +853,7 @@ CHAR        *buffer_ptr;
     *actual_size =  0;
 
     /* Determine if there is content in this HTTP request.  */
-    status =  (ULONG) _nx_http_server_content_length_get_extended(packet_ptr, &content_length);
+    status =  (UINT32) _nx_http_server_content_length_get_extended(packet_ptr, &content_length);
 
     if (status != NX_SUCCESS)
     {
@@ -888,7 +888,7 @@ CHAR        *buffer_ptr;
     }
 
     /* Calculate the offset to the requested content area.  */
-    get_offset =  ((ULONG) _nx_http_server_calculate_content_offset(packet_ptr)) + byte_offset;
+    get_offset =  ((UINT32) _nx_http_server_calculate_content_offset(packet_ptr)) + byte_offset;
 
     /* Determine if we need to read one or more additional packets.  */
     while (get_offset >= packet_ptr -> nx_packet_length)
@@ -956,7 +956,7 @@ CHAR        *buffer_ptr;
     {
 
         /* Determine if the get request falls into this packet.  */
-        if (get_offset < (offset + (ULONG)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr)))
+        if (get_offset < (offset + (UINT32)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr)))
         {
 
             /* Yes, the get offset is in this packet.  */
@@ -967,7 +967,7 @@ CHAR        *buffer_ptr;
         }
 
         /* Otherwise update the offset.  */
-        offset =  offset + (ULONG)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr);
+        offset =  offset + (UINT32)(new_packet_ptr -> nx_packet_append_ptr - new_packet_ptr -> nx_packet_prepend_ptr);
 
 #ifdef NX_DISABLE_PACKET_CHAIN
         new_packet_ptr =  NX_NULL;
@@ -1045,7 +1045,7 @@ CHAR        *buffer_ptr;
 /*                                                                        */
 /**************************************************************************/
 
-UINT  _nxe_http_server_content_length_get_extended(NX_PACKET *packet_ptr, ULONG *content_length)
+UINT  _nxe_http_server_content_length_get_extended(NX_PACKET *packet_ptr, UINT32 *content_length)
 {
 
 UINT    status;
@@ -1100,7 +1100,7 @@ UINT    status;
 /*    Threads                                                             */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_content_length_get_extended(NX_PACKET *packet_ptr, ULONG *length)
+UINT  _nx_http_server_content_length_get_extended(NX_PACKET *packet_ptr, UINT32 *length)
 {
 
 CHAR    *buffer_ptr;
@@ -1212,7 +1212,7 @@ CHAR    *buffer_ptr;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_http_server_create(NX_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nxe_http_server_create(NX_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                 UINT (*authentication_check)(NX_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                 UINT (*request_notify)(NX_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr),
                                 UINT http_server_size)
@@ -1292,7 +1292,7 @@ UINT        status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_create(NX_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, ULONG stack_size, NX_PACKET_POOL *pool_ptr,
+UINT  _nx_http_server_create(NX_HTTP_SERVER *http_server_ptr, CHAR *http_server_name, NX_IP *ip_ptr, FX_MEDIA *media_ptr, VOID *stack_ptr, UINT32 stack_size, NX_PACKET_POOL *pool_ptr,
                                 UINT (*authentication_check)(NX_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, CHAR **name, CHAR **password, CHAR **realm),
                                 UINT (*request_notify)(NX_HTTP_SERVER *server_ptr, UINT request_type, CHAR *resource, NX_PACKET *packet_ptr))
 {
@@ -1318,7 +1318,7 @@ UINT        status;
 
     /* Now create the HTTP Server thread.  */
     status =  tx_thread_create(&(http_server_ptr -> nx_http_server_thread), "HTTP Server Thread", _nx_http_server_thread_entry,
-                    (ULONG) http_server_ptr, stack_ptr, stack_size, NX_HTTP_SERVER_PRIORITY, NX_HTTP_SERVER_PRIORITY,
+                    (UINT32) http_server_ptr, stack_ptr, stack_size, NX_HTTP_SERVER_PRIORITY, NX_HTTP_SERVER_PRIORITY,
                     NX_HTTP_SERVER_THREAD_TIME_SLICE, TX_DONT_START);
 
     /* Determine if an error occurred creating the thread.  */
@@ -2201,7 +2201,7 @@ UINT i;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_http_server_callback_data_send(NX_HTTP_SERVER *server_ptr, VOID *data_ptr, ULONG data_length)
+UINT  _nxe_http_server_callback_data_send(NX_HTTP_SERVER *server_ptr, VOID *data_ptr, UINT32 data_length)
 {
 UINT    status;
 
@@ -2260,7 +2260,7 @@ UINT    status;
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_http_server_callback_data_send(NX_HTTP_SERVER *server_ptr, VOID *data_ptr, ULONG data_length)
+UINT  _nx_http_server_callback_data_send(NX_HTTP_SERVER *server_ptr, VOID *data_ptr, UINT32 data_length)
 {
 
 NX_PACKET   *new_packet_ptr;
@@ -3090,7 +3090,7 @@ NX_PACKET   *tmp_ptr;
     
                 /* Copy the contents of the current packet into the head packet.  */
                 status =  nx_packet_data_append(head_packet_ptr, (VOID *) tmp_ptr -> nx_packet_prepend_ptr,
-                                                (ULONG)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
+                                                (UINT32)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
                                                 server_ptr -> nx_http_server_packet_pool_ptr, NX_HTTP_SERVER_TIMEOUT);
 
                 /* Determine if an error occurred.  */
@@ -3178,13 +3178,13 @@ NX_PACKET   *tmp_ptr;
 VOID  _nx_http_server_get_process(NX_HTTP_SERVER *server_ptr, UINT request_type, NX_PACKET *packet_ptr)
 {
 
-ULONG       length = 0;
+UINT32       length = 0;
 UINT        status;
 NX_PACKET   *new_packet_ptr;
 CHAR        *name_ptr;
 CHAR        *password_ptr;
 CHAR        *realm_ptr;
-ULONG       temp;
+UINT32       temp;
 CHAR        temp_string[30];
 UINT        auth_request_present = NX_FALSE;
 UINT        resource_length;
@@ -3314,7 +3314,7 @@ UINT        temp_realm_length = 0;
             {
 
             NXD_ADDRESS client_nxd_address;
-            ULONG       client_port;
+            UINT32       client_port;
 
                 /* Get the IP address of the client:  */
                 status =   nxd_tcp_socket_peer_info_get(&(server_ptr->nx_http_server_socket), &client_nxd_address , &client_port);
@@ -3448,7 +3448,7 @@ UINT        temp_realm_length = 0;
                                  &length, FX_NULL, FX_NULL, FX_NULL, FX_NULL, FX_NULL, FX_NULL);
 
     /* Derive the file type.  */
-    temp =  (ULONG) _nx_http_server_type_get_extended(server_ptr, server_ptr -> nx_http_server_request_resource, resource_length, temp_string, sizeof(temp_string));
+    temp =  (UINT32) _nx_http_server_type_get_extended(server_ptr, server_ptr -> nx_http_server_request_resource, resource_length, temp_string, sizeof(temp_string));
     temp_string[temp] = 0;
 
     /* Now build a response header.  */
@@ -3514,7 +3514,7 @@ UINT        temp_realm_length = 0;
         }
 
         /* Calculate the maximum length.  */
-        temp =  ((ULONG) (new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_append_ptr)) - NX_PHYSICAL_TRAILER;
+        temp =  ((UINT32) (new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_append_ptr)) - NX_PHYSICAL_TRAILER;
 
         /* Determine if this exceeds the MSS of the peer.  */
         if (temp > server_ptr -> nx_http_server_socket.nx_tcp_socket_connect_mss)
@@ -3625,8 +3625,8 @@ VOID  _nx_http_server_put_process(NX_HTTP_SERVER *server_ptr, NX_PACKET *packet_
 {
 
 UINT        status;
-ULONG       length;
-ULONG       consumed_length = 0;
+UINT32       length;
+UINT32       consumed_length = 0;
 UINT        offset;
 CHAR        *name_ptr;
 CHAR        *password_ptr;
@@ -3753,7 +3753,7 @@ UINT        temp_realm_length = 0;
             {
 
             NXD_ADDRESS client_nxd_address;
-            ULONG       client_port;
+            UINT32       client_port;
 
                 /* Get the IP address of the client:  */
                 status =   nxd_tcp_socket_peer_info_get(&(server_ptr->nx_http_server_socket), &client_nxd_address , &client_port);
@@ -3848,7 +3848,7 @@ UINT        temp_realm_length = 0;
 
         /* Write the content found in this packet.  */
         status =  fx_file_write(&(server_ptr -> nx_http_server_file), (packet_ptr -> nx_packet_prepend_ptr + offset),
-                                ((ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset));
+                                ((UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset));
 
         /* Check the status.  */
         if (status != NX_SUCCESS)
@@ -3863,7 +3863,7 @@ UINT        temp_realm_length = 0;
         }
 
         /* Update the length.  */
-        consumed_length = ((ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset);
+        consumed_length = ((UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset);
         if ((length - consumed_length) > length)
         {
             /* Underflow error has occurred. */
@@ -3882,7 +3882,7 @@ UINT        temp_realm_length = 0;
 
         /* Increment the bytes received count.  */
         server_ptr -> nx_http_server_total_bytes_received =  server_ptr -> nx_http_server_total_bytes_received + 
-                                                             ((ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset);
+                                                             ((UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr) - offset);
     }
 
 
@@ -3894,7 +3894,7 @@ UINT        temp_realm_length = 0;
 
         /* Write the content of the next packet.  */
         status =  fx_file_write(&(server_ptr -> nx_http_server_file), next_packet_ptr -> nx_packet_prepend_ptr,
-                                (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr));
+                                (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr));
 
         /* Check the status.  */
         if (status != NX_SUCCESS)
@@ -3909,7 +3909,7 @@ UINT        temp_realm_length = 0;
         }
 
         /* Update the length.  */
-        consumed_length = (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+        consumed_length = (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
         if ((length - consumed_length) > length)
         {
             /* Underflow error has occurred. */
@@ -3928,7 +3928,7 @@ UINT        temp_realm_length = 0;
 
         /* Increment the bytes received count.  */
         server_ptr -> nx_http_server_total_bytes_received =  server_ptr -> nx_http_server_total_bytes_received +
-                                        (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+                                        (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
 
         /* Move to the next pointer.  */
         next_packet_ptr =  next_packet_ptr -> nx_packet_next;
@@ -3961,7 +3961,7 @@ UINT        temp_realm_length = 0;
 
             /* Write the content of this packet.  */
             status =  fx_file_write(&(server_ptr -> nx_http_server_file), next_packet_ptr -> nx_packet_prepend_ptr,
-                                               (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr));
+                                               (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr));
 
             /* Check the status.  */
             if (status != NX_SUCCESS)
@@ -3979,7 +3979,7 @@ UINT        temp_realm_length = 0;
             }
 
             /* Update the length.  */
-            consumed_length = (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+            consumed_length = (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
             if ((length - consumed_length) > length)
             {
                 /* Underflow error has occurred. */
@@ -4001,7 +4001,7 @@ UINT        temp_realm_length = 0;
 
             /* Increment the bytes received count.  */
             server_ptr -> nx_http_server_total_bytes_received =  server_ptr -> nx_http_server_total_bytes_received +
-                                        (ULONG)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
+                                        (UINT32)(next_packet_ptr -> nx_packet_append_ptr - next_packet_ptr -> nx_packet_prepend_ptr);
 
 #ifdef NX_DISABLE_PACKET_CHAIN
             next_packet_ptr =  NX_NULL;
@@ -4180,7 +4180,7 @@ UINT        temp_realm_length = 0;
             {
 
             NXD_ADDRESS client_nxd_address;
-            ULONG       client_port;
+            UINT32       client_port;
 
                 /* Get the IP address of the client:  */
                 status =   nxd_tcp_socket_peer_info_get(&(server_ptr->nx_http_server_socket), &client_nxd_address , &client_port);
@@ -6494,7 +6494,7 @@ CHAR    digit;
 /*    Application Code                                                    */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_http_server_get_entity_header(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, ULONG buffer_size)
+UINT  _nxe_http_server_get_entity_header(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, UINT32 buffer_size)
 {
 
 #ifdef  NX_HTTP_MULTIPART_ENABLE
@@ -6558,7 +6558,7 @@ UINT  _nxe_http_server_get_entity_header(NX_HTTP_SERVER *server_ptr, NX_PACKET *
 /*    Application Code                                                    */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_http_server_get_entity_header(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, ULONG buffer_size)
+UINT  _nx_http_server_get_entity_header(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UCHAR *entity_header_buffer, UINT32 buffer_size)
 {
 
 #ifdef  NX_HTTP_MULTIPART_ENABLE
@@ -6578,7 +6578,7 @@ UINT                        index;
     /* Is the multipart context initialized? */
     if(multipart_ptr -> nx_http_server_multipart_boundary[0] == 0)
     {
-    ULONG   field_length;
+    UINT32   field_length;
     UINT    quotation_index;
     UINT    i;
 
@@ -6884,7 +6884,7 @@ UINT                        index;
 /*    Application Code                                                    */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nxe_http_server_get_entity_content(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG *available_offset, ULONG *available_length)
+UINT  _nxe_http_server_get_entity_content(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 *available_offset, UINT32 *available_length)
 {
 
 #ifdef  NX_HTTP_MULTIPART_ENABLE
@@ -6943,7 +6943,7 @@ UINT  _nxe_http_server_get_entity_content(NX_HTTP_SERVER *server_ptr, NX_PACKET 
 /*    Application Code                                                    */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_http_server_get_entity_content(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, ULONG *available_offset, ULONG *available_length)
+UINT  _nx_http_server_get_entity_content(NX_HTTP_SERVER *server_ptr, NX_PACKET **packet_pptr, UINT32 *available_offset, UINT32 *available_length)
 {
 
 #ifdef  NX_HTTP_MULTIPART_ENABLE
@@ -7016,7 +7016,7 @@ UINT  _nx_http_server_boundary_find(NX_HTTP_SERVER *server_ptr, NX_PACKET **pack
 NX_HTTP_SERVER_MULTIPART   *multipart_ptr;
 NX_PACKET                  *available_packet;
 UINT                        offset;
-ULONG                       match_count = 0;
+UINT32                       match_count = 0;
 UCHAR                      *match_end_ptr;
 UINT                        boundary_length;
 
@@ -7183,7 +7183,7 @@ UINT                        boundary_length;
         {
 
             /* Yes. Find a match. */
-            if((ULONG)(match_end_ptr - available_packet -> nx_packet_prepend_ptr) < match_count)
+            if((UINT32)(match_end_ptr - available_packet -> nx_packet_prepend_ptr) < match_count)
             {
 
                 /* The boundary is between two packets. */
@@ -7259,12 +7259,12 @@ UINT                        boundary_length;
 /*    _nx_http_server_boundary_find                                       */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_http_server_match_string(UCHAR *src_start, UCHAR *src_end, UCHAR *target, ULONG target_length, ULONG *match_count, UCHAR **match_end_ptr)
+UINT  _nx_http_server_match_string(UCHAR *src_start, UCHAR *src_end, UCHAR *target, UINT32 target_length, UINT32 *match_count, UCHAR **match_end_ptr)
 {
 
 UCHAR  *ch;
-ULONG   pre_match = *match_count;
-ULONG   remain_match;
+UINT32   pre_match = *match_count;
+UINT32   remain_match;
 
     /* Initialize. */
     *match_end_ptr = NX_NULL;
@@ -7281,8 +7281,8 @@ ULONG   remain_match;
             remain_match = target_length - pre_match;
 
             /* The pre-match is the same. */
-            if((ULONG)(src_end - src_start) < remain_match)
-                remain_match = (ULONG)(src_end - src_start);
+            if((UINT32)(src_end - src_start) < remain_match)
+                remain_match = (UINT32)(src_end - src_start);
 
             if(memcmp(target + pre_match, src_start, remain_match) == 0)
             {
@@ -7380,7 +7380,7 @@ ULONG   remain_match;
 /*    _nx_http_server_get_entity_header                                   */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_http_server_field_value_get(NX_PACKET *packet_ptr, UCHAR *field_name, ULONG name_length, UCHAR *field_value, ULONG field_value_size)
+UINT  _nx_http_server_field_value_get(NX_PACKET *packet_ptr, UCHAR *field_name, UINT32 name_length, UCHAR *field_value, UINT32 field_value_size)
 {
 
 UCHAR  *ch;
@@ -7488,7 +7488,7 @@ UINT    index;
 /*    _nx_http_server_field_value_get                                     */
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_http_server_memicmp(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length)
+UINT  _nx_http_server_memicmp(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length)
 {
 UCHAR   ch;
 
@@ -8422,7 +8422,7 @@ VOID  _nx_http_server_date_convert(UINT date, UINT count, CHAR *string)
 UINT    digit;
 
     /* Initialize all 4 bytes to digit 0. */
-    *((ULONG*)string) = 0x30303030;
+    *((UINT32*)string) = 0x30303030;
     string[count] = 0;
 
     /* Loop to convert the number to ASCII.  */

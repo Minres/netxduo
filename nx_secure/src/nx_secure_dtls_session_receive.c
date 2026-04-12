@@ -74,17 +74,17 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_session_receive(NX_SECURE_DTLS_SESSION *dtls_session,
-                                     NX_PACKET **packet_ptr_ptr, ULONG wait_option)
+                                     NX_PACKET **packet_ptr_ptr, UINT32 wait_option)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT                   status;
 NX_PACKET             *packet_ptr = NX_NULL;
 NX_PACKET             *send_packet = NX_NULL;
-ULONG                  bytes_processed;
+UINT32                  bytes_processed;
 #if 0
 UINT                   remote_port;
 #endif
-ULONG                  packet_length;
+UINT32                  packet_length;
 UINT                   error_number;
 UINT                   alert_number;
 UINT                   alert_level;

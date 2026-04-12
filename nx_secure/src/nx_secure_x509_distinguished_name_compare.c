@@ -83,7 +83,7 @@ static INT _nx_secure_x509_distinguished_name_field_compare(const UCHAR *field1,
 /**************************************************************************/
 INT _nx_secure_x509_distinguished_name_compare(NX_SECURE_X509_DISTINGUISHED_NAME *name,
                                                NX_SECURE_X509_DISTINGUISHED_NAME *compare_name,
-                                               ULONG compare_fields)
+                                               UINT32 compare_fields)
 {
 INT status = 0;
 

@@ -113,7 +113,7 @@ UINT        status;
 #endif /* !NX_DISABLE_IPV4  */
 
     /* Check for an invalid port.  */
-    if (((ULONG)proxy_server_port) > (ULONG)NX_MAX_PORT)
+    if (((UINT32)proxy_server_port) > (UINT32)NX_MAX_PORT)
     {
         return(NX_INVALID_PORT);
     }
@@ -647,7 +647,7 @@ NX_PACKET_POOL *pool_ptr = ip_ptr -> nx_ip_default_packet_pool;
 
                 /* Copy the contents of the current packet into the head packet.  */
                 status =  _nx_packet_data_append(head_packet_ptr, (VOID *) tmp_ptr -> nx_packet_prepend_ptr,
-                                                (ULONG)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
+                                                (UINT32)(tmp_ptr -> nx_packet_append_ptr - tmp_ptr -> nx_packet_prepend_ptr),
                                                 pool_ptr, NX_NO_WAIT);
 
 #ifndef NX_DISABLE_PACKET_CHAIN

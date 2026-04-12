@@ -103,7 +103,7 @@ VOID sample_connection_monitor(NX_IP *ip_ptr, NX_AZURE_IOT_HUB_CLIENT *hub_clien
                                UINT (*iothub_init)(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr))
 {
 UINT loop = NX_TRUE;
-ULONG gateway_address;
+UINT32 gateway_address;
 
     /* Check parameters.  */
     if ((ip_ptr == NX_NULL) || (hub_client_ptr == NX_NULL) || (iothub_init == NX_NULL))

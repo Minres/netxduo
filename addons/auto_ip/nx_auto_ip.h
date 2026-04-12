@@ -121,16 +121,16 @@ extern   "C" {
 
 typedef struct NX_AUTO_IP_STRUCT 
 {
-    ULONG                   nx_auto_ip_id;
+    UINT32                   nx_auto_ip_id;
     CHAR                    *nx_auto_ip_name;
     NX_IP                   *nx_auto_ip_ip_ptr;
     UINT                    nx_ip_interface_index;
-    ULONG                   nx_auto_ip_current_local_address;
-    ULONG                   nx_auto_ip_restart_flag;
-    ULONG                   nx_auto_ip_conflict_count;
-    ULONG                   nx_auto_ip_probe_count;
-    ULONG                   nx_auto_ip_announce_count;
-    ULONG                   nx_auto_ip_defend_count;
+    UINT32                   nx_auto_ip_current_local_address;
+    UINT32                   nx_auto_ip_restart_flag;
+    UINT32                   nx_auto_ip_conflict_count;
+    UINT32                   nx_auto_ip_probe_count;
+    UINT32                   nx_auto_ip_announce_count;
+    UINT32                   nx_auto_ip_defend_count;
     TX_EVENT_FLAGS_GROUP    nx_auto_ip_conflict_event;
     TX_THREAD               nx_auto_ip_thread;
 } NX_AUTO_IP;
@@ -171,10 +171,10 @@ typedef struct NX_AUTO_IP_STRUCT
 
 /* Define the prototypes accessible to the application software.  */
 
-UINT        nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, UINT priority);
-UINT        nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, ULONG *local_ip_address);
+UINT        nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, UINT priority);
+UINT        nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, UINT32 *local_ip_address);
 UINT        nx_auto_ip_set_interface(NX_AUTO_IP *auto_ip_ptr, UINT interface_index); 
-UINT        nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, ULONG starting_local_address);
+UINT        nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, UINT32 starting_local_address);
 UINT        nx_auto_ip_stop(NX_AUTO_IP *auto_ip_ptr);
 UINT        nx_auto_ip_delete(NX_AUTO_IP *auto_ip_ptr);
 
@@ -183,20 +183,20 @@ UINT        nx_auto_ip_delete(NX_AUTO_IP *auto_ip_ptr);
 
 /* AutoIP source code is being compiled, do not perform any API mapping.  */
 
-UINT        _nxe_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, UINT priority);
-UINT        _nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, UINT priority);
-UINT        _nxe_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, ULONG *local_ip_address);
-UINT        _nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, ULONG *local_ip_address);
+UINT        _nxe_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, UINT priority);
+UINT        _nx_auto_ip_create(NX_AUTO_IP *auto_ip_ptr, CHAR *name, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, UINT priority);
+UINT        _nxe_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, UINT32 *local_ip_address);
+UINT        _nx_auto_ip_get_address(NX_AUTO_IP *auto_ip_ptr, UINT32 *local_ip_address);
 UINT        _nxe_auto_ip_set_interface(NX_AUTO_IP *auto_ip_ptr, UINT interface_index);
 UINT        _nx_auto_ip_set_interface(NX_AUTO_IP *auto_ip_ptr, UINT interface_index);
-UINT        _nxe_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, ULONG starting_local_address);
-UINT        _nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, ULONG starting_local_address);
+UINT        _nxe_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, UINT32 starting_local_address);
+UINT        _nx_auto_ip_start(NX_AUTO_IP *auto_ip_ptr, UINT32 starting_local_address);
 UINT        _nxe_auto_ip_stop(NX_AUTO_IP *auto_ip_ptr);
 UINT        _nx_auto_ip_stop(NX_AUTO_IP *auto_ip_ptr);
 UINT        _nxe_auto_ip_delete(NX_AUTO_IP *auto_ip_ptr);
 UINT        _nx_auto_ip_delete(NX_AUTO_IP *auto_ip_ptr);
 VOID        _nx_auto_ip_thread_entry(ULONG auto_ip_address);
-VOID        _nx_auto_ip_conflict(NX_IP *ip_ptr, UINT interface_index, ULONG ip_address, ULONG physical_msw, ULONG physical_lsw);
+VOID        _nx_auto_ip_conflict(NX_IP *ip_ptr, UINT interface_index, UINT32 ip_address, UINT32 physical_msw, UINT32 physical_lsw);
 
 #endif
 

@@ -69,7 +69,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_ip_interface_physical_address_set(NX_IP *ip_ptr, UINT interface_index,
-                                             ULONG physical_msw, ULONG physical_lsw, UINT update_driver)
+                                             UINT32 physical_msw, UINT32 physical_lsw, UINT update_driver)
 {
 
 UINT status;

@@ -71,18 +71,18 @@
 /**************************************************************************/
 VOID  _nx_ip_packet_checksum_compute(NX_PACKET *packet_ptr)
 {
-ULONG             next_protocol;
+UINT32             next_protocol;
 UCHAR            *org_prepend_ptr;
-ULONG             checksum;
-ULONG             val;
+UINT32             checksum;
+UINT32             val;
 UCHAR             is_done = NX_FALSE;
-ULONG             ip_src_addr[4];
-ULONG             ip_dst_addr[4];
-ULONG             data_length = 0;
+UINT32             ip_src_addr[4];
+UINT32             ip_dst_addr[4];
+UINT32             data_length = 0;
 NX_TCP_HEADER    *tcp_header_ptr;
 NX_UDP_HEADER    *udp_header_ptr;
 #ifndef NX_DISABLE_IPV4
-ULONG             ip_header_length;
+UINT32             ip_header_length;
 NX_IPV4_HEADER   *ip_header_ptr;
 NX_ICMP_HEADER   *icmpv4_header_ptr;
 NX_IGMP_HEADER   *igmp_header_ptr;
@@ -128,7 +128,7 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
             val = ip_header_ptr -> nx_ip_header_word_0;
 
             /* Convert to host byte order. */
-            NX_CHANGE_ULONG_ENDIAN(val);
+            NX_CHANGE_UINT32_ENDIAN(val);
 
             /* Obtain IP header length. */
             ip_header_length =  (val & NX_IP_LENGTH_MASK) >> 24;
@@ -143,29 +143,29 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                                                    /* IPv4 header checksum doesn't care src/dest addresses */
                                                    NULL, NULL);
 
-                val = (ULONG)(~checksum);
+                val = (UINT32)(~checksum);
                 val = val & NX_LOWER_16_MASK;
 
                 /* Convert to network byte order. */
-                NX_CHANGE_ULONG_ENDIAN(val);
+                NX_CHANGE_UINT32_ENDIAN(val);
 
                 /* Now store the checksum in the IP header.  */
                 ip_header_ptr -> nx_ip_header_word_2 =  ip_header_ptr -> nx_ip_header_word_2 | val;
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_IPV4_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_IPV4_TX_CHECKSUM);
             }
 
 
             /* Get src and dst addresses. */
             ip_src_addr[0] = ip_header_ptr -> nx_ip_header_source_ip;
             ip_dst_addr[0] = ip_header_ptr -> nx_ip_header_destination_ip;
-            NX_CHANGE_ULONG_ENDIAN(ip_src_addr[0]);
-            NX_CHANGE_ULONG_ENDIAN(ip_dst_addr[0]);
+            NX_CHANGE_UINT32_ENDIAN(ip_src_addr[0]);
+            NX_CHANGE_UINT32_ENDIAN(ip_dst_addr[0]);
 
             /* Get next protocol. */
             val = ip_header_ptr -> nx_ip_header_word_2;
-            NX_CHANGE_ULONG_ENDIAN(val);
+            NX_CHANGE_UINT32_ENDIAN(val);
             next_protocol = (val >> 16) & 0xFF;
 
             /* Remove IPv4 header. */
@@ -194,12 +194,12 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 checksum = ~checksum & NX_LOWER_16_MASK;
 
                 /* Move the checksum into header.  */
-                NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+                NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
                 tcp_header_ptr -> nx_tcp_header_word_4 |=  (checksum << NX_SHIFT_BY_16);
-                NX_CHANGE_ULONG_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
+                NX_CHANGE_UINT32_ENDIAN(tcp_header_ptr -> nx_tcp_header_word_4);
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_TCP_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_TCP_TX_CHECKSUM);
             }
 
             /* No necessary to process next protocol. */
@@ -224,12 +224,12 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 udp_header_ptr = (NX_UDP_HEADER *)(packet_ptr -> nx_packet_prepend_ptr);
 
                 /* Move the checksum into header.  */
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
                 udp_header_ptr -> nx_udp_header_word_1 = udp_header_ptr -> nx_udp_header_word_1 | (~checksum & NX_LOWER_16_MASK);
-                NX_CHANGE_ULONG_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(udp_header_ptr -> nx_udp_header_word_1);
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_UDP_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_UDP_TX_CHECKSUM);
             }
 
             /* No necessary to process next protocol. */
@@ -256,12 +256,12 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 icmpv4_header_ptr =  (NX_ICMP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
                 /* Move the checksum into header.  */
-                NX_CHANGE_ULONG_ENDIAN(icmpv4_header_ptr -> nx_icmp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(icmpv4_header_ptr -> nx_icmp_header_word_0);
                 icmpv4_header_ptr -> nx_icmp_header_word_0 =  icmpv4_header_ptr -> nx_icmp_header_word_0 | (~checksum & NX_LOWER_16_MASK);
-                NX_CHANGE_ULONG_ENDIAN(icmpv4_header_ptr -> nx_icmp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(icmpv4_header_ptr -> nx_icmp_header_word_0);
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_ICMPV4_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_ICMPV4_TX_CHECKSUM);
             }
 
             /* No necessary to process next protocol. */
@@ -281,8 +281,8 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 igmp_header_ptr =  (NX_IGMP_HEADER *)packet_ptr -> nx_packet_prepend_ptr;
 
                 /* Change the endian.  */
-                NX_CHANGE_ULONG_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_1);
 
                 /* Calculate the checksum.  */
                 val =       igmp_header_ptr -> nx_igmp_header_word_0;
@@ -302,11 +302,11 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 igmp_header_ptr -> nx_igmp_header_word_0 =  igmp_header_ptr -> nx_igmp_header_word_0 | (~checksum & NX_LOWER_16_MASK);
 
                 /* Change the endian.  */
-                NX_CHANGE_ULONG_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_0);
-                NX_CHANGE_ULONG_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_1);
+                NX_CHANGE_UINT32_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_0);
+                NX_CHANGE_UINT32_ENDIAN(igmp_header_ptr -> nx_igmp_header_word_1);
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_IGMP_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_IGMP_TX_CHECKSUM);
             }
 
             /* No necessary to process next protocol. */
@@ -339,7 +339,7 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
                 icmpv6_header_ptr -> nx_icmpv6_header_checksum = short_val;
 
                 /* Clear checksum flag. */
-                packet_ptr -> nx_packet_interface_capability_flag  &= (ULONG)(~NX_INTERFACE_CAPABILITY_ICMPV6_TX_CHECKSUM);
+                packet_ptr -> nx_packet_interface_capability_flag  &= (UINT32)(~NX_INTERFACE_CAPABILITY_ICMPV6_TX_CHECKSUM);
             }
 
             /* No necessary to process next protocol. */
@@ -362,12 +362,12 @@ NX_IPV6_HEADER   *ipv6_header_ptr;
 
             /* Get next protocol. */
             val = ipv6_header_ptr -> nx_ip_header_word_1;
-            NX_CHANGE_ULONG_ENDIAN(val);
+            NX_CHANGE_UINT32_ENDIAN(val);
             next_protocol = (val >> 8) & 0xFF;
 
             /* Remove IPv6 header. */
-            packet_ptr -> nx_packet_prepend_ptr += (ULONG)sizeof(NX_IPV6_HEADER);
-            data_length = packet_ptr -> nx_packet_length - (ULONG)sizeof(NX_IPV6_HEADER);
+            packet_ptr -> nx_packet_prepend_ptr += (UINT32)sizeof(NX_IPV6_HEADER);
+            data_length = packet_ptr -> nx_packet_length - (UINT32)sizeof(NX_IPV6_HEADER);
             break;
         }
 #endif

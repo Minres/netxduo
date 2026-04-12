@@ -75,7 +75,7 @@
 /*    This function cannot be called from ISR.                            */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ipv6_prefix_list_delete(NX_IP *ip_ptr, ULONG *prefix, INT prefix_length)
+VOID _nx_ipv6_prefix_list_delete(NX_IP *ip_ptr, UINT32 *prefix, INT prefix_length)
 {
 
 NX_IPV6_PREFIX_ENTRY *current;
@@ -89,7 +89,7 @@ NX_IPV6_PREFIX_ENTRY *current;
     {
 
         /* If prefix length matches, and the prefix addresses also match...*/
-        if ((current -> nx_ipv6_prefix_entry_prefix_length == (ULONG)prefix_length) &&
+        if ((current -> nx_ipv6_prefix_entry_prefix_length == (UINT32)prefix_length) &&
             CHECK_IPV6_ADDRESSES_SAME(prefix, current -> nx_ipv6_prefix_entry_network_address))
         {
 

@@ -63,12 +63,12 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_packet_data_retrieve(NX_PACKET *packet_ptr, VOID *buffer_start, ULONG *bytes_copied)
+UINT  _nx_packet_data_retrieve(NX_PACKET *packet_ptr, VOID *buffer_start, UINT32 *bytes_copied)
 {
 
-ULONG  remaining_bytes;
+UINT32  remaining_bytes;
 UCHAR *destination_ptr;
-ULONG  bytes_to_copy;
+UINT32  bytes_to_copy;
 
     /* If trace is enabled, insert this event into the trace buffer.  */
     NX_TRACE_IN_LINE_INSERT(NX_TRACE_PACKET_DATA_RETRIEVE, packet_ptr, buffer_start, bytes_copied, 0, NX_TRACE_PACKET_EVENTS, 0, 0);
@@ -90,7 +90,7 @@ ULONG  bytes_to_copy;
 
         /* Calculate the bytes to copy in this packet. */
         /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-        bytes_to_copy = (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
+        bytes_to_copy = (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
 
         /* Copy data to destination. */
         /* Note: The buffer size must be not less than packet_ptr -> nx_packet_length.  */

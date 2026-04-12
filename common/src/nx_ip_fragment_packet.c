@@ -74,14 +74,14 @@ VOID  _nx_ip_fragment_packet(struct NX_IP_DRIVER_STRUCT *driver_req_ptr)
 
 #ifndef NX_DISABLE_IPV4
 UINT            status;
-ULONG           checksum;
-ULONG           temp;
+UINT32           checksum;
+UINT32           temp;
 UCHAR          *source_ptr;
-ULONG           remaining_bytes;
-ULONG           fragment_size;
-ULONG           copy_size;
-ULONG           copy_remaining_size;
-ULONG           fragment_offset = 0;
+UINT32           remaining_bytes;
+UINT32           fragment_size;
+UINT32           copy_size;
+UINT32           copy_remaining_size;
+UINT32           fragment_offset = 0;
 NX_IP_DRIVER    driver_request;
 NX_PACKET      *source_packet;
 NX_PACKET      *fragment_packet;
@@ -131,18 +131,18 @@ UINT            compute_checksum = 1;
 
     /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
        swap the endian of the IP header.  */
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_0);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_1);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_word_2);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_source_ip);
-    NX_CHANGE_ULONG_ENDIAN(source_header_ptr -> nx_ip_header_destination_ip);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_0);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_1);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_word_2);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_source_ip);
+    NX_CHANGE_UINT32_ENDIAN(source_header_ptr -> nx_ip_header_destination_ip);
 
     /* Pickup the length of the packet and the starting pointer.  */
-    remaining_bytes =  (source_packet -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER));
+    remaining_bytes =  (source_packet -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER));
     source_ptr =  source_packet -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
 
     /* Derive the fragment size.  */
-    fragment_size =  source_packet -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_mtu_size - (ULONG)sizeof(NX_IPV4_HEADER);
+    fragment_size =  source_packet -> nx_packet_address.nx_packet_interface_ptr -> nx_interface_ip_mtu_size - (UINT32)sizeof(NX_IPV4_HEADER);
     fragment_size =  (fragment_size / NX_IP_ALIGN_FRAGS) * NX_IP_ALIGN_FRAGS;
 
     /* Loop to break the source packet into fragments and send each out through
@@ -201,9 +201,9 @@ UINT            compute_checksum = 1;
             /* We need to copy the remaining bytes into the new packet and then move to the next
                packet.  */
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (copy_remaining_size > (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr))
+            if (copy_remaining_size > (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr))
             {
-                copy_size = (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr);
+                copy_size = (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr);
             }
             else
             {
@@ -239,7 +239,7 @@ UINT            compute_checksum = 1;
             copy_remaining_size -= copy_size;
 
             /*lint -e{946} -e{947} suppress pointer subtraction, since it is necessary. */
-            if (copy_size == (ULONG)(source_packet -> nx_packet_append_ptr - source_ptr))
+            if (copy_size == (UINT32)(source_packet -> nx_packet_append_ptr - source_ptr))
             {
 
                 /* Move to the next physical packet in the source message.  */
@@ -285,7 +285,7 @@ UINT            compute_checksum = 1;
 
         /* Setup the fragment packet pointers.  */
         fragment_packet -> nx_packet_prepend_ptr = fragment_packet -> nx_packet_prepend_ptr - sizeof(NX_IPV4_HEADER);
-        fragment_packet -> nx_packet_length += (ULONG)sizeof(NX_IPV4_HEADER);
+        fragment_packet -> nx_packet_length += (UINT32)sizeof(NX_IPV4_HEADER);
 
         /* Setup the fragment's IP header.  */
         /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
@@ -349,11 +349,11 @@ UINT            compute_checksum = 1;
 
         /* Endian swapping logic.  If NX_LITTLE_ENDIAN is specified, these macros will
            swap the endian of the IP header.  */
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_0);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_1);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_word_2);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_source_ip);
-        NX_CHANGE_ULONG_ENDIAN(fragment_header_ptr -> nx_ip_header_destination_ip);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_0);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_1);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_word_2);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_source_ip);
+        NX_CHANGE_UINT32_ENDIAN(fragment_header_ptr -> nx_ip_header_destination_ip);
 
 #ifndef NX_DISABLE_IP_INFO
         /* Increment the IP fragments sent count.  */
@@ -363,7 +363,7 @@ UINT            compute_checksum = 1;
         ip_ptr -> nx_ip_total_packets_sent++;
 
         /* Increment the IP bytes sent count.  */
-        ip_ptr -> nx_ip_total_bytes_sent += fragment_packet -> nx_packet_length - (ULONG)sizeof(NX_IPV4_HEADER);
+        ip_ptr -> nx_ip_total_bytes_sent += fragment_packet -> nx_packet_length - (UINT32)sizeof(NX_IPV4_HEADER);
 #endif
 
         /* Send the packet to the associated driver for output.  */

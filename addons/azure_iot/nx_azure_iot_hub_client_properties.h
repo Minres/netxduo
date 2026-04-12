@@ -148,7 +148,7 @@ UINT nx_azure_iot_hub_client_reported_properties_component_end(NX_AZURE_IOT_HUB_
 UINT nx_azure_iot_hub_client_reported_properties_status_begin(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                               NX_AZURE_IOT_JSON_WRITER *writer_ptr,
                                                               const UCHAR *property_name_ptr, UINT property_name_length,
-                                                              UINT status_code, ULONG version,
+                                                              UINT status_code, UINT32 version,
                                                               const UCHAR *description_ptr, UINT description_length);
 
 /**
@@ -185,7 +185,7 @@ UINT nx_azure_iot_hub_client_reported_properties_status_end(NX_AZURE_IOT_HUB_CLI
  */
 UINT nx_azure_iot_hub_client_properties_version_get(NX_AZURE_IOT_HUB_CLIENT *hub_client_ptr,
                                                     NX_AZURE_IOT_JSON_READER *reader_ptr,
-                                                    UINT message_type, ULONG *version_ptr);
+                                                    UINT message_type, UINT32 *version_ptr);
 
 /**
  * @brief Iteratively read the Azure IoT Plug and Play component properties.

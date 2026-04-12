@@ -33,22 +33,22 @@
 /* ffffffffffffffffc90fdaa22168c234c4c6628b80dc1cd129024e088a67cc74020bbea63b139b22514a08798e3404ddef9519b3cd3a431b302b0a6df25f14374fe1356d6d51c245e485b576625e7ec6f44c42e9a637ed6b0bff5cb6f406b7edee386bfb5a899fa5ae9f24117c4b1fe649286651ece65381ffffffffffffffff */
 static const HN_UBASE _nx_dh_group_2_modulus[] =
 {
-    HN_ULONG_TO_UBASE(0xFFFFFFFF), HN_ULONG_TO_UBASE(0xFFFFFFFF),
-    HN_ULONG_TO_UBASE(0xECE65381), HN_ULONG_TO_UBASE(0x49286651),
-    HN_ULONG_TO_UBASE(0x7C4B1FE6), HN_ULONG_TO_UBASE(0xAE9F2411),
-    HN_ULONG_TO_UBASE(0x5A899FA5), HN_ULONG_TO_UBASE(0xEE386BFB),
-    HN_ULONG_TO_UBASE(0xF406B7ED), HN_ULONG_TO_UBASE(0x0BFF5CB6),
-    HN_ULONG_TO_UBASE(0xA637ED6B), HN_ULONG_TO_UBASE(0xF44C42E9),
-    HN_ULONG_TO_UBASE(0x625E7EC6), HN_ULONG_TO_UBASE(0xE485B576),
-    HN_ULONG_TO_UBASE(0x6D51C245), HN_ULONG_TO_UBASE(0x4FE1356D),
-    HN_ULONG_TO_UBASE(0xF25F1437), HN_ULONG_TO_UBASE(0x302B0A6D),
-    HN_ULONG_TO_UBASE(0xCD3A431B), HN_ULONG_TO_UBASE(0xEF9519B3),
-    HN_ULONG_TO_UBASE(0x8E3404DD), HN_ULONG_TO_UBASE(0x514A0879),
-    HN_ULONG_TO_UBASE(0x3B139B22), HN_ULONG_TO_UBASE(0x020BBEA6),
-    HN_ULONG_TO_UBASE(0x8A67CC74), HN_ULONG_TO_UBASE(0x29024E08),
-    HN_ULONG_TO_UBASE(0x80DC1CD1), HN_ULONG_TO_UBASE(0xC4C6628B),
-    HN_ULONG_TO_UBASE(0x2168C234), HN_ULONG_TO_UBASE(0xC90FDAA2),
-    HN_ULONG_TO_UBASE(0xFFFFFFFF), HN_ULONG_TO_UBASE(0xFFFFFFFF)
+    HN_UINT32_TO_UBASE(0xFFFFFFFF), HN_UINT32_TO_UBASE(0xFFFFFFFF),
+    HN_UINT32_TO_UBASE(0xECE65381), HN_UINT32_TO_UBASE(0x49286651),
+    HN_UINT32_TO_UBASE(0x7C4B1FE6), HN_UINT32_TO_UBASE(0xAE9F2411),
+    HN_UINT32_TO_UBASE(0x5A899FA5), HN_UINT32_TO_UBASE(0xEE386BFB),
+    HN_UINT32_TO_UBASE(0xF406B7ED), HN_UINT32_TO_UBASE(0x0BFF5CB6),
+    HN_UINT32_TO_UBASE(0xA637ED6B), HN_UINT32_TO_UBASE(0xF44C42E9),
+    HN_UINT32_TO_UBASE(0x625E7EC6), HN_UINT32_TO_UBASE(0xE485B576),
+    HN_UINT32_TO_UBASE(0x6D51C245), HN_UINT32_TO_UBASE(0x4FE1356D),
+    HN_UINT32_TO_UBASE(0xF25F1437), HN_UINT32_TO_UBASE(0x302B0A6D),
+    HN_UINT32_TO_UBASE(0xCD3A431B), HN_UINT32_TO_UBASE(0xEF9519B3),
+    HN_UINT32_TO_UBASE(0x8E3404DD), HN_UINT32_TO_UBASE(0x514A0879),
+    HN_UINT32_TO_UBASE(0x3B139B22), HN_UINT32_TO_UBASE(0x020BBEA6),
+    HN_UINT32_TO_UBASE(0x8A67CC74), HN_UINT32_TO_UBASE(0x29024E08),
+    HN_UINT32_TO_UBASE(0x80DC1CD1), HN_UINT32_TO_UBASE(0xC4C6628B),
+    HN_UINT32_TO_UBASE(0x2168C234), HN_UINT32_TO_UBASE(0xC90FDAA2),
+    HN_UINT32_TO_UBASE(0xFFFFFFFF), HN_UINT32_TO_UBASE(0xFFFFFFFF)
 };
 
 
@@ -105,7 +105,7 @@ static const HN_UBASE _nx_dh_group_2_modulus[] =
 NX_CRYPTO_KEEP UINT _nx_crypto_dh_setup(NX_CRYPTO_DH  *dh_ptr,
                                         UCHAR  *local_public_key_ptr,
                                         UINT   *local_public_key_len_ptr,
-                                        ULONG   dh_group_num,
+                                        UINT32   dh_group_num,
                                         HN_UBASE *scratch_buf_ptr)
 {
 
@@ -231,9 +231,9 @@ HN_UBASE              generator_value;
 /**************************************************************************/
 NX_CRYPTO_KEEP UINT _nx_crypto_dh_compute_secret(NX_CRYPTO_DH  *dh_ptr,
                                                  UCHAR  *share_secret_key_ptr,
-                                                 ULONG  *share_secret_key_len_ptr,
+                                                 UINT32  *share_secret_key_len_ptr,
                                                  UCHAR  *remote_public_key,
-                                                 ULONG   remote_public_key_len,
+                                                 UINT32   remote_public_key_len,
                                                  HN_UBASE *scratch_buf_ptr)
 {
 

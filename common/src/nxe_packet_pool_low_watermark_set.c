@@ -69,7 +69,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_packet_pool_low_watermark_set(NX_PACKET_POOL *pool_ptr, ULONG low_watermark)
+UINT  _nxe_packet_pool_low_watermark_set(NX_PACKET_POOL *pool_ptr, UINT32 low_watermark)
 {
 #ifdef NX_ENABLE_LOW_WATERMARK
 

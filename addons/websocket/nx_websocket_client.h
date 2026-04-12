@@ -147,7 +147,7 @@ typedef struct NX_WEBSOCKET_CLIENT_STRUCT
 {
 
     /* WebSocket Client ID.  */
-    ULONG                       nx_websocket_client_id;
+    UINT32                       nx_websocket_client_id;
 
     /* Name of this WebSocket Client.  */
     UCHAR                      *nx_websocket_client_name;
@@ -189,8 +189,8 @@ typedef struct NX_WEBSOCKET_CLIENT_STRUCT
     UCHAR                       nx_websocket_client_frame_opcode;
     UCHAR                       nx_websocket_client_frame_masked;
     UCHAR                       nx_websocket_client_frame_masking_key[4];
-    ULONG                       nx_websocket_client_frame_data_length;
-    ULONG                       nx_websocket_client_frame_data_received;
+    UINT32                       nx_websocket_client_frame_data_length;
+    UINT32                       nx_websocket_client_frame_data_received;
 
     /* SHA1 in connect response calculation for Sec-Protocol-Accept field */
     NX_SHA1                     nx_websocket_client_sha1;
@@ -255,7 +255,7 @@ typedef struct NX_WEBSOCKET_CLIENT_STRUCT
 
 UINT  nx_websocket_client_create(NX_WEBSOCKET_CLIENT *client_ptr, UCHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr);
 UINT  nx_websocket_client_delete(NX_WEBSOCKET_CLIENT *client_ptr);
-UINT  nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
+UINT  nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
 UINT  nx_websocket_client_connect(NX_WEBSOCKET_CLIENT *client_ptr, NX_TCP_SOCKET *socket_ptr,
                                   UCHAR *host, UINT host_length,
                                   UCHAR *uri_path, UINT uri_path_length,
@@ -282,8 +282,8 @@ UINT  _nxe_websocket_client_create(NX_WEBSOCKET_CLIENT *client_ptr, UCHAR *clien
 UINT  _nx_websocket_client_create(NX_WEBSOCKET_CLIENT *client_ptr, UCHAR *client_name, NX_IP *ip_ptr, NX_PACKET_POOL *pool_ptr);
 UINT  _nxe_websocket_client_delete(NX_WEBSOCKET_CLIENT *client_ptr);
 UINT  _nx_websocket_client_delete(NX_WEBSOCKET_CLIENT *client_ptr);
-UINT  _nxe_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
-UINT  _nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
+UINT  _nxe_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
+UINT  _nx_websocket_client_packet_allocate(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
 UINT  _nxe_websocket_client_connect(NX_WEBSOCKET_CLIENT *client_ptr, NX_TCP_SOCKET *socket_ptr,
                                     UCHAR *host, UINT host_length,
                                     UCHAR *uri_path, UINT uri_path_length,
@@ -325,11 +325,11 @@ UINT  _nx_websocket_client_connect_internal(NX_WEBSOCKET_CLIENT *client_ptr,
                                             UCHAR *uri_path, UINT uri_path_length,
                                             UCHAR *protocol, UINT protocol_length,
                                             UCHAR *bearer, UINT bearer_length, UINT wait_option);
-UINT  _nx_websocket_client_name_compare(UCHAR *src, ULONG src_length, UCHAR *dest, ULONG dest_length);
+UINT  _nx_websocket_client_name_compare(UCHAR *src, UINT32 src_length, UCHAR *dest, UINT32 dest_length);
 UINT  _nx_websocket_client_connect_response_process(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr);
-UINT  _nx_websocket_client_packet_trim(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG trim_size);
-UINT  _nx_websocket_client_packet_send(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr, ULONG wait_option);
-UINT  _nx_websocket_client_packet_receive(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, ULONG wait_option);
+UINT  _nx_websocket_client_packet_trim(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 trim_size);
+UINT  _nx_websocket_client_packet_send(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT32 wait_option);
+UINT  _nx_websocket_client_packet_receive(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT32 wait_option);
 UINT  _nx_websocket_client_data_process(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET **packet_ptr, UINT *code);
 UINT  _nx_websocket_client_connect_response_check(NX_WEBSOCKET_CLIENT *client_ptr, NX_PACKET *packet_ptr, UINT wait_option);
 void  _nx_websocket_client_cleanup(NX_WEBSOCKET_CLIENT *client_ptr);

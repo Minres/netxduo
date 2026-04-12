@@ -72,11 +72,11 @@
 /**************************************************************************/
 UINT  _nxd_ipv6_raw_packet_send_internal(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
                                          NXD_ADDRESS *destination_ip,
-                                         ULONG protocol)
+                                         UINT32 protocol)
 {
 
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG ip_address_lsw;
+UINT32 ip_address_lsw;
 #endif /* TX_ENABLE_EVENT_TRACE */
 
 

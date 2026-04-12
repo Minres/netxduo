@@ -82,7 +82,7 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_ip_interface_attach(NX_IP *ip_ptr, CHAR *interface_name, ULONG ip_address, ULONG network_mask, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *))
+UINT _nx_ip_interface_attach(NX_IP *ip_ptr, CHAR *interface_name, UINT32 ip_address, UINT32 network_mask, VOID (*ip_link_driver)(struct NX_IP_DRIVER_STRUCT *))
 {
 
 INT           i;
@@ -91,7 +91,7 @@ NX_IP_DRIVER  driver_request;
 UINT          status = NX_SUCCESS;
 
 #if defined(FEATURE_NX_IPV6) && !defined(NX_DISABLE_ICMPV6_ROUTER_SOLICITATION)
-ULONG         address[4];
+UINT32         address[4];
 #endif
 
 #ifdef NX_DISABLE_IPV4

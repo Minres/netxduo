@@ -87,7 +87,7 @@
 /*                                                                        */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_nd_cache_add(NX_IP *ip_ptr, ULONG *dest_ip, NX_INTERFACE *if_ptr, CHAR *mac, INT IsStatic,
+UINT _nx_nd_cache_add(NX_IP *ip_ptr, UINT32 *dest_ip, NX_INTERFACE *if_ptr, CHAR *mac, INT IsStatic,
                       INT status, NXD_IPV6_ADDRESS *iface_address,
                       ND_CACHE_ENTRY **nd_cache_entry)
 {

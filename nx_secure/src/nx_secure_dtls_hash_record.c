@@ -71,7 +71,7 @@ static UCHAR adjusted_header[5];
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_hash_record(NX_SECURE_DTLS_SESSION *dtls_session,
-                                 ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                 UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                  UCHAR *header, UINT header_length, UCHAR *data, UINT length,
                                  UCHAR *record_hash, UINT *hash_length, UCHAR *mac_secret)
 {

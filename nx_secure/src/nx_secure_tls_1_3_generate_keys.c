@@ -192,7 +192,7 @@ UINT _nx_secure_tls_1_3_generate_handshake_keys(NX_SECURE_TLS_SESSION *tls_sessi
 {
 UINT status;
 UCHAR                                *key_block;
-ULONG                                 key_block_size;
+UINT32                                 key_block_size;
 NX_SECURE_TLS_KEY_SECRETS *secrets;
 const NX_CRYPTO_METHOD                     *session_cipher_method = NX_NULL;
 const NX_CRYPTO_METHOD                     *hash_method = NX_NULL;
@@ -451,7 +451,7 @@ UINT _nx_secure_tls_1_3_generate_session_keys(NX_SECURE_TLS_SESSION *tls_session
 {
 UINT status;
 UCHAR                                *key_block;
-ULONG                                 key_block_size;
+UINT32                                 key_block_size;
 NX_SECURE_TLS_KEY_SECRETS *secrets;
 const NX_CRYPTO_METHOD                     *session_cipher_method = NX_NULL;
 const NX_CRYPTO_METHOD                     *hash_method = NX_NULL;

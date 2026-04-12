@@ -100,7 +100,7 @@ VOID                                 *handler = NX_NULL;
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 UINT handshake_hash_length = 0;
 CHAR *metadata;
-ULONG metadata_size;
+UINT32 metadata_size;
 const CHAR server_context[] = "TLS 1.3, server CertificateVerify\0"; /* Includes 0-byte separator. */
 const CHAR client_context[] = "TLS 1.3, client CertificateVerify\0"; /* Includes 0-byte separator. */
 #endif
@@ -808,7 +808,7 @@ NX_SECURE_EC_PUBLIC_KEY              *ec_pubkey;
             return(status);
         }
 
-        if (((ULONG)packet_buffer + message_length) < ((ULONG)received_signature + length))
+        if (((UINT32)packet_buffer + message_length) < ((UINT32)received_signature + length))
         {
             return(NX_SECURE_X509_ASN1_LENGTH_TOO_LONG);
         }

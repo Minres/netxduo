@@ -149,7 +149,7 @@ NX_IPV6_HEADER                 *ipv6_header;
         next_fragment =  fragment -> nx_packet_union_next.nx_packet_fragment_next;
 
         /* Reset tcp_queue_next before releasing. */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         fragment -> nx_packet_union_next.nx_packet_tcp_queue_next = (NX_PACKET *)NX_PACKET_ALLOCATED;
 
         /* Release this fragment.  */

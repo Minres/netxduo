@@ -66,16 +66,16 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_udp_source_extract(NX_PACKET *packet_ptr, ULONG *ip_address, UINT *port)
+UINT  _nx_udp_source_extract(NX_PACKET *packet_ptr, UINT32 *ip_address, UINT *port)
 {
 
 #ifndef NX_DISABLE_IPV4
-ULONG          *temp_ptr;
+UINT32          *temp_ptr;
 NX_IPV4_HEADER *ipv4_header;
 
     /* Build an address to the current top of the packet.  */
     /*lint -e{927} -e{826} suppress cast of pointer to pointer, since it is necessary  */
-    temp_ptr =  (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
+    temp_ptr =  (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
 
     /* Pickup the source port.  */
     *port =  (UINT)(*(temp_ptr - 2) >> NX_SHIFT_BY_16);

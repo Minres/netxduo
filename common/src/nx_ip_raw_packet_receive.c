@@ -67,7 +67,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_raw_packet_receive(NX_IP *ip_ptr, NX_PACKET **packet_ptr, ULONG wait_option)
+UINT  _nx_ip_raw_packet_receive(NX_IP *ip_ptr, NX_PACKET **packet_ptr, UINT32 wait_option)
 {
 TX_INTERRUPT_SAVE_AREA
 
@@ -77,7 +77,7 @@ NX_PACKET             *work_ptr;    /* Working packet pointer  */
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 

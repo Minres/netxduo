@@ -95,14 +95,14 @@ UINT _nx_ip_max_payload_size_find(NX_IP *ip_ptr,
                                   UINT if_index,
                                   UINT src_port,
                                   UINT dest_port,
-                                  ULONG protocol,
-                                  ULONG *start_offset_ptr,
-                                  ULONG *payload_length_ptr)
+                                  UINT32 protocol,
+                                  UINT32 *start_offset_ptr,
+                                  UINT32 *payload_length_ptr)
 
 {
 
-ULONG        payload_length = 0;
-ULONG        start_offset = 0;
+UINT32        payload_length = 0;
+UINT32        start_offset = 0;
 
 #if defined(NX_IPSEC_ENABLE) || defined(TX_ENABLE_EVENT_TRACE)
 NXD_ADDRESS  src_address = {0};
@@ -112,11 +112,11 @@ NXD_ADDRESS  src_address = {0};
 UINT         block_size;
 NX_IPSEC_SA *sa = NX_NULL;
 UINT         ret;
-ULONG        data_offset;
+UINT32        data_offset;
 #endif /* NX_IPSEC_ENABLE */
 
 #ifdef TX_ENABLE_EVENT_TRACE
-ULONG        src_address_lsw = 0, dst_address_lsw = 0;
+UINT32        src_address_lsw = 0, dst_address_lsw = 0;
 #endif /* TX_ENABLE_EVENT_TRACE */
 
 #ifndef NX_DISABLE_IPV4

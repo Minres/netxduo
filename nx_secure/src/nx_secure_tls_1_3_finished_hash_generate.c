@@ -69,7 +69,7 @@
 #if (NX_SECURE_TLS_TLS_1_3_ENABLED)
 UINT _nx_secure_tls_1_3_finished_hash_generate(NX_SECURE_TLS_SESSION *tls_session,
                                                UINT is_server, UINT *hash_size, UCHAR *finished_hash,
-                                               ULONG available_size)
+                                               UINT32 available_size)
 {
 UINT                                  status;
 const NX_CRYPTO_METHOD               *hmac_method = NX_NULL;

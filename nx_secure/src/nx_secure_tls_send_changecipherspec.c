@@ -66,7 +66,7 @@ UINT _nx_secure_tls_send_changecipherspec(NX_SECURE_TLS_SESSION *tls_session, NX
 
     NX_PARAMETER_NOT_USED(tls_session);
 
-    if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr)) < 1u)
+    if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr)) < 1u)
     {
 
         /* Packet buffer is too small to hold random and ID. */

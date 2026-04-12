@@ -96,7 +96,7 @@ UINT option_len;
         option_len = ((UINT)option -> nx_icmpv6_option_length) << 3;
         length -= (INT)option_len;
 
-        /*lint -e{923} suppress cast between pointer and ULONG, since it is necessary  */
+        /*lint -e{923} suppress cast between pointer and UINT32, since it is necessary  */
         option = (NX_ICMPV6_OPTION *)NX_UCHAR_POINTER_ADD(option, option_len);
     }
 

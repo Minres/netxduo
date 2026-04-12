@@ -66,7 +66,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_packet_allocate(NX_PACKET_POOL *pool_ptr,  NX_PACKET **packet_ptr,
-                          ULONG packet_type, ULONG wait_option)
+                          UINT32 packet_type, UINT32 wait_option)
 {
 TX_INTERRUPT_SAVE_AREA
 
@@ -76,7 +76,7 @@ NX_PACKET *work_ptr;            /* Working packet pointer  */
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
     /* Make sure the packet_type does not go beyond nx_packet_data_end. */
@@ -121,7 +121,7 @@ ULONG                  trace_timestamp;
         work_ptr -> nx_packet_interface_capability_flag = 0;
 #endif /* NX_ENABLE_INTERFACE_CAPABILITY */
         /* Set the TCP queue to the value that indicates it has been allocated.  */
-        /*lint -e{923} suppress cast of ULONG to pointer.  */
+        /*lint -e{923} suppress cast of UINT32 to pointer.  */
         work_ptr -> nx_packet_union_next.nx_packet_tcp_queue_next =  (NX_PACKET *)NX_PACKET_ALLOCATED;
 
 #ifdef FEATURE_NX_IPV6

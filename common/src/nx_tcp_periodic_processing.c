@@ -73,7 +73,7 @@ VOID  _nx_tcp_periodic_processing(NX_IP *ip_ptr)
 
 #ifdef NX_ENABLE_TCP_KEEPALIVE
 NX_TCP_SOCKET *socket_ptr;
-ULONG          sockets;
+UINT32          sockets;
 UINT           keepalive_enabled = NX_FALSE;
 
 

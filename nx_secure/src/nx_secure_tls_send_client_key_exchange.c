@@ -69,8 +69,8 @@ UINT _nx_secure_tls_send_client_key_exchange(NX_SECURE_TLS_SESSION *tls_session,
 {
 #if !defined(NX_SECURE_TLS_CLIENT_DISABLED)
 UINT  status;
-ULONG data_size = 0;
-ULONG buffer_length;
+UINT32 data_size = 0;
+UINT32 buffer_length;
 
     if (tls_session -> nx_secure_tls_session_ciphersuite == NX_NULL)
     {
@@ -79,7 +79,7 @@ ULONG buffer_length;
         return(NX_SECURE_TLS_UNKNOWN_CIPHERSUITE);
     }
 
-    buffer_length = (ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_append_ptr);
+    buffer_length = (UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_append_ptr);
 
     status = tls_session -> nx_secure_generate_client_key_exchange(tls_session -> nx_secure_tls_session_ciphersuite,
                                                                    &tls_session -> nx_secure_tls_key_material, &tls_session -> nx_secure_tls_credentials,

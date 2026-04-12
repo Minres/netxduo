@@ -67,7 +67,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_client_socket_bind(NX_TCP_SOCKET *socket_ptr, UINT port, ULONG wait_option)
+UINT  _nx_tcp_client_socket_bind(NX_TCP_SOCKET *socket_ptr, UINT port, UINT32 wait_option)
 {
 TX_INTERRUPT_SAVE_AREA
 
@@ -108,7 +108,7 @@ NX_TCP_SOCKET *end_ptr;
     {
 
         /* Call the find routine to allocate a TCP port.  */
-        port = NX_SEARCH_PORT_START + (UINT)(((ULONG)NX_RAND()) % ((NX_MAX_PORT + 1) - NX_SEARCH_PORT_START));
+        port = NX_SEARCH_PORT_START + (UINT)(((UINT32)NX_RAND()) % ((NX_MAX_PORT + 1) - NX_SEARCH_PORT_START));
         if (_nx_tcp_free_port_find(ip_ptr, port, &port) != NX_SUCCESS)
         {
 

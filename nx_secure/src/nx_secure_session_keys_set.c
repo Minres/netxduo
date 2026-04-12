@@ -72,7 +72,7 @@
 /**************************************************************************/
 UINT _nx_secure_session_keys_set(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite, NX_SECURE_TLS_KEY_MATERIAL *tls_key_material,
                                  UINT key_material_data_size, UINT is_client, UCHAR *session_cipher_initialized,
-                                 VOID *session_cipher_metadata, VOID **session_cipher_handler, ULONG session_cipher_metadata_size)
+                                 VOID *session_cipher_metadata, VOID **session_cipher_handler, UINT32 session_cipher_metadata_size)
 {
 UINT                    status;
 UCHAR                  *key_block;     /* Maximum ciphersuite key size - AES_256_CBC_SHA, 2x32 byte keys + 2x20 byte MAC secrets + 2x16 IVs. */

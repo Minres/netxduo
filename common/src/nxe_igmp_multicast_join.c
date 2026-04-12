@@ -68,7 +68,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_igmp_multicast_join(NX_IP *ip_ptr, ULONG group_address)
+UINT  _nxe_igmp_multicast_join(NX_IP *ip_ptr, UINT32 group_address)
 {
 
 #ifndef NX_DISABLE_IPV4

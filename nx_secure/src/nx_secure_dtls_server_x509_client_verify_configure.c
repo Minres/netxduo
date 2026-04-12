@@ -73,7 +73,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_dtls_server_x509_client_verify_configure(NX_SECURE_DTLS_SERVER *server_ptr, UINT certs_per_session,
-                                                         UCHAR *certs_buffer, ULONG buffer_size)
+                                                         UCHAR *certs_buffer, UINT32 buffer_size)
 {
 #ifdef NX_SECURE_ENABLE_DTLS
 UINT status;

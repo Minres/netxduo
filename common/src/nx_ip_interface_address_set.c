@@ -65,7 +65,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, ULONG ip_address, ULONG network_mask)
+UINT  _nx_ip_interface_address_set(NX_IP *ip_ptr, UINT interface_index, UINT32 ip_address, UINT32 network_mask)
 {
 
 #ifndef NX_DISABLE_IPV4
@@ -74,8 +74,8 @@ TX_INTERRUPT_SAVE_AREA
 VOID  (*address_change_notify)(NX_IP *, VOID *);
 VOID *additional_info;
 VOID  (*address_change_notify_internal)(NX_IP *, VOID *);
-ULONG previous_ip_address;
-ULONG previous_network_mask;
+UINT32 previous_ip_address;
+UINT32 previous_network_mask;
 
 
     /* If trace is enabled, insert this event into the trace buffer.  */

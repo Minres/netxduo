@@ -78,8 +78,8 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxd_ipv6_default_router_add_internal(NX_IP *ip_ptr,
-                                            ULONG *router_addr,
-                                            ULONG router_lifetime,
+                                            UINT32 *router_addr,
+                                            UINT32 router_lifetime,
                                             NX_INTERFACE *if_ptr,
                                             INT router_type,
                                             NX_IPV6_DEFAULT_ROUTER_ENTRY **_ret)
@@ -87,7 +87,7 @@ UINT  _nxd_ipv6_default_router_add_internal(NX_IP *ip_ptr,
 
 UINT                          i;
 UINT                          first_available = (UINT)0xFFFFFFFF;
-ULONG                         address_type;
+UINT32                         address_type;
 NX_IPV6_DEFAULT_ROUTER_ENTRY *ret = NX_NULL;
 NXD_IPV6_ADDRESS             *ipv6_address;
 

@@ -64,12 +64,12 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, ULONG arp_cache_size)
+UINT  _nx_arp_enable(NX_IP *ip_ptr, VOID *arp_cache_memory, UINT32 arp_cache_size)
 {
 
 #ifndef NX_DISABLE_IPV4
-ULONG   i;
-ULONG   arp_entries;
+UINT32   i;
+UINT32   arp_entries;
 NX_ARP *entry_ptr;
 
 

@@ -70,11 +70,11 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_ip_raw_packet_source_send(NX_IP *ip_ptr, NX_PACKET *packet_ptr,
-                                    ULONG destination_ip, UINT address_index, ULONG type_of_service)
+                                    UINT32 destination_ip, UINT address_index, UINT32 type_of_service)
 {
 
 #ifndef NX_DISABLE_IPV4
-ULONG next_hop_address;
+UINT32 next_hop_address;
 
     /* Add debug information. */
     NX_PACKET_DEBUG(__FILE__, __LINE__, packet_ptr);

@@ -67,17 +67,17 @@
 /*                                                                        */
 /**************************************************************************/
 UINT _nx_secure_tls_hash_record(const NX_SECURE_TLS_CIPHERSUITE_INFO *ciphersuite,
-                                ULONG sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
+                                UINT32 sequence_num[NX_SECURE_TLS_SEQUENCE_NUMBER_SIZE],
                                 UCHAR *header, UINT header_length, NX_PACKET *packet_ptr,
-                                ULONG offset, UINT length, UCHAR *record_hash, UINT *hash_length,
-                                UCHAR *mac_secret, VOID *metadata, ULONG metadata_size)
+                                UINT32 offset, UINT length, UCHAR *record_hash, UINT *hash_length,
+                                UCHAR *mac_secret, VOID *metadata, UINT32 metadata_size)
 {
 UINT                    hash_size;
 UINT                    status = NX_SECURE_TLS_MISSING_CRYPTO_ROUTINE;
 const NX_CRYPTO_METHOD *authentication_method;
 UCHAR                   adjusted_sequence_num[8];
 VOID                   *handler = NX_NULL;
-ULONG                   current_length;
+UINT32                   current_length;
 
     NX_PARAMETER_NOT_USED(header_length);
 
@@ -188,7 +188,7 @@ ULONG                   current_length;
         /* Locate to start packet of TLS record payload. */
         while (packet_ptr)
         {
-            current_length = (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
+            current_length = (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
             if (offset >= current_length)
             {
 
@@ -207,7 +207,7 @@ ULONG                   current_length;
         /* Hash TLS record payload. */
         while ((length > 0) && packet_ptr)
         {
-            current_length = (ULONG)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
+            current_length = (UINT32)(packet_ptr -> nx_packet_append_ptr - packet_ptr -> nx_packet_prepend_ptr);
             current_length -= offset;
             offset = 0;
             if (current_length > length)

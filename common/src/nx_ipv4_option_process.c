@@ -68,9 +68,9 @@ UINT  _nx_ipv4_option_process(NX_IP *ip_ptr, NX_PACKET *packet_ptr)
 
 NX_IPV4_HEADER *ip_header_ptr;
 UCHAR          *option_ptr;
-ULONG           ip_option_length;
+UINT32           ip_option_length;
 #ifndef NX_DISABLE_ICMPV4_ERROR_MESSAGE
-ULONG           ip_normal_length = 20;
+UINT32           ip_normal_length = 20;
 #endif /* NX_DISABLE_ICMPV4_ERROR_MESSAGE */
 UINT            index = 0;
 UCHAR           op_type;
@@ -86,7 +86,7 @@ UINT            op_timestamp_counter = 0;
     option_ptr = packet_ptr -> nx_packet_prepend_ptr + sizeof(NX_IPV4_HEADER);
 
     /* Calculate the IPv4 option length.  */
-    ip_option_length = ((((ip_header_ptr -> nx_ip_header_word_0 & NX_IP_LENGTH_MASK) >> 24) - NX_IP_NORMAL_LENGTH) & 0xFF) * (ULONG)sizeof(ULONG);
+    ip_option_length = ((((ip_header_ptr -> nx_ip_header_word_0 & NX_IP_LENGTH_MASK) >> 24) - NX_IP_NORMAL_LENGTH) & 0xFF) * (UINT32)sizeof(UINT32);
 
     /* Loop to process the IPv4 option.  */
     while (index < ip_option_length)

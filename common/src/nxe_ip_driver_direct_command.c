@@ -67,7 +67,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxe_ip_driver_direct_command(NX_IP *ip_ptr, UINT command, ULONG *return_value_ptr)
+UINT  _nxe_ip_driver_direct_command(NX_IP *ip_ptr, UINT command, UINT32 *return_value_ptr)
 {
 
 UINT status;

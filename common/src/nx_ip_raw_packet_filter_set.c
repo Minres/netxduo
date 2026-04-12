@@ -62,7 +62,7 @@
 /*    Application                                                         */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_raw_packet_filter_set(NX_IP *ip_ptr, UINT (*raw_packet_filter)(NX_IP *, ULONG, NX_PACKET *))
+UINT  _nx_ip_raw_packet_filter_set(NX_IP *ip_ptr, UINT (*raw_packet_filter)(NX_IP *, UINT32, NX_PACKET *))
 {
 
 #ifdef NX_ENABLE_IP_RAW_PACKET_FILTER

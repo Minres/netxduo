@@ -77,7 +77,7 @@ NX_CALLER_CHECKING_EXTERNS
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nxde_nd_cache_entry_set(NX_IP *ip_ptr, ULONG *dest_ip, UINT interface_index, CHAR *mac)
+UINT _nxde_nd_cache_entry_set(NX_IP *ip_ptr, UINT32 *dest_ip, UINT interface_index, CHAR *mac)
 {
 #ifdef FEATURE_NX_IPV6
 

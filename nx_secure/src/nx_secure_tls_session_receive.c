@@ -63,7 +63,7 @@
 /*                                                                        */
 /**************************************************************************/
 UINT  _nx_secure_tls_session_receive(NX_SECURE_TLS_SESSION *tls_session, NX_PACKET **packet_ptr_ptr,
-                                     ULONG wait_option)
+                                     UINT32 wait_option)
 {
 UINT status;
 

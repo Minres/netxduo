@@ -63,7 +63,7 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_tcp_socket_mss_peer_get(NX_TCP_SOCKET *socket_ptr, ULONG *peer_mss)
+UINT  _nx_tcp_socket_mss_peer_get(NX_TCP_SOCKET *socket_ptr, UINT32 *peer_mss)
 {
 
 NX_IP *ip_ptr;

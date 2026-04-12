@@ -52,27 +52,27 @@
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_IP_ADDRESSES_BY_PREFIX(ULONG *ip_addr1, ULONG *ip_addr2,
-                                 ULONG prefix_len)
+INT CHECK_IP_ADDRESSES_BY_PREFIX(UINT32 *ip_addr1, UINT32 *ip_addr2,
+                                 UINT32 prefix_len)
 {
 
 
-ULONG high_prefix; /* Num of ULONG in prefix. */
-ULONG low_prefix;  /* Remaining bits in prefix after high prefix. */
-ULONG mask;
+UINT32 high_prefix; /* Num of UINT32 in prefix. */
+UINT32 low_prefix;  /* Remaining bits in prefix after high prefix. */
+UINT32 mask;
 
 
-    /* Get number of ULONGs that can fit in the specified prefix length. */
+    /* Get number of UINT32s that can fit in the specified prefix length. */
     high_prefix  = prefix_len >> 5;
 
     /* Get the remaining bits in prefix length. */
     low_prefix  = prefix_len &  0x1f;
 
-    /* Would the prefix length have 1 or more ULONGs? */
+    /* Would the prefix length have 1 or more UINT32s? */
     if (high_prefix)
     {
 
-        /* Yes; compare that number of ULONGS (in bytes) in each input address. */
+        /* Yes; compare that number of UINT32S (in bytes) in each input address. */
         if (memcmp(ip_addr1, ip_addr2, high_prefix << 2))
         {
             /* A nonzero result indicates a mismatch. */
@@ -84,7 +84,7 @@ ULONG mask;
     if (low_prefix)
     {
 
-        /* Compare these bits between the two addresses, after masking out the upper ULONGs. */
+        /* Compare these bits between the two addresses, after masking out the upper UINT32s. */
         mask = ((0xFFFFFFFF) << (32 - low_prefix)) & 0xFFFFFFFF;
 
         if ((ip_addr1[high_prefix] ^ ip_addr2[high_prefix]) & mask)
@@ -140,7 +140,7 @@ ULONG mask;
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_IPV6_ADDRESSES_SAME(ULONG *ip_addr1, ULONG *ip_addr2)
+INT CHECK_IPV6_ADDRESSES_SAME(UINT32 *ip_addr1, UINT32 *ip_addr2)
 {
 #ifdef FEATURE_NX_IPV6
     return(ip_addr1[0] == ip_addr2[0] &&
@@ -192,7 +192,7 @@ INT CHECK_IPV6_ADDRESSES_SAME(ULONG *ip_addr1, ULONG *ip_addr2)
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_IPV6_ADDRESS_RANGE(ULONG *ip_addr_start, ULONG *ip_addr_end, ULONG *ip_addr)
+INT CHECK_IPV6_ADDRESS_RANGE(UINT32 *ip_addr_start, UINT32 *ip_addr_end, UINT32 *ip_addr)
 {
 #ifdef FEATURE_NX_IPV6
 INT ip_addr_cmp1 = 0, ip_addr_cmp2 = 0;
@@ -313,7 +313,7 @@ INT ip_addr_cmp1 = 0, ip_addr_cmp2 = 0;
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_UNSPECIFIED_ADDRESS(ULONG *ip_addr)
+INT CHECK_UNSPECIFIED_ADDRESS(UINT32 *ip_addr)
 {
 #ifdef FEATURE_NX_IPV6
     return(!(ip_addr[0] || ip_addr[1] || ip_addr[2] || ip_addr[3]));
@@ -356,7 +356,7 @@ INT CHECK_UNSPECIFIED_ADDRESS(ULONG *ip_addr)
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-void SET_UNSPECIFIED_ADDRESS(ULONG *ip_addr)
+void SET_UNSPECIFIED_ADDRESS(UINT32 *ip_addr)
 {
 #ifdef FEATURE_NX_IPV6
     ip_addr[0] = 0;
@@ -403,7 +403,7 @@ void SET_UNSPECIFIED_ADDRESS(ULONG *ip_addr)
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-void COPY_IPV6_ADDRESS(ULONG *copy_from, ULONG *copy_to)
+void COPY_IPV6_ADDRESS(UINT32 *copy_from, UINT32 *copy_to)
 {
 #ifdef FEATURE_NX_IPV6
     copy_to[0] = copy_from[0];
@@ -508,14 +508,14 @@ void COPY_NXD_ADDRESS(NXD_ADDRESS *copy_from, NXD_ADDRESS  *copy_to)
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-void SET_SOLICITED_NODE_MULTICAST_ADDRESS(ULONG *address,
-                                          ULONG *unicast_address)
+void SET_SOLICITED_NODE_MULTICAST_ADDRESS(UINT32 *address,
+                                          UINT32 *unicast_address)
 {
 #ifdef FEATURE_NX_IPV6
-    address[0] = (ULONG)0xFF020000;
-    address[1] = (ULONG)0;
-    address[2] = (ULONG)0x00000001;
-    address[3] = (ULONG)(0xFF000000 | unicast_address[3]);
+    address[0] = (UINT32)0xFF020000;
+    address[1] = (UINT32)0;
+    address[2] = (UINT32)0x00000001;
+    address[3] = (UINT32)(0xFF000000 | unicast_address[3]);
 #else
     NX_PARAMETER_NOT_USED(address);
     NX_PARAMETER_NOT_USED(unicast_address);
@@ -559,14 +559,14 @@ void SET_SOLICITED_NODE_MULTICAST_ADDRESS(ULONG *address,
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_ALL_ROUTER_MCAST_ADDRESS(ULONG *address)
+INT CHECK_ALL_ROUTER_MCAST_ADDRESS(UINT32 *address)
 {
 #ifdef FEATURE_NX_IPV6
 
-    return(address[0] == (ULONG)0xFF020000 &&
-           address[1] == (ULONG)0 &&
-           address[2] == (ULONG)0 &&
-           address[3] == (ULONG)0x00000002);
+    return(address[0] == (UINT32)0xFF020000 &&
+           address[1] == (UINT32)0 &&
+           address[2] == (UINT32)0 &&
+           address[3] == (UINT32)0x00000002);
 
 #else /* !FEATURE_NX_IPV6 */
     NX_PARAMETER_NOT_USED(address);
@@ -618,38 +618,38 @@ INT CHECK_ALL_ROUTER_MCAST_ADDRESS(ULONG *address)
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-INT CHECK_IPV6_SOLICITED_NODE_MCAST_ADDRESS(ULONG *dest_ip, ULONG *myip)
+INT CHECK_IPV6_SOLICITED_NODE_MCAST_ADDRESS(UINT32 *dest_ip, UINT32 *myip)
 {
 #ifdef FEATURE_NX_IPV6
 
 INT isMulticast = 0;
 
-    if ((dest_ip[0] == (ULONG)0xFF020000) && (dest_ip[1] == (ULONG)0x0) &&
-        (dest_ip[2] == (ULONG)0x00000001) &&
-        (dest_ip[3] == ((myip[3] & (ULONG)0x00FFFFFF) | (ULONG)0xFF000000)))
+    if ((dest_ip[0] == (UINT32)0xFF020000) && (dest_ip[1] == (UINT32)0x0) &&
+        (dest_ip[2] == (UINT32)0x00000001) &&
+        (dest_ip[3] == ((myip[3] & (UINT32)0x00FFFFFF) | (UINT32)0xFF000000)))
     {
         isMulticast = 1;
     }
-    else if ((dest_ip[0] == (ULONG)0xFF020000) &&
-             (dest_ip[1] == (ULONG)0x0) &&
-             (dest_ip[2] == (ULONG)0x0) &&
-             ((dest_ip[3] == (ULONG)0x00000001) || (dest_ip[3] == (ULONG)0x00010002)))
+    else if ((dest_ip[0] == (UINT32)0xFF020000) &&
+             (dest_ip[1] == (UINT32)0x0) &&
+             (dest_ip[2] == (UINT32)0x0) &&
+             ((dest_ip[3] == (UINT32)0x00000001) || (dest_ip[3] == (UINT32)0x00010002)))
     {
         isMulticast = 1;
     }
 #ifdef NX_ENABLE_THREAD
-    else if ((dest_ip[0] == (ULONG)0xFF030000) &&
-             (dest_ip[1] == (ULONG)0x0) &&
-             (dest_ip[2] == (ULONG)0x0) &&
-             ((dest_ip[3] == (ULONG)0x00000001)))     /* Realm-Local All nodes multicast address.     */
+    else if ((dest_ip[0] == (UINT32)0xFF030000) &&
+             (dest_ip[1] == (UINT32)0x0) &&
+             (dest_ip[2] == (UINT32)0x0) &&
+             ((dest_ip[3] == (UINT32)0x00000001)))     /* Realm-Local All nodes multicast address.     */
     {
         isMulticast = 1;
     }
 #endif /* NX_ENABLE_THREAD  */
-    else if ((dest_ip[0] == (ULONG)0xFF050000) &&
-             (dest_ip[1] == (ULONG)0x0) &&
-             (dest_ip[2] == (ULONG)0x0) &&
-             (dest_ip[3] == (ULONG)0x00010003))
+    else if ((dest_ip[0] == (UINT32)0xFF050000) &&
+             (dest_ip[1] == (UINT32)0x0) &&
+             (dest_ip[2] == (UINT32)0x0) &&
+             (dest_ip[3] == (UINT32)0x00010003))
     {
         isMulticast = 1;
     }
@@ -698,11 +698,11 @@ INT isMulticast = 0;
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-ULONG IPv6_Address_Type(ULONG *ip_address)
+UINT32 IPv6_Address_Type(UINT32 *ip_address)
 {
 
 #ifdef FEATURE_NX_IPV6
-ULONG ret;
+UINT32 ret;
 
 /* Validate address type.
    ::/128                  Unspecified address
@@ -712,47 +712,47 @@ ULONG ret;
    FEC0::/10               Global (Its use as Site-local has been deprecated (RFC 4291)
    Everything else         Global
  */
-ULONG tmp;
+UINT32 tmp;
 
     /* Is this multicast? */
-    if ((ip_address[0] & (ULONG)0xFF000000) == (ULONG)0xFF000000)
+    if ((ip_address[0] & (UINT32)0xFF000000) == (UINT32)0xFF000000)
     {
         /* Yes. */
         ret = IPV6_ADDRESS_MULTICAST;
 
         /* Determine type of multicast... */
-        if (((ip_address[0] == (ULONG)0xFF010000) ||
-             (ip_address[0] == (ULONG)0xFF020000)) &&
-            (ip_address[1] == (ULONG)0) &&
-            (ip_address[2] == (ULONG)0) &&
-            (ip_address[3] == (ULONG)1))
+        if (((ip_address[0] == (UINT32)0xFF010000) ||
+             (ip_address[0] == (UINT32)0xFF020000)) &&
+            (ip_address[1] == (UINT32)0) &&
+            (ip_address[2] == (UINT32)0) &&
+            (ip_address[3] == (UINT32)1))
         {
             return(ret | IPV6_ALL_NODE_MCAST);
         }
 
 
-        if ((ip_address[0] == (ULONG)0xFF050000) &&     /* All DHCPv6 relay and server hosts */
-            (ip_address[1] == (ULONG)0) &&
-            (ip_address[2] == (ULONG)0) &&
-            (ip_address[3] == (ULONG)0x00010003))
+        if ((ip_address[0] == (UINT32)0xFF050000) &&     /* All DHCPv6 relay and server hosts */
+            (ip_address[1] == (UINT32)0) &&
+            (ip_address[2] == (UINT32)0) &&
+            (ip_address[3] == (UINT32)0x00010003))
         {
             return(ret | IPV6_ALL_NODE_MCAST);
         }
 
-        if (((ip_address[0] == (ULONG)0xFF010000) ||
-             (ip_address[0] == (ULONG)0xFF020000) ||
-             (ip_address[0] == (ULONG)0xFF050000)) &&
-            (ip_address[1] == (ULONG)0) &&
-            (ip_address[2] == (ULONG)0) &&
-            (ip_address[3] == (ULONG)2))
+        if (((ip_address[0] == (UINT32)0xFF010000) ||
+             (ip_address[0] == (UINT32)0xFF020000) ||
+             (ip_address[0] == (UINT32)0xFF050000)) &&
+            (ip_address[1] == (UINT32)0) &&
+            (ip_address[2] == (UINT32)0) &&
+            (ip_address[3] == (UINT32)2))
         {
             return(ret | IPV6_ALL_ROUTER_MCAST);
         }
 
-        if ((ip_address[0] == (ULONG)0xFF020000) &&
-            (ip_address[1] == (ULONG)0) &&
-            (ip_address[2] == (ULONG)1) &&
-            (ip_address[3] >= (ULONG)0xFF000000))
+        if ((ip_address[0] == (UINT32)0xFF020000) &&
+            (ip_address[1] == (UINT32)0) &&
+            (ip_address[2] == (UINT32)1) &&
+            (ip_address[3] >= (UINT32)0xFF000000))
         {
             return(ret | IPV6_SOLICITED_NODE_MCAST);
         }
@@ -762,15 +762,15 @@ ULONG tmp;
 
     tmp = ip_address[0] & (0xFFC00000);
 
-    if (tmp == (ULONG)0xFE800000)
+    if (tmp == (UINT32)0xFE800000)
     {
-        return((ULONG)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_LINKLOCAL));
+        return((UINT32)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_LINKLOCAL));
     }
     /* Note that site local are deprecated in RFC 4291 and are
        treated as global type address. */
-    if (tmp == (ULONG)0xFEC00000)
+    if (tmp == (UINT32)0xFEC00000)
     {
-        return((ULONG)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_GLOBAL));
+        return((UINT32)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_GLOBAL));
     }
 
     tmp = ip_address[0] | ip_address[1] | ip_address[2];
@@ -788,7 +788,7 @@ ULONG tmp;
         }
     }
 
-    return((ULONG)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_GLOBAL));
+    return((UINT32)(IPV6_ADDRESS_UNICAST | IPV6_ADDRESS_GLOBAL));
 #else /* FEATURE_NX_IPV6 */
     NX_PARAMETER_NOT_USED(ip_address);
 
@@ -831,7 +831,7 @@ ULONG tmp;
 /*    NetX Source Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-VOID _nx_ipv6_address_change_endian(ULONG *address)
+VOID _nx_ipv6_address_change_endian(UINT32 *address)
 {
 #ifdef FEATURE_NX_IPV6
     if (address == NX_NULL)
@@ -839,10 +839,10 @@ VOID _nx_ipv6_address_change_endian(ULONG *address)
         return;
     }
 
-    NX_CHANGE_ULONG_ENDIAN(address[0]);
-    NX_CHANGE_ULONG_ENDIAN(address[1]);
-    NX_CHANGE_ULONG_ENDIAN(address[2]);
-    NX_CHANGE_ULONG_ENDIAN(address[3]);
+    NX_CHANGE_UINT32_ENDIAN(address[0]);
+    NX_CHANGE_UINT32_ENDIAN(address[1]);
+    NX_CHANGE_UINT32_ENDIAN(address[2]);
+    NX_CHANGE_UINT32_ENDIAN(address[3]);
 #else
     NX_PARAMETER_NOT_USED(address);
 #endif /* FEATURE_NX_IPV6 */

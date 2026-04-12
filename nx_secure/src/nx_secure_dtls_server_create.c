@@ -83,10 +83,10 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT _nx_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, ULONG timeout,
+UINT _nx_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_ptr, UINT port, UINT32 timeout,
                                    VOID *session_buffer, UINT session_buffer_size,
                                    const NX_SECURE_TLS_CRYPTO *crypto_table,
-                                   VOID *crypto_metadata_buffer, ULONG crypto_metadata_size,
+                                   VOID *crypto_metadata_buffer, UINT32 crypto_metadata_size,
                                    UCHAR *packet_reassembly_buffer, UINT packet_reassembly_buffer_size,
                                    UINT (*connect_notify)(NX_SECURE_DTLS_SESSION *dtls_session, NXD_ADDRESS *ip_address, UINT port),
                                    UINT (*receive_notify)(NX_SECURE_DTLS_SESSION *dtls_session))
@@ -95,7 +95,7 @@ UINT _nx_secure_dtls_server_create(NX_SECURE_DTLS_SERVER *server_ptr, NX_IP *ip_
 UINT status;
 UINT i;
 NX_SECURE_DTLS_SESSION *current_session;
-ULONG session_metadata_size;
+UINT32 session_metadata_size;
 UINT  session_pkt_buffer_size;
 UCHAR *session_pkt_buffer;
 UCHAR *session_metadata;

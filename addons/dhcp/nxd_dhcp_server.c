@@ -56,20 +56,20 @@ static UINT        _nx_dhcp_server_packet_process(NX_DHCP_SERVER *dhcp_ptr, NX_P
 static UINT        _nx_dhcp_respond_to_client_message(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr);
 static UINT        _nx_dhcp_server_extract_information(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT **dhcp_client_ptr, NX_PACKET *packet_ptr, UINT iface_index);
 static UINT        _nx_dhcp_process_option_data(NX_DHCP_CLIENT *dhcp_ptr, CHAR *buffer, UCHAR value, UINT get_option_data, UINT size);
-static UINT        _nx_dhcp_add_option(UCHAR *bootp_message, UINT option, UINT size, ULONG value, UINT *index);
+static UINT        _nx_dhcp_add_option(UCHAR *bootp_message, UINT option, UINT size, UINT32 value, UINT *index);
 static UINT        _nx_dhcp_add_requested_option(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UCHAR *buffer, UINT option, UINT *index);
 static UINT        _nx_dhcp_set_server_options(NX_DHCP_SERVER *dhcp_ptr, CHAR *buffer, UINT buffer_length);
 static UINT        _nx_dhcp_load_server_options(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr, UCHAR *buffer, UINT option_type, UINT *index);
 static UINT        _nx_dhcp_parse_next_option(CHAR **buffer, UINT *digit, UINT length);
-static UINT        _nx_dhcp_server_get_data(UCHAR *data, UINT size, ULONG *value);
-static VOID        _nx_dhcp_server_store_data(UCHAR *data, UINT size, ULONG value);
+static UINT        _nx_dhcp_server_get_data(UCHAR *data, UINT size, UINT32 *value);
+static VOID        _nx_dhcp_server_store_data(UCHAR *data, UINT size, UINT32 value);
 static UINT        _nx_dhcp_clear_client_session(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr);
 static UINT        _nx_dhcp_validate_client_message(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr);
-static UINT        _nx_dhcp_find_client_record_by_chaddr(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG client_mac_msw, ULONG client_mac_lsw,NX_DHCP_CLIENT **dhcp_client_ptr, UINT add_on);
-static UINT        _nx_dhcp_find_client_record_by_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT **dhcp_client_ptr, UINT iface_index, ULONG assigned_ip_address);
+static UINT        _nx_dhcp_find_client_record_by_chaddr(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 client_mac_msw, UINT32 client_mac_lsw,NX_DHCP_CLIENT **dhcp_client_ptr, UINT add_on);
+static UINT        _nx_dhcp_find_client_record_by_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT **dhcp_client_ptr, UINT iface_index, UINT32 assigned_ip_address);
 static UINT        _nx_dhcp_server_assign_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr);
-static UINT        _nx_dhcp_find_interface_table_ip_address(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG ip_address, NX_DHCP_INTERFACE_IP_ADDRESS **return_interface_address);
-static UINT        _nx_dhcp_update_assignable_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr, ULONG ip_address, UINT assign_status); 
+static UINT        _nx_dhcp_find_interface_table_ip_address(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 ip_address, NX_DHCP_INTERFACE_IP_ADDRESS **return_interface_address);
+static UINT        _nx_dhcp_update_assignable_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr, UINT32 ip_address, UINT assign_status); 
 static UINT        _nx_dhcp_find_ip_address_owner(NX_DHCP_INTERFACE_IP_ADDRESS *iface_owner, NX_DHCP_CLIENT *client_record_ptr, UINT *assigned_to_client);
 static UINT        _nx_dhcp_record_ip_address_owner(NX_DHCP_INTERFACE_IP_ADDRESS *iface_owner, NX_DHCP_CLIENT *client_record_ptr, UINT lease_time);
 static UINT        _nx_dhcp_clear_ip_address_owner(NX_DHCP_INTERFACE_IP_ADDRESS *iface_owner);
@@ -132,7 +132,7 @@ static int  add_client = 0;
 /*                                                                        */ 
 /**************************************************************************/
 
-UINT  _nxe_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT  _nxe_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
                               CHAR *name_ptr, NX_PACKET_POOL *packet_pool)
 {
 
@@ -209,7 +209,7 @@ UINT    status;
 /*    Application Code                                                    */ 
 /*                                                                        */ 
 /**************************************************************************/
-UINT  _nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, ULONG stack_size, 
+UINT  _nx_dhcp_server_create(NX_DHCP_SERVER *dhcp_ptr, NX_IP *ip_ptr, VOID *stack_ptr, UINT32 stack_size, 
                              CHAR *name_ptr, NX_PACKET_POOL *packet_pool_ptr)
 {
 
@@ -316,7 +316,7 @@ UINT  i, j;
 
     /* Create the DHCP processing thread.  */
     status =  tx_thread_create(&(dhcp_ptr -> nx_dhcp_server_thread), "NetX DHCP Server Thread", 
-                               _nx_dhcp_server_thread_entry, (ULONG)(ALIGN_TYPE)dhcp_ptr,
+                               _nx_dhcp_server_thread_entry, (UINT32)(ALIGN_TYPE)dhcp_ptr,
                                stack_ptr, stack_size, NX_DHCP_SERVER_THREAD_PRIORITY, 
                                NX_DHCP_SERVER_THREAD_PRIORITY, 1, TX_DONT_START);
 
@@ -356,7 +356,7 @@ UINT  i, j;
     /* Create the timer for Client DHCP session. This will keep track of when leases expire
        and when a client session has timed out. */
     status = tx_timer_create(&(dhcp_ptr -> nx_dhcp_slow_periodic_timer), "DHCP Server IP Lease Timer", 
-                             _nx_dhcp_slow_periodic_timer_entry, (ULONG)(ALIGN_TYPE)dhcp_ptr, 
+                             _nx_dhcp_slow_periodic_timer_entry, (UINT32)(ALIGN_TYPE)dhcp_ptr, 
                              timer_ticks, timer_ticks, TX_NO_ACTIVATE);
 
     NX_TIMER_EXTENSION_PTR_SET(&(dhcp_ptr -> nx_dhcp_slow_periodic_timer), dhcp_ptr)
@@ -367,7 +367,7 @@ UINT  i, j;
     /* Create the timer for Client DHCP session. This will keep track of when leases expire
        and when a client session has timed out. */
     status += tx_timer_create(&(dhcp_ptr -> nx_dhcp_fast_periodic_timer), "DHCP Server Session Timer", 
-                              _nx_dhcp_fast_periodic_timer_entry, (ULONG)(ALIGN_TYPE)dhcp_ptr, 
+                              _nx_dhcp_fast_periodic_timer_entry, (UINT32)(ALIGN_TYPE)dhcp_ptr, 
                               timer_ticks, timer_ticks, TX_NO_ACTIVATE);
 
     NX_TIMER_EXTENSION_PTR_SET(&(dhcp_ptr -> nx_dhcp_fast_periodic_timer), dhcp_ptr)
@@ -749,7 +749,7 @@ UINT  _nx_dhcp_server_delete(NX_DHCP_SERVER *dhcp_ptr)
 /*                                                                        */
 /**************************************************************************/
 UINT _nxe_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, 
-                                             ULONG start_ip_address, ULONG end_ip_address, UINT *addresses_added)
+                                             UINT32 start_ip_address, UINT32 end_ip_address, UINT *addresses_added)
 {
 
 UINT            status;
@@ -830,12 +830,12 @@ UINT            status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_dhcp_create_server_ip_address_list(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, 
-                                            ULONG start_ip_address, ULONG end_ip_address,
+                                            UINT32 start_ip_address, UINT32 end_ip_address,
                                             UINT *addresses_added)
 {
 
 UINT                         i;
-ULONG                        next_ip_address;
+UINT32                        next_ip_address;
 NX_IP                        *ip_ptr;
 NX_DHCP_INTERFACE_IP_ADDRESS *ip_address_entry_ptr;
 NX_DHCP_INTERFACE_TABLE      *dhcp_interface_table_ptr;
@@ -983,8 +983,8 @@ NX_DHCP_INTERFACE_TABLE      *dhcp_interface_table_ptr;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nxe_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, 
-                                            ULONG subnet_mask, ULONG default_gateway_address,
-                                            ULONG dns_server_address)
+                                            UINT32 subnet_mask, UINT32 default_gateway_address,
+                                            UINT32 dns_server_address)
 {
 UINT status;
 
@@ -1049,8 +1049,8 @@ UINT status;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_dhcp_set_interface_network_parameters(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, 
-                                            ULONG subnet_mask, ULONG default_gateway_address,
-                                            ULONG dns_server_address)
+                                            UINT32 subnet_mask, UINT32 default_gateway_address,
+                                            UINT32 dns_server_address)
 {
 
     /* Check for invalid non pointer input. */
@@ -1864,8 +1864,8 @@ UINT                     index = 0;
 #ifdef PACKET_DUMP
 {
 
-    ULONG *work_ptr;
-    ULONG  uword;
+    UINT32 *work_ptr;
+    UINT32  uword;
     UINT i = 0;
     UINT index = 0;
     UINT length;
@@ -1874,8 +1874,8 @@ UINT                     index = 0;
     EL_PRINTF("DHCPserv: server reply to client - packet dump:\n");
 #endif
 
-    work_ptr = (ULONG *)packet_ptr -> nx_packet_prepend_ptr;
-    length = ((packet_ptr -> nx_packet_length + sizeof(ULONG) - 1)/sizeof(ULONG));
+    work_ptr = (UINT32 *)packet_ptr -> nx_packet_prepend_ptr;
+    length = ((packet_ptr -> nx_packet_length + sizeof(UINT32) - 1)/sizeof(UINT32));
                      
     while(i < length)
     {
@@ -2527,8 +2527,8 @@ UINT            status;
 UINT            iface_index;
 NX_DHCP_CLIENT  *dhcp_client_ptr = NX_NULL;
 NX_PACKET       *new_packet_ptr;   
-ULONG           bytes_copied = 0;
-ULONG           offset;
+UINT32           bytes_copied = 0;
+UINT32           offset;
 
 #ifdef EL_PRINTF_ENABLE
     EL_PRINTF("\n");
@@ -2587,7 +2587,7 @@ ULONG           offset;
     packet_ptr -> nx_packet_length += 28;
 
     /* Verify the incoming packet does not exceed our DHCP Server packet payload. */
-    if ((ULONG)(new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_prepend_ptr) < (packet_ptr -> nx_packet_length))
+    if ((UINT32)(new_packet_ptr -> nx_packet_data_end - new_packet_ptr -> nx_packet_prepend_ptr) < (packet_ptr -> nx_packet_length))
     {
 
         /* Release the original packet. */
@@ -2633,8 +2633,8 @@ ULONG           offset;
 #ifdef PACKET_DUMP
 {
 
-    ULONG *work_ptr;
-    ULONG  uword;
+    UINT32 *work_ptr;
+    UINT32  uword;
     UINT i = 0;
     UINT index = 0;
     UINT length;
@@ -2644,8 +2644,8 @@ ULONG           offset;
 #endif
                   
     /* Get a pointer to the IP header and adjust the packet length for IP and UDP header size. */
-    work_ptr = (ULONG *)(packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_UDP_HEADER) - sizeof(NX_IPV4_HEADER));
-    length = ((packet_ptr -> nx_packet_length + sizeof(ULONG) - 1)/sizeof(ULONG)) + sizeof(NX_UDP_HEADER) + sizeof(NX_IPV4_HEADER);
+    work_ptr = (UINT32 *)(packet_ptr -> nx_packet_prepend_ptr - sizeof(NX_UDP_HEADER) - sizeof(NX_IPV4_HEADER));
+    length = ((packet_ptr -> nx_packet_length + sizeof(UINT32) - 1)/sizeof(UINT32)) + sizeof(NX_UDP_HEADER) + sizeof(NX_IPV4_HEADER);
 
     while(i < length)
     {
@@ -2956,7 +2956,7 @@ ULONG           offset;
 /*                                                                        */ 
 /**************************************************************************/
 UINT  _nx_dhcp_find_client_record_by_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT **dhcp_client_ptr, 
-                                               UINT iface_index, ULONG assigned_ip_address)
+                                               UINT iface_index, UINT32 assigned_ip_address)
 {
 
 UINT            i;
@@ -3050,8 +3050,8 @@ NX_DHCP_CLIENT  *client_record_ptr;
 /*                                             message                    */
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_dhcp_find_client_record_by_chaddr(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG client_mac_msw, 
-                                 ULONG client_mac_lsw, NX_DHCP_CLIENT **dhcp_client_ptr, UINT add_on)
+static UINT  _nx_dhcp_find_client_record_by_chaddr(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 client_mac_msw, 
+                                 UINT32 client_mac_lsw, NX_DHCP_CLIENT **dhcp_client_ptr, UINT add_on)
 {
 
 UINT            i;
@@ -3196,7 +3196,7 @@ NX_DHCP_CLIENT  *client_record_ptr;
 /*                                             message                    */
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_dhcp_find_interface_table_ip_address(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, ULONG ip_address, 
+static UINT  _nx_dhcp_find_interface_table_ip_address(NX_DHCP_SERVER *dhcp_ptr, UINT iface_index, UINT32 ip_address, 
                                               NX_DHCP_INTERFACE_IP_ADDRESS **return_interface_address)
 {
 
@@ -3281,7 +3281,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
 /*                                                                        */ 
 /**************************************************************************/
 static UINT  _nx_dhcp_update_assignable_ip_address(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr, 
-                                           ULONG ip_address, UINT assign_status) 
+                                           UINT32 ip_address, UINT assign_status) 
 {
 
 UINT iface_index; 
@@ -3600,7 +3600,7 @@ static UINT  _nx_dhcp_clear_ip_address_owner(NX_DHCP_INTERFACE_IP_ADDRESS *iface
 static UINT  _nx_dhcp_validate_client_message(NX_DHCP_SERVER *dhcp_ptr, NX_DHCP_CLIENT *dhcp_client_ptr)
 {
 
-ULONG                   server_ip_address;
+UINT32                   server_ip_address;
 UINT                    iface_index;
 NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
 
@@ -3737,7 +3737,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
                         (dhcp_client_ptr -> nx_dhcp_assigned_ip_address != dhcp_client_ptr -> nx_dhcp_requested_ip_address))
                     {
     
-                        ULONG ip_address_assigned = dhcp_client_ptr -> nx_dhcp_assigned_ip_address;
+                        UINT32 ip_address_assigned = dhcp_client_ptr -> nx_dhcp_assigned_ip_address;
     
 #ifdef EL_PRINTF_ENABLE
                         EL_PRINTF("DHCPserv: NACK! REQUEST message contains incorrect requested IP address. \n");
@@ -3797,7 +3797,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
                     if (dhcp_client_ptr -> nx_dhcp_server_id != server_ip_address) 
                     {
     
-                        ULONG  ip_address_assigned;
+                        UINT32  ip_address_assigned;
     
                         /* We are not. */
     
@@ -3862,7 +3862,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
                     else if (dhcp_client_ptr -> nx_dhcp_assigned_ip_address != dhcp_client_ptr -> nx_dhcp_requested_ip_address)
                     {
     
-                        ULONG ip_address_assigned = dhcp_client_ptr -> nx_dhcp_assigned_ip_address;
+                        UINT32 ip_address_assigned = dhcp_client_ptr -> nx_dhcp_assigned_ip_address;
     
 #ifdef EL_PRINTF_ENABLE
                         EL_PRINTF("DHCPserv: NACK! REQUEST message contains requested IP address. \n");
@@ -4048,7 +4048,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
                 {
     
                     UINT index = dhcp_client_ptr -> nx_dhcp_client_iface_index;
-                    ULONG server_ip = (&dhcp_ptr -> nx_dhcp_interface_table[index]) ->nx_dhcp_server_ip_address;
+                    UINT32 server_ip = (&dhcp_ptr -> nx_dhcp_interface_table[index]) ->nx_dhcp_server_ip_address;
     
                     /* Check that we are the intended server. */
                     if (dhcp_client_ptr -> nx_dhcp_destination_ip_address != server_ip)
@@ -4120,7 +4120,7 @@ NX_DHCP_INTERFACE_TABLE *dhcp_interface_table_ptr;
                 {
     
                     UINT index = dhcp_client_ptr -> nx_dhcp_client_iface_index;
-                    ULONG server_ip = (&dhcp_ptr -> nx_dhcp_interface_table[index]) ->nx_dhcp_server_ip_address;
+                    UINT32 server_ip = (&dhcp_ptr -> nx_dhcp_interface_table[index]) ->nx_dhcp_server_ip_address;
     
                     /* Check that we are the intended server. */
                     if (dhcp_client_ptr -> nx_dhcp_server_id != server_ip)
@@ -4593,12 +4593,12 @@ static UINT  _nx_dhcp_server_extract_information(NX_DHCP_SERVER *dhcp_ptr, NX_DH
 {
 
 UINT            status;
-ULONG           value;
-ULONG           size = 0;
-ULONG           xid;
+UINT32           value;
+UINT32           size = 0;
+UINT32           xid;
 UCHAR           *work_ptr;
-ULONG           client_mac_msw;
-ULONG           client_mac_lsw;
+UINT32           client_mac_msw;
+UINT32           client_mac_lsw;
 NX_IPV4_HEADER  *ip_header_ptr;
 NX_DHCP_CLIENT  *temp_client_rec_ptr;
 
@@ -4612,11 +4612,11 @@ NX_DHCP_CLIENT  *temp_client_rec_ptr;
     work_ptr = packet_ptr -> nx_packet_prepend_ptr + NX_DHCP_OFFSET_CLIENT_HW;
 
     /* Pickup the MSW of the MAC address.  */
-    client_mac_msw = (((ULONG) work_ptr[0]) << 8)  | ((ULONG) work_ptr[1]);
-    client_mac_lsw = (((ULONG) work_ptr[2]) << 24) |
-                     (((ULONG) work_ptr[3]) << 16) |
-                     (((ULONG) work_ptr[4]) << 8)  |
-                     ((ULONG) work_ptr[5]);
+    client_mac_msw = (((UINT32) work_ptr[0]) << 8)  | ((UINT32) work_ptr[1]);
+    client_mac_lsw = (((UINT32) work_ptr[2]) << 24) |
+                     (((UINT32) work_ptr[3]) << 16) |
+                     (((UINT32) work_ptr[4]) << 8)  |
+                     ((UINT32) work_ptr[5]);
 
     /* Check the client hardware (mac address) field is filled in. */
     if ((client_mac_msw == 0) && (client_mac_lsw == 0))
@@ -4866,7 +4866,7 @@ static UINT  _nx_dhcp_process_option_data(NX_DHCP_CLIENT *dhcp_client_ptr, CHAR 
 {
 
 UINT  status;
-ULONG option_value = 0;
+UINT32 option_value = 0;
 
     /* Do we parse option data for this option? */
     if (get_option_data)
@@ -5119,7 +5119,7 @@ UINT status = NX_SUCCESS;
 /*    _nx_dhcp_process                      Process the DHCP state machine*/ 
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_dhcp_add_option(UCHAR *dhcp_message, UINT option, UINT size, ULONG value, UINT *index)
+static UINT  _nx_dhcp_add_option(UCHAR *dhcp_message, UINT option, UINT size, UINT32 value, UINT *index)
 {
                      
                   
@@ -5179,7 +5179,7 @@ static UINT  _nx_dhcp_add_option(UCHAR *dhcp_message, UINT option, UINT size, UL
 /*    _nx_dhcp_update_address_list          Update address list           */ 
 /*                                                                        */ 
 /**************************************************************************/
-static UINT  _nx_dhcp_server_get_data(UCHAR *data, UINT size, ULONG *value)
+static UINT  _nx_dhcp_server_get_data(UCHAR *data, UINT size, UINT32 *value)
 {
 
 
@@ -5243,7 +5243,7 @@ static UINT  _nx_dhcp_server_get_data(UCHAR *data, UINT size, ULONG *value)
 /*    _nx_dhcp_add_option                   Add a DHCP option             */ 
 /*                                                                        */ 
 /**************************************************************************/
-static VOID  _nx_dhcp_server_store_data(UCHAR *data, UINT size, ULONG value)
+static VOID  _nx_dhcp_server_store_data(UCHAR *data, UINT size, UINT32 value)
 {
 
     /* Make sure that data is left justified.  */

@@ -65,17 +65,17 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_arp_ip_address_find(NX_IP *ip_ptr, ULONG *ip_address,
-                              ULONG physical_msw, ULONG physical_lsw)
+UINT  _nx_arp_ip_address_find(NX_IP *ip_ptr, UINT32 *ip_address,
+                              UINT32 physical_msw, UINT32 physical_lsw)
 {
 
 #ifndef NX_DISABLE_IPV4
 NX_ARP *arp_entry;
-ULONG   count;
+UINT32   count;
 
 #ifdef TX_ENABLE_EVENT_TRACE
 TX_TRACE_BUFFER_ENTRY *trace_event;
-ULONG                  trace_timestamp;
+UINT32                  trace_timestamp;
 #endif
 
 

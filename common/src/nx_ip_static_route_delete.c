@@ -72,7 +72,7 @@
 /*    None                                                                */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nx_ip_static_route_delete(NX_IP *ip_ptr, ULONG network_address, ULONG net_mask)
+UINT  _nx_ip_static_route_delete(NX_IP *ip_ptr, UINT32 network_address, UINT32 net_mask)
 {
 
 #if !defined(NX_DISABLE_IPV4) && defined(NX_ENABLE_IP_STATIC_ROUTING)

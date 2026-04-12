@@ -251,7 +251,7 @@ extern   "C" {
 
 /* Round up to a 4 byte aligned packet payload. */
 
-#define NX_DNS_PACKET_PAYLOAD                   (((NX_DNS_PACKET_PAYLOAD_UNALIGNED + sizeof(ULONG) - 1)/sizeof(ULONG)) * sizeof(ULONG))
+#define NX_DNS_PACKET_PAYLOAD                   (((NX_DNS_PACKET_PAYLOAD_UNALIGNED + sizeof(UINT32) - 1)/sizeof(UINT32)) * sizeof(UINT32))
 
 /* Define the size (e.g. number of packets) of the DNS Client
    packet pool for sending out DNS messages. */
@@ -296,13 +296,13 @@ extern   "C" {
 
 typedef struct NX_IP_DNS_STRUCT 
 {
-    ULONG           nx_dns_id;                                      /* DNS ID                                                   */
+    UINT32           nx_dns_id;                                      /* DNS ID                                                   */
     UCHAR           *nx_dns_domain;                                 /* Pointer to domain name                                   */ 
     USHORT          nx_dns_lookup_type;                             /* DNS look up type                                         */ 
     USHORT          nx_dns_transmit_id;                             /* DNS message transmit identifier                          */ 
     NX_IP           *nx_dns_ip_ptr;                                 /* Pointer to associated IP structure                       */ 
     NXD_ADDRESS     nx_dns_server_ip_array[NX_DNS_MAX_SERVERS];     /* List of DNS server IP addresses                          */ 
-    ULONG           nx_dns_retries;                                 /* DNS query retries                                        */ 
+    UINT32           nx_dns_retries;                                 /* DNS query retries                                        */ 
 #ifndef NX_DNS_CLIENT_USER_CREATE_PACKET_POOL
     NX_PACKET_POOL  nx_dns_pool;                                    /* The pool of UDP data packets for DNS messages            */
     UCHAR           nx_dns_pool_area[NX_DNS_PACKET_POOL_SIZE];
@@ -313,9 +313,9 @@ typedef struct NX_IP_DNS_STRUCT
 #ifdef NX_DNS_CACHE_ENABLE
     UCHAR*          nx_dns_cache;                                   /* Pointer to the cache.                                    */        
     UINT            nx_dns_cache_size;                              /* The size of cache.                                       */
-    ULONG           nx_dns_rr_count;                                /* The number of resource records in the cache.             */        
-    ULONG           nx_dns_string_count;                            /* The number of strings in the cache.                      */         
-    ULONG           nx_dns_string_bytes;                            /* The number of total bytes in string table in the cache.  */ 
+    UINT32           nx_dns_rr_count;                                /* The number of resource records in the cache.             */        
+    UINT32           nx_dns_string_count;                            /* The number of strings in the cache.                      */         
+    UINT32           nx_dns_string_bytes;                            /* The number of total bytes in string table in the cache.  */ 
     VOID            (*nx_dns_cache_full_notify)(struct NX_IP_DNS_STRUCT *);
 #endif /* NX_DNS_CACHE_ENABLE  */
 } NX_DNS;
@@ -363,7 +363,7 @@ typedef struct NX_IP_DNS_STRUCT
 
 typedef struct NX_DNS_IPV6_ADDRESS_STRUCT
 {
-    ULONG           ipv6_address[4];
+    UINT32           ipv6_address[4];
 } NX_DNS_IPV6_ADDRESS;
 
 
@@ -415,7 +415,7 @@ typedef struct NX_DNS_IPV6_ADDRESS_STRUCT
 
 typedef struct NX_DNS_NS_ENTRY_STRUCT
 {
-    ULONG           nx_dns_ns_ipv4_address;        /* The name server ipv4 address.  */
+    UINT32           nx_dns_ns_ipv4_address;        /* The name server ipv4 address.  */
     UCHAR           *nx_dns_ns_hostname_ptr;       /* The name server.  */
 } NX_DNS_NS_ENTRY;
 
@@ -470,7 +470,7 @@ typedef struct NX_DNS_NS_ENTRY_STRUCT
 /* Define the mail exchange record type */
 typedef struct NX_DNS_MAIL_EXCHANGE_ENTRY_STRUCT
 {
-    ULONG           nx_dns_mx_ipv4_address;           /* The mail exchange server ipv4 address.  */
+    UINT32           nx_dns_mx_ipv4_address;           /* The mail exchange server ipv4 address.  */
     USHORT          nx_dns_mx_preference;             /* The preference given to this RR, Lower values are preferred. */
     USHORT          nx_dns_mx_reserved0;              /* Keep 4-byte aligned.  */
     UCHAR           *nx_dns_mx_hostname_ptr;          /* The mail exchange server host name.  */
@@ -503,7 +503,7 @@ typedef struct NX_DNS_MAIL_EXCHANGE_ENTRY_STRUCT
 /* Define the service record type. */
 typedef struct NX_DNS_SERVICE_ENTRY_STRUCT
 {
-    ULONG           nx_dns_srv_ipv4_address;
+    UINT32           nx_dns_srv_ipv4_address;
     USHORT          nx_dns_srv_priority;
     USHORT          nx_dns_srv_weight;
     USHORT          nx_dns_srv_port_number;
@@ -575,11 +575,11 @@ typedef struct NX_DNS_SOA_ENTRY_STRUCT
     
     UCHAR           *nx_dns_soa_host_mname_ptr;
     UCHAR           *nx_dns_soa_host_rname_ptr;
-    ULONG           nx_dns_soa_serial;
-    ULONG           nx_dns_soa_refresh;
-    ULONG           nx_dns_soa_retry;
-    ULONG           nx_dns_soa_expire;
-    ULONG           nx_dns_soa_minmum;
+    UINT32           nx_dns_soa_serial;
+    UINT32           nx_dns_soa_refresh;
+    UINT32           nx_dns_soa_retry;
+    UINT32           nx_dns_soa_expire;
+    UINT32           nx_dns_soa_minmum;
 } NX_DNS_SOA_ENTRY;
 
 /* Layout of the buffer
@@ -625,7 +625,7 @@ typedef struct NX_DNS_SOA_ENTRY_STRUCT
 
 typedef struct NX_DNS_RR_A_STRUCT
 {
-    ULONG           nx_dns_rr_a_address;
+    UINT32           nx_dns_rr_a_address;
 } NX_DNS_RR_A;
                     
 /* AAAA RDATA format
@@ -645,7 +645,7 @@ typedef struct NX_DNS_RR_A_STRUCT
 
 typedef struct NX_DNS_RR_AAAA_STRUCT
 {
-    ULONG*          nx_dns_rr_aaaa_address;         /* Keep the same resource record structure size, store the rdata information into cache with string.  */   
+    UINT32*          nx_dns_rr_aaaa_address;         /* Keep the same resource record structure size, store the rdata information into cache with string.  */   
 } NX_DNS_RR_AAAA;
 
                        
@@ -784,9 +784,9 @@ typedef struct NX_DNS_RR_STRUCT
 
     USHORT  nx_dns_rr_class;                    /* RR CLASS.                                                */
 
-    ULONG   nx_dns_rr_ttl;                      /* The time interval that the RR may be cached before the source of the information should again be consulted. */
+    UINT32   nx_dns_rr_ttl;                      /* The time interval that the RR may be cached before the source of the information should again be consulted. */
                                      
-    ULONG   nx_dns_rr_last_used_time;           /* Define the last used time for the peer RR.               */
+    UINT32   nx_dns_rr_last_used_time;           /* Define the last used time for the peer RR.               */
 
     /* Union that holds resource record data. */
     union   nx_dns_rr_rdata_union
@@ -901,28 +901,28 @@ typedef struct NX_DNS_RR_STRUCT
 UINT        nx_dns_create(NX_DNS *dns_ptr, NX_IP *ip_ptr, UCHAR *domain_name);
 UINT        nx_dns_delete(NX_DNS *dns_ptr);
 UINT        nx_dns_packet_pool_set(NX_DNS *dns_ptr, NX_PACKET_POOL *packet_pool_ptr);
-UINT        nx_dns_server_add(NX_DNS *dns_ptr, ULONG server_address);
-UINT        nx_dns_server_remove(NX_DNS *dns_ptr, ULONG server_address);
+UINT        nx_dns_server_add(NX_DNS *dns_ptr, UINT32 server_address);
+UINT        nx_dns_server_remove(NX_DNS *dns_ptr, UINT32 server_address);
 UINT        nx_dns_server_remove_all(NX_DNS *dns_ptr);
-UINT        nx_dns_server_get(NX_DNS *dns_ptr, UINT index, ULONG *dns_server_address);
+UINT        nx_dns_server_get(NX_DNS *dns_ptr, UINT index, UINT32 *dns_server_address);
 UINT        nx_dns_get_serverlist_size(NX_DNS *dns_ptr, UINT *server_list_size);
-UINT        nx_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, ULONG wait_option);
-UINT        nx_dns_host_by_address_get(NX_DNS *dns_ptr, ULONG ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        nx_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
+UINT        nx_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, UINT32 wait_option);
+UINT        nx_dns_host_by_address_get(NX_DNS *dns_ptr, UINT32 ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        nx_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
    
 #ifdef NX_DNS_ENABLE_EXTENDED_RR_TYPES 
-UINT        nx_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        nx_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        nx_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        nx_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        nx_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        nx_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        nx_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, USHORT* host_port, ULONG wait_option);
+UINT        nx_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        nx_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        nx_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        nx_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        nx_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        nx_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        nx_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, USHORT* host_port, UINT32 wait_option);
 #endif
 
-UINT        nxd_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        nxd_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        nxd_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, ULONG wait_option, UINT lookup_type);
+UINT        nxd_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        nxd_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        nxd_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, UINT32 wait_option, UINT lookup_type);
 UINT        nxd_dns_server_add(NX_DNS *dns_ptr, NXD_ADDRESS *dns_server_address);
 UINT        nxd_dns_server_remove(NX_DNS *dns_ptr, NXD_ADDRESS *server_address);
 UINT        nxd_dns_server_get(NX_DNS *dns_ptr, UINT index, NXD_ADDRESS *dns_server_address);
@@ -943,46 +943,46 @@ UINT        _nxe_dns_delete(NX_DNS *dns_ptr);
 UINT        _nx_dns_delete(NX_DNS *dns_ptr);
 UINT        _nxe_dns_packet_pool_set(NX_DNS *dns_ptr, NX_PACKET_POOL *packet_pool_ptr);
 UINT        _nx_dns_packet_pool_set(NX_DNS *dns_ptr, NX_PACKET_POOL *packet_pool_ptr);
-UINT        _nxe_dns_host_by_address_get(NX_DNS *dns_ptr, ULONG ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        _nx_dns_host_by_address_get(NX_DNS *dns_ptr, ULONG ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        _nxe_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, ULONG wait_option);
-UINT        _nx_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, ULONG wait_option);
-UINT        _nxe_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nx_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
+UINT        _nxe_dns_host_by_address_get(NX_DNS *dns_ptr, UINT32 ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        _nx_dns_host_by_address_get(NX_DNS *dns_ptr, UINT32 ip_address, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        _nxe_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, UINT32 wait_option);
+UINT        _nx_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, UINT32 wait_option);
+UINT        _nxe_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nx_dns_ipv4_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
    
 #ifdef NX_DNS_ENABLE_EXTENDED_RR_TYPES 
-UINT        _nxe_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size,ULONG wait_option);
-UINT        _nx_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size,ULONG wait_option);
-UINT        _nxe_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nx_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nxe_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        _nx_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        _nxe_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nx_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nxe_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nx_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nxe_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        _nx_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, ULONG wait_option);
-UINT        _nxe_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, USHORT* host_port, ULONG wait_option);
-UINT        _nx_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, ULONG *host_address_ptr, USHORT* host_port, ULONG wait_option);
+UINT        _nxe_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size,UINT32 wait_option);
+UINT        _nx_dns_cname_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size,UINT32 wait_option);
+UINT        _nxe_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nx_dns_domain_name_server_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nxe_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        _nx_dns_host_text_get(NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        _nxe_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nx_dns_domain_mail_exchange_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nxe_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nx_dns_domain_service_get(NX_DNS *dns_ptr, UCHAR *host_name,  VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nxe_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        _nx_dns_authority_zone_start_get (NX_DNS *dns_ptr, UCHAR *host_name,  UCHAR *record_buffer, UINT buffer_size, UINT32 wait_option);
+UINT        _nxe_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, USHORT* host_port, UINT32 wait_option);
+UINT        _nx_dns_info_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, UINT32 *host_address_ptr, USHORT* host_port, UINT32 wait_option);
 #endif
 
-UINT        _nxe_dns_server_add(NX_DNS *dns_ptr, ULONG server_address);
-UINT        _nx_dns_server_add(NX_DNS *dns_ptr, ULONG server_address);
-UINT        _nxe_dns_server_remove(NX_DNS *dns_ptr, ULONG server_address);
-UINT        _nx_dns_server_remove(NX_DNS *dns_ptr, ULONG server_address);
+UINT        _nxe_dns_server_add(NX_DNS *dns_ptr, UINT32 server_address);
+UINT        _nx_dns_server_add(NX_DNS *dns_ptr, UINT32 server_address);
+UINT        _nxe_dns_server_remove(NX_DNS *dns_ptr, UINT32 server_address);
+UINT        _nx_dns_server_remove(NX_DNS *dns_ptr, UINT32 server_address);
 UINT        _nxe_dns_server_remove_all(NX_DNS *dns_ptr);
 UINT        _nx_dns_server_remove_all(NX_DNS *dns_ptr);
-UINT        _nxe_dns_server_get(NX_DNS *dns_ptr, UINT index, ULONG *dns_server_address);
-UINT        _nx_dns_server_get(NX_DNS *dns_ptr, UINT index, ULONG *dns_server_address);
+UINT        _nxe_dns_server_get(NX_DNS *dns_ptr, UINT index, UINT32 *dns_server_address);
+UINT        _nx_dns_server_get(NX_DNS *dns_ptr, UINT index, UINT32 *dns_server_address);
 UINT        _nxe_dns_get_serverlist_size(NX_DNS *dns_ptr, UINT *server_list_size); 
 UINT        _nx_dns_get_serverlist_size(NX_DNS *dns_ptr, UINT *server_list_size);
-UINT        _nxde_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nxd_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, ULONG wait_option);
-UINT        _nxde_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *host_address_ptr, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        _nxd_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *host_address_ptr, UCHAR *host_name_ptr, UINT host_name_buffer_size, ULONG wait_option);
-UINT        _nxde_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, ULONG wait_option, UINT lookup_type);
-UINT        _nxd_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, ULONG wait_option, UINT lookup_type);
+UINT        _nxde_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nxd_dns_ipv6_address_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, VOID *record_buffer, UINT buffer_size, UINT *record_count, UINT32 wait_option);
+UINT        _nxde_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *host_address_ptr, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        _nxd_dns_host_by_address_get(NX_DNS *dns_ptr, NXD_ADDRESS *host_address_ptr, UCHAR *host_name_ptr, UINT host_name_buffer_size, UINT32 wait_option);
+UINT        _nxde_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, UINT32 wait_option, UINT lookup_type);
+UINT        _nxd_dns_host_by_name_get(NX_DNS *dns_ptr, UCHAR *host_name, NXD_ADDRESS *host_address_ptr, UINT32 wait_option, UINT lookup_type);
 UINT        _nxde_dns_server_add(NX_DNS *dns_ptr, NXD_ADDRESS *server_address);
 UINT        _nxd_dns_server_add(NX_DNS *dns_ptr, NXD_ADDRESS *server_address);
 UINT        _nxde_dns_server_remove(NX_DNS *dns_ptr, NXD_ADDRESS *server_address);
@@ -1003,7 +1003,7 @@ UINT        _nx_dns_cache_notify_clear(NX_DNS *dns_ptr);
 
 /* Internal DNS response getting function.  */
 UINT        _nx_dns_response_get(NX_DNS *dns_ptr, UCHAR *host_name, UCHAR *record_buffer, UINT buffer_size, 
-                                 UINT *record_count, ULONG wait_option);
+                                 UINT *record_count, UINT32 wait_option);
 
 /* Determine if a C++ compiler is being used.  If so, complete the standard
    C conditional started above.  */

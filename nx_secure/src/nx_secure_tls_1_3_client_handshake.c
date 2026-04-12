@@ -125,7 +125,7 @@ extern const UCHAR _nx_secure_tls_1_2_random[8];
 extern const UCHAR _nx_secure_tls_1_1_random[8];
 
 UINT _nx_secure_tls_1_3_client_handshake(NX_SECURE_TLS_SESSION *tls_session, UCHAR *packet_buffer,
-                                         UINT data_length, ULONG wait_option)
+                                         UINT data_length, UINT32 wait_option)
 {
 #ifndef NX_SECURE_TLS_CLIENT_DISABLED
 UINT            status;

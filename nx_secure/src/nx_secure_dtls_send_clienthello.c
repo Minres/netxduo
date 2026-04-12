@@ -30,8 +30,8 @@ extern NX_CRYPTO_METHOD crypto_method_ec_secp256;
 #endif /* NX_SECURE_ENABLE_ECJPAKE_CIPHERSUITE */
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
 static UINT _nx_secure_dtls_send_clienthello_sec_spf_extensions(NX_SECURE_TLS_SESSION *tls_session,
-                                                                UCHAR *packet_buffer, ULONG *packet_offset,
-                                                                USHORT *extension_length, ULONG available_size);
+                                                                UCHAR *packet_buffer, UINT32 *packet_offset,
+                                                                USHORT *extension_length, UINT32 available_size);
 #endif /* NX_SECURE_ENABLE_ECC_CIPHERSUITE */
 
 /**************************************************************************/
@@ -76,7 +76,7 @@ static UINT _nx_secure_dtls_send_clienthello_sec_spf_extensions(NX_SECURE_TLS_SE
 /**************************************************************************/
 UINT _nx_secure_dtls_send_clienthello(NX_SECURE_DTLS_SESSION *dtls_session, NX_PACKET *send_packet)
 {
-ULONG  length;
+UINT32  length;
 UINT   gmt_time;
 UINT   random_value;
 UINT   i;
@@ -125,7 +125,7 @@ USHORT                      protocol_version;
 
     if ((10u + sizeof(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random) +
          tls_session -> nx_secure_tls_session_id_length + dtls_session -> nx_secure_dtls_cookie_length + ciphersuites_length) >
-        ((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_prepend_ptr)))
+        ((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_prepend_ptr)))
     {
 
         /* Packet buffer is too small. */
@@ -190,14 +190,14 @@ USHORT                      protocol_version;
     {
         gmt_time = tls_session -> nx_secure_tls_session_time_function();
     }
-    NX_CHANGE_ULONG_ENDIAN(gmt_time);
+    NX_CHANGE_UINT32_ENDIAN(gmt_time);
     NX_SECURE_MEMCPY(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random, (UCHAR *)&gmt_time, sizeof(gmt_time)); /* Use case of memcpy is verified. */
 
     /* Next 28 bytes is random data. */
     for (i = 0; i < 28; i += (UINT)sizeof(random_value))
     {
         random_value = (UINT)NX_RAND();
-        NX_CHANGE_ULONG_ENDIAN(random_value);
+        NX_CHANGE_UINT32_ENDIAN(random_value);
         *(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random + (i + 4))     = (UCHAR)(random_value);
         *(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random + (i + 5)) = (UCHAR)(random_value >> 8);
         *(tls_session -> nx_secure_tls_key_material.nx_secure_tls_client_random + (i + 6)) = (UCHAR)(random_value >> 16);
@@ -279,7 +279,7 @@ USHORT                      protocol_version;
             return(NX_SECURE_TLS_HANDSHAKE_FAILURE);
         }
 
-        if (((ULONG)(send_packet -> nx_packet_data_end) - (ULONG)(send_packet -> nx_packet_prepend_ptr)) < (20u + length))
+        if (((UINT32)(send_packet -> nx_packet_data_end) - (UINT32)(send_packet -> nx_packet_prepend_ptr)) < (20u + length))
         {
 
             /* Packet buffer is too small. */
@@ -387,7 +387,7 @@ USHORT                      protocol_version;
         length += 2;
         extended_output.nx_crypto_extended_output_data = &packet_buffer[length];
         extended_output.nx_crypto_extended_output_length_in_byte =
-            (ULONG)send_packet -> nx_packet_data_end - (ULONG)&packet_buffer[length];
+            (UINT32)send_packet -> nx_packet_data_end - (UINT32)&packet_buffer[length];
         extended_output.nx_crypto_extended_output_actual_size = 0;
         status = crypto_method -> nx_crypto_operation(NX_CRYPTO_ECJPAKE_CLIENT_HELLO_GENERATE,
                                                       NX_NULL,
@@ -428,8 +428,8 @@ USHORT                      protocol_version;
 
         _nx_secure_dtls_send_clienthello_sec_spf_extensions(&dtls_session -> nx_secure_dtls_tls_session,
                                                             packet_buffer, &length, &extension_total_length,
-                                                            ((ULONG)send_packet -> nx_packet_data_end -
-                                                             (ULONG)packet_buffer));
+                                                            ((UINT32)send_packet -> nx_packet_data_end -
+                                                             (UINT32)packet_buffer));
         if (extension_total_length == 0)
         {
 
@@ -498,11 +498,11 @@ USHORT                      protocol_version;
 /**************************************************************************/
 #ifdef NX_SECURE_ENABLE_ECC_CIPHERSUITE
 static UINT _nx_secure_dtls_send_clienthello_sec_spf_extensions(NX_SECURE_TLS_SESSION *tls_session,
-                                                                UCHAR *packet_buffer, ULONG *packet_offset,
+                                                                UCHAR *packet_buffer, UINT32 *packet_offset,
                                                                 USHORT *extension_length,
-                                                                ULONG available_size)
+                                                                UINT32 available_size)
 {
-ULONG  offset;
+UINT32  offset;
 USHORT ext_len, list_len, ext, i;
 NX_SECURE_TLS_ECC *ecc_info;
 
@@ -517,7 +517,7 @@ NX_SECURE_TLS_ECC *ecc_info;
     /* Start with our passed-in packet offset. */
     offset = *packet_offset;
 
-    if (available_size < (offset + 12u + (ULONG)(ecc_info -> nx_secure_tls_ecc_supported_groups_count << 1)))
+    if (available_size < (offset + 12u + (UINT32)(ecc_info -> nx_secure_tls_ecc_supported_groups_count << 1)))
     {
 
         /* Packet buffer too small. */

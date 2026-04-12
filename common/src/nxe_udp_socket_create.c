@@ -79,13 +79,13 @@ NX_CALLER_CHECKING_EXTERNS
 /*                                                                        */
 /**************************************************************************/
 UINT  _nxe_udp_socket_create(NX_IP *ip_ptr, NX_UDP_SOCKET *socket_ptr, CHAR *name,
-                             ULONG type_of_service, ULONG fragment, UINT time_to_live,
-                             ULONG queue_maximum, UINT udp_socket_size)
+                             UINT32 type_of_service, UINT32 fragment, UINT time_to_live,
+                             UINT32 queue_maximum, UINT udp_socket_size)
 {
 
 UINT           status;
 NX_UDP_SOCKET *created_socket;
-ULONG          created_count;
+UINT32          created_count;
 
 
     /* Check for invalid input pointers.  */
@@ -149,7 +149,7 @@ ULONG          created_count;
     }
 
     /* Check for valid time to live option.  */
-    if (((ULONG)time_to_live) > NX_IP_TIME_TO_LIVE_MASK)
+    if (((UINT32)time_to_live) > NX_IP_TIME_TO_LIVE_MASK)
     {
         return(NX_OPTION_ERROR);
     }

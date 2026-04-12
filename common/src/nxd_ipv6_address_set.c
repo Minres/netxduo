@@ -77,20 +77,20 @@
 /*    Application Code                                                    */
 /*                                                                        */
 /**************************************************************************/
-UINT  _nxd_ipv6_address_set(NX_IP *ip_ptr, UINT interface_index, NXD_ADDRESS *ip_address, ULONG prefix_length, UINT *address_index)
+UINT  _nxd_ipv6_address_set(NX_IP *ip_ptr, UINT interface_index, NXD_ADDRESS *ip_address, UINT32 prefix_length, UINT *address_index)
 {
 #ifdef FEATURE_NX_IPV6
 
 TX_INTERRUPT_SAVE_AREA
 #ifdef NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY
-VOID                (*address_change_notify)(NX_IP *, UINT, UINT, UINT, ULONG *);
-VOID                (*address_change_notify_internal)(NX_IP *, UINT, UINT, UINT, ULONG *);
+VOID                (*address_change_notify)(NX_IP *, UINT, UINT, UINT, UINT32 *);
+VOID                (*address_change_notify_internal)(NX_IP *, UINT, UINT, UINT, UINT32 *);
 #endif /* NX_ENABLE_IPV6_ADDRESS_CHANGE_NOTIFY */
 NXD_IPV6_ADDRESS *ipv6_addr;
 NXD_IPV6_ADDRESS *interface_ipv6_address;
 UINT              index = (UINT)0xFFFFFFFF;
 UINT              i;
-ULONG             multicast_address[4];
+UINT32             multicast_address[4];
 
     /* Place protection while the IPv6 address is modified. */
     tx_mutex_get(&(ip_ptr -> nx_ip_protection), TX_WAIT_FOREVER);
@@ -147,7 +147,7 @@ ULONG             multicast_address[4];
     {
 
     /* No address supplied. Assume it is link local address, constructed from the physical interface. */
-    ULONG word2, word3;
+    UINT32 word2, word3;
 
         /* Construct Interface Identifier, following RFC2464, page 3 */
         /* Assign link local address.
