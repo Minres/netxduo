@@ -44,7 +44,7 @@
 
 #ifndef NX_API_H
 #define NX_API_H
-
+#ifndef __ASSEMBLER__
 /* Determine if a C++ compiler is being used.  If so, ensure that standard
    C is used to process the API information.  */
 
@@ -4011,4 +4011,4 @@ UINT _nx_utility_base64_decode(UCHAR *base64name, UINT base64name_size, UCHAR *n
 #endif
 
 #endif
-
+#endif
